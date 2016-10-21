@@ -1,0 +1,731 @@
+fileFormatVersion: 2
+guid: 47d14b4b225586f48bfc024f4a8bd77f
+timeCreated: 1476871768
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Regular_Mouth_10_V2
+    21300002: Regular_Mouth_06_V2
+    21300004: Regular_Mouth_03_V2
+    21300006: Regular_Mouth_07_V2
+    21300008: Regular_Mouth_01_V2
+    21300010: Regular_Mouth_11_V2
+    21300012: Regular_Mouth_02_V2
+    21300014: Regular_Mouth_05_V2
+    21300016: Regular_Mouth_04_V2
+    21300018: Regular_Mouth_00_V2
+    21300020: Regular_Mouth_08_V2
+    21300022: Regular_Mouth_09_V2
+    21300024: Regular_Tongue01_V2
+    21300026: Regular_Tongue02_V2
+    21300028: Regular_Tongue03_V2
+    21300030: Regular_Tongue04_V2
+    21300032: Regular_Tongue05_V2
+    21300034: Regular_Tongue06_V2
+    21300036: Regular_Tongue10_V2
+    21300038: Regular_Tongue09_V2
+    21300040: Regular_Tongue08_V2
+    21300042: Regular_Tongue07_V2
+    21300044: Angry_Mouth_00_V2
+    21300046: Regular_Mouth_12_V2
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: 29
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: -1
+  nPOTScale: 1
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 100
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 5
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Regular_Mouth_10_V2
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 791
+        width: 423
+        height: 174
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 25.5, y: -31}
+        - {x: -136.5, y: -31}
+        - {x: -136.5, y: -68}
+        - {x: -113.5, y: -72}
+        - {x: 115.5, y: -72}
+        - {x: 128.5, y: -51}
+        - {x: 128.5, y: -34}
+        - {x: 127.5, y: -33}
+      - - {x: -203.5, y: 76}
+        - {x: -203.5, y: 41}
+        - {x: -202.5, y: 39}
+        - {x: -165.5, y: -28}
+        - {x: 147.5, y: -28}
+        - {x: 203.5, y: -18}
+        - {x: 203.5, y: 68}
+        - {x: 180.5, y: 76}
+    - name: Regular_Mouth_06_V2
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 810
+        width: 432
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 133, y: -15.5}
+        - {x: -121, y: -15.5}
+        - {x: -123, y: -18.5}
+        - {x: -123, y: -21.5}
+        - {x: -110, y: -38.5}
+        - {x: -88, y: -58.5}
+        - {x: 102, y: -58.5}
+        - {x: 113, y: -48.5}
+        - {x: 133, y: -24.5}
+      - - {x: 210, y: 60.5}
+        - {x: 184, y: 69.5}
+        - {x: -195, y: 69.5}
+        - {x: -197, y: 67.5}
+        - {x: -197, y: 20.5}
+        - {x: -93, y: -13.5}
+        - {x: 109, y: -13.5}
+        - {x: 195, y: 18.5}
+        - {x: 210, y: 44.5}
+    - name: Regular_Mouth_03_V2
+      rect:
+        serializedVersion: 2
+        x: 872
+        y: 809
+        width: 392
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -138, y: -30}
+        - {x: -138, y: -42}
+        - {x: -128, y: -70}
+        - {x: 100, y: -70}
+        - {x: 123, y: -67}
+        - {x: 123, y: -31}
+        - {x: 25, y: -30}
+      - - {x: -186, y: 70}
+        - {x: -189, y: 69}
+        - {x: -189, y: 35}
+        - {x: -137, y: -29}
+        - {x: 110, y: -29}
+        - {x: 171, y: -20}
+        - {x: 191, y: 34}
+        - {x: 191, y: 63}
+        - {x: 165, y: 70}
+    - name: Regular_Mouth_07_V2
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 625
+        width: 368
+        height: 166
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -30, y: -29}
+        - {x: -142, y: -29}
+        - {x: -142, y: -70}
+        - {x: 125, y: -70}
+        - {x: 130, y: -43}
+        - {x: 130, y: -34}
+        - {x: 125, y: -32}
+      - - {x: 179, y: 56}
+        - {x: 155, y: 75}
+        - {x: 152, y: 76}
+        - {x: -42, y: 76}
+        - {x: -177, y: 64}
+        - {x: -177, y: 11}
+        - {x: -146, y: -29}
+        - {x: -97, y: -30}
+        - {x: 56, y: -30}
+        - {x: 118, y: -23}
+        - {x: 163, y: 8}
+        - {x: 179, y: 44}
+    - name: Regular_Mouth_01_V2
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 553
+        width: 380
+        height: 257
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -98, y: -53.5}
+        - {x: -98, y: -83.5}
+        - {x: -95, y: -97.5}
+        - {x: 78, y: -97.5}
+        - {x: 85, y: -73.5}
+        - {x: 85, y: -54.5}
+        - {x: 1, y: -53.5}
+      - - {x: 160, y: 116.5}
+        - {x: -50, y: 76.5}
+        - {x: -110, y: 91.5}
+        - {x: -150, y: 118.5}
+        - {x: -164, y: 118.5}
+        - {x: -180, y: 103.5}
+        - {x: -180, y: 76.5}
+        - {x: -140, y: -11.5}
+        - {x: -115, y: -31.5}
+        - {x: -58, y: -51.5}
+        - {x: 59, y: -51.5}
+        - {x: 66, y: -50.5}
+        - {x: 115, y: -33.5}
+        - {x: 178, y: 69.5}
+        - {x: 178, y: 95.5}
+    - name: Regular_Mouth_11_V2
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 556
+        width: 479
+        height: 253
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -107.5, y: -70.5}
+        - {x: -168.5, y: -70.5}
+        - {x: -168.5, y: -79.5}
+        - {x: -165.5, y: -85.5}
+        - {x: -115.5, y: -117.5}
+        - {x: 119.5, y: -117.5}
+        - {x: 167.5, y: -86.5}
+        - {x: 167.5, y: -75.5}
+        - {x: 166.5, y: -74.5}
+      - - {x: 239.5, y: 103.5}
+        - {x: 216.5, y: 117.5}
+        - {x: 165.5, y: 117.5}
+        - {x: 56.5, y: 88.5}
+        - {x: 52.5, y: 77.5}
+        - {x: 50.5, y: 61.5}
+        - {x: -31.5, y: 82.5}
+        - {x: -164.5, y: 113.5}
+        - {x: -220.5, y: 111.5}
+        - {x: -234.5, y: 89.5}
+        - {x: -234.5, y: 51.5}
+        - {x: -206.5, y: 0.5}
+        - {x: -159.5, y: -36.5}
+        - {x: -100.5, y: -60.5}
+        - {x: -63.5, y: -68.5}
+        - {x: 45.5, y: -68.5}
+        - {x: 106.5, y: -63.5}
+        - {x: 173.5, y: -26.5}
+        - {x: 212.5, y: 10.5}
+        - {x: 239.5, y: 63.5}
+    - name: Regular_Mouth_02_V2
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 419
+        width: 260
+        height: 205
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -42, y: -51.5}
+        - {x: -67, y: -51.5}
+        - {x: -67, y: -63.5}
+        - {x: -56, y: -96.5}
+        - {x: 55, y: -96.5}
+        - {x: 64, y: -67.5}
+        - {x: 64, y: -56.5}
+        - {x: 63, y: -55.5}
+      - - {x: -30, y: 94.5}
+        - {x: -106, y: 87.5}
+        - {x: -116, y: 71.5}
+        - {x: -116, y: 12.5}
+        - {x: -62, y: -53.5}
+        - {x: 58, y: -53.5}
+        - {x: 121, y: 20.5}
+        - {x: 121, y: 82.5}
+        - {x: 110, y: 94.5}
+    - name: Regular_Mouth_05_V2
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 345
+        width: 291
+        height: 207
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 58.5, y: -44.5}
+        - {x: -85.5, y: -44.5}
+        - {x: -85.5, y: -51.5}
+        - {x: -82.5, y: -63.5}
+        - {x: -67.5, y: -77.5}
+        - {x: 50.5, y: -77.5}
+        - {x: 55.5, y: -76.5}
+        - {x: 67.5, y: -67.5}
+        - {x: 67.5, y: -45.5}
+      - - {x: 61.5, y: 94.5}
+        - {x: -124.5, y: 94.5}
+        - {x: -139.5, y: 79.5}
+        - {x: -139.5, y: 66.5}
+        - {x: -113.5, y: -3.5}
+        - {x: -94.5, y: -26.5}
+        - {x: -54.5, y: -43.5}
+        - {x: 76.5, y: -43.5}
+        - {x: 138.5, y: 46.5}
+        - {x: 138.5, y: 78.5}
+        - {x: 114.5, y: 92.5}
+    - name: Regular_Mouth_04_V2
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 200
+        width: 215
+        height: 218
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 58.5, y: -50}
+        - {x: -24.5, y: -46}
+        - {x: -71.5, y: -46}
+        - {x: -71.5, y: -67}
+        - {x: -56.5, y: -93}
+        - {x: 44.5, y: -93}
+        - {x: 58.5, y: -74}
+        - {x: 61.5, y: -61}
+        - {x: 61.5, y: -50}
+      - - {x: 74.5, y: 67}
+        - {x: 72.5, y: 65}
+        - {x: 68.5, y: 47}
+        - {x: 69.5, y: 61}
+        - {x: 77.5, y: 72}
+        - {x: 78.5, y: 100}
+        - {x: 45.5, y: 109}
+        - {x: -48.5, y: 109}
+        - {x: -96.5, y: 80}
+        - {x: -96.5, y: 9}
+        - {x: -56.5, y: -66}
+        - {x: 47.5, y: -66}
+        - {x: 95.5, y: 22}
+        - {x: 95.5, y: 53}
+        - {x: 79.5, y: 70}
+    - name: Regular_Mouth_00_V2
+      rect:
+        serializedVersion: 2
+        x: 312
+        y: 234
+        width: 248
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -118, y: 45}
+        - {x: -118, y: -16}
+        - {x: -96, y: -41}
+        - {x: -80, y: -43}
+        - {x: 73, y: -43}
+        - {x: 118, y: 4}
+        - {x: 118, y: 28}
+        - {x: 102, y: 45}
+    - name: Regular_Mouth_08_V2
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 269
+        width: 331
+        height: 284
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -84.5, y: -72}
+        - {x: -98.5, y: -72}
+        - {x: -99.5, y: -74}
+        - {x: -99.5, y: -79}
+        - {x: -93.5, y: -91}
+        - {x: -68.5, y: -111}
+        - {x: 71.5, y: -111}
+        - {x: 84.5, y: -95}
+        - {x: 84.5, y: -88}
+        - {x: 83.5, y: -86}
+      - - {x: 153.5, y: 38}
+        - {x: 147.5, y: 23}
+        - {x: 152.5, y: 37}
+        - {x: 155.5, y: 58}
+        - {x: 143.5, y: 92}
+        - {x: 87.5, y: 142}
+        - {x: -45.5, y: 142}
+        - {x: -110.5, y: 115}
+        - {x: -141.5, y: 80}
+        - {x: -160.5, y: 49}
+        - {x: -160.5, y: 5}
+        - {x: -118.5, y: -57}
+        - {x: -76.5, y: -70}
+        - {x: -28.5, y: -78}
+        - {x: 51.5, y: -78}
+        - {x: 127.5, y: -63}
+        - {x: 159.5, y: 15}
+        - {x: 159.5, y: 39}
+    - name: Regular_Mouth_09_V2
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 197
+        width: 341
+        height: 358
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -99.5, y: -100}
+        - {x: -99.5, y: -107}
+        - {x: -95.5, y: -120}
+        - {x: -86.5, y: -153}
+        - {x: 95.5, y: -153}
+        - {x: 95.5, y: -114}
+        - {x: -77.5, y: -100}
+      - - {x: 155.5, y: 9}
+        - {x: 155.5, y: 45}
+        - {x: 167.5, y: 47}
+        - {x: 167.5, y: 65}
+        - {x: 156.5, y: 110}
+        - {x: 137.5, y: 138}
+        - {x: 103.5, y: 166}
+        - {x: 66.5, y: 179}
+        - {x: -23.5, y: 179}
+        - {x: -71.5, y: 166}
+        - {x: -109.5, y: 141}
+        - {x: -138.5, y: 109}
+        - {x: -152.5, y: 89}
+        - {x: -157.5, y: 69}
+        - {x: -157.5, y: 38}
+        - {x: -150.5, y: 24}
+        - {x: -147.5, y: -23}
+        - {x: -130.5, y: -53}
+        - {x: -113.5, y: -71}
+        - {x: -75.5, y: -96}
+        - {x: -30.5, y: -108}
+        - {x: 48.5, y: -108}
+        - {x: 76.5, y: -105}
+        - {x: 115.5, y: -89}
+        - {x: 135.5, y: -66}
+        - {x: 143.5, y: -46}
+    - name: Regular_Tongue01_V2
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 117
+        width: 243
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -121.5, y: 41}
+        - {x: -121.5, y: -2}
+        - {x: -93.5, y: -39}
+        - {x: 74.5, y: -39}
+        - {x: 121.5, y: -12}
+        - {x: 121.5, y: 41}
+    - name: Regular_Tongue02_V2
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 117
+        width: 151
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -63.5, y: 41}
+        - {x: -75.5, y: 34}
+        - {x: -75.5, y: -29}
+        - {x: -63.5, y: -34}
+        - {x: 59.5, y: -34}
+        - {x: 75.5, y: -19}
+        - {x: 75.5, y: 41}
+    - name: Regular_Tongue03_V2
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 154
+        width: 270
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -135, y: 22.5}
+        - {x: -135, y: -14.5}
+        - {x: -132, y: -19.5}
+        - {x: 135, y: -19.5}
+        - {x: 135, y: 19.5}
+        - {x: 130, y: 22.5}
+    - name: Regular_Tongue04_V2
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 129
+        width: 113
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52.5, y: 32.5}
+        - {x: -56.5, y: 28.5}
+        - {x: -56.5, y: -9.5}
+        - {x: -28.5, y: -33.5}
+        - {x: 43.5, y: -33.5}
+        - {x: 56.5, y: -2.5}
+        - {x: 56.5, y: 32.5}
+    - name: Regular_Tongue05_V2
+      rect:
+        serializedVersion: 2
+        x: 780
+        y: 129
+        width: 176
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 45, y: 34}
+        - {x: -88, y: 34}
+        - {x: -88, y: -24}
+        - {x: -61, y: -31}
+        - {x: 65, y: -31}
+        - {x: 78, y: -23}
+        - {x: 88, y: -2}
+        - {x: 88, y: 31}
+    - name: Regular_Tongue06_V2
+      rect:
+        serializedVersion: 2
+        x: 957
+        y: 143
+        width: 264
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -132, y: 26.5}
+        - {x: -132, y: -14.5}
+        - {x: -118, y: -22.5}
+        - {x: 84, y: -22.5}
+        - {x: 132, y: -11.5}
+        - {x: 132, y: 26.5}
+    - name: Regular_Tongue10_V2
+      rect:
+        serializedVersion: 2
+        x: 897
+        y: 65
+        width: 289
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 143.5, y: 30.5}
+        - {x: -140.5, y: 30.5}
+        - {x: -143.5, y: 21.5}
+        - {x: -143.5, y: 0.5}
+        - {x: -133.5, y: -8.5}
+        - {x: -71.5, y: -31.5}
+        - {x: 80.5, y: -31.5}
+        - {x: 122.5, y: -17.5}
+        - {x: 144.5, y: 0.5}
+        - {x: 144.5, y: 26.5}
+    - name: Regular_Tongue09_V2
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 71
+        width: 234
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -106, y: 23.5}
+        - {x: -115, y: 16.5}
+        - {x: -115, y: 2.5}
+        - {x: -105, y: -23.5}
+        - {x: 95, y: -23.5}
+        - {x: 116, y: -2.5}
+        - {x: 116, y: 21.5}
+        - {x: 109, y: 23.5}
+    - name: Regular_Tongue08_V2
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 6
+        width: 271
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 109.5, y: 64}
+        - {x: 73.5, y: 67}
+        - {x: -105.5, y: 67}
+        - {x: -132.5, y: 34}
+        - {x: -132.5, y: -10}
+        - {x: -100.5, y: -49}
+        - {x: -66.5, y: -65}
+        - {x: -30.5, y: -68}
+        - {x: 72.5, y: -68}
+        - {x: 99.5, y: -62}
+        - {x: 133.5, y: -13}
+        - {x: 133.5, y: 36}
+    - name: Regular_Tongue07_V2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 8
+        width: 252
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -105, y: 51}
+        - {x: -114, y: 47}
+        - {x: -126, y: 34}
+        - {x: -126, y: -22}
+        - {x: -79, y: -52}
+        - {x: 91, y: -52}
+        - {x: 126, y: -21}
+        - {x: 126, y: 47}
+        - {x: 77, y: 51}
+    - name: Angry_Mouth_00_V2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1461
+        width: 410
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -130, y: -37}
+        - {x: -155, y: -61}
+        - {x: -155, y: -79}
+        - {x: 144, y: -79}
+        - {x: 146, y: -78}
+        - {x: 146, y: -67}
+        - {x: 127, y: -37}
+      - - {x: 114, y: 100}
+        - {x: 40, y: 62}
+        - {x: -124, y: 90}
+        - {x: -198, y: 71}
+        - {x: -204, y: 47}
+        - {x: -204, y: -27}
+        - {x: -183, y: -54}
+        - {x: -173, y: -47}
+        - {x: -18, y: -19}
+        - {x: 138, y: -60}
+        - {x: 170, y: -60}
+        - {x: 201, y: -10}
+        - {x: 201, y: 71}
+        - {x: 175, y: 100}
+    - name: Regular_Mouth_12_V2
+      rect:
+        serializedVersion: 2
+        x: 1311
+        y: 546
+        width: 515
+        height: 260
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 163.5, y: -75}
+        - {x: -34.5, y: -97}
+        - {x: -125.5, y: -84}
+        - {x: -156.5, y: -71}
+        - {x: -171.5, y: -71}
+        - {x: -171.5, y: -79}
+        - {x: -165.5, y: -88}
+        - {x: -117.5, y: -117}
+        - {x: 107.5, y: -117}
+        - {x: 157.5, y: -92}
+        - {x: 165.5, y: -80}
+        - {x: 165.5, y: -75}
+      - - {x: 224.5, y: 21}
+        - {x: 239.5, y: 54}
+        - {x: 241.5, y: 68}
+        - {x: 241.5, y: 108}
+        - {x: 218.5, y: 130}
+        - {x: 88.5, y: 130}
+        - {x: -20.5, y: 124}
+        - {x: -128.5, y: 126}
+        - {x: -194.5, y: 127}
+        - {x: -225.5, y: 122}
+        - {x: -240.5, y: 108}
+        - {x: -240.5, y: 65}
+        - {x: -237.5, y: 44}
+        - {x: -200.5, y: -3}
+        - {x: -161.5, y: -33}
+        - {x: -132.5, y: -45}
+        - {x: -108.5, y: -55}
+        - {x: -94.5, y: -59}
+        - {x: -59.5, y: -67}
+        - {x: -34.5, y: -68}
+        - {x: 39.5, y: -68}
+        - {x: 65.5, y: -65}
+        - {x: 129.5, y: -47}
+        - {x: 166.5, y: -31}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

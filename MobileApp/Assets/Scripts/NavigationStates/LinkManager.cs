@@ -136,6 +136,10 @@ public class LinkManager : MonoBehaviour {
 		AssignGOToState<TermsOfUsesState>(termsOfUsesContentTop, termsOfUsesContentBottom);
 	}
 
+	public void SetMenuBuddyValue(int iValue) {
+		navigationAnimator.SetInteger ("MenuBuddy", iValue);		
+	}
+
 	private void AssignGOToState<T>(GameObject iTop, GameObject iBottom) where T : ASubState {
 		T[] lStates = navigationAnimator.GetBehaviours<T>();
 		foreach (T lState in lStates) {
