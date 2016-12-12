@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1ce6bbf88fdaf424bbfdeb6b43aa963b
-timeCreated: 1477046178
+timeCreated: 1481561952
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -48,6 +48,7 @@ TextureImporter:
     21300082: Message_Buble_White
     21300084: Message_Buble_Blue
     21300086: Fake_Toggle
+    21300088: Big_Background_Tiled
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -1000,6 +1001,25 @@ TextureImporter:
         - {x: -31.5, y: -10}
         - {x: -27.5, y: 3}
         - {x: -27.5, y: 10}
+    - name: Big_Background_Tiled
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 83
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 59, y: 59, z: 59, w: 59}
+      outline:
+      - - {x: -16, y: 31}
+        - {x: -30, y: 21}
+        - {x: -30, y: -17}
+        - {x: -22, y: -30}
+        - {x: 21, y: -30}
+        - {x: 30, y: -19}
+        - {x: 30, y: 20}
+        - {x: 18, y: 31}
     outline: []
   spritePackingTag: 
   userData: 

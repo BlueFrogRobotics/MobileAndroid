@@ -63,6 +63,10 @@
      <Compile Include="Assets\Scripts\NavigationStates\MessageState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\SelectBuddyState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\VideoCallState.cs" />
+     <Compile Include="Assets\Scripts\Telepresence\Client\LandscapePortraitSwitch.cs" />
+     <Compile Include="Assets\Scripts\Telepresence\Client\ObstacleManager.cs" />
+     <Compile Include="Assets\Scripts\Telepresence\Client\ToggleController.cs" />
+     <Compile Include="Assets\Scripts\Telepresence\Client\VirtualJoystickImage.cs" />
      <Compile Include="Assets\TermsOfUsesState.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity5.3.4/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
