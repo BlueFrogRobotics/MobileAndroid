@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1ce6bbf88fdaf424bbfdeb6b43aa963b
-timeCreated: 1481561952
+timeCreated: 1482407671
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -49,6 +49,8 @@ TextureImporter:
     21300084: Message_Buble_Blue
     21300086: Fake_Toggle
     21300088: Big_Background_Tiled
+    21300090: Reduice
+    21300092: expand
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -1020,6 +1022,48 @@ TextureImporter:
         - {x: 30, y: -19}
         - {x: 30, y: 20}
         - {x: 18, y: 31}
+    - name: Reduice
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 379
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 12, y: 17}
+        - {x: 2, y: 17}
+        - {x: -3, y: 16}
+        - {x: -17, y: 4}
+        - {x: -17, y: -12}
+        - {x: -14, y: -16}
+        - {x: -5, y: -16}
+        - {x: 1, y: -14}
+        - {x: 14, y: -1}
+        - {x: 16, y: 4}
+        - {x: 16, y: 11}
+    - name: expand
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 379
+        width: 80
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 1, y: 17}
+        - {x: -4, y: 15}
+        - {x: -14, y: 3}
+        - {x: -16, y: -2}
+        - {x: -16, y: -15}
+        - {x: 3, y: -15}
+        - {x: 17, y: 1}
+        - {x: 17, y: 13}
+        - {x: 16, y: 17}
     outline: []
   spritePackingTag: 
   userData: 
