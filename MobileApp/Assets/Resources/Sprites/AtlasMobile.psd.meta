@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1ce6bbf88fdaf424bbfdeb6b43aa963b
-timeCreated: 1482407671
+timeCreated: 1482416242
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -51,6 +51,7 @@ TextureImporter:
     21300088: Big_Background_Tiled
     21300090: Reduice
     21300092: expand
+    21300094: HeadPosition_Bloc
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -1064,6 +1065,24 @@ TextureImporter:
         - {x: 17, y: 1}
         - {x: 17, y: 13}
         - {x: 16, y: 17}
+    - name: HeadPosition_Bloc
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 11
+        width: 390
+        height: 190
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 52.5, y: 48.5}
+        - {x: -70.5, y: 48.5}
+        - {x: -94.5, y: 11.5}
+        - {x: -94.5, y: -47.5}
+        - {x: 94.5, y: -47.5}
+        - {x: 94.5, y: 31.5}
+        - {x: 93.5, y: 35.5}
     outline: []
   spritePackingTag: 
   userData: 
