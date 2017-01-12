@@ -1,58 +1,42 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 
 public class ToggleController : MonoBehaviour {
+    
+    public bool IsBodyActive { get { return mIsOnBody; } }
 
-    public bool state = false;
-    public GameObject joystickHead;
-    public GameObject joystickBody;
-    public float speed;
-    public GameObject Toggle;
-    public Text Head;
-    public Text Body;
-    Color gray = new Color(148,148,148,255);
-    Color black= new Color(0, 0, 0, 255);
+    [SerializeField]
+    private GameObject imageHead;
 
-    public float PosMax =  70.5f;
-    public float PosMin = -70.5f;
-    public float speedX=30;
-    float speedY = 0;
-    float speedZ = 0;
+    [SerializeField]
+    private GameObject imageBody;
 
+    [SerializeField]
+    private Animator toggleAnim;
+    
+    private bool mIsOnBody = true;
 
-    public void Move2Head()
+    public void MoveToHead()
     {
-        Toggle.transform.Translate(new Vector3(speedX, speedY, speedZ)*Time.deltaTime);
-        Head.color = black;
-        Body.color = gray;
-        joystickBody.SetActive(false);
-        joystickHead.SetActive(true);
-    }
-    public void Move2Body()
-    {
-        Toggle.transform.Translate(new Vector3(-speedX, speedY, speedZ) * Time.deltaTime);
-        Head.color = gray;
-        Body.color = black;
-        joystickBody.SetActive(true);
-        joystickHead.SetActive(false);
+        mIsOnBody = false;
+        imageBody.SetActive(false);
+        imageHead.SetActive(true);
+        toggleAnim.SetTrigger("Head");
     }
 
-    public void toggle()
+    public void MoveToBody()
     {
-        state = !state;
+        mIsOnBody = true;
+        imageBody.SetActive(true);
+        imageHead.SetActive(false);
+        toggleAnim.SetTrigger("Body");
     }
 
-    void FixedUpdate()
+    public void ToggleActivate()
     {
-        if (state && Toggle.transform.localPosition.x < PosMax)
-        {
-            Move2Head();
-        }
-        else if (!state && Toggle.transform.localPosition.x > PosMin)
-        {
-            Move2Body();
-        }
+        mIsOnBody = !mIsOnBody;
+        if (mIsOnBody)
+            MoveToBody();
+        else
+            MoveToHead();
     }
-
 }

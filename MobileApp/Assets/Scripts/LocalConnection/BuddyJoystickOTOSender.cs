@@ -5,22 +5,19 @@ using BuddyOS.Command;
 public class BuddyJoystickOTOSender : OTONetSender
 {
     [SerializeField]
-    private Transform joystickHead;
+    private Transform joystick;
 
     [SerializeField]
-    private Transform joystickHeadLandscape;
-
-    [SerializeField]
-    private Transform joystickBody;
-
-    [SerializeField]
-    private Transform joystickBodyLandscape;
+    private ToggleController toggleController;
 
     [SerializeField]
     private OTONetwork oto;
 
     [SerializeField]
-    private Slider mHeadNoBar;
+    private Animator headNoAnim;
+
+    [SerializeField]
+    private Animator headYesAnim;
 
     //Network
     private byte[] mSentData;
@@ -29,19 +26,15 @@ public class BuddyJoystickOTOSender : OTONetSender
     private float mTime;
     
     //Joysticks' var
-    private float mXPositionHead;
-    private float mYPositionHead;
-    private float mXPositionBody;
-    private float mYPositionBody;
+    private float mXPosition;
+    private float mYPosition;
 
-    private float X_DELTA_JOYSTICK_HEAD;
-    private float Y_DELTA_JOYSTICK_HEAD;
-    private float X_DELTA_JOYSTICK_BODY;
-    private float Y_DELTA_JOYSTICK_BODY;
-    private float X_DELTA_JOYSTICK_HEAD_LANDSCAPE;
-    private float Y_DELTA_JOYSTICK_HEAD_LANDSCAPE;
-    private float X_DELTA_JOYSTICK_BODY_LANDSCAPE;
-    private float Y_DELTA_JOYSTICK_BODY_LANDSCAPE;
+    private float X_DELTA_JOYSTICK;
+    private float Y_DELTA_JOYSTICK;
+    //private float X_DELTA_JOYSTICK_HEAD_LANDSCAPE;
+    //private float Y_DELTA_JOYSTICK_HEAD_LANDSCAPE;
+    //private float X_DELTA_JOYSTICK_BODY_LANDSCAPE;
+    //private float Y_DELTA_JOYSTICK_BODY_LANDSCAPE;
 
     //Motion's var
     private float mNoSpeed = 0f;
@@ -59,54 +52,51 @@ public class BuddyJoystickOTOSender : OTONetSender
         mIsInitialized = false;
         mIsSent = false;
 
-        X_DELTA_JOYSTICK_HEAD = joystickHead.parent.GetComponent<RectTransform>().sizeDelta.x;
-        Y_DELTA_JOYSTICK_HEAD = joystickHead.parent.GetComponent<RectTransform>().sizeDelta.y;
-        X_DELTA_JOYSTICK_BODY = joystickBody.parent.GetComponent<RectTransform>().sizeDelta.x;
-        Y_DELTA_JOYSTICK_BODY = joystickBody.parent.GetComponent<RectTransform>().sizeDelta.y;
+        X_DELTA_JOYSTICK = joystick.parent.GetComponent<RectTransform>().sizeDelta.x;
+        Y_DELTA_JOYSTICK = joystick.parent.GetComponent<RectTransform>().sizeDelta.y;
+        //X_DELTA_JOYSTICK_BODY = joystickBody.parent.GetComponent<RectTransform>().sizeDelta.x;
+        //Y_DELTA_JOYSTICK_BODY = joystickBody.parent.GetComponent<RectTransform>().sizeDelta.y;
 
-        X_DELTA_JOYSTICK_HEAD_LANDSCAPE = joystickHeadLandscape.parent.GetComponent<RectTransform>().sizeDelta.x;
-        Y_DELTA_JOYSTICK_HEAD_LANDSCAPE = joystickHeadLandscape.parent.GetComponent<RectTransform>().sizeDelta.y;
-        X_DELTA_JOYSTICK_BODY_LANDSCAPE = joystickBodyLandscape.parent.GetComponent<RectTransform>().sizeDelta.x;
-        Y_DELTA_JOYSTICK_BODY_LANDSCAPE = joystickBodyLandscape.parent.GetComponent<RectTransform>().sizeDelta.y;
+        //X_DELTA_JOYSTICK_HEAD_LANDSCAPE = joystickHeadLandscape.parent.GetComponent<RectTransform>().sizeDelta.x;
+        //Y_DELTA_JOYSTICK_HEAD_LANDSCAPE = joystickHeadLandscape.parent.GetComponent<RectTransform>().sizeDelta.y;
+        //X_DELTA_JOYSTICK_BODY_LANDSCAPE = joystickBodyLandscape.parent.GetComponent<RectTransform>().sizeDelta.x;
+        //Y_DELTA_JOYSTICK_BODY_LANDSCAPE = joystickBodyLandscape.parent.GetComponent<RectTransform>().sizeDelta.y;
     }
 
     void Update()
     {
-        if (!isActiveAndEnabled || !oto.HasAPeer || Time.time - mTime < 0.1) return;
+        if (!isActiveAndEnabled ||  Time.time - mTime < 0.1) return;
 
         if (Screen.orientation == ScreenOrientation.LandscapeLeft
             || Screen.orientation == ScreenOrientation.LandscapeRight) {
-            mXPositionHead = joystickHeadLandscape.localPosition.x / X_DELTA_JOYSTICK_HEAD_LANDSCAPE;
-            mYPositionHead = joystickHeadLandscape.localPosition.y / Y_DELTA_JOYSTICK_HEAD_LANDSCAPE;
+            //mXPositionHead = joystickHeadLandscape.localPosition.x / X_DELTA_JOYSTICK_HEAD_LANDSCAPE;
+            //mYPositionHead = joystickHeadLandscape.localPosition.y / Y_DELTA_JOYSTICK_HEAD_LANDSCAPE;
 
-            mXPositionBody = joystickBodyLandscape.localPosition.x / X_DELTA_JOYSTICK_BODY_LANDSCAPE;
-            mYPositionBody = joystickBodyLandscape.localPosition.y / Y_DELTA_JOYSTICK_BODY_LANDSCAPE;
+            //mXPositionBody = joystickBodyLandscape.localPosition.x / X_DELTA_JOYSTICK_BODY_LANDSCAPE;
+            //mYPositionBody = joystickBodyLandscape.localPosition.y / Y_DELTA_JOYSTICK_BODY_LANDSCAPE;
         }
         else {
-            mXPositionHead = joystickHead.localPosition.x / X_DELTA_JOYSTICK_HEAD;
-            mYPositionHead = joystickHead.localPosition.y / Y_DELTA_JOYSTICK_HEAD;
-
-            mXPositionBody = joystickBody.localPosition.x / X_DELTA_JOYSTICK_BODY;
-            mYPositionBody = joystickBody.localPosition.y / Y_DELTA_JOYSTICK_BODY;
+            mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
+            mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
         }
 
-        if (mXPositionHead != 0 && mYPositionHead != 0) {
-            Debug.Log("Computing Head movement");
-            ComputeNoAxis();
-            ComputeYesAxis();
-            
-            byte[] lNoCmd = new SetPosNoCmd(mAngleNo, mNoSpeed).Serialize();
-            byte[] lYesCmd = new SetPosYesCmd(mAngleYes, mYesSpeed).Serialize();
+        if (mXPosition != 0 && mYPosition != 0) {
+            Debug.Log("Joystick moved");
+            if(toggleController.IsBodyActive) {
+                ComputeMobileBase();
+                byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 100).Serialize();
+                SendData(lMobileCmd, lMobileCmd.Length);
+            } else {
+                //Debug.Log("Computing Head movement");
+                ComputeNoAxis();
+                ComputeYesAxis();
 
-            SendData(lNoCmd, lNoCmd.Length);
-            SendData(lYesCmd, lYesCmd.Length);
-        }
+                byte[] lNoCmd = new SetPosNoCmd(mAngleNo, mNoSpeed).Serialize();
+                byte[] lYesCmd = new SetPosYesCmd(mAngleYes, mYesSpeed).Serialize();
 
-        if (mXPositionBody != 0 && mYPositionBody != 0) {
-            Debug.Log("Computing Body movement");
-            ComputeMobileBase();
-            byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 100).Serialize();
-            SendData(lMobileCmd, lMobileCmd.Length);
+                SendData(lNoCmd, lNoCmd.Length);
+                SendData(lYesCmd, lYesCmd.Length);
+            }            
         }
 
         mTime = Time.time;
@@ -114,20 +104,20 @@ public class BuddyJoystickOTOSender : OTONetSender
 
     private void ComputeNoAxis()
     {
-        Debug.Log("X Head position : " + mXPositionHead);
-        mAngleNo -= mXPositionHead * 5f;
+        //Debug.Log("X Head position : " + mXPosition);
+        mAngleNo -= mXPosition * 5f;
 
         if (Mathf.Abs(mAngleNo) > 45)
             mAngleNo = Mathf.Sign(mAngleNo) * 45;
-
-        mHeadNoBar.value = -mAngleNo;
-        mNoSpeed = (mXPositionHead * mXPositionHead) * mSpeedHead * 3f;
+        
+        headNoAnim.SetFloat("HeadPosition_H", -mAngleNo*100/45);
+        mNoSpeed = (mXPosition * mXPosition) * mSpeedHead * 3f;
     }
 
     private void ComputeYesAxis()
     {
-        Debug.Log("Y Head position : " + mYPositionBody);
-        mAngleYes -= mYPositionHead * 5f;
+        //Debug.Log("Y Head position : " + mYPosition);
+        mAngleYes -= mYPosition * 5f;
 
         if (mAngleYes < -30)
             mAngleYes = -30;
@@ -135,13 +125,14 @@ public class BuddyJoystickOTOSender : OTONetSender
         if (mAngleYes > 60)
             mAngleYes = 60;
 
-        mYesSpeed = (mYPositionHead * mYPositionHead) * mSpeedHead * 3f;
+        headYesAnim.SetFloat("HeadPosition_V", mAngleYes);
+        mYesSpeed = (mYPosition * mYPosition) * mSpeedHead * 3f;
     }
 
     private void ComputeMobileBase()
     {
-        float lRadius = Mathf.Sqrt(mXPositionBody * mXPositionBody + mYPositionBody * mYPositionBody);
-        float lAngle = (Mathf.Atan2(mYPositionBody, mXPositionBody));
+        float lRadius = Mathf.Sqrt(mXPosition * mXPosition + mYPosition * mYPosition);
+        float lAngle = (Mathf.Atan2(mYPosition, mXPosition));
         Debug.Log("Body position radius : " + lRadius + " / body position angle : " + lAngle);
         mLeftSpeed = mSpeedBody * (Mathf.Sin(lAngle) + Mathf.Cos(lAngle)/3) * lRadius;
         mRightSpeed = mSpeedBody * (Mathf.Sin(lAngle) - Mathf.Cos(lAngle)/3) * lRadius;
