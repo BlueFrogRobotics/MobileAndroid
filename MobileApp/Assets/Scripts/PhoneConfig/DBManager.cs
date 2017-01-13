@@ -36,8 +36,17 @@ public class DBManager : MonoBehaviour
     [SerializeField]
     private Animator mCanvasAppAnimator;
 
-    private string mHost = "52.174.52.152";
+    private string mUserMail;
+    private string mUserFName;
+    private string mUserLName;
+    private string mHost;
     private string mBuddyList;
+
+    void Start()
+    {
+        mHost = "52.174.52.152";
+        mBuddyList = "";
+    }
 
     public void StartRequestConnection()
     {
@@ -62,6 +71,9 @@ public class DBManager : MonoBehaviour
             if(lWww.text != "KO") {
                 mBuddyList = lWww.text;
                 ConfirmConnection();
+                mUserMail = mRequestEMail.text;
+                mUserFName = mRequestFirstname.text;
+                mUserLName = mRequestLastName.text;
             }
         }
         ResetRequestParameters();
@@ -100,6 +112,33 @@ public class DBManager : MonoBehaviour
         }
 
         ResetCreateParameters();
+    }
+
+    public void StartAddBuddyToUser()
+    {
+        StartCoroutine(AddBuddyToUser());
+    }
+
+    private IEnumerator AddBuddyToUser()
+    {
+        //TODO : get input Buddy ID
+        string lBuddyID = "000-000-001";
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("firstname", mUserFName);
+        lForm.AddField("lastname", mUserLName);
+        lForm.AddField("email", mUserMail);
+        lForm.AddField("buddyid", lBuddyID);
+
+        WWW lWww = new WWW("http://" + mHost + "/AddBuddy.php", lForm);
+        yield return lWww;
+
+        if (lWww.error != null)
+            Debug.Log("[ERROR] on WWW Request");
+        else
+        {
+            if(lWww.text != "KO")
+                Debug.Log("Succesfully added Buddy to current User");
+        }
     }
 
     private void ConfirmAccountCreation()

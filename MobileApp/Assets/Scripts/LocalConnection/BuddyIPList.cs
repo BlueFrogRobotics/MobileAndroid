@@ -58,22 +58,6 @@ public class BuddyIPList : MonoBehaviour
         }
     }
 
-    private void AddBuddyFromDB()
-    {
-        string[] lBuddyList = buddyDB.BuddyList.Split('\n');
-
-        for (int i = 0; i < lBuddyList.Length - 1; i++) {
-            Debug.Log("Buddy IDs " + lBuddyList[i]);
-            string[] lBuddyIDs = lBuddyList[i].Split('|');
-            prefabName.text = "Buddy " + lBuddyIDs[0];
-            prefabID.text = "IP " + lBuddyIDs[1];
-
-            GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            lClone.transform.SetParent(parentTransform);
-            lClone.transform.localScale = Vector3.one;
-        }
-    }
-
     public void ClearList()
     {
         mIPList.Clear();
@@ -112,7 +96,7 @@ public class BuddyIPList : MonoBehaviour
     {
         foreach (Transform lChild in parentTransform)
             GameObject.Destroy(lChild.gameObject);
-        //AddBuddyFromDB();
+        AddBuddyFromDB();
         mIPList.Clear();
         mIPList = mobileServer.GetBuddyConnectedList();
 
@@ -128,5 +112,22 @@ public class BuddyIPList : MonoBehaviour
         GameObject lSearching = Instantiate(searchingPrefab, transform.position, transform.rotation) as GameObject;
         lSearching.transform.SetParent(parentTransform);
         lSearching.transform.localScale = Vector3.one;
+    }
+
+    private void AddBuddyFromDB()
+    {
+        string[] lBuddyList = buddyDB.BuddyList.Split('\n');
+
+        for (int i = 0; i < lBuddyList.Length - 1; i++)
+        {
+            Debug.Log("Buddy IDs " + lBuddyList[i]);
+            string[] lBuddyIDs = lBuddyList[i].Split('|');
+            prefabName.text = "Buddy " + lBuddyIDs[0];
+            prefabID.text = "ID " + lBuddyIDs[1];
+
+            GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+            lClone.transform.SetParent(parentTransform);
+            lClone.transform.localScale = Vector3.one;
+        }
     }
 }

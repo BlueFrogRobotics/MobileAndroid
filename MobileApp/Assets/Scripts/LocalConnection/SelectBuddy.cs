@@ -51,7 +51,7 @@ public class SelectBuddy : MonoBehaviour
 
     }
 
-    public void ChangeConnectedBuddyName(string iName, string iID)
+    private void ChangeConnectedBuddyName(string iName, string iID)
     {
         buddyConnectedName.text = iName;
         buddyConnectedID.text = iID;

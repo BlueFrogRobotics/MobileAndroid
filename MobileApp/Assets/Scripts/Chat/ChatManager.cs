@@ -52,7 +52,7 @@ public class ChatManager : MonoBehaviour
 
         scrollParent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0F;
 
-        mTTS.Say(lMsg);
+        //mTTS.Say(lMsg);
 
         mobileServer.SendChatMessage(lMsg);
     }

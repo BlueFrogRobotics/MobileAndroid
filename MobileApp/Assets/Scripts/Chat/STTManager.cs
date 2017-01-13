@@ -11,6 +11,9 @@ public class STTManager : MonoBehaviour
     [SerializeField]
     private InputField input;
 
+    [SerializeField]
+    private ChatManager chatManager;
+
     private SpeechToText mSTT;
 
     void Start()
@@ -39,6 +42,7 @@ public class STTManager : MonoBehaviour
     private void OnSTTComplete(string iSpeech)
     {
         input.text = iSpeech;
+        chatManager.NewChatMessage();
     }
 
     private void OnEnd()

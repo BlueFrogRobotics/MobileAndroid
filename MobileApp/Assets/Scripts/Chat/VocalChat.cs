@@ -191,7 +191,7 @@ public class VocalChat : MonoBehaviour
     private void TTSProcessAndSay(string iSpeech, bool iStack = false)
     {
         //Debug.Log("Saying: " + iSpeech);
-        mChat.NewBuddyMessage(iSpeech);
+        mChat.NewBuddyMessage(iSpeech.Replace("[silence]", ""));
         string lCorrectedSpeech = iSpeech.Replace("vous", "vou");
         string[] lSentences = lCorrectedSpeech.Split(new string[] { "[silence]" }, StringSplitOptions.None);
 
