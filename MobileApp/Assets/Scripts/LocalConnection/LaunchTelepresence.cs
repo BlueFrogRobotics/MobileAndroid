@@ -25,7 +25,7 @@ public class LaunchTelepresence : MonoBehaviour
     private void StartTelepresence()
     {
         mobileServer.gameObject.SetActive(false);
-        //telepresenceGUI.SetActive(true);
         oTONetwork.gameObject.SetActive(true);
+        //telepresenceGUI.SetActive(true);
     }
 }

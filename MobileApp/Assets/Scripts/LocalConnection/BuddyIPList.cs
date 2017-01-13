@@ -5,6 +5,9 @@ using System.Collections.Generic;
 public class BuddyIPList : MonoBehaviour
 {
     [SerializeField]
+    private GameObject searchingPrefab;
+
+    [SerializeField]
     private GameObject prefab;
 
     [SerializeField]
@@ -87,10 +90,12 @@ public class BuddyIPList : MonoBehaviour
         mIPList.Add(lBuddyIP);
         prefabName.text = "Buddy " + mBuddyNb;
         prefabID.text = "IP " + iNewBuddyIP;
-
+        
         //When instantiating the prefab, make sure to give it a unit localScale
         GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
         lClone.transform.SetParent(parentTransform);
+        //The following makes sure that the newly connected Buddy is not under the "searching" icon
+        lClone.transform.SetSiblingIndex(parentTransform.childCount - 2);
         lClone.transform.localScale = Vector3.one;
         mBuddyNb++;
     }
@@ -120,5 +125,8 @@ public class BuddyIPList : MonoBehaviour
             lClone.transform.SetParent(parentTransform);
             lClone.transform.localScale = Vector3.one;
         }
+        GameObject lSearching = Instantiate(searchingPrefab, transform.position, transform.rotation) as GameObject;
+        lSearching.transform.SetParent(parentTransform);
+        lSearching.transform.localScale = Vector3.one;
     }
 }

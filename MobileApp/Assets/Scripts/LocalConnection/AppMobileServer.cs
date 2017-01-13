@@ -79,7 +79,16 @@ public class AppMobileServer : MonoBehaviour
     private void OnConnected(NetworkMessage iNetMsg)
     {
         Debug.Log("Buddy " + iNetMsg.conn.address.Split(':')[3] + " connected.");
-        mConnectionsList.Add(iNetMsg.conn);
+        bool lFound = false;
+
+        foreach(NetworkConnection lNetCo in mConnectionsList) {
+            if (lNetCo == iNetMsg.conn) {
+                lFound = true;
+                break;
+            }
+        }
+        if(!lFound)
+            mConnectionsList.Add(iNetMsg.conn);
         OnNewBudyConnected(iNetMsg.conn.address.Split(':')[3]);
     }
 

@@ -55,22 +55,21 @@ public class OTONetwork : MonoBehaviour
     
     public bool Communicating { get; protected set; }
     public bool HasAPeer { get; protected set; }
-    public int NChannels { get { return channel_ids.Count; } }
-
     public bool IsServer;
     public bool IsClient { get { return !IsServer; } }
+    public int NChannels { get { return channel_ids.Count; } }
 
-    private const int MaxFramePerUpdate = 10;
+    private const int MAX_FRAME_PER_UPDATE = 10;
+    static ushort BUFFER_SIZE = 15000;
 
-    private ConnectionConfig _config = new ConnectionConfig();
-    private GlobalConfig _gConfig = new GlobalConfig();
-    private int _genericHostId;
-    private int _distantHostID;
-    private int _distantConnectionID;
+    private int mGenericHostId;
+    private int mDistantHostID;
+    private int mDistantConnectionID;
     private bool mIsCorou = false;
     private bool mIsConnected = false;
-    static ushort bufferSize = 15000;
-    byte[] recBuffer = new byte[bufferSize];
+    byte[] recBuffer = new byte[BUFFER_SIZE];
+    private ConnectionConfig mConfig = new ConnectionConfig();
+    private GlobalConfig mGlobalConfig = new GlobalConfig();
     
     void OnEnable()
     {
@@ -96,11 +95,11 @@ public class OTONetwork : MonoBehaviour
     IEnumerator UpdateOto()
     {
         while (true) {
-            if (bufferSize < (ushort.MaxValue - 1000) && mIsConnected)
-                bufferSize = ushort.MaxValue - 1;
+            if (BUFFER_SIZE < (ushort.MaxValue - 1000) && mIsConnected)
+                BUFFER_SIZE = ushort.MaxValue - 1;
 
-            if (bufferSize >= (ushort.MaxValue - 1000) && mIsConnected && !HasAPeer) {
-                recBuffer = new byte[bufferSize];
+            if (BUFFER_SIZE >= (ushort.MaxValue - 1000) && mIsConnected && !HasAPeer) {
+                recBuffer = new byte[BUFFER_SIZE];
                 HasAPeer = true;
             }
 
@@ -111,7 +110,7 @@ public class OTONetwork : MonoBehaviour
 
     private void Configure()
     {
-        _config = new ConnectionConfig();
+        mConfig = new ConnectionConfig();
 
         // Verify the number of each lists
         if (channel_name.Count != NChannels
@@ -124,7 +123,7 @@ public class OTONetwork : MonoBehaviour
         string lDebugString = "";
 
         for (int i = 0; i < NChannels; i++) {
-            channel_ids[i] = _config.AddChannel(channel_type[i]);
+            channel_ids[i] = mConfig.AddChannel(channel_type[i]);
 
             if (channel_senders[i] != null)
                 channel_senders[i].Subscribe(ToSendEvent);
@@ -142,13 +141,13 @@ public class OTONetwork : MonoBehaviour
         }
         Debug.Log(lDebugString);
 
-        _config.PacketSize = ushort.MaxValue;
-        _config.MaxSentMessageQueueSize = 1024;
+        mConfig.PacketSize = ushort.MaxValue;
+        mConfig.MaxSentMessageQueueSize = 1024;
         // Global config
-        _gConfig = new GlobalConfig();
-        _gConfig.MaxPacketSize = 65000;
-        _gConfig.ReactorMaximumReceivedMessages = 1;//valeur initiale a 256
-        _gConfig.ReactorMaximumSentMessages = 1;//valeur initiale a 256
+        mGlobalConfig = new GlobalConfig();
+        mGlobalConfig.MaxPacketSize = 65000;
+        mGlobalConfig.ReactorMaximumReceivedMessages = 1;//valeur initiale a 256
+        mGlobalConfig.ReactorMaximumSentMessages = 1;//valeur initiale a 256
     }
 
     private void Connect()
@@ -157,18 +156,18 @@ public class OTONetwork : MonoBehaviour
             Disconnect();
         
         if (IsServer) {
-            NetworkTransport.Init(_gConfig);
-            HostTopology lTopology = new HostTopology(_config, 1);
+            NetworkTransport.Init(mGlobalConfig);
+            HostTopology lTopology = new HostTopology(mConfig, 1);
 
-            _genericHostId = NetworkTransport.AddHost(lTopology, Port, null);
+            mGenericHostId = NetworkTransport.AddHost(lTopology, Port, null);
         }
         else {
-            NetworkTransport.Init(_gConfig);
-            HostTopology lTopology = new HostTopology(_config, 1);
-            _genericHostId = NetworkTransport.AddHost(lTopology, 0);
+            NetworkTransport.Init(mGlobalConfig);
+            HostTopology lTopology = new HostTopology(mConfig, 1);
+            mGenericHostId = NetworkTransport.AddHost(lTopology, 0);
 
             byte lError;
-            _distantConnectionID = NetworkTransport.Connect(_genericHostId, IP, Port, 0, out lError);
+            mDistantConnectionID = NetworkTransport.Connect(mGenericHostId, IP, Port, 0, out lError);
 
             if (lError != 0) {
                 throw new Exception("Error on connection : " + lError);
@@ -195,9 +194,9 @@ public class OTONetwork : MonoBehaviour
         Communicating = false;
         HasAPeer = false;
         mIsConnected = false;
-        bufferSize = 15000;
+        BUFFER_SIZE = 15000;
         mIsCorou = false;
-        Debug.Log("Disconnected");
+        Debug.Log("Disconnected OTO");
     }
 
     private void ReceiveData()
@@ -207,9 +206,9 @@ public class OTONetwork : MonoBehaviour
         int lDataSize;
         int lCount = 0;
 
-        while (lCount++ < MaxFramePerUpdate) {
-            NetworkEventType lRecData = NetworkTransport.Receive(out _distantHostID, out _distantConnectionID,
-                                        out lRecChannelID, recBuffer, bufferSize, out lDataSize, out lError);
+        while (lCount++ < MAX_FRAME_PER_UPDATE) {
+            NetworkEventType lRecData = NetworkTransport.Receive(out mDistantHostID, out mDistantConnectionID,
+                                        out lRecChannelID, recBuffer, BUFFER_SIZE, out lDataSize, out lError);
 
             if (lError != 0)
                 Debug.Log("Error = " + ((NetworkError)lError).ToString());
@@ -225,7 +224,7 @@ public class OTONetwork : MonoBehaviour
                     return;
 
                 case NetworkEventType.ConnectEvent:
-                    Debug.Log(string.Format("Connect from host {0} connection {1}", _distantHostID, _distantConnectionID));
+                    Debug.Log(string.Format("Connect from host {0} connection {1}", mDistantHostID, mDistantConnectionID));
                     mIsConnected = true;
                     break;
 
@@ -254,7 +253,7 @@ public class OTONetwork : MonoBehaviour
     
     public int AddAChannel(string iName, QosType iType, OTONetReceiver iOTONetReceiver, OTONetSender iOTONetSender)
     {
-        int lID = _config.AddChannel(iType);
+        int lID = mConfig.AddChannel(iType);
         channel_ids.Add(lID);
         channel_type.Add(iType);
         channel_name.Add(iName);
@@ -291,12 +290,12 @@ public class OTONetwork : MonoBehaviour
 
     public int GetSendRate(out byte iError)
     {
-        return NetworkTransport.GetPacketSentRate(_genericHostId, _distantConnectionID, out iError);
+        return NetworkTransport.GetPacketSentRate(mGenericHostId, mDistantConnectionID, out iError);
     }
 
     public int GetReceivedRate(out byte iError)
     {
-        return NetworkTransport.GetPacketReceivedRate(_genericHostId, _distantConnectionID, out iError);
+        return NetworkTransport.GetPacketReceivedRate(mGenericHostId, mDistantConnectionID, out iError);
     }
 
     void ToSendEvent(OTONetSender iSender, byte[] iData, int iNData)
@@ -308,12 +307,12 @@ public class OTONetwork : MonoBehaviour
 
         for (int i = 0; i < NChannels; i++) {
             if (channel_senders[i] == iSender) {
-                NetworkTransport.Send(_genericHostId, _distantConnectionID, channel_ids[i], iData, iData.Length, out lError);
+                NetworkTransport.Send(mGenericHostId, mDistantConnectionID, channel_ids[i], iData, iData.Length, out lError);
                 
                 if (lError != 0)
                     throw new Exception("Error on send : " + ((NetworkError)lError).ToString()
                         + " Chanel = " + channel_ids[i] + " Data size = " + iData.Length
-                        + " _genericHostId " + _genericHostId + " _distantConnectionID " + _distantConnectionID);
+                        + " _genericHostId " + mGenericHostId + " _distantConnectionID " + mDistantConnectionID);
             }
         }
     }
