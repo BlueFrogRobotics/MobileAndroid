@@ -9,6 +9,7 @@ Library/
 !/Snapshots/
 /Snapshots/*
 
+MobileApp/Library/
 MobileApp/Assets/StreamingAssets/build_info.txt
 MobileApp/Assets/StreamingAssets/build_info.txt.meta
 

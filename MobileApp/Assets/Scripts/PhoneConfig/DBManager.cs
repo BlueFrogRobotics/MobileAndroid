@@ -114,21 +114,19 @@ public class DBManager : MonoBehaviour
         ResetCreateParameters();
     }
 
-    public void StartAddBuddyToUser()
+    public void StartAddBuddyToUser(Text iBuddyID)
     {
-        StartCoroutine(AddBuddyToUser());
+        StartCoroutine(AddBuddyToUser(iBuddyID.text));
     }
 
-    private IEnumerator AddBuddyToUser()
+    private IEnumerator AddBuddyToUser(string iBuddyID)
     {
-        //TODO : get input Buddy ID
-        string lBuddyID = "000-000-001";
         WWWForm lForm = new WWWForm();
         lForm.AddField("firstname", mUserFName);
         lForm.AddField("lastname", mUserLName);
         lForm.AddField("email", mUserMail);
-        lForm.AddField("buddyid", lBuddyID);
-
+        lForm.AddField("buddyid", iBuddyID);
+        
         WWW lWww = new WWW("http://" + mHost + "/AddBuddy.php", lForm);
         yield return lWww;
 
@@ -136,8 +134,10 @@ public class DBManager : MonoBehaviour
             Debug.Log("[ERROR] on WWW Request");
         else
         {
-            if(lWww.text != "KO")
-                Debug.Log("Succesfully added Buddy to current User");
+            if (lWww.text != "KO")
+                Debug.Log("Succesfully added Buddy to current User.");
+            else
+                Debug.Log("Request failed : " + lWww.text);
         }
     }
 

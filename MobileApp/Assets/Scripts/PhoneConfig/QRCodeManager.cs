@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using OpenCVUnity;
 using ZXing;
+using ZXing.Common;
 
 public class QRCodeManager : MonoBehaviour
 {
+    [SerializeField]
+    private RawImage QRImage;
+
     private bool mCameraStarted;
     private WebCamTexture mCamera;
     
@@ -43,5 +49,30 @@ public class QRCodeManager : MonoBehaviour
             mCamera.Play();
 
         mCameraStarted = !mCameraStarted;        
+    }
+
+    public void CreateQrCode(string iData)
+    {
+        //According to tests, this works fine.
+        //In reality, nothing is shown in the RawImage
+        BarcodeWriter lQRCode = new BarcodeWriter() {
+            Format = BarcodeFormat.QR_CODE,
+            Options = new EncodingOptions() {
+                Height = 450,
+                Width = 450
+            },
+            Renderer = new Color32Renderer(),
+            Encoder = new MultiFormatWriter()
+        };
+        Texture2D lTempText = new Texture2D(450, 450);
+        BitMatrix lMatrix = lQRCode.Encode(iData);
+        //Color32[] lTemp = lQRCode.Write(iData);
+        Color32[] lTemp = lQRCode.Write(lMatrix);
+        lTempText.SetPixels32(lTemp);
+
+        QRImage.texture = lTempText;
+        QRImage.gameObject.SetActive(true);
+
+        BuddyTools.Utils.SaveTextureToFile(lTempText, Application.streamingAssetsPath + "/image.png");
     }
 }
