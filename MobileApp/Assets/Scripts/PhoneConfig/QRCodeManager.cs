@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using OpenCVUnity;
+using System.IO;
 using ZXing;
 using ZXing.Common;
+using ZXing.QrCode;
 
 public class QRCodeManager : MonoBehaviour
 {
     [SerializeField]
-    private RawImage QRImage;
+    private Image QRImage;
 
     private bool mCameraStarted;
     private WebCamTexture mCamera;
@@ -53,26 +55,30 @@ public class QRCodeManager : MonoBehaviour
 
     public void CreateQrCode(string iData)
     {
-        //According to tests, this works fine.
-        //In reality, nothing is shown in the RawImage
-        BarcodeWriter lQRCode = new BarcodeWriter() {
-            Format = BarcodeFormat.QR_CODE,
-            Options = new EncodingOptions() {
-                Height = 450,
-                Width = 450
-            },
-            Renderer = new Color32Renderer(),
-            Encoder = new MultiFormatWriter()
-        };
-        Texture2D lTempText = new Texture2D(450, 450);
-        BitMatrix lMatrix = lQRCode.Encode(iData);
-        //Color32[] lTemp = lQRCode.Write(iData);
-        Color32[] lTemp = lQRCode.Write(lMatrix);
-        lTempText.SetPixels32(lTemp);
+        //We create the QRCode writer and encode the data
+        QRCodeWriter lQRCode = new QRCodeWriter();
+        BitMatrix lBitMatrix = lQRCode.encode(iData, BarcodeFormat.QR_CODE, 450, 450);
 
-        QRImage.texture = lTempText as Texture;
+        //We have to go through each pixel to setup the texture ourself, so we set everything up
+        Color32[] lColors = new Color32[450 * 450];
+        Color32 lWhite = new Color32(255, 255, 255, 255);
+        Color32 lBlack = new Color32(0, 0, 0, 255);
+
+        //Do the actual reading and building the texture
+        for(int i=0; i<lBitMatrix.Height; i++) {
+            for(int j=0; j<lBitMatrix.Width; j++) {
+                lColors[j + i * lBitMatrix.Width] = lBitMatrix[j, i] ? lBlack : lWhite;
+            }
+        }
+        Texture2D lTempTex = new Texture2D(lBitMatrix.Width, lBitMatrix.Height);
+        lTempTex.SetPixels32(0, 0, lBitMatrix.Width, lBitMatrix.Height, lColors);
+        BuddyTools.Utils.SaveTextureToFile(lTempTex, Application.streamingAssetsPath + "/qrcode.png");
+
+        //We have to go by this method to be sure the QRCode is properly displayed.
+        byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath("qrcode.png"));
+        Texture2D lTex = new Texture2D(2, 2);
+        lTex.LoadImage(lFileData);
+        QRImage.sprite = Sprite.Create(lTex, new UnityEngine.Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
         QRImage.gameObject.SetActive(true);
-
-        BuddyTools.Utils.SaveTextureToFile(lTempText, Application.streamingAssetsPath + "/image.png");
     }
 }
