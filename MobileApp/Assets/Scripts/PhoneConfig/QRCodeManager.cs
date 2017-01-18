@@ -70,7 +70,7 @@ public class QRCodeManager : MonoBehaviour
         Color32[] lTemp = lQRCode.Write(lMatrix);
         lTempText.SetPixels32(lTemp);
 
-        QRImage.texture = lTempText;
+        QRImage.texture = lTempText as Texture;
         QRImage.gameObject.SetActive(true);
 
         BuddyTools.Utils.SaveTextureToFile(lTempText, Application.streamingAssetsPath + "/image.png");

@@ -130,4 +130,27 @@ public class BuddyIPList : MonoBehaviour
             lClone.transform.localScale = Vector3.one;
         }
     }
+
+    public void SearchForBuddy(Text iSearch)
+    {
+        //We display here only the Buddy that contain the keyword 'iSearch'
+        //If the string is null, we show all the Buddy
+        string lSearch = iSearch.text;
+        Debug.Log("Searching for " + lSearch);
+        if(string.IsNullOrEmpty(lSearch)) {
+            foreach(Transform lChild in parentTransform) {
+                lChild.gameObject.SetActive(true);
+            }
+        }
+        //Else, we display only selected Buddies
+        else {
+            foreach(Transform lChild in parentTransform) {
+                Text lBuddyName = lChild.GetComponentInChildren<Text>();
+                Debug.Log("Buddy has name " + lBuddyName.text);
+
+                if (!lBuddyName.text.Contains(lSearch))
+                    lChild.gameObject.SetActive(false);
+            }
+        }
+    }
 }
