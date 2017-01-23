@@ -1,7 +1,16 @@
 ﻿using UnityEngine;
 
 public class LaunchTelepresence : MonoBehaviour
-{ 
+{
+    [SerializeField]
+    private SelectBuddy selectBuddy;
+
+    [SerializeField]
+    private GameObject remoteControlRTC;
+
+    [SerializeField]
+    private Webrtc webRTC;
+
     [SerializeField]
     private AppMobileServer mobileServer;
 
@@ -18,8 +27,13 @@ public class LaunchTelepresence : MonoBehaviour
 
     public void ConnectToBuddy()
     {
-        mobileServer.OnConnectionEstablished += StartTelepresence;
-        mobileServer.StartTelepresence();
+        if (selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL) {
+            mobileServer.OnConnectionEstablished += StartTelepresence;
+            mobileServer.StartTelepresence();
+        } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
+            remoteControlRTC.SetActive(true);
+            webRTC.Call();
+        }
     }
 
     private void StartTelepresence()

@@ -10,6 +10,9 @@ public class BackToMenu : MonoBehaviour
     private OTONetwork oto;
 
     [SerializeField]
+    private Webrtc webRTC;
+
+    [SerializeField]
     private Animator mAnimator;
 
     [SerializeField]
@@ -17,10 +20,11 @@ public class BackToMenu : MonoBehaviour
 
     public void GoBackToMenu()
     {
-        mIncomingVideo.gameObject.SetActive(false);
+        //mIncomingVideo.gameObject.SetActive(false);
         oto.Disconnect();
         oto.gameObject.SetActive(false);
         mobileServer.gameObject.SetActive(true);
+        webRTC.HangUp();
         mAnimator.SetTrigger("GoConnectBuddy");
         mAnimator.SetTrigger("EndScene");
     } 

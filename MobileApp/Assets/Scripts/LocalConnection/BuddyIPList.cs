@@ -97,6 +97,7 @@ public class BuddyIPList : MonoBehaviour
         foreach (Transform lChild in parentTransform)
             GameObject.Destroy(lChild.gameObject);
         AddBuddyFromDB();
+        AddWebRTCBuddy();
         mIPList.Clear();
         mIPList = mobileServer.GetBuddyConnectedList();
 
@@ -129,6 +130,15 @@ public class BuddyIPList : MonoBehaviour
             lClone.transform.SetParent(parentTransform);
             lClone.transform.localScale = Vector3.one;
         }
+    }
+
+    private void AddWebRTCBuddy()
+    {
+        prefabName.text = "User2";
+        prefabID.text = "WebRTC ID";
+        GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+        lClone.transform.SetParent(parentTransform);
+        lClone.transform.localScale = Vector3.one;
     }
 
     public void SearchForBuddy(Text iSearch)

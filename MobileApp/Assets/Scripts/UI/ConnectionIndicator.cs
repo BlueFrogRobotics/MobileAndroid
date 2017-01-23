@@ -10,9 +10,12 @@ public class ConnectionIndicator : MonoBehaviour
 
     void Update()
     {
-        if (oto.HasAPeer)
-            redImage.SetActive(false);
-        else
-            redImage.SetActive(true);
+        if(oto.isActiveAndEnabled)
+        {
+            if (oto.HasAPeer)
+                redImage.SetActive(false);
+            else
+                redImage.SetActive(true);
+        }
     }
 }

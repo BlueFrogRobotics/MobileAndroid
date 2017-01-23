@@ -11,10 +11,18 @@ public class QRCodeManager : MonoBehaviour
     [SerializeField]
     private Image QRImage;
 
+    [SerializeField]
+    private RawImage cameraImage;
+
+    [SerializeField]
+    private Text resultText;
+
     private bool mCameraStarted;
     private WebCamTexture mCamera;
-    
-	void Start () {
+    private BarcodeReader mReader;
+    private Mat mTempMat;
+
+    void Start () {
         mCameraStarted = false;
         WebCamDevice[] devices = WebCamTexture.devices;
 
@@ -25,19 +33,39 @@ public class QRCodeManager : MonoBehaviour
                 break;
             }
         }
+        mReader = new BarcodeReader { AutoRotate = true, TryInverted = true };
+        mTempMat = new Mat(240, 320, CvType.CV_8UC3);
     }
 
     void Update()
     {
-        if(mCamera.didUpdateThisFrame) {
+        if(mCamera != null && mCamera.didUpdateThisFrame) {
             Debug.Log("Trying to read QRCode");
-            BarcodeReader lReader = new BarcodeReader { AutoRotate = true, TryInverted = true };
-            Result[] lResults = lReader.DecodeMultiple(mCamera.GetPixels32(), mCamera.width, mCamera.height);
+            Result[] lResults = mReader.DecodeMultiple(mCamera.GetPixels32(), mCamera.width, mCamera.height);
 
             if (lResults != null && lResults.Length != 0) {
                 string lNameQrCode = lResults[0].Text;
+                resultText.text = lNameQrCode;
                 Debug.Log("QR Code Message : " + lNameQrCode);
             }
+            cameraImage.texture = mCamera;
+            Debug.Log("Camera rotation " + mCamera.videoRotationAngle);
+            BuddyTools.Utils.WebCamTextureToMat(mCamera, mTempMat);
+
+            if (mCamera.videoRotationAngle == 0)
+            {
+                Core.flip(mTempMat, mTempMat, 1);
+            }
+            else if (mCamera.videoRotationAngle == 90)
+            {
+                Core.flip(mTempMat, mTempMat, 0);
+            }
+            else if (mCamera.videoRotationAngle == 270)
+            {
+                Core.flip(mTempMat, mTempMat, 1);
+            }
+
+            cameraImage.texture = BuddyTools.Utils.MatToTexture2D(mTempMat);
         }
     }
 

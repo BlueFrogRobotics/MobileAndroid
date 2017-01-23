@@ -3,6 +3,10 @@ using UnityEngine.UI;
 
 public class SelectBuddy : MonoBehaviour
 {
+    public enum RemoteType { LOCAL, WEBRTC };
+
+    public RemoteType Remote { get; set; }
+
     [SerializeField]
     private Transform buddyList;
 
@@ -11,6 +15,9 @@ public class SelectBuddy : MonoBehaviour
 
     [SerializeField]
     private AppMobileServer mobileServer;
+
+    [SerializeField]
+    private GameObject webRTC;
 
     [SerializeField]
     private Animator canvasAppAnimator;
@@ -35,9 +42,18 @@ public class SelectBuddy : MonoBehaviour
                 string[] lBuddySplit = mBuddy.GetChild(3).GetComponent<Text>().text.Split(' ');
                 string lBuddyIP = lBuddySplit[1];
                 string lBuddyName = mBuddy.GetChild(2).GetComponent<Text>().text;
-                oTONetwork.IP = lBuddyIP;
-                mobileServer.BuddyIP = lBuddyIP;
-                Debug.Log("ip " + lBuddyIP + "!");
+
+                if(lBuddyName.Contains("User2")) {
+                    Remote = RemoteType.WEBRTC;
+                    webRTC.SetActive(true);
+
+                } else {
+                    Remote = RemoteType.LOCAL;
+                    oTONetwork.IP = lBuddyIP;
+                    mobileServer.BuddyIP = lBuddyIP;
+                    Debug.Log("ip " + lBuddyIP + "!");
+                }
+                
                 lFound = true;
                 notifications.SendNotification("Connected to Buddy " + lBuddyIP);
                 ChangeConnectedBuddyName(lBuddyName, lBuddyIP);

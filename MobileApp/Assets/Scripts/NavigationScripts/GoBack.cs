@@ -11,17 +11,24 @@ public class GoBack : MonoBehaviour
     private LinkManager linkManager;
 
     private string mPreviousMenu;
+    private string mCurrentMenu;
 
     // Use this for initialization
     void Start()
     {
         mPreviousMenu = "ConnectAccount";
+        mCurrentMenu = "ConnectAccount";
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            if (mCurrentMenu == "ConnectAccount")
+                Application.Quit();
+            else
+                PreviousMenu();
+        }
     }
 
     public void PreviousMenu()
@@ -47,11 +54,13 @@ public class GoBack : MonoBehaviour
                 linkManager.SetMenuBuddyValue(4);
                 break;
         }
+        mCurrentMenu = mPreviousMenu;
         canvasAnimator.SetTrigger("EndScene");
     }
 
     public void SavePreviousMenu(string iMenu)
     {
+        mCurrentMenu = "";
         mPreviousMenu = iMenu;
     }
 }

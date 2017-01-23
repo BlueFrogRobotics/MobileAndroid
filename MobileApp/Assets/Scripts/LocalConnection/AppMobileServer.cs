@@ -87,9 +87,10 @@ public class AppMobileServer : MonoBehaviour
                 break;
             }
         }
-        if(!lFound)
+        if(!lFound) {
             mConnectionsList.Add(iNetMsg.conn);
-        OnNewBudyConnected(iNetMsg.conn.address.Split(':')[3]);
+            OnNewBudyConnected(iNetMsg.conn.address.Split(':')[3]);
+        }
     }
 
     private void OnDisconnected(NetworkMessage iNetMsg)
