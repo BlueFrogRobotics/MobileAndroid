@@ -5,7 +5,7 @@ public class SelectBuddy : MonoBehaviour
 {
     public enum RemoteType { LOCAL, WEBRTC };
 
-    public RemoteType Remote { get; set; }
+    public RemoteType Remote { get { return mRemote; } set { mRemote = value; } }
 
     [SerializeField]
     private Transform buddyList;
@@ -31,6 +31,8 @@ public class SelectBuddy : MonoBehaviour
     [SerializeField]
     private Text buddyConnectedID;
 
+    private RemoteType mRemote;
+
     public void BuddySelected()
     {
         bool lFound = false;
@@ -44,11 +46,11 @@ public class SelectBuddy : MonoBehaviour
                 string lBuddyName = mBuddy.GetChild(2).GetComponent<Text>().text;
 
                 if(lBuddyName.Contains("User2")) {
-                    Remote = RemoteType.WEBRTC;
+                    mRemote = RemoteType.WEBRTC;
                     webRTC.SetActive(true);
 
                 } else {
-                    Remote = RemoteType.LOCAL;
+                    mRemote = RemoteType.LOCAL;
                     oTONetwork.IP = lBuddyIP;
                     mobileServer.BuddyIP = lBuddyIP;
                     Debug.Log("ip " + lBuddyIP + "!");

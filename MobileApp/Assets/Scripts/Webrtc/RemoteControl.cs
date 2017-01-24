@@ -26,13 +26,13 @@ public class RemoteControl : MonoBehaviour {
 
     void Update()
     {
-        if (webRTC.connectionState == Webrtc.CONNECTION.CONNECTING) {
-            disconnectedView.SetActive(false);
-            connectedView.SetActive(true);
-        } else if (webRTC.connectionState == Webrtc.CONNECTION.DISCONNECTING) {
-            connectedView.SetActive(false);
-            disconnectedView.SetActive(true);
-        }
+        //if (webRTC.connectionState == Webrtc.CONNECTION.CONNECTING) {
+        //    disconnectedView.SetActive(false);
+        //    connectedView.SetActive(true);
+        //} else if (webRTC.connectionState == Webrtc.CONNECTION.DISCONNECTING) {
+        //    connectedView.SetActive(false);
+        //    disconnectedView.SetActive(true);
+        //}
 
         mTime += Time.deltaTime;
         if (mTime >= 0.2f)
@@ -40,14 +40,14 @@ public class RemoteControl : MonoBehaviour {
             mTime = 0.0f;
             //Debug.Log("X : " + BasePosition.transform.localPosition.x + " Y : " + BasePosition.transform.localPosition.y + " Z : " + BasePosition.transform.localPosition.z);
             if (toggleController.IsBodyActive) {
-                if (Mathf.Abs(joystick.transform.localPosition.x) > 70.0f)
+                if (Mathf.Abs(joystick.transform.localPosition.x) > 50.0f)
                 {
                     if (Mathf.Sign(joystick.transform.localPosition.x) > 0)
                         webRTC.SendWithDataChannel("r");
                     else if (Mathf.Sign(joystick.transform.localPosition.x) < 0)
                         webRTC.SendWithDataChannel("l");
                 }
-                if (Mathf.Abs(joystick.transform.localPosition.y) > 70.0f)
+                if (Mathf.Abs(joystick.transform.localPosition.y) > 50.0f)
                 {
                     if (Mathf.Sign(joystick.transform.localPosition.y) > 0)
                         webRTC.SendWithDataChannel("f");
@@ -55,14 +55,14 @@ public class RemoteControl : MonoBehaviour {
                         webRTC.SendWithDataChannel("b");
                 }
             } else {
-                if (Mathf.Abs(joystick.transform.localPosition.x) > 70.0f)
+                if (Mathf.Abs(joystick.transform.localPosition.x) > 50.0f)
                 {
                     if (Mathf.Sign(joystick.transform.localPosition.x) > 0)
                         webRTC.SendWithDataChannel("d");
                     else if (Mathf.Sign(joystick.transform.localPosition.x) < 0)
                         webRTC.SendWithDataChannel("s");
                 }
-                if (Mathf.Abs(joystick.transform.localPosition.y) > 70.0f)
+                if (Mathf.Abs(joystick.transform.localPosition.y) > 50.0f)
                 {
                     if (Mathf.Sign(joystick.transform.localPosition.y) > 0)
                         webRTC.SendWithDataChannel("u");

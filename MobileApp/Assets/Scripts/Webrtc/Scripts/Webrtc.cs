@@ -6,9 +6,8 @@ using System;
 public class Webrtc : MonoBehaviour
 {
     public enum CONNECTION { CONNECTING = 0, DISCONNECTING = 1 };
-    private CONNECTION ConnectionState = CONNECTION.DISCONNECTING;
 
-    public CONNECTION connectionState { get { return ConnectionState; } }
+    public CONNECTION ConnectionState { get { return mConnectionState; } }
 
     [Header("WebRTC")]
     /// <summary>
@@ -43,6 +42,7 @@ public class Webrtc : MonoBehaviour
     /// Android Texture object
     /// </summary>
     private NativeTexture mNativeTexture = null;
+    private CONNECTION mConnectionState = CONNECTION.DISCONNECTING;
 
     //For now Startwebrtc is called at init but in the future it will only be 
     //called when receiving a call request or trying to call someone.
@@ -126,7 +126,7 @@ public class Webrtc : MonoBehaviour
         Debug.Log("Hang Up : " + mRemoteUser);
         if (mTextLog)
             mTextLog.text += "Hang Up : " + mRemoteUser + "\n";
-        if (connectionState == CONNECTION.CONNECTING)
+        if (mConnectionState == CONNECTION.CONNECTING)
         {
             using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
             {
@@ -149,14 +149,15 @@ public class Webrtc : MonoBehaviour
     public void SendWithDataChannel(string iMessage)//, string iChannel,bool iThroughDataChannel=true)
     {
         bool iThroughDataChannel = true;
-        Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser);
+        //Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser);
         if (mTextLog)
             mTextLog.text += "sending message : " + iMessage + " to : " + mRemoteUser + "\n";
 
-        if ((connectionState == CONNECTION.CONNECTING) && iThroughDataChannel)
+        if ((mConnectionState == CONNECTION.CONNECTING) && iThroughDataChannel)
         {
             using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
             {
+                Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through data channel");
                 cls.CallStatic("SendMessage", iMessage, mRemoteUser);
             }
         }
@@ -164,6 +165,7 @@ public class Webrtc : MonoBehaviour
         {
             using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
             {
+                Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through messaging channel");
                 cls.CallStatic("SendMessage", iMessage, mRemoteUser, false);
             }
         }
@@ -174,18 +176,19 @@ public class Webrtc : MonoBehaviour
     /// has been opened or closed.
     /// </summary>
     /// <param name="iValue">1 for opened, 0 for closed.</param>
-    public void SetMIsWebrtcConnectionActive(string iValue)
+    //DO NOT TOUCH AT THE NAME OF THE FUNCTION, it has direct influence over the effective functioning of sending stuffs
+    public void setMIsWebrtcConnectionActive(string iValue)
     {
         if (iValue.Equals("1"))
         {
             Debug.Log("Webrtc status : CONNECTING");
-            ConnectionState = CONNECTION.CONNECTING;
+            mConnectionState = CONNECTION.CONNECTING;
             if (mTextLog)
                 mTextLog.text += "Webrtc connection is ON" + "\n";
         }
         else {
             Debug.Log("Webrtc status : DISCONNECTING");
-            ConnectionState = CONNECTION.DISCONNECTING;
+            mConnectionState = CONNECTION.DISCONNECTING;
             if (mTextLog)
                 mTextLog.text += "Webrtc connection OFF" + "\n";
         }
@@ -196,14 +199,10 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void ToggleConnection()
     {
-        if (ConnectionState == CONNECTION.DISCONNECTING)
-        {
+        if (mConnectionState == CONNECTION.DISCONNECTING)
             Call();
-        }
         else
-        {
             HangUp();
-        }
     }
     
     /// <summary>

@@ -4,6 +4,9 @@ using UnityEngine.UI;
 public class BackToMenu : MonoBehaviour
 {
     [SerializeField]
+    private SelectBuddy selectBuddy;
+
+    [SerializeField]
     private AppMobileServer mobileServer;
 
     [SerializeField]
@@ -11,6 +14,9 @@ public class BackToMenu : MonoBehaviour
 
     [SerializeField]
     private Webrtc webRTC;
+
+    [SerializeField]
+    private GameObject remoteControlRTC;
 
     [SerializeField]
     private Animator mAnimator;
@@ -21,10 +27,15 @@ public class BackToMenu : MonoBehaviour
     public void GoBackToMenu()
     {
         //mIncomingVideo.gameObject.SetActive(false);
-        oto.Disconnect();
-        oto.gameObject.SetActive(false);
-        mobileServer.gameObject.SetActive(true);
-        webRTC.HangUp();
+        if(selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL) {
+            oto.Disconnect();
+            oto.gameObject.SetActive(false);
+            mobileServer.gameObject.SetActive(true);
+
+        } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
+            webRTC.HangUp();
+            remoteControlRTC.SetActive(false);
+        }
         mAnimator.SetTrigger("GoConnectBuddy");
         mAnimator.SetTrigger("EndScene");
     } 
