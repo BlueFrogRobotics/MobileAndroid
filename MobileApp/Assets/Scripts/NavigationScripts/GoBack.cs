@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// Back button manager. Saves the previous state and goes back to it when asked
+/// </summary>
 public class GoBack : MonoBehaviour
 {
     [SerializeField]
@@ -31,6 +34,7 @@ public class GoBack : MonoBehaviour
         }
     }
 
+    //Go to previously saved menu
     public void PreviousMenu()
     {
         switch (mPreviousMenu)
@@ -58,6 +62,7 @@ public class GoBack : MonoBehaviour
         canvasAnimator.SetTrigger("EndScene");
     }
 
+    //Self-explanatory
     public void SavePreviousMenu(string iMenu)
     {
         mCurrentMenu = "";

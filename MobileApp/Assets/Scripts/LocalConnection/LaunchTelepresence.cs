@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Manages th way the remote control request is done
+/// </summary>
 public class LaunchTelepresence : MonoBehaviour
 {
     [SerializeField]
@@ -20,15 +23,13 @@ public class LaunchTelepresence : MonoBehaviour
     //[SerializeField]
     //private GameObject telepresenceGUI;
     
-    void Start()
-    {
-
-    }
-
     public void ConnectToBuddy()
     {
+        //Check what if selected Buddy is controllable via Local or WebRTC method
         Debug.Log("Remote type is " + selectBuddy.Remote);
         if (selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL) {
+            //Add callback to start the UI and remote control networking after
+            //the other networks are shut down
             mobileServer.OnConnectionEstablished += StartTelepresence;
             mobileServer.StartTelepresence();
             Debug.Log("Starting local control");

@@ -8,12 +8,16 @@ public delegate void FinishConnection();
 public delegate void BuddyConnected(string iBuddyIP);
 public delegate void BuddyDisconnected(string iBuddyIP);
 
+/// <summary>
+/// Class for custom messages between the phone and Buddy on a local connection
+/// </summary>
 public class BeginMessage : MessageBase
 {
     public string mContent;
     public string mBuddyIP;
     public string mHostIP;
 }
+
 /// <summary>
 /// This class' purpose is to manage all the network interface to detect a local Buddy
 /// </summary>
@@ -47,6 +51,7 @@ public class AppMobileServer : MonoBehaviour
     
     void OnEnable()
     {
+        //Start the network discovery of local Buddies
         discovery.gameObject.SetActive(true);
         StartServerMessage();
         StartBroadcast();
@@ -56,18 +61,22 @@ public class AppMobileServer : MonoBehaviour
 
     private void StartBroadcast()
     {
+        //Self-explanatory
         discovery.Initialize();
         discovery.StartAsServer();
     }
 
     private void StopBroadcast()
     {
+        //Self-explanatory
         Debug.Log("Broadcast id " + discovery.hostId);
         discovery.StopBroadcast();
     }
 
     public void StartServerMessage()
     {
+        //Start a custom server for custom messages handling.
+        //Local Buddies connect to it when they hear a broadcast and wait for a BeginMessage
         Debug.Log("Starting Server message");
         NetworkServer.Listen(48888);
         NetworkServer.RegisterHandler(MsgType.Connect, OnConnected);
@@ -78,9 +87,11 @@ public class AppMobileServer : MonoBehaviour
 
     private void OnConnected(NetworkMessage iNetMsg)
     {
+        //When a new Buddy connects to server, register its address to the list
         Debug.Log("Buddy " + iNetMsg.conn.address.Split(':')[3] + " connected.");
         bool lFound = false;
 
+        //Check if Buddy already exists in the connection list
         foreach(NetworkConnection lNetCo in mConnectionsList) {
             if (lNetCo == iNetMsg.conn) {
                 lFound = true;
@@ -95,6 +106,7 @@ public class AppMobileServer : MonoBehaviour
 
     private void OnDisconnected(NetworkMessage iNetMsg)
     {
+        //Remove disconnected Buddy from the list
         Debug.Log("Buddy " + iNetMsg.conn.address + " disconnected");
         mConnectionsList.Remove(iNetMsg.conn);
         OnBuddyDisconnected(iNetMsg.conn.address);
@@ -104,16 +116,19 @@ public class AppMobileServer : MonoBehaviour
 
     private void OnReady(NetworkMessage iNetMsg)
     {
+        //Useless function on Phone side but necessary for proper functionning of NetworkServer
         Debug.Log("Received ready from "
             + iNetMsg.ReadMessage<StringMessage>());
     }
 
     private void OnChatMessage(NetworkMessage iNetMsg)
     {
+        //Useless function on Phone side but necessary for proper functionning of NetworkServer
         StringMessage lChatMsg = iNetMsg.ReadMessage<StringMessage>();
         Debug.Log("Received message: " + lChatMsg.value);
     }
 
+    //Returns the list of connected Buddies
     public List<string> GetBuddyConnectedList()
     {
         List<string> lBuddyList = new List<string>();
@@ -130,6 +145,7 @@ public class AppMobileServer : MonoBehaviour
 
     private void CutNetwork()
     {
+        //Self-explanatory
         NetworkServer.Shutdown();
         StopBroadcast();
     }
@@ -139,6 +155,7 @@ public class AppMobileServer : MonoBehaviour
         Debug.Log("Connecting to Buddy " + mClientBuddyIP);
         int lBuddyID = 0;
 
+        //Find the remote Buddy we want to connect to
         foreach (NetworkConnection lCo in NetworkServer.connections) {
             if (lCo == null)
                 continue;
@@ -150,6 +167,7 @@ public class AppMobileServer : MonoBehaviour
             }
         }
 
+        //Send selected robot a message to start remote control server
         Debug.Log("Sending custom message to Buddy " + lBuddyID);
         BeginMessage lMsg = new BeginMessage();
         lMsg.mContent = "Hey !";
@@ -166,6 +184,7 @@ public class AppMobileServer : MonoBehaviour
 
     private IEnumerator LaunchTelepresence()
     {
+        //We have to wait a bit to make sure the message is sent before stopping Broadcast and Network servers
         yield return new WaitForSeconds(1f);
 
         CutNetwork();
@@ -179,8 +198,10 @@ public class AppMobileServer : MonoBehaviour
 
     public void SendChatMessage(string iMsg)
     {
+        //Self-explanatory
         int lBuddyID = 0;
 
+        //Find the remote Buddy we want to send a message to
         foreach (NetworkConnection lCo in NetworkServer.connections)
         {
             if (lCo == null)

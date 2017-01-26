@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
+/// <summary>
+/// Class to receive an acknowledge of remote robot. Remote can either accept or refuse the incoming "call"
+/// i.e. the remote control request
+/// </summary>
 public class CallAcceptOTOReceiver : OTONetReceiver
 {
     [SerializeField]
@@ -34,11 +37,6 @@ public class CallAcceptOTOReceiver : OTONetReceiver
     {
         DisableUI();
     }
-
-    //void OnDisable()
-    //{
-    //    DisableUI();
-    //}
 
     public void DisableUI()
     {

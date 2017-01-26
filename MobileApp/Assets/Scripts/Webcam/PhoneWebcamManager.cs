@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using OpenCVUnity;
 
+/// <summary>
+/// Takes care of getting the camera frame and set it to the correct format
+/// </summary>
 public class PhoneWebcamManager : MonoBehaviour
 {
     public int CompressQuality { get { return mCompressQuality; } set { mCompressQuality = value; } }
@@ -15,7 +18,6 @@ public class PhoneWebcamManager : MonoBehaviour
     private int mRequestedWidth = 320;
     private int mFPS = 20;
     private float mTime;
-    //private Quaternion mPhoneBaseRotation;
     private Mat mTempMat;
     private MatOfInt mCompression;
     private WebCamTexture mWebcamTexture;
@@ -24,18 +26,16 @@ public class PhoneWebcamManager : MonoBehaviour
     {
         mTime = Time.time;
         WebCamDevice[] lDevices = WebCamTexture.devices;
-
-        for (int i = 0; i < lDevices.Length; i++)
-        {
-            if (lDevices[i].isFrontFacing)
-            {
+        
+        //Get front facing camera
+        for (int i = 0; i < lDevices.Length; i++) {
+            if (lDevices[i].isFrontFacing) {
                 mWebcamTexture = new WebCamTexture(lDevices[i].name, mRequestedWidth, mRequestedHeight, mFPS);
-                //mPhoneBaseRotation = mPhoneWebcamStream.transform.rotation;
-                //mPhoneBaseRotation = mWebcamTexture.;
                 break;
             }
         }
 
+        //Initialize compression matrix
         mTempMat = new Mat(mRequestedHeight, mRequestedWidth, CvType.CV_8UC3);
         mCompression = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, mCompressQuality);
     }
@@ -57,21 +57,16 @@ public class PhoneWebcamManager : MonoBehaviour
 
     public byte[] GetBuffer()
     {
+        //Get camera frame, rotate and convert it to a byte array
         MatOfByte lBuffer = new MatOfByte();
         BuddyTools.Utils.WebCamTextureToMat(mWebcamTexture, mTempMat);
 
         if (mWebcamTexture.videoRotationAngle == 0)
-        {
             Core.flip(mTempMat, mTempMat, 1);
-        }
         else if (mWebcamTexture.videoRotationAngle == 90)
-        {
             Core.flip(mTempMat, mTempMat, 0);
-        }
         else if (mWebcamTexture.videoRotationAngle == 270)
-        {
             Core.flip(mTempMat, mTempMat, 1);
-        }
 
         Highgui.imencode(".jpg", mTempMat, lBuffer, mCompression);
 
@@ -83,17 +78,15 @@ public class PhoneWebcamManager : MonoBehaviour
         return mWebcamTexture.didUpdateThisFrame;
     }
 
+    //Switch the activity of camera
     public void ActivatePhoneWebcam()
     {
-        if (!mPhoneWebcamStream.IsActive())
-        {
+        if (!mPhoneWebcamStream.IsActive()) {
             mPhoneWebcamStream.gameObject.SetActive(true);
             mPhoneWebcamStream.texture = mWebcamTexture;
             Debug.Log("Webcam height " + mRequestedHeight + ", width " + mRequestedWidth);
             mWebcamTexture.Play();
-        }
-        else
-        {
+        } else {
             mPhoneWebcamStream.gameObject.SetActive(false);
             mWebcamTexture.Stop();
         }

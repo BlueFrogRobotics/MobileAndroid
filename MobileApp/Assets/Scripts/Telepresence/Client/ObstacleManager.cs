@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// Display of the obstacles distance
+/// </summary>
 public class ObstacleManager : MonoBehaviour {
 
     [SerializeField]
@@ -42,14 +45,17 @@ public class ObstacleManager : MonoBehaviour {
 
     private void selectSprite(Image lvl)
     {
+        //Display sprite corresponding to the distance measured by sensors
         lvl1.color = mAlphaDown;
         lvl2.color = mAlphaDown;
         lvl3.color = mAlphaDown;
         lvl4.color = mAlphaDown;
 
+        //Blink animation
         if(lvl != null)
             lvl.color = SpriteBlink();
     }
+
     public void ActiveSprite()
     {
         if (lvl == 0)
@@ -64,6 +70,7 @@ public class ObstacleManager : MonoBehaviour {
             selectSprite(lvl4);        
     }
 
+    //Blink animation with fading and increase of alpha value
     public Color SpriteBlink()
     {
         if (mUp) {

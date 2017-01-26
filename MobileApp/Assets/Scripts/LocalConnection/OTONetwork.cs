@@ -42,6 +42,9 @@ public class OTONetReceiver : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Network server to handle the different channels : Video, command, sensor, accept (and sound streaming)
+/// </summary>
 public class OTONetwork : MonoBehaviour
 {
     public string IP;

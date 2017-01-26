@@ -19,6 +19,9 @@ internal enum RequestType
 
 public delegate void QuestionAnalysed(string iType);
 
+/// <summary>
+/// Copy of VocalChat from SDK's FeatVocal
+/// </summary>
 public class VocalChat : MonoBehaviour
 {
     [SerializeField]

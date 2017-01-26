@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.Experimental.Networking;
 using UnityEngine.UI;
 
+/// <summary>
+/// Buddy configuration manager that interfaces with the Blob storage server
+/// </summary>
 public class ConfigManager : MonoBehaviour
 {
     [SerializeField]
@@ -56,11 +59,14 @@ public class ConfigManager : MonoBehaviour
 
     private IEnumerator GetFromBlobStorageCo(string iFileNameOnBlobStore)
     {
+        //Download a specific file on the blob storage
         float lTime = Time.time;
 
+        //Create the permission request to read from the blob server
         string lFullPath = iFileNameOnBlobStore;
         string lData = "{\"container\": \"" + mContainerName + "\", \"blobName\": \"" + lFullPath + "\", \"permissions\": \"Read\"}";
 
+        //Set request header
         Dictionary<string, string> lH = new Dictionary<string, string>();
         lH["Content-Type"] = "application/json";
         WWW lWWW = new WWW(mKeyUrl, System.Text.Encoding.UTF8.GetBytes(lData), lH);
@@ -70,17 +76,16 @@ public class ConfigManager : MonoBehaviour
         if (!string.IsNullOrEmpty(lWWW.error))
             Debug.Log("[WWW] Error on request : " + lWWW.error);
 
+        //Get the security token and corresponding uri to get the file
         KeyResponse lKey = JsonUtility.FromJson<KeyResponse>(lWWW.text);
-
-        //Debug.Log("Full uri : " + lContainerUrl + lFullPath + lKey.token);
 
         lWWW = new WWW(mContainerUrl + lFullPath + lKey.token);
         yield return lWWW;
 
         if (!string.IsNullOrEmpty(lWWW.error))
             Debug.Log("[WWW] Error on request : " + lWWW.error);
-
-        //Debug.Log("GET Task finished");
+        
+        //Fill the config with the request result and write it to a local file on the phone
         mConf = JsonUtility.FromJson<BuddyConf>(lWWW.text);
         StreamWriter lWriter = new StreamWriter(mConfigPath);
         lWriter.Write(lWWW.text);
@@ -91,6 +96,8 @@ public class ConfigManager : MonoBehaviour
 
     public void SaveConfig()
     {
+        //Upload config file on blob storage
+        //TODO : needs to be filled with more info
         mConf.users[0].firstname = mUserFirstname.text;
         mConf.users[0].name = mUserName.text;
         PutOnBlobStorage(mConf, mBuddyName.text + mBuddyID.text + ".txt");
@@ -118,12 +125,7 @@ public class ConfigManager : MonoBehaviour
         KeyResponse lKey = JsonUtility.FromJson<KeyResponse>(lWWW.text);
         Debug.Log("Got token " + lKey.token);
 
-        //2ND PART : Access the blob store
-        //StreamReader lReader = new StreamReader("Assets/Others/" + iFileToRead);
-        //string lPutData = lReader.ReadToEnd();
-        //lReader.Close();
-        //lPutData.Replace('\r', ' ');
-        //lPutData.Replace('\t', ' ');
+        //2ND PART : Access the blob store and put the file in the storage
         iConf.version++;
         string lPutData = JsonUtility.ToJson(iConf);
         UnityWebRequest lAccessWWW = UnityWebRequest.Put(mContainerUrl + lFullPath + lKey.token,
@@ -144,6 +146,7 @@ public class ConfigManager : MonoBehaviour
 
     private BuddyConf ReadConfigFile()
     {
+        //Read the local file and fill the config with it
         StreamReader lstreamReader = new StreamReader(mConfigPath);
         string lTemp = lstreamReader.ReadToEnd();
         lstreamReader.Close();
@@ -151,6 +154,7 @@ public class ConfigManager : MonoBehaviour
         string lDebugStr = "";
         BuddyConf lConf = JsonUtility.FromJson<BuddyConf>(lTemp);
 
+        //Display infos read from it
         foreach (Users lUser in lConf.users)
             lDebugStr += "User: " + lUser.firstname + ' ' + lUser.name + ' ' + lUser.age + " is a " + lUser.rights + "\n";
 
@@ -174,6 +178,7 @@ public class ConfigManager : MonoBehaviour
 
     private void ExportToJson(BuddyConf iConf, string iFileName)
     {
+        //Write Buddy configuration to file
         string lJSON = JsonUtility.ToJson(iConf, false);
         StreamWriter lStrWriter = new StreamWriter("Assets/Others/" + iFileName);
         lStrWriter.Write(lJSON);
@@ -182,6 +187,7 @@ public class ConfigManager : MonoBehaviour
 
     private void ExportToJson(Users[] iUser, string iHouseMap, string iVocalS, string iFace, Applications[] iApp, Timetable[] iTable, Event[] iEv, string iFileName)
     {
+        //Write Buddy configuration to file
         BuddyConf lConf = new BuddyConf()
         {
             users = iUser,

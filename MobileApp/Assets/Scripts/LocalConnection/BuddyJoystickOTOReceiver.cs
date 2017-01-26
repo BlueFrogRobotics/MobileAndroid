@@ -2,6 +2,9 @@
 using BuddyOS;
 using BuddyOS.Command;
 
+/// <summary>
+/// Useless class here since we won't receive anything
+/// </summary>
 public class BuddyJoystickOTOReceiver : OTONetReceiver
 {
     private float mNoSpeed = 0f;

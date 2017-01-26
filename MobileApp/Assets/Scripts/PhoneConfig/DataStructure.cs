@@ -1,5 +1,7 @@
 ﻿using System;
 
+//Data structure for the Blob storage configuration files
+
 [Serializable]
 public class Users
 {

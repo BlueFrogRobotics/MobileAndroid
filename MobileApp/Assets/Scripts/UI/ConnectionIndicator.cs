@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Manages the connection indicator UI
+/// </summary>
 public class ConnectionIndicator : MonoBehaviour
 {
     [SerializeField]
@@ -16,6 +19,8 @@ public class ConnectionIndicator : MonoBehaviour
 
     void Update()
     {
+        //Check which connection type is used
+        //and display the red or green image matching the remote status (connected or disconnected)
         if(oto.isActiveAndEnabled) {
             if (oto.HasAPeer) {
                 redImage.SetActive(false);

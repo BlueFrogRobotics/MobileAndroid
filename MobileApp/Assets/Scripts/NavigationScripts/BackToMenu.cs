@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Go back from the Remote Control menu to Connected menu. Manage all networks related to it
+/// </summary>
 public class BackToMenu : MonoBehaviour
 {
     [SerializeField]
@@ -26,7 +29,7 @@ public class BackToMenu : MonoBehaviour
 
     public void GoBackToMenu()
     {
-        //mIncomingVideo.gameObject.SetActive(false);
+        //Reactivate networks depending on which type of remote connection was used
         if(selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL) {
             oto.Disconnect();
             oto.gameObject.SetActive(false);

@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using OpenCVUnity;
 using BuddyTools;
 
+/// <summary>
+/// Receiver for the video streaming between the remote and phone
+/// </summary>
 public class VideoOTOReceiver : OTONetReceiver
 {
     [SerializeField]
@@ -27,6 +30,7 @@ public class VideoOTOReceiver : OTONetReceiver
 
     public override void ReceiveData(byte[] iData, int iNData)
     {
+        //Decode the byte stream and create a corresponding texture
         mDecodedImage = Highgui.imdecode(new MatOfByte(iData), 3);
 
         if (mDecodedImage.total() != 0) {

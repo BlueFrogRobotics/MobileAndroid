@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
 
 public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandler,IPointerDownHandler {
 
     [SerializeField]
     private float radius = 2f;
-
-    //[SerializeField]
-    //private GameObject Toggle;
 
     [SerializeField]
     private GameObject haloImage;
@@ -18,7 +14,6 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
     private float fadeSpeed = 0.01f;
 
     public bool mIsDragging;
-    //public bool isBody;
     private bool mDown;
     private bool mIsJoined;
     private float mTime;
@@ -38,8 +33,7 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
         mAlphaDown = new Color(255, 255, 255, 0);
         mAlphaUp = new Color(255, 255, 255, 255);
         mBGImage = GetComponent<Image>();
-        mJoystickHandle = transform.GetChild(0).GetComponent<Image>();
-        //haloImage = transform.GetChild(1).GetComponent<Image>();        
+        mJoystickHandle = transform.GetChild(0).GetComponent<Image>();  
     }
 
     void Update()
@@ -47,7 +41,6 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
         if (mIsDragging && mHaloColor.a < 255) {
             mHaloColor.a += fadeSpeed;
             SetHaloAlpha(mHaloColor);
-            //haloImage.color = mHaloColor;
         }
     }
 
@@ -60,6 +53,7 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
         }
     }
 
+    //Called when the joystick cursor is being dragged
     public virtual void OnDrag(PointerEventData iPed)
     {
         mIsDragging = true;
@@ -72,7 +66,8 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
             lPos.x = (lPos.x / mBGImage.rectTransform.sizeDelta.x);
             lPos.y = (lPos.y / mBGImage.rectTransform.sizeDelta.y);
             mInputVector = new Vector3(lPos.x * 2, lPos.y * 2);
-            mInputVector = (mInputVector.magnitude > 1.0f) ? mInputVector.normalized : mInputVector; //Normalized the vector to follow a circle
+            //Normalized the vector to follow a circle
+            mInputVector = (mInputVector.magnitude > 1.0f) ? mInputVector.normalized : mInputVector;
             //Move the Handler
             mJoystickHandle.rectTransform.anchoredPosition = new Vector3(mInputVector.x * (mBGImage.rectTransform.sizeDelta.x / radius),
                 mInputVector.y * (mBGImage.rectTransform.sizeDelta.y / radius));
@@ -93,28 +88,21 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
         mIsDragging = false;
         mJoystickHandle.color = mAlphaDown;
         SetHaloAlpha(mAlphaDown);
-        //haloImage.color = mAlphaDown;
         mJoystickHandle.rectTransform.anchoredPosition = new Vector3(0, 0, 0);
 
-        if (Time.time - mTime < 0.2 && mDown) {
+        if (Time.time - mTime < 0.2 && mDown)
             mDown = false;
-            //Toggle.GetComponent<ToggleController>().toggle();
-        }
-
     }
 
-    //This function allowed the switching between Landscape and Portrait display.
+    //This function allows to switch between Landscape and Portrait display.
     void OnDisable()
     {
         mIsDragging = false;
         mJoystickHandle.color = mAlphaDown;
         SetHaloAlpha(mAlphaDown);
-        //haloImage.color = mAlphaDown;
         mJoystickHandle.rectTransform.anchoredPosition = new Vector3(0, 0, 0);
 
-        if (Time.time - mTime < 0.2 && mDown) {
+        if (Time.time - mTime < 0.2 && mDown)
             mDown = false;
-            //Toggle.GetComponent<ToggleController>().toggle();
-        }
     }
 }

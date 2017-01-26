@@ -3,6 +3,9 @@ using UnityEngine.Networking;
 
 public delegate void IPconfig(string iIP);
 
+/// <summary>
+/// Detects local robots via a broadcast server that emits a signal every second
+/// </summary>
 public class NetworkDiscovery : MonoBehaviour
 {
     public int hostId { get { return mHostId; } set { mHostId = value; } }

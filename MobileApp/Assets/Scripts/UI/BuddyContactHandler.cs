@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Handles the Buddy Contact prefab for color display depending on a Buddy being selected or not
+/// </summary>
 public class BuddyContactHandler : MonoBehaviour
 {
     private bool mTogglePreviousState;
@@ -20,9 +23,11 @@ public class BuddyContactHandler : MonoBehaviour
 
     void Update()
     {
+        //Check if toggle state has changed
         if(mTogglePreviousState != mParentToggle.isOn) {
             mTogglePreviousState = mParentToggle.isOn;
 
+            //Set the color matching the toggle state
             if (mTogglePreviousState == true)
                 mBuddyName.color = mSelectedColor;
             else

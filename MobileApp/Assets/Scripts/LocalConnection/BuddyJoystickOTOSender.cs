@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using BuddyOS.Command;
 
+/// <summary>
+/// Controls the movement of the robot on a local connection
+/// </summary>
 public class BuddyJoystickOTOSender : OTONetSender
 {
     [SerializeField]
@@ -31,10 +34,6 @@ public class BuddyJoystickOTOSender : OTONetSender
 
     private float X_DELTA_JOYSTICK;
     private float Y_DELTA_JOYSTICK;
-    //private float X_DELTA_JOYSTICK_HEAD_LANDSCAPE;
-    //private float Y_DELTA_JOYSTICK_HEAD_LANDSCAPE;
-    //private float X_DELTA_JOYSTICK_BODY_LANDSCAPE;
-    //private float Y_DELTA_JOYSTICK_BODY_LANDSCAPE;
 
     //Motion's var
     private float mNoSpeed = 0f;
@@ -54,17 +53,11 @@ public class BuddyJoystickOTOSender : OTONetSender
 
         X_DELTA_JOYSTICK = joystick.parent.GetComponent<RectTransform>().sizeDelta.x;
         Y_DELTA_JOYSTICK = joystick.parent.GetComponent<RectTransform>().sizeDelta.y;
-        //X_DELTA_JOYSTICK_BODY = joystickBody.parent.GetComponent<RectTransform>().sizeDelta.x;
-        //Y_DELTA_JOYSTICK_BODY = joystickBody.parent.GetComponent<RectTransform>().sizeDelta.y;
-
-        //X_DELTA_JOYSTICK_HEAD_LANDSCAPE = joystickHeadLandscape.parent.GetComponent<RectTransform>().sizeDelta.x;
-        //Y_DELTA_JOYSTICK_HEAD_LANDSCAPE = joystickHeadLandscape.parent.GetComponent<RectTransform>().sizeDelta.y;
-        //X_DELTA_JOYSTICK_BODY_LANDSCAPE = joystickBodyLandscape.parent.GetComponent<RectTransform>().sizeDelta.x;
-        //Y_DELTA_JOYSTICK_BODY_LANDSCAPE = joystickBodyLandscape.parent.GetComponent<RectTransform>().sizeDelta.y;
     }
 
     void Update()
     {
+        //The goal here is to get the position of the cursor in the relative plane of the joystick
         if (!isActiveAndEnabled ||  Time.time - mTime < 0.1) return;
 
         if (Screen.orientation == ScreenOrientation.LandscapeLeft
@@ -81,13 +74,17 @@ public class BuddyJoystickOTOSender : OTONetSender
         }
 
         if (mXPosition != 0 && mYPosition != 0) {
-            Debug.Log("Joystick moved");
+            //The cursor of the joystick is being moved
+            //We are controlling the body movement
             if(toggleController.IsBodyActive) {
+                //Compute the desired body movement and send the serialized command to remote
                 ComputeMobileBase();
                 byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 100).Serialize();
                 SendData(lMobileCmd, lMobileCmd.Length);
-            } else {
-                //Debug.Log("Computing Head movement");
+            }
+            //We are controlling the head movement
+            else {
+                //Compute the desired head movement and send the serialized command to remote
                 ComputeNoAxis();
                 ComputeYesAxis();
 
@@ -104,7 +101,7 @@ public class BuddyJoystickOTOSender : OTONetSender
 
     private void ComputeNoAxis()
     {
-        //Debug.Log("X Head position : " + mXPosition);
+        //Add an increment to No axis position corresponding to the cursor's
         mAngleNo -= mXPosition * 5f;
 
         if (Mathf.Abs(mAngleNo) > 45)
@@ -116,7 +113,7 @@ public class BuddyJoystickOTOSender : OTONetSender
 
     private void ComputeYesAxis()
     {
-        //Debug.Log("Y Head position : " + mYPosition);
+        //Add an increment to Yes axis position corresponding to the cursor's
         mAngleYes -= mYPosition * 5f;
 
         if (mAngleYes < -30)
@@ -131,6 +128,8 @@ public class BuddyJoystickOTOSender : OTONetSender
 
     private void ComputeMobileBase()
     {
+        //Compute the speed of both wheels according to the cursors position;
+        //The direction is thus influences by the speed of both wheels
         float lRadius = Mathf.Sqrt(mXPosition * mXPosition + mYPosition * mYPosition);
         float lAngle = (Mathf.Atan2(mYPosition, mXPosition));
         Debug.Log("Body position radius : " + lRadius + " / body position angle : " + lAngle);

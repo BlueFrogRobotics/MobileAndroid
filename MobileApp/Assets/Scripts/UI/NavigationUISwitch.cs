@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Manages the enabling/disabling of the Navigation UI (joystick, toggle switch, sensors UI, etc.)
+/// </summary>
 public class NavigationUISwitch : MonoBehaviour
 {
     [SerializeField]
@@ -19,6 +22,7 @@ public class NavigationUISwitch : MonoBehaviour
         mUIOn = true;
     }
 
+    //Enable or disable the UI depending on previous state
     public void SwitchUI()
     {
         Debug.Log("Switching UI");

@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Manages the Option Menu in the Remote Control window
+/// </summary>
 public class ShowControlMenu : MonoBehaviour {
 
     [SerializeField]
@@ -15,6 +18,7 @@ public class ShowControlMenu : MonoBehaviour {
         mShowingListedMenu = false;
     }
 
+    //Disable or enable UI depending on previous state
 	public void ShowListedMenu()
     {
         mShowingListedMenu = !mShowingListedMenu;

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using OpenCVUnity;
 
+/// <summary>
+/// Sender for Video streaming between remote and phone
+/// </summary>
 public class VideoOTOSender : OTONetSender
 {
     [Range(1, 100)]
@@ -32,6 +35,7 @@ public class VideoOTOSender : OTONetSender
 
     void Update()
     {
+        //Check if connection is established and if a new frame is available to send
         if (!OTO.HasAPeer || !isActiveAndEnabled || !mPhoneWebcam.DidUpdateThisFrame())
             return;
 
@@ -49,6 +53,7 @@ public class VideoOTOSender : OTONetSender
 
     void SendPhoneVideo()
     {
+        //Compress the frame to set JPG quality and send the buffer
         mLastTime = Time.time;
         mPhoneWebcam.CompressQuality = mCompressQuality;
         byte[] lData = mPhoneWebcam.GetBuffer();
@@ -57,16 +62,5 @@ public class VideoOTOSender : OTONetSender
             return;
 
         SendData(lData, lData.Length);
-
-        //if (!mOTO.HasAPeer || !mPhoneWebcam.DidUpdateThisFrame())
-        //    return;
-
-        //mPhoneWebcam.CompressQuality = mCompressQuality;
-        //byte[] lData = mPhoneWebcam.GetBuffer();
-
-        //if (lData == null)
-        //    return;
-
-        //SendData(lData, lData.Length);
     }
 }

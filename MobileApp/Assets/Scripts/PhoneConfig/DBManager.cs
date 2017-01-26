@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.IO;
 
+//Data structure corresponding to DataBase structure
 [Serializable]
 public class PhoneUser
 {
@@ -14,12 +15,16 @@ public class PhoneUser
     public string Picture;
 }
 
+//Array of active users on phone
 [Serializable]
 public class PhoneUserList
 {
     public PhoneUser[] Users;
 }
 
+/// <summary>
+/// Manages all requests to DataBase : connection, account creation, etc.
+/// </summary>
 public class DBManager : MonoBehaviour
 {
     public string BuddyList { get { return mBuddyList; } }
@@ -279,7 +284,6 @@ public class DBManager : MonoBehaviour
     private void LoadUserPicture(string iPictureName)
     {
         //Function name is explicit enough. We load the picture file into the sprite
-        //TODO : Load the generated Sprite to all the icons
         byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(iPictureName));
         Texture2D lTex = new Texture2D(2, 2);
         lTex.LoadImage(lFileData);
@@ -288,6 +292,7 @@ public class DBManager : MonoBehaviour
 
     public void DisplayNextUser()
     {
+        //Self-explanatory
         int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
 
         if(lIndex != mUserList.Users.Length - 1) {
@@ -302,6 +307,7 @@ public class DBManager : MonoBehaviour
 
     public void DisplayPreviousUser()
     {
+        //Self-explanatory
         int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
 
         if (lIndex != 0)

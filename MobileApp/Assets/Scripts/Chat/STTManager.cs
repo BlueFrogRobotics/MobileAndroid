@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using BuddyAPI;
 
+/// <summary>
+/// Class to control the face along with the STT's flow and generate the chat messages at end of speech
+/// </summary>
 [RequireComponent(typeof(SpeechToText))]
 public class STTManager : MonoBehaviour
 {
@@ -39,6 +42,7 @@ public class STTManager : MonoBehaviour
         face.SetMood(MoodType.LISTENING);
     }
 
+    //Get the said sentence and generate the message in chat
     private void OnSTTComplete(string iSpeech)
     {
         input.text = iSpeech;

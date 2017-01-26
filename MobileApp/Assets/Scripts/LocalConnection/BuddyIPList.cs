@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+/// <summary>
+/// Manages the displayed list of Buddies the user can connect to
+/// </summary>
 public class BuddyIPList : MonoBehaviour
 {
     [SerializeField]
@@ -48,6 +51,7 @@ public class BuddyIPList : MonoBehaviour
 
     void FixedUpdate()
     {
+        //Refresh list every 20 seconds
         if (!isActiveAndEnabled)
             return;
 
@@ -65,6 +69,7 @@ public class BuddyIPList : MonoBehaviour
 
     private void UpdateBuddyList(string iNewBuddyIP)
     {
+        //Check if new Buddy is not already contained in the connected list
         string[] lTab = iNewBuddyIP.Split(':');
         string lBuddyIP = lTab[lTab.Length - 1];
 
@@ -86,6 +91,7 @@ public class BuddyIPList : MonoBehaviour
 
     private void RemoveBuddyFromList(string iDisconnectedBuddy)
     {
+        //Self-explanatory
         string[] lTab = iDisconnectedBuddy.Split(':');
         string lBuddyIP = lTab[lTab.Length - 1];
         mIPList.Remove(lBuddyIP);
@@ -94,13 +100,18 @@ public class BuddyIPList : MonoBehaviour
 
     public void UpdateIPList()
     {
+        //Remove all present displayed robots
         foreach (Transform lChild in parentTransform)
             GameObject.Destroy(lChild.gameObject);
+
+        //Add Buddies from all different sources. 
+        //NOTE : WebRTC Buddies and Database ones will be merged
         AddBuddyFromDB();
         AddWebRTCBuddy();
         mIPList.Clear();
         mIPList = mobileServer.GetBuddyConnectedList();
 
+        //Instiate the prefab for each found Buddy in the displayed list
         foreach (string lIP in mIPList) {
             prefabName.text = "Buddy " + mBuddyNb;
             prefabID.text = "IP " + lIP;
@@ -110,6 +121,7 @@ public class BuddyIPList : MonoBehaviour
             lClone.transform.SetParent(parentTransform);
             lClone.transform.localScale = Vector3.one;
         }
+        //Add the searching logo to the list for better visuals
         GameObject lSearching = Instantiate(searchingPrefab, transform.position, transform.rotation) as GameObject;
         lSearching.transform.SetParent(parentTransform);
         lSearching.transform.localScale = Vector3.one;
@@ -117,6 +129,7 @@ public class BuddyIPList : MonoBehaviour
 
     private void AddBuddyFromDB()
     {
+        //Retrieve the list from Database source and add it to the displayed list
         string[] lBuddyList = buddyDB.BuddyList.Split('\n');
 
         for (int i = 0; i < lBuddyList.Length - 1; i++)
@@ -134,6 +147,7 @@ public class BuddyIPList : MonoBehaviour
 
     private void AddWebRTCBuddy()
     {
+        //For now, it's just a hard coded Buddy that the user can connect to
         prefabName.text = "User2";
         prefabID.text = "WebRTC ID";
         GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;

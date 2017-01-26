@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Receiver to get the sensors information
+/// </summary>
 public class SensorOTOReceiver : OTONetReceiver
 {
     [SerializeField]
@@ -19,6 +22,7 @@ public class SensorOTOReceiver : OTONetReceiver
         if (iNData != 4)
             return;
         
+        //Get the info and display it
         mLeftSensor.GetComponent<ObstacleManager>().lvl = iData[0];
         mMiddleSensor.GetComponent<ObstacleManager>().lvl = iData[1];
         mRightSensor.GetComponent<ObstacleManager>().lvl = iData[2];
