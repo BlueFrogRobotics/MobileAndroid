@@ -24,8 +24,6 @@ public class BuddyJoystickOTOSender : OTONetSender
 
     //Network
     private byte[] mSentData;
-    private bool mIsSent;
-    private bool mIsInitialized;
     private float mTime;
     
     //Joysticks' var
@@ -48,8 +46,6 @@ public class BuddyJoystickOTOSender : OTONetSender
     void OnEnable()
     {
         mTime = Time.time;
-        mIsInitialized = false;
-        mIsSent = false;
 
         X_DELTA_JOYSTICK = joystick.parent.GetComponent<RectTransform>().sizeDelta.x;
         Y_DELTA_JOYSTICK = joystick.parent.GetComponent<RectTransform>().sizeDelta.y;

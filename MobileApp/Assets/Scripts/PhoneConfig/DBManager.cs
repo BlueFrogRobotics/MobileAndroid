@@ -4,6 +4,8 @@ using System;
 using System.Collections;
 using System.IO;
 
+using BuddyOS.Command;
+
 //Data structure corresponding to DataBase structure
 [Serializable]
 public class PhoneUser
@@ -319,5 +321,12 @@ public class DBManager : MonoBehaviour
         requestFirstname.text = mCurrentUser.FirstName;
         requestLastName.text = mCurrentUser.LastName;
         LoadUserPicture(mCurrentUser.Picture);
+    }
+
+    private string GetString(byte[] bytes)
+    {
+        char[] chars = new char[bytes.Length / sizeof(char)];
+        System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+        return new string(chars);
     }
 }
