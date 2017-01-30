@@ -14,10 +14,10 @@ public class RemoteControl : MonoBehaviour {
     private ToggleController toggleController;
 
     [SerializeField]
-    private GameObject connectedView;
+    private Animator headNoAnim;
 
     [SerializeField]
-    private GameObject disconnectedView;
+    private Animator headYesAnim;
 
     //public Slider mSlider;
 
@@ -145,7 +145,7 @@ public class RemoteControl : MonoBehaviour {
         if (Mathf.Abs(mAngleNo) > 45)
             mAngleNo = Mathf.Sign(mAngleNo) * 45;
 
-        //headNoAnim.SetFloat("HeadPosition_H", -mAngleNo * 100 / 45);
+        headNoAnim.SetFloat("HeadPosition_H", -mAngleNo * 100 / 45);
         mNoSpeed = (mXPosition * mXPosition) * mSpeedHead * 3f;
     }
 
@@ -160,7 +160,7 @@ public class RemoteControl : MonoBehaviour {
         if (mAngleYes > 60)
             mAngleYes = 60;
 
-        //headYesAnim.SetFloat("HeadPosition_V", mAngleYes);
+        headYesAnim.SetFloat("HeadPosition_V", mAngleYes);
         mYesSpeed = (mYPosition * mYPosition) * mSpeedHead * 3f;
     }
 
