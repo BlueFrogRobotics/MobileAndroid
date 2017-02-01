@@ -54,28 +54,28 @@ public class PhoneWebcamManager : MonoBehaviour
 
     void OnDisable()
     {
-       /* if (!mIsWebRTCConnection)
+        if (!mIsWebRTCConnection)
         {
             mWebcamTexture.Stop();
             mPhoneWebcamStream.gameObject.SetActive(false);
-        }*/
+        }
     }
 
     void Update()
     {
-       /* if (!mIsWebRTCConnection)
+        if (!mIsWebRTCConnection)
         {
             if (!mWebcamTexture.didUpdateThisFrame || Time.time - mTime < 1 / mFPS)
                 return;
 
             mTime = Time.time;
             mPhoneWebcamStream.texture = mWebcamTexture;
-        }*/
+        }
     }
 
     public byte[] GetBuffer()
     {
-      //Get camera frame, rotate and convert it to a byte array
+        //Get camera frame, rotate and convert it to a byte array
         MatOfByte lBuffer = new MatOfByte();
         BuddyTools.Utils.WebCamTextureToMat(mWebcamTexture, mTempMat);
 
@@ -101,24 +101,23 @@ public class PhoneWebcamManager : MonoBehaviour
     {
         if (!mIsWebRTCConnection)
         {
-            Debug.Log("webrtc is false;");
             if (!mPhoneWebcamStream.IsActive())
             {
                 mPhoneWebcamStream.gameObject.SetActive(true);
-                // mPhoneWebcamStream.texture = mWebcamTexture;
-                // Debug.Log("Webcam height " + mRequestedHeight + ", width " + mRequestedWidth);
-                // mWebcamTexture.Play();
+                mPhoneWebcamStream.texture = mWebcamTexture;
+                Debug.Log("Webcam height " + mRequestedHeight + ", width " + mRequestedWidth);
+                mWebcamTexture.Play();
             }
             else {
                 mPhoneWebcamStream.gameObject.SetActive(false);
-                // mWebcamTexture.Stop();
+                mWebcamTexture.Stop();
             }
         }
         else {
             if (!mPhoneWebcamStream.IsActive())
             {
                 mPhoneWebcamStream.gameObject.SetActive(true);
-             }
+            }
             else {
                 mPhoneWebcamStream.gameObject.SetActive(false);
             }
