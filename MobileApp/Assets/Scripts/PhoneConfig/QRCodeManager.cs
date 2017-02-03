@@ -28,14 +28,7 @@ public class QRCodeManager : MonoBehaviour
     void Start () {
         //Find the not frontal camera to read QRCode
         mCameraStarted = false;
-        WebCamDevice[] devices = WebCamTexture.devices;
-
-        for (int i = 0; i < devices.Length; i++) {
-            if (!devices[i].isFrontFacing) {
-                mCamera = new WebCamTexture(devices[i].name, 320, 240, 20);
-                break;
-            }
-        }
+        //CreateCamera(true);
         //Initialize reader and texture
         mReader = new BarcodeReader { AutoRotate = true, TryInverted = true };
         mTempMat = new Mat(240, 320, CvType.CV_8UC3);
@@ -70,14 +63,31 @@ public class QRCodeManager : MonoBehaviour
         }
     }
 
+    private void CreateCamera(bool iIsFrontFacing)
+    {
+        WebCamDevice[] devices = WebCamTexture.devices;
+
+        for (int i = 0; i < devices.Length; i++)
+        {
+            if (devices[i].isFrontFacing == iIsFrontFacing)
+            {
+                mCamera = new WebCamTexture(devices[i].name, 320, 240, 20);
+                break;
+            }
+        }
+    }
+
     public void SwitchQRCodeReader()
     {
         Debug.Log("Switching state");
 
-        if (mCameraStarted)
+        if (mCameraStarted) {
             mCamera.Stop();
-        else
+            Destroy(mCamera);
+        } else {
+            CreateCamera(true);
             mCamera.Play();
+        }
 
         mCameraStarted = !mCameraStarted;        
     }
