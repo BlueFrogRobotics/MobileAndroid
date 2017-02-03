@@ -44,14 +44,16 @@ public class SelectBuddy : MonoBehaviour
         foreach (Transform mBuddy in buddyList) {
             Toggle lToggle = mBuddy.gameObject.GetComponent<Toggle>();
 
+            
             //The robot whose Toggle button has been triggered is the one to connect to
             if (lToggle != null && lToggle.isOn) {
-                string[] lBuddySplit = mBuddy.GetChild(3).GetComponent<Text>().text.Split(' ');
+                string[] lBuddySplit = mBuddy.GetChild(5).GetComponent<Text>().text.Split(' ');
                 string lBuddyIP = lBuddySplit[1];
-                string lBuddyName = mBuddy.GetChild(2).GetComponent<Text>().text;
+                string lBuddyName = mBuddy.GetChild(4).GetComponent<Text>().text;
+
 
                 //Check wether it's a WebRTC or local connection
-                if(lBuddyName.Contains("User2")) {
+                if (lBuddyName.Contains("User2")) {
                     mRemote = RemoteType.WEBRTC;
                     webRTC.SetActive(true);
                 } else {
