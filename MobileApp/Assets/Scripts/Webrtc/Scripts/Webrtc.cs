@@ -35,8 +35,8 @@ public class Webrtc : MonoBehaviour
     private string mWebrtcReceiverObjectName;
 
     [Header("GUI")]
-    public RawImage mRemoteRawImage;
-    public RawImage mLocalRawImage;
+    public RawImage mRemoteRawImage = null;
+    public RawImage mLocalRawImage = null;
     public Text mTextLog = null;
 
     /// <summary>
@@ -78,13 +78,15 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void SetupWebRTC()
     {
-        if(mTextLog)
-        mTextLog.text += "setup webrtc" + "\n";
+        if (mTextLog)
+            mTextLog.text += "setup webrtc" + "\n";
+
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
             using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+
                 cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName);
             }
         }
@@ -100,6 +102,17 @@ public class Webrtc : MonoBehaviour
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
             cls.CallStatic("StartWebrtc");
+        }
+    }
+
+    /// <summary>
+    /// Stop WebRTC connection
+    /// </summary>
+    public void StopWebRTC()
+    {
+        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+        {
+            cls.CallStatic("StopWebrtc");
         }
     }
 
@@ -207,7 +220,7 @@ public class Webrtc : MonoBehaviour
         else
             HangUp();
     }
-    
+
     /// <summary>
     /// This function is called by the RTC library when it receives a message.
     /// </summary>
