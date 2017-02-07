@@ -55,7 +55,7 @@ public class GoBack : MonoBehaviour
                 canvasAnimator.SetTrigger("GoConnectBuddy");
                 break;
             case "AdminMenu":
-                linkManager.SetMenuBuddyValue(4);
+                //linkManager.SetMenuBuddyValue(4);
                 break;
         }
         mCurrentMenu = mPreviousMenu;

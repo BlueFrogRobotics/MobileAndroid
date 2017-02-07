@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1ce6bbf88fdaf424bbfdeb6b43aa963b
-timeCreated: 1482416242
+timeCreated: 1486049456
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -52,6 +52,8 @@ TextureImporter:
     21300090: Reduice
     21300092: expand
     21300094: HeadPosition_Bloc
+    21300096: Underline
+    21300098: MaskScroll
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -97,8 +99,10 @@ TextureImporter:
   textureType: 5
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: LogoBuddy
+    - serializedVersion: 2
+      name: LogoBuddy
       rect:
         serializedVersion: 2
         x: 0
@@ -108,27 +112,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 53.5, y: 47}
-        - {x: 46.5, y: 45}
-        - {x: 46.5, y: -34}
-        - {x: 48.5, y: -42}
-        - {x: 78.5, y: -51}
-        - {x: 157.5, y: -51}
-        - {x: 161.5, y: -50}
-        - {x: 161.5, y: 47}
-      - - {x: -161.5, y: 51}
-        - {x: -161.5, y: -28}
-        - {x: -146.5, y: -38}
-        - {x: -70.5, y: -38}
-        - {x: -70.5, y: 38}
-        - {x: -76.5, y: 51}
-      - - {x: -67.5, y: 47}
-        - {x: -68.5, y: 43}
-        - {x: -68.5, y: -37}
-        - {x: 46.5, y: -37}
-        - {x: 46.5, y: 47}
-    - name: AtlasMobile_0
+      outline: []
+    - serializedVersion: 2
+      name: AtlasMobile_0
       rect:
         serializedVersion: 2
         x: 645
@@ -139,7 +125,8 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: CricleBackground
+    - serializedVersion: 2
+      name: CricleBackground
       rect:
         serializedVersion: 2
         x: 10
@@ -149,19 +136,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -60, y: 105}
-        - {x: -105, y: 93}
-        - {x: -105, y: -105}
-        - {x: 87, y: -105}
-        - {x: 105, y: -67}
-        - {x: 105, y: 62}
-        - {x: 70, y: 105}
-      - - {x: -44, y: -75}
-        - {x: -87, y: 14}
-        - {x: -51, y: 73}
-        - {x: 88, y: -9}
-    - name: BackgroundImage
+      outline: []
+    - serializedVersion: 2
+      name: BackgroundImage
       rect:
         serializedVersion: 2
         x: 433
@@ -171,21 +148,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 66, y: 100}
-        - {x: 44, y: 104}
-        - {x: -35, y: 104}
-        - {x: -64, y: 91}
-        - {x: -87, y: 68}
-        - {x: -103, y: 39}
-        - {x: -103, y: -37}
-        - {x: -91, y: -69}
-        - {x: -41, y: -103}
-        - {x: 36, y: -103}
-        - {x: 72, y: -89}
-        - {x: 104, y: -43}
-        - {x: 104, y: 46}
-    - name: DefaultUser
+      outline: []
+    - serializedVersion: 2
+      name: DefaultUser
       rect:
         serializedVersion: 2
         x: 439
@@ -195,17 +160,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 84, y: 82}
-        - {x: 68, y: 91}
-        - {x: -63, y: 91}
-        - {x: -67, y: 78}
-        - {x: -67, y: -90}
-        - {x: 43, y: -90}
-        - {x: 72, y: -76}
-        - {x: 87, y: -50}
-        - {x: 87, y: 34}
-    - name: DefaultSnow
+      outline: []
+    - serializedVersion: 2
+      name: DefaultSnow
       rect:
         serializedVersion: 2
         x: 0
@@ -215,36 +172,21 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 72, y: 85}
-        - {x: 40, y: 104}
-        - {x: -36, y: 104}
-        - {x: -66, y: 88}
-        - {x: -91, y: 61}
-        - {x: -104, y: 32}
-        - {x: -104, y: -41}
-        - {x: -73, y: -87}
-        - {x: -48, y: -104}
-        - {x: 46, y: -104}
-        - {x: 67, y: -91}
-        - {x: 104, y: -43}
-        - {x: 104, y: 45}
-    - name: ButtonDisabled
+      outline: []
+    - serializedVersion: 2
+      name: ButtonDisabled
       rect:
         serializedVersion: 2
         x: 10
         y: 889
-        width: 748
+        width: 31
         height: 112
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -187, y: 29}
-        - {x: -187, y: -28}
-        - {x: 187, y: -28}
-        - {x: 187, y: 29}
-    - name: ToggleOff
+      outline: []
+    - serializedVersion: 2
+      name: ToggleOff
       rect:
         serializedVersion: 2
         x: 10
@@ -254,16 +196,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -11, y: 21}
-        - {x: -20, y: 13}
-        - {x: -20, y: -14}
-        - {x: -14, y: -20}
-        - {x: 13, y: -20}
-        - {x: 20, y: -17}
-        - {x: 20, y: 17}
-        - {x: 18, y: 21}
-    - name: ToggleOn
+      outline: []
+    - serializedVersion: 2
+      name: ToggleOn
       rect:
         serializedVersion: 2
         x: 97
@@ -273,16 +208,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -8, y: 18}
-        - {x: -17, y: 12}
-        - {x: -17, y: -9}
-        - {x: -14, y: -18}
-        - {x: 8, y: -18}
-        - {x: 19, y: -11}
-        - {x: 19, y: 9}
-        - {x: 14, y: 18}
-    - name: Mask
+      outline: []
+    - serializedVersion: 2
+      name: Mask
       rect:
         serializedVersion: 2
         x: 198
@@ -293,7 +221,8 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: QRCode
+    - serializedVersion: 2
+      name: QRCode
       rect:
         serializedVersion: 2
         x: 218
@@ -303,15 +232,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: 16}
-        - {x: -15, y: 15}
-        - {x: -15, y: -11}
-        - {x: -11, y: -15}
-        - {x: 11, y: -15}
-        - {x: 15, y: -13}
-        - {x: 15, y: 16}
-    - name: Email
+      outline: []
+    - serializedVersion: 2
+      name: Email
       rect:
         serializedVersion: 2
         x: 298
@@ -321,16 +244,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -13, y: 15}
-        - {x: -18, y: 14}
-        - {x: -18, y: -11}
-        - {x: -17, y: -15}
-        - {x: 15, y: -15}
-        - {x: 19, y: -14}
-        - {x: 19, y: 13}
-        - {x: 18, y: 15}
-    - name: Floppy
+      outline: []
+    - serializedVersion: 2
+      name: Floppy
       rect:
         serializedVersion: 2
         x: 378
@@ -340,16 +256,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -12, y: 16}
-        - {x: -15, y: 15}
-        - {x: -15, y: -12}
-        - {x: -11, y: -16}
-        - {x: 17, y: -16}
-        - {x: 18, y: -12}
-        - {x: 18, y: 14}
-        - {x: 16, y: 16}
-    - name: Halo_Pad
+      outline: []
+    - serializedVersion: 2
+      name: Halo_Pad
       rect:
         serializedVersion: 2
         x: 751
@@ -359,15 +268,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 16.5, y: 90.5}
-        - {x: -57.5, y: 42.5}
-        - {x: -89.5, y: -20.5}
-        - {x: -89.5, y: -89.5}
-        - {x: 12.5, y: -89.5}
-        - {x: 90.5, y: -10.5}
-        - {x: 90.5, y: 90.5}
-    - name: Head_Pad
+      outline: []
+    - serializedVersion: 2
+      name: Head_Pad
       rect:
         serializedVersion: 2
         x: 745
@@ -377,16 +280,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -44, y: 39}
-        - {x: -56, y: 27}
-        - {x: -56, y: -37}
-        - {x: -35, y: -43}
-        - {x: 46, y: -43}
-        - {x: 57, y: -24}
-        - {x: 57, y: 34}
-        - {x: 39, y: 39}
-    - name: Body_Pad
+      outline: []
+    - serializedVersion: 2
+      name: Body_Pad
       rect:
         serializedVersion: 2
         x: 1154
@@ -396,17 +292,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 8.5, y: 50.5}
-        - {x: -16.5, y: 50.5}
-        - {x: -50.5, y: -0.5}
-        - {x: -50.5, y: -36.5}
-        - {x: -46.5, y: -45.5}
-        - {x: 46.5, y: -45.5}
-        - {x: 50.5, y: -35.5}
-        - {x: 50.5, y: 2.5}
-        - {x: 30.5, y: 40.5}
-    - name: Pad
+      outline: []
+    - serializedVersion: 2
+      name: Pad
       rect:
         serializedVersion: 2
         x: 1020
@@ -416,20 +304,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -31, y: 115}
-        - {x: -115, y: 28}
-        - {x: -115, y: -106}
-        - {x: -56, y: -115}
-        - {x: 98, y: -115}
-        - {x: 115, y: -67}
-        - {x: 115, y: 35}
-        - {x: 37, y: 115}
-      - - {x: -46, y: -55}
-        - {x: -56, y: 46}
-        - {x: 45, y: 56}
-        - {x: 55, y: -45}
-    - name: DetectTop_04
+      outline: []
+    - serializedVersion: 2
+      name: DetectTop_04
       rect:
         serializedVersion: 2
         x: 1484
@@ -439,19 +316,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 71.5, y: 51.5}
-        - {x: -87.5, y: 51.5}
-        - {x: -140.5, y: 40.5}
-        - {x: -140.5, y: 16.5}
-        - {x: -111.5, y: -51.5}
-        - {x: -83.5, y: -51.5}
-        - {x: -23.5, y: -40.5}
-        - {x: 67.5, y: -51.5}
-        - {x: 115.5, y: -51.5}
-        - {x: 140.5, y: 13.5}
-        - {x: 140.5, y: 41.5}
-    - name: DetectTop_03
+      outline: []
+    - serializedVersion: 2
+      name: DetectTop_03
       rect:
         serializedVersion: 2
         x: 1484
@@ -461,16 +328,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 108.5, y: 52}
-        - {x: -100.5, y: 52}
-        - {x: -140.5, y: 48}
-        - {x: -140.5, y: -14}
-        - {x: -119.5, y: -28}
-        - {x: 119.5, y: -28}
-        - {x: 140.5, y: 10}
-        - {x: 140.5, y: 41}
-    - name: DetectTop_02
+      outline: []
+    - serializedVersion: 2
+      name: DetectTop_02
       rect:
         serializedVersion: 2
         x: 1484
@@ -480,17 +340,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -109.5, y: 51.5}
-        - {x: -139.5, y: 44.5}
-        - {x: -140.5, y: 41.5}
-        - {x: -140.5, y: 9.5}
-        - {x: -129.5, y: -6.5}
-        - {x: 129.5, y: -6.5}
-        - {x: 140.5, y: 8.5}
-        - {x: 140.5, y: 46.5}
-        - {x: 85.5, y: 51.5}
-    - name: DetectTop_01
+      outline: []
+    - serializedVersion: 2
+      name: DetectTop_01
       rect:
         serializedVersion: 2
         x: 1484
@@ -500,14 +352,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -140.5, y: 52}
-        - {x: -140.5, y: 15}
-        - {x: 136.5, y: 15}
-        - {x: 140.5, y: 22}
-        - {x: 140.5, y: 40}
-        - {x: 128.5, y: 52}
-    - name: DetectBottom_04
+      outline: []
+    - serializedVersion: 2
+      name: DetectBottom_04
       rect:
         serializedVersion: 2
         x: 851
@@ -517,25 +364,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -182, y: 24.5}
-        - {x: -191, y: 16.5}
-        - {x: -191, y: -13.5}
-        - {x: -126, y: -58.5}
-        - {x: 94, y: -58.5}
-        - {x: 170, y: -41.5}
-        - {x: 192, y: 0.5}
-        - {x: 192, y: 17.5}
-        - {x: 176, y: 24.5}
-      - - {x: 136, y: 59.5}
-        - {x: -172, y: 59.5}
-        - {x: -172, y: 2.5}
-        - {x: -95, y: -35.5}
-        - {x: 100, y: -35.5}
-        - {x: 172, y: 15.5}
-        - {x: 172, y: 32.5}
-        - {x: 169, y: 34.5}
-    - name: DetectBottom_03
+      outline: []
+    - serializedVersion: 2
+      name: DetectBottom_03
       rect:
         serializedVersion: 2
         x: 850
@@ -545,26 +376,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -186.5, y: 23}
-        - {x: -191.5, y: 16}
-        - {x: -191.5, y: -4}
-        - {x: -177.5, y: -14}
-        - {x: -113.5, y: -49}
-        - {x: -80.5, y: -59}
-        - {x: 71.5, y: -59}
-        - {x: 91.5, y: -57}
-        - {x: 147.5, y: -33}
-        - {x: 191.5, y: 2}
-        - {x: 191.5, y: 23}
-      - - {x: -172.5, y: 50}
-        - {x: -172.5, y: 3}
-        - {x: -130.5, y: -37}
-        - {x: 94.5, y: -37}
-        - {x: 171.5, y: -21}
-        - {x: 171.5, y: 33}
-        - {x: 152.5, y: 50}
-    - name: DetectBottom_02
+      outline: []
+    - serializedVersion: 2
+      name: DetectBottom_02
       rect:
         serializedVersion: 2
         x: 850
@@ -574,23 +388,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -191.5, y: 23}
-        - {x: -191.5, y: 0}
-        - {x: -122.5, y: -59}
-        - {x: 141.5, y: -59}
-        - {x: 191.5, y: -4}
-        - {x: 191.5, y: 16}
-        - {x: 175.5, y: 23}
-      - - {x: -172.5, y: 38}
-        - {x: -172.5, y: 8}
-        - {x: -155.5, y: -7}
-        - {x: -56.5, y: -37}
-        - {x: 89.5, y: -37}
-        - {x: 171.5, y: 10}
-        - {x: 171.5, y: 37}
-        - {x: 170.5, y: 38}
-    - name: DetectBottom_01
+      outline: []
+    - serializedVersion: 2
+      name: DetectBottom_01
       rect:
         serializedVersion: 2
         x: 850
@@ -600,19 +400,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -186.5, y: 23}
-        - {x: -191.5, y: 16}
-        - {x: -191.5, y: -4}
-        - {x: -177.5, y: -14}
-        - {x: -113.5, y: -49}
-        - {x: -80.5, y: -59}
-        - {x: 71.5, y: -59}
-        - {x: 91.5, y: -57}
-        - {x: 147.5, y: -33}
-        - {x: 191.5, y: 2}
-        - {x: 191.5, y: 23}
-    - name: DetectSide_04
+      outline: []
+    - serializedVersion: 2
+      name: DetectSide_04
       rect:
         serializedVersion: 2
         x: 1625
@@ -622,48 +412,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 66, y: 40.5}
-        - {x: 40, y: 40.5}
-        - {x: -34, y: -26.5}
-        - {x: -36, y: -40.5}
-        - {x: -36, y: -49.5}
-        - {x: -15, y: -61.5}
-        - {x: -11, y: -60.5}
-        - {x: -7, y: -56.5}
-        - {x: 1, y: -45.5}
-        - {x: 20, y: -20.5}
-        - {x: 32, y: -8.5}
-        - {x: 49, y: 5.5}
-        - {x: 53, y: 7.5}
-        - {x: 55, y: 10.5}
-        - {x: 56, y: 10.5}
-        - {x: 59, y: 12.5}
-        - {x: 55, y: 10.5}
-        - {x: 52, y: 6.5}
-        - {x: 51, y: 6.5}
-        - {x: 47, y: 3.5}
-        - {x: 41, y: -1.5}
-        - {x: 19, y: -23.5}
-        - {x: 11, y: -33.5}
-        - {x: 2, y: -45.5}
-        - {x: -7, y: -59.5}
-        - {x: -9, y: -62.5}
-        - {x: 7, y: -72.5}
-        - {x: 24, y: -72.5}
-        - {x: 87, y: -12.5}
-        - {x: 87, y: 8.5}
-        - {x: 78, y: 30.5}
-      - - {x: 42, y: 73.5}
-        - {x: -16, y: 73.5}
-        - {x: -86, y: -2.5}
-        - {x: -86, y: -27.5}
-        - {x: -48, y: -45.5}
-        - {x: -35, y: -45.5}
-        - {x: 53, y: 38.5}
-        - {x: 53, y: 54.5}
-        - {x: 49, y: 71.5}
-    - name: DetectSide_03
+      outline: []
+    - serializedVersion: 2
+      name: DetectSide_03
       rect:
         serializedVersion: 2
         x: 1625
@@ -673,40 +424,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 8, y: 73.5}
-        - {x: -61, y: 45.5}
-        - {x: -86, y: -4.5}
-        - {x: -86, y: -34.5}
-        - {x: -40, y: -47.5}
-        - {x: -13, y: -11.5}
-        - {x: 6, y: 7.5}
-        - {x: 22, y: 20.5}
-        - {x: 29, y: 24.5}
-        - {x: 32, y: 27.5}
-        - {x: 37, y: 31.5}
-        - {x: 41, y: 32.5}
-        - {x: 43, y: 34.5}
-        - {x: 46, y: 35.5}
-        - {x: 48, y: 37.5}
-        - {x: 43, y: 33.5}
-        - {x: 40, y: 32.5}
-        - {x: 34, y: 27.5}
-        - {x: 33, y: 27.5}
-        - {x: 29, y: 24.5}
-        - {x: 22, y: 19.5}
-        - {x: 4, y: 4.5}
-        - {x: -14, y: -14.5}
-        - {x: -29, y: -34.5}
-        - {x: -35, y: -43.5}
-        - {x: -36, y: -47.5}
-        - {x: -32, y: -52.5}
-        - {x: -13, y: -61.5}
-        - {x: -9, y: -61.5}
-        - {x: 71, y: 16.5}
-        - {x: 71, y: 36.5}
-        - {x: 40, y: 73.5}
-    - name: DetectSide_02
+      outline: []
+    - serializedVersion: 2
+      name: DetectSide_02
       rect:
         serializedVersion: 2
         x: 1625
@@ -716,17 +436,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 42, y: 72.5}
-        - {x: -16, y: 72.5}
-        - {x: -86, y: -3.5}
-        - {x: -86, y: -28.5}
-        - {x: -48, y: -46.5}
-        - {x: -35, y: -46.5}
-        - {x: 53, y: 37.5}
-        - {x: 53, y: 53.5}
-        - {x: 49, y: 70.5}
-    - name: DetectSide_01
+      outline: []
+    - serializedVersion: 2
+      name: DetectSide_01
       rect:
         serializedVersion: 2
         x: 1625
@@ -736,16 +448,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 3, y: 72.5}
-        - {x: -86, y: 20.5}
-        - {x: -86, y: -31.5}
-        - {x: -74, y: -34.5}
-        - {x: -65, y: -34.5}
-        - {x: 35, y: 53.5}
-        - {x: 38, y: 59.5}
-        - {x: 38, y: 72.5}
-    - name: NavOff
+      outline: []
+    - serializedVersion: 2
+      name: NavOff
       rect:
         serializedVersion: 2
         x: 459
@@ -755,15 +460,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -12, y: 20}
-        - {x: -20, y: 18}
-        - {x: -20, y: -19}
-        - {x: 14, y: -19}
-        - {x: 19, y: -3}
-        - {x: 19, y: 19}
-        - {x: 18, y: 20}
-    - name: NavOn
+      outline: []
+    - serializedVersion: 2
+      name: NavOn
       rect:
         serializedVersion: 2
         x: 540
@@ -773,27 +472,21 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -9, y: 20}
-        - {x: -14, y: 19}
-        - {x: -14, y: -18}
-        - {x: -11, y: -19}
-        - {x: 16, y: -19}
-        - {x: 17, y: -13}
-        - {x: 17, y: 14}
-        - {x: 16, y: 20}
-    - name: ButtonSquareBlue
+      outline: []
+    - serializedVersion: 2
+      name: ButtonSquareBlue
       rect:
         serializedVersion: 2
-        x: 779
+        x: 780
         y: 889
-        width: 62
+        width: 60
         height: 112
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: ConnectUser
+    - serializedVersion: 2
+      name: ConnectUser
       rect:
         serializedVersion: 2
         x: 887
@@ -803,15 +496,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -38, y: 65}
-        - {x: -65, y: 19}
-        - {x: -65, y: -63}
-        - {x: 54, y: -63}
-        - {x: 66, y: -38}
-        - {x: 66, y: 15}
-        - {x: 21, y: 65}
-    - name: AddUser
+      outline: []
+    - serializedVersion: 2
+      name: AddUser
       rect:
         serializedVersion: 2
         x: 1188
@@ -821,16 +508,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 21, y: 65}
-        - {x: -38, y: 65}
-        - {x: -65, y: 30}
-        - {x: -65, y: -64}
-        - {x: 49, y: -64}
-        - {x: 65, y: -52}
-        - {x: 65, y: -10}
-        - {x: 35, y: 62}
-    - name: Default_Buddy
+      outline: []
+    - serializedVersion: 2
+      name: Default_Buddy
       rect:
         serializedVersion: 2
         x: 0
@@ -840,21 +520,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 72, y: 85}
-        - {x: 40, y: 104}
-        - {x: -36, y: 104}
-        - {x: -66, y: 88}
-        - {x: -91, y: 61}
-        - {x: -104, y: 32}
-        - {x: -104, y: -41}
-        - {x: -73, y: -87}
-        - {x: -48, y: -104}
-        - {x: 46, y: -104}
-        - {x: 67, y: -91}
-        - {x: 104, y: -43}
-        - {x: 104, y: 45}
-    - name: Default_GrandMa
+      outline: []
+    - serializedVersion: 2
+      name: Default_GrandMa
       rect:
         serializedVersion: 2
         x: 426
@@ -864,16 +532,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -19, y: 31}
-        - {x: -30, y: 27}
-        - {x: -30, y: -24}
-        - {x: -27, y: -30}
-        - {x: 27, y: -30}
-        - {x: 30, y: -27}
-        - {x: 30, y: 25}
-        - {x: 25, y: 31}
-    - name: Ico_VideoOff
+      outline: []
+    - serializedVersion: 2
+      name: Ico_VideoOff
       rect:
         serializedVersion: 2
         x: 622
@@ -883,17 +544,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 1, y: 16}
-        - {x: -13, y: 14}
-        - {x: -18, y: 11}
-        - {x: -18, y: -9}
-        - {x: -17, y: -16}
-        - {x: 17, y: -16}
-        - {x: 20, y: 1}
-        - {x: 20, y: 15}
-        - {x: 19, y: 16}
-    - name: Ico_VideoOn
+      outline: []
+    - serializedVersion: 2
+      name: Ico_VideoOn
       rect:
         serializedVersion: 2
         x: 704
@@ -903,13 +556,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -18, y: 13}
-        - {x: -18, y: -15}
-        - {x: 18, y: -15}
-        - {x: 19, y: -12}
-        - {x: 19, y: 13}
-    - name: Background_VisioVideo
+      outline: []
+    - serializedVersion: 2
+      name: Background_VisioVideo
       rect:
         serializedVersion: 2
         x: 793
@@ -920,7 +569,8 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 18, y: 21, z: 19, w: 17}
       outline: []
-    - name: Ico_Join
+    - serializedVersion: 2
+      name: Ico_Join
       rect:
         serializedVersion: 2
         x: 657
@@ -930,16 +580,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -14, y: 17}
-        - {x: -16, y: 13}
-        - {x: -16, y: 2}
-        - {x: 0, y: -15}
-        - {x: 12, y: -15}
-        - {x: 14, y: -11}
-        - {x: 14, y: 9}
-        - {x: -1, y: 17}
-    - name: Message_Buble_White
+      outline: []
+    - serializedVersion: 2
+      name: Message_Buble_White
       rect:
         serializedVersion: 2
         x: 572
@@ -949,17 +592,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 24, y: 99, z: 85, w: 24}
-      outline:
-      - - {x: -3, y: 36}
-        - {x: -27, y: 36}
-        - {x: -33, y: 30}
-        - {x: -33, y: -34}
-        - {x: -30, y: -35}
-        - {x: 11, y: -35}
-        - {x: 33, y: -19}
-        - {x: 33, y: -14}
-        - {x: 5, y: 27}
-    - name: Message_Buble_Blue
+      outline: []
+    - serializedVersion: 2
+      name: Message_Buble_Blue
       rect:
         serializedVersion: 2
         x: 437
@@ -969,14 +604,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 89, y: 22, z: 23, w: 101}
-      outline:
-      - - {x: -9.5, y: 36}
-        - {x: -31.5, y: 22}
-        - {x: -31.5, y: 16}
-        - {x: -0.5, y: -35}
-        - {x: 33.5, y: -35}
-        - {x: 33.5, y: 36}
-    - name: Fake_Toggle
+      outline: []
+    - serializedVersion: 2
+      name: Fake_Toggle
       rect:
         serializedVersion: 2
         x: 1
@@ -986,25 +616,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -141.5, y: 29}
-        - {x: -146.5, y: 18}
-        - {x: -146.5, y: -19}
-        - {x: -136.5, y: -29}
-        - {x: 139.5, y: -29}
-        - {x: 148.5, y: -15}
-        - {x: 148.5, y: 22}
-        - {x: 139.5, y: 29}
-      - - {x: -30.5, y: 14}
-        - {x: -111.5, y: 14}
-        - {x: -119.5, y: 12}
-        - {x: -119.5, y: -10}
-        - {x: -118.5, y: -13}
-        - {x: -38.5, y: -13}
-        - {x: -31.5, y: -10}
-        - {x: -27.5, y: 3}
-        - {x: -27.5, y: 10}
-    - name: Big_Background_Tiled
+      outline: []
+    - serializedVersion: 2
+      name: Big_Background_Tiled
       rect:
         serializedVersion: 2
         x: 0
@@ -1014,16 +628,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 59, y: 59, z: 59, w: 59}
-      outline:
-      - - {x: -16, y: 31}
-        - {x: -30, y: 21}
-        - {x: -30, y: -17}
-        - {x: -22, y: -30}
-        - {x: 21, y: -30}
-        - {x: 30, y: -19}
-        - {x: 30, y: 20}
-        - {x: 18, y: 31}
-    - name: Reduice
+      outline: []
+    - serializedVersion: 2
+      name: Reduice
       rect:
         serializedVersion: 2
         x: 430
@@ -1033,19 +640,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 12, y: 17}
-        - {x: 2, y: 17}
-        - {x: -3, y: 16}
-        - {x: -17, y: 4}
-        - {x: -17, y: -12}
-        - {x: -14, y: -16}
-        - {x: -5, y: -16}
-        - {x: 1, y: -14}
-        - {x: 14, y: -1}
-        - {x: 16, y: 4}
-        - {x: 16, y: 11}
-    - name: expand
+      outline: []
+    - serializedVersion: 2
+      name: expand
       rect:
         serializedVersion: 2
         x: 516
@@ -1055,17 +652,9 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 1, y: 17}
-        - {x: -4, y: 15}
-        - {x: -14, y: 3}
-        - {x: -16, y: -2}
-        - {x: -16, y: -15}
-        - {x: 3, y: -15}
-        - {x: 17, y: 1}
-        - {x: 17, y: 13}
-        - {x: 16, y: 17}
-    - name: HeadPosition_Bloc
+      outline: []
+    - serializedVersion: 2
+      name: HeadPosition_Bloc
       rect:
         serializedVersion: 2
         x: 203
@@ -1075,14 +664,31 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 52.5, y: 48.5}
-        - {x: -70.5, y: 48.5}
-        - {x: -94.5, y: 11.5}
-        - {x: -94.5, y: -47.5}
-        - {x: 94.5, y: -47.5}
-        - {x: 94.5, y: 31.5}
-        - {x: 93.5, y: 35.5}
+      outline: []
+    - serializedVersion: 2
+      name: Underline
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 999
+        width: 2
+        height: 115
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: MaskScroll
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 127
+        width: 8
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 41, z: 2, w: 35}
+      outline: []
     outline: []
   spritePackingTag: 
   userData: 
