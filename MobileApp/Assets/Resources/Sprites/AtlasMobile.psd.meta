@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1ce6bbf88fdaf424bbfdeb6b43aa963b
-timeCreated: 1486049456
+timeCreated: 1486569936
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -54,6 +54,10 @@ TextureImporter:
     21300094: HeadPosition_Bloc
     21300096: Underline
     21300098: MaskScroll
+    21300100: Up
+    21300102: Icon_Net
+    21300104: Icon_Local
+    21300106: Separator
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -106,9 +110,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 1844
+        y: 1845
         width: 645
-        height: 204
+        height: 203
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -117,10 +121,10 @@ TextureImporter:
       name: AtlasMobile_0
       rect:
         serializedVersion: 2
-        x: 645
-        y: 1998
-        width: 50
-        height: 50
+        x: 643
+        y: 1996
+        width: 55
+        height: 52
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,9 +181,9 @@ TextureImporter:
       name: ButtonDisabled
       rect:
         serializedVersion: 2
-        x: 10
+        x: 12
         y: 889
-        width: 31
+        width: 32
         height: 112
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -225,10 +229,10 @@ TextureImporter:
       name: QRCode
       rect:
         serializedVersion: 2
-        x: 218
-        y: 797
-        width: 80
-        height: 80
+        x: 233
+        y: 811
+        width: 50
+        height: 51
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,10 +241,10 @@ TextureImporter:
       name: Email
       rect:
         serializedVersion: 2
-        x: 298
-        y: 797
-        width: 80
-        height: 80
+        x: 307
+        y: 808
+        width: 64
+        height: 55
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -249,10 +253,10 @@ TextureImporter:
       name: Floppy
       rect:
         serializedVersion: 2
-        x: 378
-        y: 797
-        width: 80
-        height: 80
+        x: 394
+        y: 808
+        width: 55
+        height: 55
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -453,10 +457,10 @@ TextureImporter:
       name: NavOff
       rect:
         serializedVersion: 2
-        x: 459
-        y: 797
-        width: 80
-        height: 80
+        x: 464
+        y: 802
+        width: 66
+        height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -465,10 +469,10 @@ TextureImporter:
       name: NavOn
       rect:
         serializedVersion: 2
-        x: 540
-        y: 797
-        width: 80
-        height: 80
+        x: 550
+        y: 803
+        width: 66
+        height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -537,10 +541,10 @@ TextureImporter:
       name: Ico_VideoOff
       rect:
         serializedVersion: 2
-        x: 622
-        y: 797
-        width: 80
-        height: 80
+        x: 631
+        y: 807
+        width: 65
+        height: 56
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -549,10 +553,10 @@ TextureImporter:
       name: Ico_VideoOn
       rect:
         serializedVersion: 2
-        x: 704
-        y: 798
-        width: 80
-        height: 80
+        x: 714
+        y: 807
+        width: 65
+        height: 56
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -573,10 +577,10 @@ TextureImporter:
       name: Ico_Join
       rect:
         serializedVersion: 2
-        x: 657
-        y: 718
-        width: 80
-        height: 80
+        x: 667
+        y: 732
+        width: 55
+        height: 55
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -633,10 +637,10 @@ TextureImporter:
       name: Reduice
       rect:
         serializedVersion: 2
-        x: 430
-        y: 379
-        width: 80
-        height: 80
+        x: 441
+        y: 391
+        width: 55
+        height: 55
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -645,10 +649,10 @@ TextureImporter:
       name: expand
       rect:
         serializedVersion: 2
-        x: 516
-        y: 379
-        width: 80
-        height: 80
+        x: 529
+        y: 392
+        width: 55
+        height: 55
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -688,6 +692,54 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 2, y: 41, z: 2, w: 35}
+      outline: []
+    - serializedVersion: 2
+      name: Up
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 653
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Icon_Net
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 393
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Icon_Local
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 393
+        width: 55
+        height: 55
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - serializedVersion: 2
+      name: Separator
+      rect:
+        serializedVersion: 2
+        x: 633
+        y: 107
+        width: 104
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 23, y: 4, z: 23, w: 4}
       outline: []
     outline: []
   spritePackingTag: 
