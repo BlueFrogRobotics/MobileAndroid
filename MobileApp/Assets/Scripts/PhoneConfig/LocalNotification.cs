@@ -27,9 +27,10 @@ class LocalNotification
     }
     
     public static void SendNotification(int id, long delay, string title, string message, Color32 bgColor,
-        bool sound = true, bool vibrate = false, bool lights = true, string bigIcon = "",
-        NotificationExecuteMode executeMode = NotificationExecuteMode.Exact)
+        bool sound = false, bool vibrate = true, bool lights = true, string bigIcon = "",
+        NotificationExecuteMode executeMode = NotificationExecuteMode.Inexact)
     {
+        Debug.Log("Calling Notification from Java");
 #if UNITY_ANDROID && !UNITY_EDITOR
         AndroidJavaClass pluginClass = new AndroidJavaClass(fullClassName);
         if (pluginClass != null)
