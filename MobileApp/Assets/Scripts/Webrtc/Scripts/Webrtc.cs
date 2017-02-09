@@ -50,14 +50,15 @@ public class Webrtc : MonoBehaviour
     //called when receiving a call request or trying to call someone.
     // StartWebrtc tries to acquire the camera resource and so the camera
     // must be released beforehand.
-    void Start()
+    void OnEnable()
     {
-        // Setup and start webRTC
+         // Setup and start webRTC
         SetupWebRTC();
         StartWebRTC();
 
         mRemoteNativeTexture = new RemoteNativeTexture(640, 480);
         mLocalNativeTexture = new LocalNativeTexture(640, 480);
+
         // Show the android texture in a Unity raw image
         mRemoteRawImage.texture = mRemoteNativeTexture.texture;
         mLocalRawImage.texture = mLocalNativeTexture.texture;
@@ -110,6 +111,7 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StopWebRTC()
     {
+        Debug.Log("Stop WebRTC");
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
             cls.CallStatic("StopWebrtc");
@@ -122,6 +124,7 @@ public class Webrtc : MonoBehaviour
     /// <param name="iChannel">The channel the user you want to call is subscribed to</param>
     public void Call()
     {
+
         Debug.Log("Call : " + mRemoteUser);
         if (mTextLog)
             mTextLog.text += "Call : " + mRemoteUser + "\n";
