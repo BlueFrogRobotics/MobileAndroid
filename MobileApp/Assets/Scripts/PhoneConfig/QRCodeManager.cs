@@ -18,7 +18,7 @@ public class QRCodeManager : MonoBehaviour
     private RawImage cameraImage;
 
     [SerializeField]
-    private Text resultText;
+    private InputField resultText;
 
     private bool mCameraStarted;
     private WebCamTexture mCamera;
@@ -43,23 +43,23 @@ public class QRCodeManager : MonoBehaviour
             //There is a QRCode in the frame that gives a result
             if (lResults != null && lResults.Length != 0) {
                 string lNameQrCode = lResults[0].Text;
+                Debug.Log("Found QRCode : " + lNameQrCode);
                 resultText.text = lNameQrCode;
                 SwitchQRCodeReader();
                 popupQRCode.SetActive(false);
             }
-            //cameraImage.texture = mCamera;
-            //Rotate the frame for display
-            Debug.Log("Camera rotation " + mCamera.videoRotationAngle);
-            BuddyTools.Utils.WebCamTextureToMat(mCamera, mTempMat);
+            cameraImage.texture = mCamera;            
 
-            if (mCamera.videoRotationAngle == 0)
-                Core.flip(mTempMat, mTempMat, 1);
-            else if (mCamera.videoRotationAngle == 90)
-                Core.flip(mTempMat, mTempMat, 0);
-            else if (mCamera.videoRotationAngle == 270)
-                Core.flip(mTempMat, mTempMat, 1);
+            //BuddyTools.Utils.WebCamTextureToMat(mCamera, mTempMat);
 
-            cameraImage.texture = BuddyTools.Utils.MatToTexture2D(mTempMat);
+            //if (mCamera.videoRotationAngle == 90)
+            //    Core.flip(mTempMat, mTempMat, 1);
+            //else if (mCamera.videoRotationAngle == 180)
+            //    Core.flip(mTempMat, mTempMat, 0);
+            //else if (mCamera.videoRotationAngle == 270)
+            //    Core.flip(mTempMat, mTempMat, -1);
+
+            //cameraImage.texture = BuddyTools.Utils.MatToTexture2D(mTempMat);
         }
     }
 
@@ -85,8 +85,12 @@ public class QRCodeManager : MonoBehaviour
             mCamera.Stop();
             Destroy(mCamera);
         } else {
-            CreateCamera(true);
+            CreateCamera(false);
             mCamera.Play();
+            //Rotate the frame for display
+            int lRotation = mCamera.videoRotationAngle;
+            if (lRotation != 0)
+                cameraImage.transform.localRotation = Quaternion.Euler(0, 0, -lRotation);
         }
 
         mCameraStarted = !mCameraStarted;        

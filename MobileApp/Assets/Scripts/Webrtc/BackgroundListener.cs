@@ -12,6 +12,9 @@ public class BackgroundListener : MonoBehaviour
     [SerializeField]
     private NotificationSender notification;
 
+    [SerializeField]
+    private Webrtc webRTC;
+
     private AndroidJavaObject mJavaListener;
 
     // Use this for initialization
@@ -30,9 +33,9 @@ public class BackgroundListener : MonoBehaviour
         mJavaListener.Call("SubscribeConnectRequest");
     }
 
-    public void PublishConnectionRequest()
+    public void PublishConnectionRequest(string iRemoteID)
     {
-        mJavaListener.Call("Publish", "ConnectRequest", "10000002/10000003");
+        mJavaListener.Call("Publish", "ConnectRequest", webRTC.ID + "/" + iRemoteID);
     }
 
     public void PublishNotification()

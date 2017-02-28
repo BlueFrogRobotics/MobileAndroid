@@ -77,7 +77,7 @@ public class DBManager : MonoBehaviour
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
-        mHost = "52.174.52.152";
+        mHost = "52.174.52.152:8080";
         mBuddyList = "";
         mCurrentUser = new PhoneUser();
         mUserList = ReadPhoneUsers();

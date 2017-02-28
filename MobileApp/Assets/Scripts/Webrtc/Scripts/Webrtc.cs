@@ -8,6 +8,11 @@ public class Webrtc : MonoBehaviour
     public enum CONNECTION { CONNECTING = 0, DISCONNECTING = 1 };
 
     public CONNECTION ConnectionState { get { return mConnectionState; } }
+    public string ID { get { return mLocalUser; } }
+    public string RemoteID { get { return mRemoteUser; } set { mRemoteUser = value; } }
+
+    [SerializeField]
+    private DBManager dbManager;
 
     [Header("WebRTC")]
     /// <summary>
@@ -88,7 +93,8 @@ public class Webrtc : MonoBehaviour
             {
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
-                cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName);
+                cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName,
+                    Application.streamingAssetsPath+"/client_cert");
             }
         }
     }
@@ -98,6 +104,7 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StartWebRTC()
     {
+        mLocalUser = dbManager.CurrentUser.LastName + UnityEngine.Random.Range(1000, 9999).ToString();
         if (mTextLog)
             mTextLog.text += "Starting webRTC" + "\n";
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))

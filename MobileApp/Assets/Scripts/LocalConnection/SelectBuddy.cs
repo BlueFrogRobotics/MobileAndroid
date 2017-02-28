@@ -48,24 +48,25 @@ public class SelectBuddy : MonoBehaviour
             //The robot whose Toggle button has been triggered is the one to connect to
             if (lToggle != null && lToggle.isOn) {
                 string[] lBuddySplit = mBuddy.GetChild(5).GetComponent<Text>().text.Split(' ');
-                string lBuddyIP = lBuddySplit[1];
+                string lBuddyID = lBuddySplit[1];
                 string lBuddyName = mBuddy.GetChild(4).GetComponent<Text>().text;
 
 
                 //Check wether it's a WebRTC or local connection
-                if (lBuddyName.Contains("User2")) {
-                    mRemote = RemoteType.WEBRTC;
-                    webRTC.SetActive(true);
-                } else {
+                if (lBuddyName.Contains("Buddy")) {                    
                     mRemote = RemoteType.LOCAL;
-                    oTONetwork.IP = lBuddyIP;
-                    mobileServer.BuddyIP = lBuddyIP;
-                    Debug.Log("ip " + lBuddyIP + "!");
+                    oTONetwork.IP = lBuddyID;
+                    mobileServer.BuddyIP = lBuddyID;
+                    Debug.Log("ip " + lBuddyID + "!");
+                } else {
+                    mRemote = RemoteType.WEBRTC;
+                    webRTC.GetComponent<Webrtc>().RemoteID = lBuddyID;
+                    webRTC.SetActive(true);
                 }
                 
                 lFound = true;
-                notifications.SendNotification("Connected to Buddy " + lBuddyIP);
-                ChangeConnectedBuddyName(lBuddyName, lBuddyIP);
+                notifications.SendNotification("Connected to Buddy " + lBuddyID);
+                ChangeConnectedBuddyName(lBuddyName, lBuddyID);
             }            
         }
 

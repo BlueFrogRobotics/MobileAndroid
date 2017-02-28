@@ -136,7 +136,7 @@ public class BuddyIPList : MonoBehaviour
         {
             Debug.Log("Buddy IDs " + lBuddyList[i]);
             string[] lBuddyIDs = lBuddyList[i].Split('|');
-            prefabName.text = "Buddy " + lBuddyIDs[0];
+            prefabName.text = lBuddyIDs[0];
             prefabID.text = "ID " + lBuddyIDs[1];
 
             GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
