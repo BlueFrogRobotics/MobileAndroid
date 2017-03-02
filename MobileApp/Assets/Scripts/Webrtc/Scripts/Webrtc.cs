@@ -84,6 +84,7 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void SetupWebRTC()
     {
+        mLocalUser = dbManager.CurrentUser.LastName + UnityEngine.Random.Range(1000, 9999).ToString();
         if (mTextLog)
             mTextLog.text += "setup webrtc" + "\n";
 
@@ -104,7 +105,6 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StartWebRTC()
     {
-        mLocalUser = dbManager.CurrentUser.LastName + UnityEngine.Random.Range(1000, 9999).ToString();
         if (mTextLog)
             mTextLog.text += "Starting webRTC" + "\n";
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
@@ -132,12 +132,13 @@ public class Webrtc : MonoBehaviour
     public void Call()
     {
 
-        Debug.Log("Call : " + mRemoteUser);
+        Debug.Log("Call : " + mRemoteUser + "!");
         if (mTextLog)
             mTextLog.text += "Call : " + mRemoteUser + "\n";
         // mTextSend.text += "\nCall : " + iChannel;
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
+            Debug.Log("Starting call");
             cls.CallStatic("Call", mRemoteUser);
         }
 
