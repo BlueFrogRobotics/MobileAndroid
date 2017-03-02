@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class BackgroundListener : MonoBehaviour
 {
@@ -25,7 +26,9 @@ public class BackgroundListener : MonoBehaviour
 
     private void StartBackgroundListener(string iUri, string iRealm)
     {
-        mJavaListener = new AndroidJavaObject("my.maylab.unitywebrtc.BackgroundListener", iUri, iRealm);
+        mJavaListener = new AndroidJavaObject("my.maylab.unitywebrtc.BackgroundListener", iUri, iRealm,
+            BuddyTools.Utils.GetStreamingAssetFilePath("client_cert.pem"),
+            BuddyTools.Utils.GetStreamingAssetFilePath("server_key.pem"));
     }
 
     public void SubscribeConnectRequest()

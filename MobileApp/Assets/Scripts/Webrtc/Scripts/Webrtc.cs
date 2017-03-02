@@ -94,7 +94,7 @@ public class Webrtc : MonoBehaviour
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
                 cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName,
-                    Application.streamingAssetsPath+"/client_cert");
+                    BuddyTools.Utils.GetStreamingAssetFilePath("client_cert.pem"));
             }
         }
     }
