@@ -5,6 +5,7 @@ using System.Collections;
 using System.IO;
 
 using BuddyOS.Command;
+using System.Collections.Generic;
 
 //Data structure corresponding to DataBase structure
 [Serializable]
@@ -14,6 +15,7 @@ public class PhoneUser
     public string LastName;
     public string FirstName;
     public string Email;
+    public string Password;
     public string Picture;
 }
 
@@ -21,7 +23,7 @@ public class PhoneUser
 [Serializable]
 public class PhoneUserList
 {
-    public PhoneUser[] Users;
+    public List<PhoneUser> Users;
 }
 
 /// <summary>
@@ -60,7 +62,7 @@ public class DBManager : MonoBehaviour
     private Text requestLastName;
 
     [SerializeField]
-    private InputField requestEMail;
+    private InputField requestEmail;
 
     [SerializeField]
     private InputField requestPassword;
@@ -102,9 +104,9 @@ public class DBManager : MonoBehaviour
         WWWForm lForm = new WWWForm();
         lForm.AddField("firstname", requestFirstname.text);
         lForm.AddField("lastname", requestLastName.text);
-        lForm.AddField("email", requestEMail.text);
+        lForm.AddField("email", requestEmail.text);
         lForm.AddField("password", requestPassword.text);
-        
+
         WWW lWww = new WWW("http://" + mHost + "/connect.php", lForm);
         yield return lWww;
 
@@ -120,7 +122,7 @@ public class DBManager : MonoBehaviour
                     IsDefaultUser = false,
                     LastName = requestLastName.text,
                     FirstName = requestFirstname.text,
-                    Email = requestEMail.text
+                    Email = requestEmail.text
                 };
                 ConfirmConnection();
             }
@@ -216,11 +218,11 @@ public class DBManager : MonoBehaviour
 
     private void ResetRequestParameters()
     {
-        requestEMail.text = "";
+        requestEmail.text = "";
         requestPassword.text = "";
     }
 
-    private void ExportToJson(PhoneUserList iUser)
+    private void ExportToJsonAndWriteInUserFile(PhoneUserList iUser)
     {
         //Write User list on user file as JSON format
         string lJSON = JsonUtility.ToJson(iUser, true);
@@ -246,8 +248,9 @@ public class DBManager : MonoBehaviour
                 mCurrentUser = lUser;
                 requestFirstname.text = lUser.FirstName;
                 requestLastName.text = lUser.LastName;
-                LoadUserPicture(lUser.Picture);
-                //Debug.Log("Default user is " + lUser.FirstName + " " + lUser.LastName);
+                requestEmail.text = lUser.Email;
+                requestPassword.text = lUser.Password;
+                SetUserPicture(lUser);
                 break;
             }
         }
@@ -269,8 +272,8 @@ public class DBManager : MonoBehaviour
 
         //Add new user to current list
         //As only arrays can be used in json, we need to create an intermediate bigger list.
-        int lUserLength = mUserList.Users.Length;
-        PhoneUser[] lTempList = new PhoneUser[lUserLength+1];
+        int lUserLength = mUserList.Users.Count;
+        List<PhoneUser> lTempList = new List<PhoneUser>();
 
         for(int i=0; i<lUserLength; i++) {
             lTempList[i] = mUserList.Users[i];
@@ -280,7 +283,7 @@ public class DBManager : MonoBehaviour
         mUserList.Users = lTempList;
 
         //Save the new user file
-        ExportToJson(mUserList);
+        ExportToJsonAndWriteInUserFile(mUserList);
     }
 
     private void LoadUserPicture(string iPictureName)
@@ -295,32 +298,36 @@ public class DBManager : MonoBehaviour
     public void DisplayNextUser()
     {
         //Self-explanatory
-        int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
+        int lIndex = Array.IndexOf(mUserList.Users.ToArray(), mCurrentUser);
 
-        if(lIndex != mUserList.Users.Length - 1) {
+        if(lIndex != mUserList.Users.Count - 1) {
             mCurrentUser = mUserList.Users[lIndex + 1];
         } else {
             mCurrentUser = mUserList.Users[0];
         }
         requestFirstname.text = mCurrentUser.FirstName;
         requestLastName.text = mCurrentUser.LastName;
-        LoadUserPicture(mCurrentUser.Picture);
+        requestEmail.text = mCurrentUser.Email;
+        requestPassword.text = mCurrentUser.Password;
+        SetUserPicture(mCurrentUser);
     }
 
     public void DisplayPreviousUser()
     {
         //Self-explanatory
-        int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
+        int lIndex = Array.IndexOf(mUserList.Users.ToArray(), mCurrentUser);
 
         if (lIndex != 0)
         {
             mCurrentUser = mUserList.Users[lIndex - 1];
         } else {
-            mCurrentUser = mUserList.Users[mUserList.Users.Length - 1];
+            mCurrentUser = mUserList.Users[mUserList.Users.Count - 1];
         }
         requestFirstname.text = mCurrentUser.FirstName;
         requestLastName.text = mCurrentUser.LastName;
-        LoadUserPicture(mCurrentUser.Picture);
+        requestEmail.text = mCurrentUser.Email;
+        requestPassword.text = mCurrentUser.Password;
+        SetUserPicture(mCurrentUser); ;
     }
 
     private string GetString(byte[] bytes)
@@ -328,5 +335,60 @@ public class DBManager : MonoBehaviour
         char[] chars = new char[bytes.Length / sizeof(char)];
         System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
         return new string(chars);
+    }
+
+    public void deleteUserCount()
+    {
+        PhoneUserList lUserList = new PhoneUserList();
+        //Get list from file of all users
+        StreamReader lStreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
+        string lTemp = lStreamReader.ReadToEnd();
+        lStreamReader.Close();
+        lUserList = JsonUtility.FromJson<PhoneUserList>(lTemp);
+        PhoneUser lUserToDelete = new PhoneUser();
+        foreach (var item in lUserList.Users)
+        {
+            if (requestEmail.text == item.Email)
+            {
+                lUserToDelete=item;
+            }
+        }
+        if (requestEmail.text != "email")
+        {
+            lUserList.Users.Remove(lUserToDelete);
+            ExportToJsonAndWriteInUserFile(lUserList);
+            mUserList = ReadPhoneUsers();
+        }
+        
+        if(mUserList.Users.Count == 1)
+        {
+            Debug.Log("user count : " + mUserList.Users.Count);
+            canvasAppAnimator.SetTrigger("EndScene");
+            canvasAppAnimator.SetTrigger("GoFirstConnexion");
+        }
+        else
+        {
+            canvasAppAnimator.SetTrigger("GoConnectAccount");
+        }
+    }
+
+    private void SetUserPicture(PhoneUser lUser)
+    {
+        if ((lUser.Picture == "DefaultUser"))
+        {
+            Sprite[] mSprite = Resources.LoadAll<Sprite>("Sprites/AtlasMobile");
+            foreach (var item in mSprite)
+            {
+                if (item.name == "DefaultUser")
+                {
+                    profilePicture.transform.localPosition = new Vector3(-13.0f, -255.0f, 0.0f);
+                    profilePicture.sprite = item;
+                }
+            }
+        }
+        else {
+            profilePicture.transform.localPosition = new Vector3(0.0f, -199.0f, 0.0f);
+            LoadUserPicture(lUser.Picture);
+        }
     }
 }

@@ -2,24 +2,27 @@
     "Users": [
         {
             "IsDefaultUser": true,
-            "LastName": "HASSELVANDER",
-            "FirstName": "Rodolphe",
-            "Email": "rh@bfr.com",
-            "Picture": "rh.jpg"
+            "LastName": "Login with",
+            "FirstName": "another account",
+            "Email": "email",
+            "Password": "password",
+            "Picture": "DefaultUser"
         },
         {
             "IsDefaultUser": false,
             "LastName": "HULCELLE",
             "FirstName": "Marc",
             "Email": "mh@bfr.com",
+            "Password": "65456",
             "Picture": "mh.jpg"
         },
         {
             "IsDefaultUser": false,
-            "LastName": "Kim",
-            "FirstName": "Min-Hee",
-            "Email": "mk@naver.com",
-            "Picture": "mhk.jpg"
+            "LastName": "PIRONNET",
+            "FirstName": "Benoit",
+            "Email": "bp@bluefrogrobotics.com",
+            "Password": "8947861",
+            "Picture": "bp.jpg"
         }
     ]
 }
