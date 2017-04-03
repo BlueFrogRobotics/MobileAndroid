@@ -51,23 +51,19 @@ public class Webrtc : MonoBehaviour
     public LocalNativeTexture mLocalNativeTexture = null;
     private CONNECTION mConnectionState = CONNECTION.DISCONNECTING;
 
-    //For now Startwebrtc is called at init but in the future it will only be 
-    //called when receiving a call request or trying to call someone.
-    // StartWebrtc tries to acquire the camera resource and so the camera
-    // must be released beforehand.
-    void OnEnable()
-    {
-         // Setup and start webRTC
-        SetupWebRTC();
-        StartWebRTC();
+	// Setup and start webRTC
+	public void InitWebRTC()
+	{
+		SetupWebRTC();
+		StartWebRTC();
 
-        mRemoteNativeTexture = new RemoteNativeTexture(640, 480);
-        mLocalNativeTexture = new LocalNativeTexture(640, 480);
+		mRemoteNativeTexture = new RemoteNativeTexture(640, 480);
+		mLocalNativeTexture = new LocalNativeTexture(640, 480);
 
-        // Show the android texture in a Unity raw image
-        mRemoteRawImage.texture = mRemoteNativeTexture.texture;
-        mLocalRawImage.texture = mLocalNativeTexture.texture;
-    }
+		// Show the android texture in a Unity raw image
+		mRemoteRawImage.texture = mRemoteNativeTexture.texture;
+		mLocalRawImage.texture = mLocalNativeTexture.texture;
+	}
 
     void Update()
     {
@@ -118,6 +114,9 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StopWebRTC()
     {
+		mRemoteNativeTexture.Destroy();
+		mLocalNativeTexture.Destroy();
+
         Debug.Log("Stop WebRTC");
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
@@ -253,5 +252,17 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "Android Debug : " + iMessage + "\n";
     }
+
+	public void OnApplicationPause(bool paused)
+	{
+		if(paused)
+		{
+			StopWebRTC();
+		}
+		else
+		{
+			InitWebRTC();
+		}
+	}
 }
 

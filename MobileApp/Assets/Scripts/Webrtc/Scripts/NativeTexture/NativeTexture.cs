@@ -10,5 +10,5 @@ public abstract class NativeTexture
     abstract public Texture2D createTextureFromNativePtr(int iWidth, int iHeight);
 
     abstract public void Update();
-
+	abstract public void Destroy();
 }

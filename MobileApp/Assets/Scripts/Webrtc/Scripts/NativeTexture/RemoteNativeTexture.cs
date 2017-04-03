@@ -28,6 +28,15 @@ public class RemoteNativeTexture : NativeTexture {
 
   }
 
+	public override void Destroy()
+	{
+		using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		{
+			cls.CallStatic("destroyRemoteTexture");
+		}
+
+	}
+
     public RemoteNativeTexture(int iWidth, int iHeight)
     {
         // Create OpenGL android texture
