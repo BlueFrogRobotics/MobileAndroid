@@ -24,9 +24,6 @@ public class BackToMenu : MonoBehaviour
     [SerializeField]
     private Animator mAnimator;
 
-    [SerializeField]
-    private RawImage mIncomingVideo;
-
     public void GoBackToMenu()
     {
         //Reactivate networks depending on which type of remote connection was used

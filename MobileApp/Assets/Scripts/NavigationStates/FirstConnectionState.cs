@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,12 +12,27 @@ public class FirstConnectionState : ASubState {
         {
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();
+            PoolManager lPoolManager = animator.GetComponent<PoolManager>();
             // DESACTIVATE, ACTIVATE GENERICS
-            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DesactivateGeneric(new ArrayList() { "ScrollView", "TopUI" });
+            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "ScrollView", "TopUI" });
             // CREATING OBJECTS
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Big("Content_Bottom/ScrollView/Viewport", "CREATE YOUR ACCOUNT", "AddUser", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Big("Content_Bottom/ScrollView/Viewport", "CONNECT YOUR ACCOUNT", "ConnectUser", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fSimple_Title("Content_Top/Top_UI", "FIRST CONNECTION"));
+            LoadingUI.AddObject(lPoolManager.fButton_Big("Content_Bottom/ScrollView/Viewport", "CREATE YOUR ACCOUNT", "AddUser", new List<UnityAction>() { GoToCreationMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_Big("Content_Bottom/ScrollView/Viewport", "CONNECT YOUR ACCOUNT", "ConnectUser", new List<UnityAction>() { GoToConnectionMenu }));
+            LoadingUI.AddObject(lPoolManager.fSimple_Title("Content_Top/Top_UI", "FIRST CONNECTION"));
         }
+    }
+
+    private void GoToCreationMenu()
+    {
+        Animator lAnimator = GameObject.Find("CanvasApp").GetComponent<Animator>();
+        lAnimator.SetTrigger("GoCreateAccount");
+        lAnimator.SetTrigger("EndScene");
+    }
+
+    private void GoToConnectionMenu()
+    {
+        Animator lAnimator = GameObject.Find("CanvasApp").GetComponent<Animator>();
+        lAnimator.SetTrigger("GoConnectAccount");
+        lAnimator.SetTrigger("EndScene");
     }
 }

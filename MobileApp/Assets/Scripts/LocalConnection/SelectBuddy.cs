@@ -10,8 +10,8 @@ public class SelectBuddy : MonoBehaviour
 
     public RemoteType Remote { get { return mRemote; } set { mRemote = value; } }
 
-    [SerializeField]
-    private Transform buddyList;
+    public static string BuddyName { get; private set; }
+    public static string BuddyID { get; private set; }
 
     [SerializeField]
     private OTONetwork oTONetwork;
@@ -28,42 +28,42 @@ public class SelectBuddy : MonoBehaviour
     [SerializeField]
     private NotificationSender notifications;
 
-    [SerializeField]
-    private Text buddyConnectedName;
-
-    [SerializeField]
-    private Text buddyConnectedID;
-
     private RemoteType mRemote;
 
     public void BuddySelected()
     {
         bool lFound = false;
 
+        Transform lBuddyList = GameObject.Find("Content_Bottom/ScrollView/Viewport").transform;
+
         //Look through the list to see which robot has been selected
-        foreach (Transform mBuddy in buddyList) {
+        foreach (Transform mBuddy in lBuddyList) {
             Toggle lToggle = mBuddy.gameObject.GetComponent<Toggle>();
 
             //The robot whose Toggle button has been triggered is the one to connect to
             if (lToggle != null && lToggle.isOn) {
-                string[] lBuddySplit = mBuddy.GetChild(3).GetComponent<Text>().text.Split(' ');
-                string lBuddyIP = lBuddySplit[1];
-                string lBuddyName = mBuddy.GetChild(2).GetComponent<Text>().text;
+                string[] lBuddySplit = mBuddy.GetChild(6).GetComponent<Text>().text.Split(' ');
+                string lBuddyType = lBuddySplit[0];
+                string lBuddyID = lBuddySplit[1];
+                string lBuddyName = mBuddy.GetChild(5).GetComponent<Text>().text;
+                BuddyName = lBuddyName;
+                BuddyID = lBuddyID;
 
                 //Check wether it's a WebRTC or local connection
-                if(lBuddyName.Contains("User2")) {
-                    mRemote = RemoteType.WEBRTC;
-                    webRTC.SetActive(true);
-                } else {
+                if(lBuddyType.Contains("IP")) {
                     mRemote = RemoteType.LOCAL;
-                    oTONetwork.IP = lBuddyIP;
-                    mobileServer.BuddyIP = lBuddyIP;
-                    Debug.Log("ip " + lBuddyIP + "!");
+                    oTONetwork.IP = lBuddyID;
+                    mobileServer.BuddyIP = lBuddyID;
+                    Debug.Log("ip " + lBuddyID + "!");
+                    
+                } else {
+                    mRemote = RemoteType.WEBRTC;
+                    webRTC.GetComponent<Webrtc>().RemoteID = lBuddyID;
+                    webRTC.SetActive(true);
                 }
                 
                 lFound = true;
-                notifications.SendNotification("Connected to Buddy " + lBuddyIP);
-                ChangeConnectedBuddyName(lBuddyName, lBuddyIP);
+                notifications.SendNotification("Connected to Buddy " + lBuddyID);
             }            
         }
 
@@ -72,11 +72,5 @@ public class SelectBuddy : MonoBehaviour
             canvasAppAnimator.SetTrigger("EndScene");
         }
 
-    }
-
-    private void ChangeConnectedBuddyName(string iName, string iID)
-    {
-        buddyConnectedName.text = iName;
-        buddyConnectedID.text = iID;
     }
 }

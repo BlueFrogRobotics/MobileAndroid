@@ -146,9 +146,9 @@ public class PoolManager : MonoBehaviour {
 
         // HANDLE LOCAL OR INTERNET SPRITE.
         if (iLocal == true)
-            lLocal.GetComponent<Image>().sprite = mAtlasMobile["Icon_Net"];
-        else
             lLocal.GetComponent<Image>().sprite = mAtlasMobile["Icon_Local"];
+        else
+            lLocal.GetComponent<Image>().sprite = mAtlasMobile["Icon_Net"];
 
         // CREATE CALL BACK ON BUTTON ADD IF iListed = False OR ON EDIT IF iListed = True
         if (iCallbacks != null)
@@ -337,16 +337,28 @@ public class PoolManager : MonoBehaviour {
     // Button_User_Big
     public GameObject fButton_User_Big(string iParent, string iPicture, List<UnityAction> iCallbacks)
     {
+        DBManager lDBManager = GameObject.Find("DBManager").GetComponent<DBManager>();
         GameObject lFinalObject = Instantiate(Button_User_Big);
         Button lButton = lFinalObject.GetComponent<Button>();
+        Image lUser_Pic = lFinalObject.GetComponentsInChildren<Image>()[2];
 
         if (!string.IsNullOrEmpty(iPicture))
         {
             // Checker la photo utilisateur 
-        }
-
-        else
+            Sprite lSprite;
+            if (mAtlasMobile.ContainsKey(iPicture))
+                lSprite = mAtlasMobile[iPicture];
+            else if (mAtlasUI.ContainsKey(iPicture))
+                lSprite = mAtlasUI[iPicture];
+            else
+                lSprite = Resources.Load<Sprite>(iPicture) as Sprite;
+            lUser_Pic.sprite = lSprite;
+        } else {
             lButton.GetComponentInChildren<AspectRatioFitter>().aspectRatio = 1;
+            Sprite lSprite = lDBManager.GetCurrentUserImage();
+            if (lSprite != null)
+                lUser_Pic.sprite = lSprite;
+        }
 
         if (iCallbacks != null)
         {
@@ -361,16 +373,28 @@ public class PoolManager : MonoBehaviour {
     // Button_User
     public GameObject fButton_User(string iParent, string iPicture, bool iActive, List<UnityAction> iCallbacks)
     {
+        DBManager lDBManager = GameObject.Find("DBManager").GetComponent<DBManager>();
         GameObject lFinalObject = Instantiate(Button_User);
         Button lButton = lFinalObject.GetComponent<Button>();
+        Image lUser_Pic = lFinalObject.GetComponentsInChildren<Image>()[2];
 
         if (!string.IsNullOrEmpty(iPicture))
         {
             // Checker la photo utilisateur 
-        }
-
-        else
+            Sprite lSprite;
+            if (mAtlasMobile.ContainsKey(iPicture))
+                lSprite = mAtlasMobile[iPicture];
+            else if (mAtlasUI.ContainsKey(iPicture))
+                lSprite = mAtlasUI[iPicture];
+            else
+                lSprite = Resources.Load<Sprite>(iPicture) as Sprite;
+            lUser_Pic.sprite = lSprite;
+        } else {
             lButton.GetComponentInChildren<AspectRatioFitter>().aspectRatio = 1;
+            Sprite lSprite = lDBManager.GetCurrentUserImage();
+            if (lSprite != null)
+                lUser_Pic.sprite = lSprite;
+        }
 
         if (iCallbacks != null)
         {
@@ -465,10 +489,10 @@ public class PoolManager : MonoBehaviour {
     public GameObject fTextField_Icon(string iParent, string iPlaceHolder, string iText, string iIconName, List<UnityAction<string>> iCallbacksChange, List<UnityAction<string>> iCallbacksEnd, List<UnityAction> iCallbacksInfos)
     {
         GameObject lFinalObject = Instantiate(TextField_Icon);
-        InputField lTextFiel_Icon = lFinalObject.GetComponent<InputField>();
+        InputField lTextField_Icon = lFinalObject.GetComponent<InputField>();
 
-        lTextFiel_Icon.GetComponentInChildren<Text>().text = iPlaceHolder;
-        lTextFiel_Icon.GetComponent<InputField>().text = iText;
+        lTextField_Icon.GetComponentInChildren<Text>().text = iPlaceHolder;
+        lTextField_Icon.GetComponent<InputField>().text = iText;
 
         if (!string.IsNullOrEmpty(iIconName))
         {
@@ -479,21 +503,21 @@ public class PoolManager : MonoBehaviour {
                 lSprite = mAtlasUI[iIconName];
             else
                 lSprite = new Sprite();
-            lTextFiel_Icon.GetComponentsInChildren<Image>()[3].sprite = lSprite;
+            lTextField_Icon.GetComponentsInChildren<Image>()[3].sprite = lSprite;
         }
 
         // CREATE CALL BACK FOR EVERY CHANGE IN THIS TEXTFIELD
         if (iCallbacksChange != null)
         {
             foreach (UnityAction<string> lCallback in iCallbacksChange)
-                lTextFiel_Icon.onValueChanged.AddListener(lCallback);
+                lTextField_Icon.onValueChanged.AddListener(lCallback);
         }
 
         // CREATE CALL BACK FOR THE END OF EDITION OF IN THIS TEXTFIELD
         if (iCallbacksEnd != null)
         {
             foreach (UnityAction<string> lCallback in iCallbacksEnd)
-                lTextFiel_Icon.onEndEdit.AddListener(lCallback);
+                lTextField_Icon.onEndEdit.AddListener(lCallback);
         }
 
         // CREATE A BUTTON BUBBLE TO DISPLAY HELP IF ANY "CallBacks_Infos"

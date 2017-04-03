@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CreateAccountState : ASubState {
 
@@ -8,22 +10,37 @@ public class CreateAccountState : ASubState {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
         if (indexState == 1)
         {
-            // CLEANNING PREVIOUS CREATED OBJECT
+            GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
+            // CLEANING PREVIOUSLY CREATED OBJECT
             LoadingUI.ClearUI();
-            // DESACTIVATE, ACTIVATE GENERICS
-            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DesactivateGeneric(new ArrayList() { "NavigationAccount", "TopUI", "BottomUI", "ScrollView" });
-            // CREATING OBJECTS
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_L("Content_Bottom/Bottom_UI", "VLeft", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Square("Content_Bottom/Bottom_UI", "CREATE YOUR ACCOUNT", "", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_User("Content_Bottom/Bottom_UI", "", false, null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Email Address", "", "Email", null, null, null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Password", "", "Lock", null, null, null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Repeat Your Password", "", "Lock", null, null, null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle_Underline("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false, null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_User_Big("Content_Top", "", null));
-            //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
+            PoolManager lPoolManager = animator.GetComponent<PoolManager>();
+            // DISABLE, ENABLE GENERICS
+            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationEdit", "TopUI", "BottomUI", "ScrollView" });
+            // CREATE OBJECTS
+            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "CREATE YOUR ACCOUNT", "", new List<UnityAction>() { CreateAccount, lMenuManager.GoConnectionMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false, null));
+
+            GameObject lEmailField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Email Address", "", "Email", null, null, null);
+            lEmailField.name = "Create_Email_Input";
+            LoadingUI.AddObject(lEmailField);
+            GameObject lPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Password", "", "Lock", null, null, null);
+            lPasswordField.name = "Create_PW_Input";
+            LoadingUI.AddObject(lPasswordField);
+            GameObject lPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Repeat Your Password", "", "Lock", null, null, null);
+            lPasswordConfField.name = "Create_PWConf_Input";
+            LoadingUI.AddObject(lPasswordConfField);
+
+            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
+            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
+            LoadingUI.AddObject(lPoolManager.fToggle_Underline("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false, null));
+            LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "", null));
+            //NEED TO ADD NAVIGATION ACCOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
         }
+    }
+
+    private void CreateAccount()
+    {
+        GameObject.Find("DBManager").GetComponent<DBManager>().StartCreateAccount();
     }
 }

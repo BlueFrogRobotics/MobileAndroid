@@ -8,16 +8,19 @@ using System.Collections.Generic;
 public class BuddyIPList : MonoBehaviour
 {
     [SerializeField]
-    private GameObject searchingPrefab;
+    private PoolManager mPoolManager;
 
-    [SerializeField]
-    private GameObject prefab;
+    //[SerializeField]
+    //private GameObject searchingPrefab;
 
-    [SerializeField]
-    private Text prefabName;
+    //[SerializeField]
+    //private GameObject prefab;
 
-    [SerializeField]
-    private Text prefabID;
+    //[SerializeField]
+    //private Text prefabName;
+
+    //[SerializeField]
+    //private Text prefabID;
 
     [SerializeField]
     private Transform parentTransform;
@@ -76,16 +79,20 @@ public class BuddyIPList : MonoBehaviour
         if (mIPList.Contains(lBuddyIP))
             return;
 
-        mIPList.Add(lBuddyIP);
-        prefabName.text = "Buddy " + mBuddyNb;
-        prefabID.text = "IP " + iNewBuddyIP;
+        GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "New Buddy !", "IP " + iNewBuddyIP, "", true, true, null);
+        lBuddyLocal.transform.SetSiblingIndex(parentTransform.childCount - 2);
+        LoadingUI.AddObject(lBuddyLocal);
+
+        //mIPList.Add(lBuddyIP);
+        //prefabName.text = "Buddy " + mBuddyNb;
+        //prefabID.text = "IP " + iNewBuddyIP;
         
-        //When instantiating the prefab, make sure to give it a unit localScale
-        GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-        lClone.transform.SetParent(parentTransform);
-        //The following makes sure that the newly connected Buddy is not under the "searching" icon
-        lClone.transform.SetSiblingIndex(parentTransform.childCount - 2);
-        lClone.transform.localScale = Vector3.one;
+        ////When instantiating the prefab, make sure to give it a unit localScale
+        //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+        //lClone.transform.SetParent(parentTransform);
+        ////The following makes sure that the newly connected Buddy is not under the "searching" icon
+        //lClone.transform.SetSiblingIndex(parentTransform.childCount - 2);
+        //lClone.transform.localScale = Vector3.one;
         mBuddyNb++;
     }
 
@@ -107,52 +114,70 @@ public class BuddyIPList : MonoBehaviour
         //Add Buddies from all different sources. 
         //NOTE : WebRTC Buddies and Database ones will be merged
         AddBuddyFromDB();
-        AddWebRTCBuddy();
-        mIPList.Clear();
-        mIPList = mobileServer.GetBuddyConnectedList();
-
-        //Instiate the prefab for each found Buddy in the displayed list
-        foreach (string lIP in mIPList) {
-            prefabName.text = "Buddy " + mBuddyNb;
-            prefabID.text = "IP " + lIP;
-
-            //When instantiating the prefab, make sure to give it a unit localScale
-            GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            lClone.transform.SetParent(parentTransform);
-            lClone.transform.localScale = Vector3.one;
-        }
+        //AddWebRTCBuddy();
+        AddLocalBuddy();
         //Add the searching logo to the list for better visuals
-        GameObject lSearching = Instantiate(searchingPrefab, transform.position, transform.rotation) as GameObject;
-        lSearching.transform.SetParent(parentTransform);
-        lSearching.transform.localScale = Vector3.one;
+        LoadingUI.AddObject(mPoolManager.fSearching("Content_Bottom/ScrollView/Viewport"));
+        //GameObject lSearching = Instantiate(searchingPrefab, transform.position, transform.rotation) as GameObject;
+        //lSearching.transform.SetParent(parentTransform);
+        //lSearching.transform.localScale = Vector3.one;
     }
 
     private void AddBuddyFromDB()
     {
         //Retrieve the list from Database source and add it to the displayed list
+        Debug.Log("Adding DB Buddy");
+        LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)"));
         string[] lBuddyList = buddyDB.BuddyList.Split('\n');
 
         for (int i = 0; i < lBuddyList.Length - 1; i++)
         {
             Debug.Log("Buddy IDs " + lBuddyList[i]);
             string[] lBuddyIDs = lBuddyList[i].Split('|');
-            prefabName.text = "Buddy " + lBuddyIDs[0];
-            prefabID.text = "ID " + lBuddyIDs[1];
+            //prefabName.text = "Buddy " + lBuddyIDs[0];
+            //prefabID.text = "ID " + lBuddyIDs[1];
 
-            GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            lClone.transform.SetParent(parentTransform);
-            lClone.transform.localScale = Vector3.one;
+            GameObject lBuddyDB = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy " + lBuddyIDs[0], "ID " + lBuddyIDs[1], "", false, true, null);
+            LoadingUI.AddObject(lBuddyDB);
+
+            //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+            //lClone.transform.SetParent(parentTransform);
+            //lClone.transform.localScale = Vector3.one;
         }
     }
 
     private void AddWebRTCBuddy()
     {
         //For now, it's just a hard coded Buddy that the user can connect to
-        prefabName.text = "User2";
-        prefabID.text = "WebRTC ID";
-        GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-        lClone.transform.SetParent(parentTransform);
-        lClone.transform.localScale = Vector3.one;
+        //prefabName.text = "User2";
+        //prefabID.text = "WebRTC ID";
+        //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+        //lClone.transform.SetParent(parentTransform);
+        //lClone.transform.localScale = Vector3.one;
+    }
+    
+    private void AddLocalBuddy()
+    {
+        LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "NOT ADDED & AVAILABLE IN LOCAL"));
+        mIPList.Clear();
+        mIPList = mobileServer.GetBuddyConnectedList();
+
+        //Instiate the prefab for each found Buddy in the displayed list
+        int lCount = 0;
+        foreach (string lIP in mIPList)
+        {
+            GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy " + lCount, "IP " + lIP, "", true, true, null);
+            LoadingUI.AddObject(lBuddyLocal);
+            lCount++;
+
+            //prefabName.text = "Buddy " + mBuddyNb;
+            //prefabID.text = "IP " + lIP;
+
+            ////When instantiating the prefab, make sure to give it a unit localScale
+            //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
+            //lClone.transform.SetParent(parentTransform);
+            //lClone.transform.localScale = Vector3.one;
+        }
     }
 
     public void SearchForBuddy(Text iSearch)

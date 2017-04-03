@@ -33,8 +33,8 @@ public class ToggleController : MonoBehaviour {
         mIsOnBody = false;
         imageBody.SetActive(false);
         imageHead.SetActive(true);
-        headText.color = mBlackColor;
-        bodyText.color = mWhiteColor;
+        headText.color = mWhiteColor;
+        bodyText.color = mBlackColor;
         toggleAnim.SetTrigger("Head");
     }
 
@@ -44,8 +44,8 @@ public class ToggleController : MonoBehaviour {
         mIsOnBody = true;
         imageBody.SetActive(true);
         imageHead.SetActive(false);
-        headText.color = mWhiteColor;
-        bodyText.color = mBlackColor;
+        headText.color = mBlackColor;
+        bodyText.color = mWhiteColor;
         toggleAnim.SetTrigger("Body");
     }
 

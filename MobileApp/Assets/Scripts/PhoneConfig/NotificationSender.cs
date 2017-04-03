@@ -7,9 +7,9 @@ public class NotificationSender : MonoBehaviour {
         LocalNotification.SendNotification(4, 3, "BuddyApp", "You have a new friend!", new Color32(0x21, 0xba, 0xed, 255));
     }
 
-    public void SendNotification(string iMessage)
+    public void SendNotification(string iMessage, string iTitle = "Buddy needs you")
     {
-        LocalNotification.SendNotification(1, 3, "MyBuddy", iMessage, new Color32(0x21, 0xba, 0xed, 255));
+        LocalNotification.SendNotification(1, 3, iTitle, iMessage, new Color32(0x21, 0xba, 0xed, 255));
     }
 
     /*float sleepUntil = 0;

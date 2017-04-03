@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.IO;
 
-using BuddyOS.Command;
-
 //Data structure corresponding to DataBase structure
 [Serializable]
 public class PhoneUser
@@ -32,12 +30,9 @@ public class DBManager : MonoBehaviour
     public string BuddyList { get { return mBuddyList; } }
     public PhoneUser CurrentUser { get { return mCurrentUser; } }
 
-    [SerializeField]
+    /*[SerializeField]
     private Image profilePicture;
-
-    [SerializeField]
-    private GameObject popupNoConnection;
-
+    
     [SerializeField]
     private InputField createFName;
 
@@ -63,10 +58,19 @@ public class DBManager : MonoBehaviour
     private InputField requestEMail;
 
     [SerializeField]
-    private InputField requestPassword;
+    private InputField requestPassword;*/
+
+    [SerializeField]
+    private GameObject popupNoConnection;
+
+    [SerializeField]
+    private GameObject DotOFF;
 
     [SerializeField]
     private Animator canvasAppAnimator;
+
+    [SerializeField]
+    private GoBack menuManager;
     
     private string mHost;
     private string mBuddyList;
@@ -77,7 +81,7 @@ public class DBManager : MonoBehaviour
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
-        mHost = "52.174.52.152";
+        mHost = "52.174.52.152:8080";
         mBuddyList = "";
         mCurrentUser = new PhoneUser();
         mUserList = ReadPhoneUsers();
@@ -98,12 +102,17 @@ public class DBManager : MonoBehaviour
 
     private IEnumerator RequestConnection()
     {
+        string lFirstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
+        string lLastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+        string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+        string lPassword = GameObject.Find("Password_Input").GetComponent<InputField>().text;
+        
         //Fill POST parameters
         WWWForm lForm = new WWWForm();
-        lForm.AddField("firstname", requestFirstname.text);
-        lForm.AddField("lastname", requestLastName.text);
-        lForm.AddField("email", requestEMail.text);
-        lForm.AddField("password", requestPassword.text);
+        lForm.AddField("firstname", lFirstName);
+        lForm.AddField("lastname", lLastName);
+        lForm.AddField("email", lEmail);
+        lForm.AddField("password", lPassword);
         
         WWW lWww = new WWW("http://" + mHost + "/connect.php", lForm);
         yield return lWww;
@@ -116,41 +125,55 @@ public class DBManager : MonoBehaviour
             if(lWww.text != "KO") {
                 //User is logged in and we retrieve the list of Buddies associated with the account
                 mBuddyList = lWww.text;
-                mCurrentUser = new PhoneUser() {
+                string lPicture = "";
+                foreach(PhoneUser lUser in mUserList.Users)
+                {
+                    if (lUser.FirstName == lFirstName && lUser.LastName == lLastName && lUser.Email == lEmail)
+                        lPicture = lUser.Picture;
+                }
+
+                mCurrentUser = new PhoneUser()
+                {
                     IsDefaultUser = false,
-                    LastName = requestLastName.text,
-                    FirstName = requestFirstname.text,
-                    Email = requestEMail.text
+                    LastName = lLastName,
+                    FirstName = lFirstName,
+                    Email = lEmail,
+                    Picture = lPicture
                 };
                 ConfirmConnection();
             }
         }
-        ResetRequestParameters();
+        //ResetRequestParameters();
     }
 
-    private void ConfirmConnection()
+    public void ConfirmConnection()
     {
         //Activate Canvas animations
-        canvasAppAnimator.SetTrigger("EndScene");
-        canvasAppAnimator.SetTrigger("GoSelectBuddy");
+        menuManager.GoSelectBuddyMenu();
     }
 
     public void StartCreateAccount()
     {
-        Debug.Log("First pw : " + createPassword.text + "; Second pw : " + createPasswordConf.text);
-
-        if(string.Compare(createPassword.text, createPasswordConf.text) == 0)
+        //Debug.Log("First pw : " + createPassword.text + "; Second pw : " + createPasswordConf.text);
+        string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
+        string lPasswordConf = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>().text;
+        if (string.Compare(lPassword, lPasswordConf) == 0)
             StartCoroutine(CreateAccount());
     }
 
     private IEnumerator CreateAccount()
     {
+        string lFirstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+        string lLastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+        string lEmail = GameObject.Find("Create_Email_Input").GetComponent<InputField>().text;
+        string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
+
         //Fill POST parameters
         WWWForm lForm = new WWWForm();
-        lForm.AddField("firstname", createFName.text);
-        lForm.AddField("lastname", createLName.text);
-        lForm.AddField("email", createEMail.text);
-        lForm.AddField("password", createPassword.text);
+        lForm.AddField("firstname", lFirstName);
+        lForm.AddField("lastname", lLastName);
+        lForm.AddField("email", lEmail);
+        lForm.AddField("password", lPassword);
 
         WWW lWww = new WWW("http://" + mHost + "/createaccount.php", lForm);
         yield return lWww;
@@ -161,11 +184,11 @@ public class DBManager : MonoBehaviour
         else {
             Debug.Log("Received results : " + lWww.text);
             //New user has been succesfully added to the DataBase. Now add it to the user file
-            AddUserToConfig(createFName.text, createLName.text, createEMail.text);
+            AddUserToConfig(lFirstName, lLastName, lEmail);
             ConfirmAccountCreation();
         }
 
-        ResetCreateParameters();
+        //ResetCreateParameters();
     }
 
     public void StartAddBuddyToUser(Text iBuddyID)
@@ -201,11 +224,10 @@ public class DBManager : MonoBehaviour
     private void ConfirmAccountCreation()
     {
         //Activate Canvas animations
-        canvasAppAnimator.SetTrigger("EndScene");
-        canvasAppAnimator.SetTrigger("GoConnectAccount");
+        menuManager.GoConnectionMenu();
     }
 
-    private void ResetCreateParameters()
+    /*private void ResetCreateParameters()
     {
         createPasswordConf.text = "";
         createPassword.text = "";
@@ -218,7 +240,7 @@ public class DBManager : MonoBehaviour
     {
         requestEMail.text = "";
         requestPassword.text = "";
-    }
+    }*/
 
     private void ExportToJson(PhoneUserList iUser)
     {
@@ -244,12 +266,19 @@ public class DBManager : MonoBehaviour
         foreach(PhoneUser lUser in lUserList.Users) {
             if(lUser.IsDefaultUser) {
                 mCurrentUser = lUser;
-                requestFirstname.text = lUser.FirstName;
-                requestLastName.text = lUser.LastName;
-                LoadUserPicture(lUser.Picture);
+                GameObject.Find("TextFirstName").GetComponent<Text>().text = lUser.FirstName;
+                GameObject.Find("Text_LastName").GetComponent<Text>().text = lUser.LastName;
+                //LoadUserPicture(lUser.Picture);
                 //Debug.Log("Default user is " + lUser.FirstName + " " + lUser.LastName);
                 break;
             }
+        }
+
+        for(int i=0; i<lUserList.Users.Length - 1; i++)
+        {
+            GameObject lDot = GameObject.Instantiate(DotOFF);
+            lDot.transform.SetParent(GameObject.Find("Dots").transform);
+            lDot.transform.localScale = Vector3.one;
         }
 
         return lUserList;
@@ -283,13 +312,25 @@ public class DBManager : MonoBehaviour
         ExportToJson(mUserList);
     }
 
+    public Sprite GetCurrentUserImage()
+    {
+        //Function name is explicit enough. We load the picture file into the sprite
+        byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(mCurrentUser.Picture));
+        Texture2D lTex = new Texture2D(2, 2);
+        lTex.LoadImage(lFileData);
+        //Image lProfilePicture = GameObject.Find(iObjectName).GetComponentsInChildren<Image>()[2];
+        //lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+        return Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+    }
+
     private void LoadUserPicture(string iPictureName)
     {
         //Function name is explicit enough. We load the picture file into the sprite
         byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(iPictureName));
         Texture2D lTex = new Texture2D(2, 2);
         lTex.LoadImage(lFileData);
-        profilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+        Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
+        lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
     }
 
     public void DisplayNextUser()
@@ -302,8 +343,10 @@ public class DBManager : MonoBehaviour
         } else {
             mCurrentUser = mUserList.Users[0];
         }
-        requestFirstname.text = mCurrentUser.FirstName;
-        requestLastName.text = mCurrentUser.LastName;
+        GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
+        GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
+        GameObject lDot = GameObject.Find("Dot_ON");
+        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser) + 1);
         LoadUserPicture(mCurrentUser.Picture);
     }
 
@@ -318,8 +361,10 @@ public class DBManager : MonoBehaviour
         } else {
             mCurrentUser = mUserList.Users[mUserList.Users.Length - 1];
         }
-        requestFirstname.text = mCurrentUser.FirstName;
-        requestLastName.text = mCurrentUser.LastName;
+        GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
+        GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
+        GameObject lDot = GameObject.Find("Dot_ON");
+        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser) + 1);
         LoadUserPicture(mCurrentUser.Picture);
     }
 

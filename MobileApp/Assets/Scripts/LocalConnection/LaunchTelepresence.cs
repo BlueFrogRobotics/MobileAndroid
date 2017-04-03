@@ -15,6 +15,9 @@ public class LaunchTelepresence : MonoBehaviour
     private Webrtc webRTC;
 
     [SerializeField]
+    private BackgroundListener rtcListener;
+
+    [SerializeField]
     private AppMobileServer mobileServer;
 
     [SerializeField]
@@ -34,9 +37,11 @@ public class LaunchTelepresence : MonoBehaviour
             mobileServer.StartTelepresence();
             Debug.Log("Starting local control");
         } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
+            Debug.Log("Starting distant control with remote " + webRTC.RemoteID);
             remoteControlRTC.SetActive(true);
-            webRTC.Call();
-            Debug.Log("Starting distant control");
+            rtcListener.PublishConnectionRequest(webRTC.RemoteID);
+            //webRTC.Call();
+            //Debug.Log("Starting distant control");
         }
     }
 

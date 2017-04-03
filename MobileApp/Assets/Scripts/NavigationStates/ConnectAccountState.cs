@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ConnectAccountState : ASubState {
 
@@ -8,23 +11,44 @@ public class ConnectAccountState : ASubState {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
         if (indexState == 1)
         {
+            GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();
+            PoolManager lPoolManager = animator.GetComponent<PoolManager>();
             // DESACTIVATE, ACTIVATE GENERICS
-            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DesactivateGeneric(new ArrayList() { "NavigationAccount", "TopUI", "BottomUI", "ScrollView" });
+            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationAccount", "TopUI", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fTextField_Icon("Content_Bottom/ScrollView/Viewport", "**********", "", "Lock", null, null, null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Frogot your password?", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_L("Content_Bottom/Bottom_UI", "VLeft", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Square("Content_Bottom/Bottom_UI", "LOGIN", "", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_User("Content_Bottom/Bottom_UI", "", false , null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_User_Big("Content_Top", "", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_L("Content_Top/Top_UI", "Trash", null));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fSimple_Text("Content_Top/Top_UI", "", false));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_R("Content_Top/Top_UI", "Edit", null));
+            //This makes getting stuff easier
+            GameObject lInputFieldEM = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "mymail@example.com", "", "Email", null, null, null);
+            lInputFieldEM.name = "EMail_Input";
+            LoadingUI.AddObject(lInputFieldEM);
+            GameObject lInputFieldPW = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "**********", "", "Lock", null, null, null);
+            lInputFieldPW.name = "Password_Input";
+            lInputFieldPW.GetComponent<InputField>().inputType = InputField.InputType.Password;
+            LoadingUI.AddObject(lInputFieldPW);
+
+            LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Forgot your password?", null));
+            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
+            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
+            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "LOGIN", "", new List<UnityAction>() { Connection }));
+            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
+
+            GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "", null);
+            lUserPicture.name = "Connect_User_Picture";
+            LoadingUI.AddObject(lUserPicture);
+
+            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", null));
+            LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
+            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
         }
+    }
+
+    //Gets info from the input fields and connects to remote DB.
+    private void Connection()
+    {
+        GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection();
+        //GameObject.Find("DBManager").GetComponent<DBManager>().ConfirmConnection();
     }
 }

@@ -8,6 +8,11 @@ public class Webrtc : MonoBehaviour
     public enum CONNECTION { CONNECTING = 0, DISCONNECTING = 1 };
 
     public CONNECTION ConnectionState { get { return mConnectionState; } }
+    public string ID { get { return mLocalUser; } }
+    public string RemoteID { get { return mRemoteUser; } set { mRemoteUser = value; } }
+
+    [SerializeField]
+    private DBManager dbManager;
 
     [Header("WebRTC")]
     /// <summary>
@@ -35,8 +40,8 @@ public class Webrtc : MonoBehaviour
     private string mWebrtcReceiverObjectName;
 
     [Header("GUI")]
-    public RawImage mRemoteRawImage;
-    public RawImage mLocalRawImage;
+    public RawImage mRemoteRawImage = null;
+    public RawImage mLocalRawImage = null;
     public Text mTextLog = null;
 
     /// <summary>
@@ -50,14 +55,18 @@ public class Webrtc : MonoBehaviour
     //called when receiving a call request or trying to call someone.
     // StartWebrtc tries to acquire the camera resource and so the camera
     // must be released beforehand.
-    void Start()
+    void OnEnable()
     {
         // Setup and start webRTC
         SetupWebRTC();
         StartWebRTC();
 
+        mRemoteRawImage.transform.localScale = new Vector3(1, -1, 0);
+        mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
+
         mRemoteNativeTexture = new RemoteNativeTexture(640, 480);
         mLocalNativeTexture = new LocalNativeTexture(640, 480);
+
         // Show the android texture in a Unity raw image
         mRemoteRawImage.texture = mRemoteNativeTexture.texture;
         mLocalRawImage.texture = mLocalNativeTexture.texture;
@@ -78,14 +87,19 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void SetupWebRTC()
     {
-        if(mTextLog)
-        mTextLog.text += "setup webrtc" + "\n";
+        Debug.Log("DB " + dbManager.CurrentUser.LastName);
+        mLocalUser = dbManager.CurrentUser.LastName + UnityEngine.Random.Range(1000, 9999).ToString();
+        if (mTextLog)
+            mTextLog.text += "setup webrtc" + "\n";
+
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
             using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-                cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName);
+
+                cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName,
+                    BuddyTools.Utils.GetStreamingAssetFilePath("client_cert.pem"));
             }
         }
     }
@@ -104,17 +118,33 @@ public class Webrtc : MonoBehaviour
     }
 
     /// <summary>
+    /// Stop WebRTC connection
+    /// </summary>
+    public void StopWebRTC()
+    {
+        mRemoteRawImage.transform.localScale = new Vector3(1, 1, 0);
+        mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
+        Debug.Log("Stop WebRTC");
+        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+        {
+            cls.CallStatic("StopWebrtc");
+        }
+    }
+
+    /// <summary>
     /// Used to call another user who is listening on channel iChannel.
     /// </summary>
     /// <param name="iChannel">The channel the user you want to call is subscribed to</param>
     public void Call()
     {
-        Debug.Log("Call : " + mRemoteUser);
+
+        Debug.Log("Call : " + mRemoteUser + "!");
         if (mTextLog)
             mTextLog.text += "Call : " + mRemoteUser + "\n";
         // mTextSend.text += "\nCall : " + iChannel;
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
+            Debug.Log("Starting call");
             cls.CallStatic("Call", mRemoteUser);
         }
 
@@ -207,7 +237,7 @@ public class Webrtc : MonoBehaviour
         else
             HangUp();
     }
-    
+
     /// <summary>
     /// This function is called by the RTC library when it receives a message.
     /// </summary>

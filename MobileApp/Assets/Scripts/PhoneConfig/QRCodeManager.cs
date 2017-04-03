@@ -51,8 +51,10 @@ public class QRCodeManager : MonoBehaviour
             if (lResults != null && lResults.Length != 0) {
                 string lNameQrCode = lResults[0].Text;
                 resultText.text = lNameQrCode;
-                SwitchQRCodeReader();
-                popupQRCode.SetActive(false);
+                //SwitchQRCodeReader();
+                //popupQRCode.SetActive(false);
+                GameObject lViewport = GameObject.Find("Content_Bottom/ScrollView/Viewport");
+                lViewport.GetComponentsInChildren<InputField>()[0].text = lNameQrCode;
             }
             //cameraImage.texture = mCamera;
             //Rotate the frame for display
@@ -105,6 +107,5 @@ public class QRCodeManager : MonoBehaviour
         Texture2D lTex = new Texture2D(2, 2);
         lTex.LoadImage(lTempTex.EncodeToPNG());
         QRImage.sprite = Sprite.Create(lTex, new UnityEngine.Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
-        QRImage.gameObject.SetActive(true);
     }
 }

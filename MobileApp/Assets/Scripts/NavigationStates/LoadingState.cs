@@ -10,8 +10,9 @@ public class LoadingState : ASubState {
         {
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();
+            PoolManager lPoolManager = animator.GetComponent<PoolManager>();
             // DESACTIVATE, ACTIVATE GENERICS
-            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DesactivateGeneric(null);
+            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(null);
             // CREATING OBJECTS
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Square("Content_Bottom/ScrollView/Viewport", "Test", "Apps", null));
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Big("Content_Bottom/ScrollView/Viewport", "CREATE AN ACCOUNT", "AddUser", null));
@@ -26,8 +27,8 @@ public class LoadingState : ASubState {
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Repeat Your Password", "", "Lock", null, null, null));
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle_Underline("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false, null));
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fLoading("Content_Top", "Loading..."));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fLogo("Content_Top"));
+            LoadingUI.AddObject(lPoolManager.fLoading("Content_Top", "Loading..."));
+            LoadingUI.AddObject(lPoolManager.fLogo("Content_Top"));
         }
     }
 }

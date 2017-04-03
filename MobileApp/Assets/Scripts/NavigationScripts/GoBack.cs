@@ -19,15 +19,15 @@ public class GoBack : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        mPreviousMenu = "ConnectAccount";
-        mCurrentMenu = "ConnectAccount";
+        mPreviousMenu = "GoConnectAccount";
+        mCurrentMenu = "GoConnectAccount";
     }
 
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape)) {
-            if (mCurrentMenu == "ConnectAccount")
+            if (mCurrentMenu == "GoConnectAccount")
                 Application.Quit();
             else
                 PreviousMenu();
@@ -37,35 +37,89 @@ public class GoBack : MonoBehaviour
     //Go to previously saved menu
     public void PreviousMenu()
     {
-        switch (mPreviousMenu)
-        {
-            case "ConnectAccount":
-                canvasAnimator.SetTrigger("GoConnectAccount");
-                break;
-            case "FirstConnection":
-                canvasAnimator.SetTrigger("GoFirstConnexion");
-                break;
-            case "CreateAccount":
-                canvasAnimator.SetTrigger("GoCreateAccount");
-                break;
-            case "SelectBuddy":
-                canvasAnimator.SetTrigger("GoSelectBuddy");
-                break;
-            case "Connected":
-                canvasAnimator.SetTrigger("GoConnectBuddy");
-                break;
-            case "AdminMenu":
-                //linkManager.SetMenuBuddyValue(4);
-                break;
-        }
+        string lTemp = mCurrentMenu;
+        canvasAnimator.SetTrigger(mPreviousMenu);
+        Debug.Log("Previous menu " + mPreviousMenu);
         mCurrentMenu = mPreviousMenu;
+        mPreviousMenu = lTemp;
         canvasAnimator.SetTrigger("EndScene");
     }
 
-    //Self-explanatory
-    public void SavePreviousMenu(string iMenu)
+    public void GoToFirstMenu()
     {
-        mCurrentMenu = "";
-        mPreviousMenu = iMenu;
+        SwitchToMenu("GoFirstConnexion");
+    }
+
+    public void GoToTermsOfUse()
+    {
+        SwitchToMenu("GoTermsOfUses");
+    }
+
+    public void GoCreationMenu()
+    {
+        SwitchToMenu("GoCreationAccount");
+    }
+
+    public void GoConnectionMenu()
+    {
+        SwitchToMenu("GoConnectAccount");
+    }
+
+    public void GoEditAccountMenu()
+    {
+        SwitchToMenu("GoEditAccount");
+    }
+
+    public void GoSelectBuddyMenu()
+    {
+        SwitchToMenu("GoSelectBuddy");
+    }
+
+    public void GoAddBuddyMenu()
+    {
+        SwitchToMenu("GoAddBuddy");
+    }
+
+    public void GoEditBuddyMenu()
+    {
+        SwitchToMenu("GoEditBuddy");
+    }
+
+    public void GoConnectedMenu()
+    {
+        SwitchToMenu("GoConnectBuddy");
+    }
+
+    public void GoChatMenu()
+    {
+        SwitchToMenu(1);
+    }
+
+    public void GoRemoteControlMenu()
+    {
+        SwitchToMenu(3);
+    }
+
+    public void GoBuddySettings()
+    {
+        SwitchToMenu(4);
+    }
+
+    //Self-explanatory
+    private void SwitchToMenu(string iMenu)
+    {
+        mPreviousMenu = mCurrentMenu;
+        mCurrentMenu = iMenu;
+        canvasAnimator.SetTrigger(iMenu);
+        canvasAnimator.SetTrigger("EndScene");
+    }
+
+    private void SwitchToMenu(int iMenu)
+    {
+        mPreviousMenu = mCurrentMenu;
+        mCurrentMenu = "GoConnectBuddy";
+        linkManager.SetMenuBuddyValue(iMenu);
+        canvasAnimator.SetTrigger("GoLoadingBuddy");
+        canvasAnimator.SetTrigger("EndScene");
     }
 }

@@ -11,7 +11,7 @@ public class TermsOfUsesState : ASubState {
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();
             // DESACTIVATE, ACTIVATE GENERICS
-            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DesactivateGeneric(new ArrayList() { "TopUI", "BottomUI", "ScrollView" });
+            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "TopUI", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_L("Content_Bottom/Bottom_UI", "VLeft", null));
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fSimple_Text("Content_Bottom/Bottom_UI", "", false));
