@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// </summary>
 public class SelectBuddy : MonoBehaviour
 {
-    public enum RemoteType { LOCAL, WEBRTC };
+    public enum RemoteType { LOCAL, WEBRTC, DEMO };
 
     public RemoteType Remote { get { return mRemote; } set { mRemote = value; } }
 
@@ -50,7 +50,9 @@ public class SelectBuddy : MonoBehaviour
                 BuddyID = lBuddyID;
 
                 //Check wether it's a WebRTC or local connection
-                if(lBuddyType.Contains("IP")) {
+                if(lBuddyName.Contains("DEMO")) {
+                    mRemote = RemoteType.DEMO;
+                } else if(lBuddyType.Contains("IP")) {
                     mRemote = RemoteType.LOCAL;
                     oTONetwork.IP = lBuddyID;
                     mobileServer.BuddyIP = lBuddyID;

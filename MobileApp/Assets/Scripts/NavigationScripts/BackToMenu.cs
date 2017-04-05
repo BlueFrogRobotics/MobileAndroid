@@ -35,6 +35,7 @@ public class BackToMenu : MonoBehaviour
         } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
             webRTC.HangUp();
             remoteControlRTC.SetActive(false);
+            webRTC.StopWebRTC();
         }
         mAnimator.SetTrigger("GoConnectBuddy");
         mAnimator.SetTrigger("EndScene");

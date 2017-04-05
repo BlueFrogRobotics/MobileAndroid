@@ -26,7 +26,7 @@ public class EditAccountState: ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "Confirm Changes", "", new List<UnityAction>() { SaveProfileChanges }));
-            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false, null));
+            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, null));
 
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "", null));
 

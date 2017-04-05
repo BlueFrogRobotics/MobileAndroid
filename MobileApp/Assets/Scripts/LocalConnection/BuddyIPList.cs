@@ -130,30 +130,19 @@ public class BuddyIPList : MonoBehaviour
         LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)"));
         string[] lBuddyList = buddyDB.BuddyList.Split('\n');
 
+        if(buddyDB.CurrentUser.LastName.Contains("DEMO")) {
+            GameObject lBuddyDemo = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy DEMO", "ID DEMO", "", false, true, null);
+            LoadingUI.AddObject(lBuddyDemo);
+        }
+
         for (int i = 0; i < lBuddyList.Length - 1; i++)
         {
             Debug.Log("Buddy IDs " + lBuddyList[i]);
             string[] lBuddyIDs = lBuddyList[i].Split('|');
-            //prefabName.text = "Buddy " + lBuddyIDs[0];
-            //prefabID.text = "ID " + lBuddyIDs[1];
 
             GameObject lBuddyDB = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy " + lBuddyIDs[0], "ID " + lBuddyIDs[1], "", false, true, null);
             LoadingUI.AddObject(lBuddyDB);
-
-            //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            //lClone.transform.SetParent(parentTransform);
-            //lClone.transform.localScale = Vector3.one;
         }
-    }
-
-    private void AddWebRTCBuddy()
-    {
-        //For now, it's just a hard coded Buddy that the user can connect to
-        //prefabName.text = "User2";
-        //prefabID.text = "WebRTC ID";
-        //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-        //lClone.transform.SetParent(parentTransform);
-        //lClone.transform.localScale = Vector3.one;
     }
     
     private void AddLocalBuddy()

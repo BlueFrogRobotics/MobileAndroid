@@ -49,6 +49,5 @@ public class ConnectAccountState : ASubState {
     private void Connection()
     {
         GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection();
-        //GameObject.Find("DBManager").GetComponent<DBManager>().ConfirmConnection();
     }
 }

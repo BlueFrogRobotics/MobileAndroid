@@ -19,6 +19,18 @@ public class RemoteControl : MonoBehaviour {
     [SerializeField]
     private Animator headYesAnim;
 
+    [SerializeField]
+    private GameObject leftSensor;
+
+    [SerializeField]
+    private GameObject middleSensor;
+
+    [SerializeField]
+    private GameObject rightSensor;
+
+    [SerializeField]
+    private GameObject backSensor;
+
     //public Slider mSlider;
 
     private int mClickCount = 0;
@@ -88,55 +100,6 @@ public class RemoteControl : MonoBehaviour {
         mTime = Time.time;
     }
 
-    /*void Update()
-    {
-        //if (webRTC.connectionState == Webrtc.CONNECTION.CONNECTING) {
-        //    disconnectedView.SetActive(false);
-        //    connectedView.SetActive(true);
-        //} else if (webRTC.connectionState == Webrtc.CONNECTION.DISCONNECTING) {
-        //    connectedView.SetActive(false);
-        //    disconnectedView.SetActive(true);
-        //}
-
-        mTime += Time.deltaTime;
-        if (mTime >= 0.2f)
-        {
-            mTime = 0.0f;
-            //Debug.Log("X : " + BasePosition.transform.localPosition.x + " Y : " + BasePosition.transform.localPosition.y + " Z : " + BasePosition.transform.localPosition.z);
-            if (toggleController.IsBodyActive) {
-                if (Mathf.Abs(joystick.transform.localPosition.x) > 50.0f)
-                {
-                    if (Mathf.Sign(joystick.transform.localPosition.x) > 0)
-                        webRTC.SendWithDataChannel("r");
-                    else if (Mathf.Sign(joystick.transform.localPosition.x) < 0)
-                        webRTC.SendWithDataChannel("l");
-                }
-                if (Mathf.Abs(joystick.transform.localPosition.y) > 50.0f)
-                {
-                    if (Mathf.Sign(joystick.transform.localPosition.y) > 0)
-                        webRTC.SendWithDataChannel("f");
-                    else if (Mathf.Sign(joystick.transform.localPosition.y) < 0)
-                        webRTC.SendWithDataChannel("b");
-                }
-            } else {
-                if (Mathf.Abs(joystick.transform.localPosition.x) > 50.0f)
-                {
-                    if (Mathf.Sign(joystick.transform.localPosition.x) > 0)
-                        webRTC.SendWithDataChannel("d");
-                    else if (Mathf.Sign(joystick.transform.localPosition.x) < 0)
-                        webRTC.SendWithDataChannel("s");
-                }
-                if (Mathf.Abs(joystick.transform.localPosition.y) > 50.0f)
-                {
-                    if (Mathf.Sign(joystick.transform.localPosition.y) > 0)
-                        webRTC.SendWithDataChannel("u");
-                    else if (Mathf.Sign(joystick.transform.localPosition.y) < 0)
-                        webRTC.SendWithDataChannel("t");
-                }
-            }
-        }
-    }*/
-
     private void ComputeNoAxis()
     {
         //Add an increment to No axis position corresponding to the cursor's
@@ -167,7 +130,7 @@ public class RemoteControl : MonoBehaviour {
     private void ComputeMobileBase()
     {
         //Compute the speed of both wheels according to the cursors position;
-        //The direction is thus influences by the speed of both wheels
+        //The direction is thus influenced by the speed of both wheels
         float lRadius = Mathf.Sqrt(mXPosition * mXPosition + mYPosition * mYPosition);
         float lAngle = (Mathf.Atan2(mYPosition, mXPosition));
         Debug.Log("Body position radius : " + lRadius + " / body position angle : " + lAngle);
@@ -175,28 +138,19 @@ public class RemoteControl : MonoBehaviour {
         mRightSpeed = mSpeedBody * (Mathf.Sin(lAngle) - Mathf.Cos(lAngle) / 3) * lRadius;
     }
 
-    public void DoubleClick()
-    {
-        float lDiffTime = Time.time - mLastTime;
-        mLastTime = Time.time;
-
-        if (lDiffTime > 0.500f) { 
-            mClickCount = 0;
-            return;
-        }
-        if (mClickCount > 1) {
-            webRTC.SendWithDataChannel("z");
-            mClickCount = 0;
-        }
-       
-        mClickCount++;
-    }
-
     // This function is called when a webrtc data is received
     public void OnMessage(string iMessage)
     {
-        Debug.Log("receive postion : "+iMessage);
-        //mSlider.value =  - float.Parse(iMessage);
+        //We use this function to receive sensor data and display it
+        byte[] lData = System.Convert.FromBase64String(iMessage);
+
+        if (lData.Length != 4)
+            return;
+
+        leftSensor.GetComponent<ObstacleManager>().lvl = lData[0];
+        middleSensor.GetComponent<ObstacleManager>().lvl = lData[1];
+        rightSensor.GetComponent<ObstacleManager>().lvl = lData[2];
+        backSensor.GetComponent<ObstacleManager>().lvl = lData[3];
     }
 
     private string GetString(byte[] iBytes)

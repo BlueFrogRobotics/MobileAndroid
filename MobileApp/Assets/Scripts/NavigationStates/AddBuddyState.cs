@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,10 +26,17 @@ public class AddBuddyState : ASubState {
 
             LoadingUI.AddObject(lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "ENTER BUDDY'S ID", "", "QRCode", null, null, null));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/ScrollView/Viewport", "OR", false));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", "", new List<UnityAction>() { lPopup.OpenReadQrCode }));
+            GameObject lBuddyID = lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", "", new List<UnityAction>() { lPopup.OpenReadQrCode });
+            lBuddyID.name = "Buddy_ID";
+            LoadingUI.AddObject(lBuddyID);
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Connect By Default", false));
             // TOP UI
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "Default_Buddy", null));
         }
+    }
+
+    private void Connection()
+    {
+        GameObject.Find("DBManager").GetComponent<DBManager>().StartAddBuddyToUser(GameObject.Find("Buddy_ID").GetComponent<Text>());
     }
 }

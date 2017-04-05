@@ -106,6 +106,19 @@ public class DBManager : MonoBehaviour
         string lLastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
         string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
         string lPassword = GameObject.Find("Password_Input").GetComponent<InputField>().text;
+
+        if (lEmail.Contains("demo") && lPassword.Contains("demo")) {
+            mCurrentUser = new PhoneUser()
+            {
+                IsDefaultUser = false,
+                LastName = "DEMO",
+                FirstName = "Mr.",
+                Email = "demo@demo.com",
+                Picture = "DefaultUser"
+            };
+            ConfirmConnection();
+            yield break;
+        }
         
         //Fill POST parameters
         WWWForm lForm = new WWWForm();
@@ -214,8 +227,10 @@ public class DBManager : MonoBehaviour
             Debug.Log("[ERROR] on WWW Request");
         else
         {
-            if (lWww.text != "KO")
+            if (lWww.text != "KO") {
                 Debug.Log("Succesfully added Buddy to current User.");
+                StartRequestConnection();
+            }
             else
                 Debug.Log("Request failed : " + lWww.text);
         }
