@@ -72,6 +72,11 @@ public class Webrtc : MonoBehaviour
         mLocalRawImage.texture = mLocalNativeTexture.texture;
     }
 
+	void OnDisable()
+	{
+		StopWebRTC();
+	}
+
     void Update()
     {
         // Ask update of android texture
@@ -124,6 +129,10 @@ public class Webrtc : MonoBehaviour
     {
         mRemoteRawImage.transform.localScale = new Vector3(1, 1, 0);
         mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
+
+		mRemoteNativeTexture.Destroy();
+		mLocalNativeTexture.Destroy();
+
         Debug.Log("Stop WebRTC");
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {

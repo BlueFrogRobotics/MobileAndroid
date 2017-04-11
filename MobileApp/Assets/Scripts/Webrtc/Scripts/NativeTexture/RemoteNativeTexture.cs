@@ -34,4 +34,11 @@ public class RemoteNativeTexture : NativeTexture {
         mNativeTexture = createTextureFromNativePtr(iWidth, iHeight);
     }
 
+	public override void Destroy()
+	{
+		using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		{
+			cls.CallStatic("destroyRemoteTexture");
+		}
+	}
 }

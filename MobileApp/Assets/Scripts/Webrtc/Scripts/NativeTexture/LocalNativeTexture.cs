@@ -35,4 +35,12 @@ public class LocalNativeTexture : NativeTexture
         // Create OpenGL android texture
         mNativeTexture = createTextureFromNativePtr(iWidth, iHeight);
     }
+
+	public override void Destroy()
+	{
+		using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		{
+			cls.CallStatic("destroyLocalTexture");
+		}
+	}
 }

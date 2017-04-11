@@ -11,4 +11,5 @@ public abstract class NativeTexture
 
     abstract public void Update();
 
+	abstract public void Destroy();
 }
