@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Threading;
 
 
 public class Webrtc : MonoBehaviour
@@ -51,6 +52,12 @@ public class Webrtc : MonoBehaviour
     public LocalNativeTexture mLocalNativeTexture = null;
     private CONNECTION mConnectionState = CONNECTION.DISCONNECTING;
 
+	private Mutex mTextureMutex = new Mutex();
+	private char[] mResolutionSeparator = new char[] {'*'};
+
+	private const int INIT_WIDTH = 640;
+	private const int INIT_HEIGHT = 480;
+
     //For now Startwebrtc is called at init but in the future it will only be 
     //called when receiving a call request or trying to call someone.
     // StartWebrtc tries to acquire the camera resource and so the camera
@@ -64,12 +71,8 @@ public class Webrtc : MonoBehaviour
         mRemoteRawImage.transform.localScale = new Vector3(1, -1, 0);
         mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
 
-        mRemoteNativeTexture = new RemoteNativeTexture(640, 480);
-        mLocalNativeTexture = new LocalNativeTexture(640, 480);
-
-        // Show the android texture in a Unity raw image
-        mRemoteRawImage.texture = mRemoteNativeTexture.texture;
-        mLocalRawImage.texture = mLocalNativeTexture.texture;
+		InitLocalTexture(INIT_WIDTH, INIT_HEIGHT);
+		InitRemoteTexture(INIT_WIDTH, INIT_HEIGHT);
     }
 
 	void OnDisable()
@@ -77,11 +80,57 @@ public class Webrtc : MonoBehaviour
 		StopWebRTC();
 	}
 
+	void InitLocalTexture(int width, int height)
+	{
+		Debug.Log("WebRTC.InitLocalTexture " + width + "*" + height);
+
+		mTextureMutex.WaitOne();
+
+		if(mLocalNativeTexture != null)
+		{
+			mLocalNativeTexture.Destroy();
+		}
+
+		mLocalNativeTexture = new LocalNativeTexture(width, height);
+		mLocalRawImage.texture = mLocalNativeTexture.texture;
+
+		mTextureMutex.ReleaseMutex();
+	}
+
+	void InitRemoteTexture(int width, int height)
+	{
+		Debug.Log("WebRTC.InitRemoteTexture " + width + "*" + height);
+
+		mTextureMutex.WaitOne();
+
+		if(mRemoteNativeTexture != null)
+		{
+			mRemoteNativeTexture.Destroy();
+		}
+
+		mRemoteNativeTexture = new RemoteNativeTexture(width, height);
+		mRemoteRawImage.texture = mRemoteNativeTexture.texture;
+
+		mTextureMutex.ReleaseMutex();
+	}
+
     void Update()
     {
         // Ask update of android texture
-        mRemoteNativeTexture.Update();
-        mLocalNativeTexture.Update();
+        
+		mTextureMutex.WaitOne();
+
+		if(mRemoteNativeTexture != null)
+		{
+			mRemoteNativeTexture.Update();
+		}
+
+		if(mLocalNativeTexture != null)
+		{
+			mLocalNativeTexture.Update();
+		}
+
+		mTextureMutex.ReleaseMutex();
     }
 
     /// <summary>
@@ -268,5 +317,27 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "Android Debug : " + iMessage + "\n";
     }
+
+	public void onLocalTextureSizeChanged(string size)
+	{
+		Debug.Log ("WebRTC.onLocalTextureSizeChanged " + size);
+
+		string[] cuts = size.Split(mResolutionSeparator);
+		int width = Int32.Parse(cuts[0]);
+		int height = Int32.Parse(cuts[1]);
+
+		InitLocalTexture(width, height);
+	}
+
+	public void onRemoteTextureSizeChanged(string size)
+	{
+		Debug.Log ("WebRTC.onRemoteTextureSizeChanged " + size);
+
+		string[] cuts = size.Split(mResolutionSeparator);
+		int width = Int32.Parse(cuts[0]);
+		int height = Int32.Parse(cuts[1]);
+
+		InitRemoteTexture(width, height);
+	}
 }
 
