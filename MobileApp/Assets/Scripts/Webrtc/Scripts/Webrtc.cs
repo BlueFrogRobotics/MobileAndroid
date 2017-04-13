@@ -10,7 +10,7 @@ public class Webrtc : MonoBehaviour
 
     public CONNECTION ConnectionState { get { return mConnectionState; } }
     public string ID { get { return mLocalUser; } }
-    public string RemoteID { get { return mRemoteUser; } set { mRemoteUser = value; } }
+    public string RemoteID { get { return mRemoteUser; } set { mRemoteUser = "user1"; } }
 
     [SerializeField]
     private DBManager dbManager;
@@ -32,10 +32,10 @@ public class Webrtc : MonoBehaviour
     /// Channel to subscribe to on the messaging service.
     /// </summary>
     [SerializeField]
-    private string mLocalUser;
+	private string mLocalUser = "user2";
 
     [SerializeField]
-    private string mRemoteUser;
+	private string mRemoteUser = "user1";
 
     [SerializeField]
     private string mWebrtcReceiverObjectName;
@@ -141,8 +141,8 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void SetupWebRTC()
     {
-        Debug.Log("DB " + dbManager.CurrentUser.LastName);
-        mLocalUser = dbManager.CurrentUser.LastName + UnityEngine.Random.Range(1000, 9999).ToString();
+        //Debug.Log("DB " + dbManager.CurrentUser.LastName);
+        //mLocalUser = dbManager.CurrentUser.LastName + UnityEngine.Random.Range(1000, 9999).ToString();
         if (mTextLog)
             mTextLog.text += "setup webrtc" + "\n";
 
@@ -338,6 +338,10 @@ public class Webrtc : MonoBehaviour
 		int height = Int32.Parse(cuts[1]);
 
 		InitRemoteTexture(width, height);
+
+	public void onWebRTCStats(string data)
+	{
+		Debug.Log("Unity " + data + "\n");
 	}
 }
 
