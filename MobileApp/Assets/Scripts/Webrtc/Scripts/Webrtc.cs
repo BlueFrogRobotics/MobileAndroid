@@ -333,11 +333,12 @@ public class Webrtc : MonoBehaviour
 	{
 		Debug.Log ("WebRTC.onRemoteTextureSizeChanged " + size);
 
-		string[] cuts = size.Split(mResolutionSeparator);
-		int width = Int32.Parse(cuts[0]);
-		int height = Int32.Parse(cuts[1]);
+		string[] cuts = size.Split (mResolutionSeparator);
+		int width = Int32.Parse (cuts [0]);
+		int height = Int32.Parse (cuts [1]);
 
-		InitRemoteTexture(width, height);
+		InitRemoteTexture (width, height);
+	}
 
 	public void onWebRTCStats(string data)
 	{
