@@ -31,24 +31,9 @@ public class DBManager : MonoBehaviour
     public PhoneUser CurrentUser { get { return mCurrentUser; } }
 
     /*[SerializeField]
-    private Image profilePicture;
-    
-    [SerializeField]
-    private InputField createFName;
+    private Image profilePicture;*/
 
-    [SerializeField]
-    private InputField createLName;
-
-    [SerializeField]
-    private InputField createEMail;
-
-    [SerializeField]
-    private InputField createPassword;
-
-    [SerializeField]
-    private InputField createPasswordConf;
-
-    [SerializeField]
+    /*[SerializeField]
     private Text requestFirstname;
 
     [SerializeField]
@@ -187,8 +172,9 @@ public class DBManager : MonoBehaviour
         lForm.AddField("lastname", lLastName);
         lForm.AddField("email", lEmail);
         lForm.AddField("password", lPassword);
+		lForm.AddField("hiddenkey", "key");
 
-        WWW lWww = new WWW("http://" + mHost + "/createaccount.php", lForm);
+        WWW lWww = new WWW("http://" + mHost + "/createAccountSess.php", lForm);
         yield return lWww;
 
         //Check for errors
@@ -198,10 +184,9 @@ public class DBManager : MonoBehaviour
             Debug.Log("Received results : " + lWww.text);
             //New user has been succesfully added to the DataBase. Now add it to the user file
             AddUserToConfig(lFirstName, lLastName, lEmail);
-            ConfirmAccountCreation();
+			ConfirmAccountCreation();
+			ResetCreateParameters(); // to remove when unity bug fixed
         }
-
-        //ResetCreateParameters();
     }
 
     public void StartAddBuddyToUser(Text iBuddyID)
@@ -242,16 +227,30 @@ public class DBManager : MonoBehaviour
         menuManager.GoConnectionMenu();
     }
 
-    /*private void ResetCreateParameters()
+    private void ResetCreateParameters()
     {
-        createPasswordConf.text = "";
-        createPassword.text = "";
-        createLName.text = "";
-        createFName.text = "";
-        createEMail.text = "";
+		InputField ifCurrent = GameObject.Find("Field_FirstName").GetComponent<InputField>();
+		ifCurrent.Select();
+		ifCurrent.text = ""; // with unity 5.6 > change this line and the previous to ifCurrent.Clear();
+
+		ifCurrent = GameObject.Find("Field_LastName").GetComponent<InputField>();
+		ifCurrent.Select();
+		ifCurrent.text = "";
+
+		ifCurrent = GameObject.Find("Create_Email_Input").GetComponent<InputField>();
+		ifCurrent.Select();
+		ifCurrent.text = "";
+
+		ifCurrent = GameObject.Find("Create_PW_Input").GetComponent<InputField>();
+		ifCurrent.Select();
+		ifCurrent.text = "";
+
+		ifCurrent = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>();
+		ifCurrent.Select();
+		ifCurrent.text = "";
     }
 
-    private void ResetRequestParameters()
+    /*private void ResetRequestParameters()
     {
         requestEMail.text = "";
         requestPassword.text = "";
