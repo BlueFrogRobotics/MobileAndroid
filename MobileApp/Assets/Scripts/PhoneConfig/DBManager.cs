@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -286,31 +287,56 @@ public class DBManager : MonoBehaviour
         {
             if (lWww.text != "KO") {
                 Debug.Log("Succesfully added Buddy to current User.");
-                StartRequestConnection();
+				RetrieveBuddyList();
             }
             else
                 Debug.Log("Request failed : " + lWww.text);
         }
     }
 
-//	private IEnumerator AddBuddySess(string iBuddyID)
-//	{
-//		WWWForm lForm = new WWWForm ();
-//		lForm.AddField ("name", buddyName);
-//		lForm.AddField ("specialID", specialID);
-//		Dictionary<string, string> lHeaders = lForm.headers;
-//		if (mCookie != null) {
-//			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
-//		}
-//		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, lHeaders);
-//		yield return lWWW;
-//
-//		if (lWWW.error != null)
-//			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
-//		else {
-//			Debug.Log ("WWW Success : " + lWWW.text);
-//		}
-//	}
+	//SCRIPT DE BENOIT : A TESTER
+	private IEnumerator AddBuddySess(string iBuddyID)
+	{
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("name", "Name");
+		lForm.AddField ("specialID", iBuddyID);
+		Dictionary<string, string> lHeaders = lForm.headers;
+		if (mCookie != null) {
+			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie[1];
+		}
+		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, lHeaders);
+		yield return lWWW;
+
+		if (lWWW.error != null)
+			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
+		else {
+			Debug.Log ("WWW Success : " + lWWW.text);
+		}
+	}
+
+	private void RetrieveBuddyList()
+	{
+		StartCoroutine(RetrieveBuddyListCo());
+	}
+
+	private IEnumerator RetrieveBuddyListCo()
+	{
+		WWWForm lForm = new WWWForm();
+		Dictionary<string, string> lHeaders = lForm.headers;
+		if (mCookie != null) {
+			lHeaders["Cookie"] = "PHPSESSID=" + mCookie[1];
+		}
+		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", lForm.data, lHeaders);
+		yield return lWWW;
+
+		if (lWWW.error != null)
+			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
+		else {
+			Debug.Log ("WWW Success : " + lWWW.text);
+			mBuddyList = lWWW.text;
+			menuManager.GoSelectBuddyMenu();
+		}
+	}
 
     private void ConfirmAccountCreation()
     {
