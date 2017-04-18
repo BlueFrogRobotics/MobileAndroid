@@ -263,7 +263,7 @@ public class DBManager : MonoBehaviour
 
     public void StartAddBuddyToUser(Text iBuddyID)
     {
-		StartCoroutine(AddBuddySess(iBuddyID.text));
+		StartCoroutine(AddBuddyToUser(iBuddyID.text));
     }
 
     private IEnumerator AddBuddyToUser(string iBuddyID)
