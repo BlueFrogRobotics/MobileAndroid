@@ -170,7 +170,7 @@ public class DBManager : MonoBehaviour
 			string lPicture = "";
 			foreach(PhoneUser lUser in mUserList.Users)
 			{
-				if (lUser.FirstName == lFirstName && lUser.LastName == lLastName && lUser.Email == lEmail)
+				if (lUser.Email == lEmail)// && lUser.FirstName == lFirstName && lUser.LastName == lLastName)
 					lPicture = lUser.Picture;
 			}
 
@@ -420,6 +420,7 @@ public class DBManager : MonoBehaviour
     public Sprite GetCurrentUserImage()
     {
         //Function name is explicit enough. We load the picture file into the sprite
+		Debug.Log("Image " + mCurrentUser.Picture);
         byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(mCurrentUser.Picture));
         Texture2D lTex = new Texture2D(2, 2);
         lTex.LoadImage(lFileData);
