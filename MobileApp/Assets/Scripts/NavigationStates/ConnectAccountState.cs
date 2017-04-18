@@ -51,5 +51,7 @@ public class ConnectAccountState : ASubState {
         GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection();
 
 		//GameObject.Find ("PopUps").GetComponent<PopupHandler> ().DisplayError ("ERROR MESSAGE", "There was an error when trying to connect");
+
+		//GameObject.Find("PopUps").GetComponent<PopupHandler>().AccesRightWindow();
     }
 }

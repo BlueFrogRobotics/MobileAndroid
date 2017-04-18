@@ -446,7 +446,6 @@ public class DBManager : MonoBehaviour
     public Sprite GetCurrentUserImage()
     {
         //Function name is explicit enough. We load the picture file into the sprite
-		Debug.Log("Image " + mCurrentUser.Picture);
         byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(mCurrentUser.Picture));
         Texture2D lTex = new Texture2D(2, 2);
         lTex.LoadImage(lFileData);

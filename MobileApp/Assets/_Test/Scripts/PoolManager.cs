@@ -459,18 +459,15 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Simple_Text
-	public GameObject fSimple_Text(string iParent, string iText, bool iPopup, Color32 iColor = default(Color32))
+	public GameObject fSimple_Text(string iParent, string iText, bool iPopup)
     {
         GameObject lFinalObject = Instantiate(Simple_Text);
         GameObject lSimple_Text = lFinalObject;
         lSimple_Text.GetComponentInChildren<Text>().text = iText;
 
-		if (Color32.Equals(iColor, default(Color32)))
-			iColor = new Color32(85, 85, 85, 255);
-
         if (iPopup == true)
         {
-			lSimple_Text.GetComponentInChildren<Text>().color = iColor;
+			lSimple_Text.GetComponentInChildren<Text>().color = new Color32(85, 85, 85, 255);
         }
 
         lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);

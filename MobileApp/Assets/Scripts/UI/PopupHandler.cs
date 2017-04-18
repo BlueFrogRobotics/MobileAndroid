@@ -41,7 +41,24 @@ public class PopupHandler : MonoBehaviour {
 		lTitle.text = iTitle;
 		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
 		lButton.GetComponent<Button> ().onClick.AddListener (ClosePopup);
-		poolManager.fSimple_Text("PopUp_Window/Window/Content", iMessage, true, new Color32(0, 0, 0, 255));
+		poolManager.fSimple_Text("PopUp_Window/Window/Content", iMessage, true);
+
+		animator.SetTrigger("Open");
+	}
+
+	public void AccesRightWindow()
+	{
+		ResetUI();
+		popupWindow.SetActive(true);
+
+		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
+		lTitle.text = "REQUEST ACCESS";
+		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
+		lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
+		poolManager.fToggle ("PopUp_Window/Window/Content", "Access Distant Control", true);
+		poolManager.fToggle ("PopUp_Window/Window/Content", "*Admin Access", true);
+		poolManager.fSimple_Text("PopUp_Window/Window/Content", "*Allows you to directly access your Buddy's parameters", true);
+		poolManager.fButton_Square("PopUp_Window/Window/Content", "SEND REQUEST", "", null);
 
 		animator.SetTrigger("Open");
 	}
