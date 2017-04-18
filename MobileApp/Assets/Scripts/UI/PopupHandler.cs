@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PopupHandler : MonoBehaviour {
@@ -21,12 +22,29 @@ public class PopupHandler : MonoBehaviour {
     [SerializeField]
     private QRCodeManager qrCodeManager;
 
+	[SerializeField]
+	private PoolManager poolManager;
+
     public void OpenWindow()
     {
         ResetUI();
         popupWindow.SetActive(true);
         animator.SetTrigger("Open");
     }
+
+	public void DisplayError(string iTitle, string iMessage)
+	{
+		ResetUI();
+		popupWindow.SetActive(true);
+
+		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
+		lTitle.text = iTitle;
+		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
+		lButton.GetComponent<Button> ().onClick.AddListener (ClosePopup);
+		poolManager.fSimple_Text("PopUp_Window/Window/Content", iMessage, true, new Color32(0, 0, 0, 255));
+
+		animator.SetTrigger("Open");
+	}
 
     public void OpenYesNo(string iQuestion = "")
     {
