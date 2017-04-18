@@ -342,6 +342,10 @@ public class PoolManager : MonoBehaviour {
         Button lButton = lFinalObject.GetComponent<Button>();
         Image lUser_Pic = lFinalObject.GetComponentsInChildren<Image>()[2];
 
+		if (lDBManager.CurrentUser.LastName.Contains ("DEMO")) {
+			iPicture = "DefaultUser";
+		}
+
         if (!string.IsNullOrEmpty(iPicture))
         {
             // Checker la photo utilisateur 
@@ -378,7 +382,11 @@ public class PoolManager : MonoBehaviour {
         Button lButton = lFinalObject.GetComponent<Button>();
         Image lUser_Pic = lFinalObject.GetComponentsInChildren<Image>()[2];
 
-        if (!string.IsNullOrEmpty(iPicture))
+		if (lDBManager.CurrentUser.LastName.Contains ("DEMO")) {
+			iPicture = "DefaultUser";
+		}
+        
+		if (!string.IsNullOrEmpty(iPicture))
         {
             // Checker la photo utilisateur 
             Sprite lSprite;

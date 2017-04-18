@@ -2,7 +2,9 @@
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 //Data structure corresponding to DataBase structure
 [Serializable]
@@ -30,36 +32,6 @@ public class DBManager : MonoBehaviour
     public string BuddyList { get { return mBuddyList; } }
     public PhoneUser CurrentUser { get { return mCurrentUser; } }
 
-    /*[SerializeField]
-    private Image profilePicture;
-    
-    [SerializeField]
-    private InputField createFName;
-
-    [SerializeField]
-    private InputField createLName;
-
-    [SerializeField]
-    private InputField createEMail;
-
-    [SerializeField]
-    private InputField createPassword;
-
-    [SerializeField]
-    private InputField createPasswordConf;
-
-    [SerializeField]
-    private Text requestFirstname;
-
-    [SerializeField]
-    private Text requestLastName;
-
-    [SerializeField]
-    private InputField requestEMail;
-
-    [SerializeField]
-    private InputField requestPassword;*/
-
     [SerializeField]
     private GameObject popupNoConnection;
 
@@ -71,9 +43,28 @@ public class DBManager : MonoBehaviour
 
     [SerializeField]
     private GoBack menuManager;
-    
+
+	[SerializeField]
+	private string firstname;
+
+	[SerializeField]
+	private string lastname;
+
+	[SerializeField]
+	private string email;
+
+	[SerializeField]
+	private string password;
+
+	[SerializeField]
+	private string buddyName;
+
+	[SerializeField]
+	private string specialID;
+
     private string mHost;
     private string mBuddyList;
+	private string[] mCookie;
     private PhoneUser mCurrentUser;
     private PhoneUserList mUserList;
     private Texture2D mProfileTexture;
@@ -97,7 +88,7 @@ public class DBManager : MonoBehaviour
 
     public void StartRequestConnection()
     {
-        StartCoroutine(RequestConnection());
+        StartCoroutine(ConnectAccountSess());
     }
 
     private IEnumerator RequestConnection()
@@ -159,6 +150,47 @@ public class DBManager : MonoBehaviour
         //ResetRequestParameters();
     }
 
+	private IEnumerator ConnectAccountSess()
+	{
+		string lFirstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
+		string lLastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+		string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		string lPassword = GameObject.Find("Password_Input").GetComponent<InputField>().text;
+
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("email", lEmail);
+		lForm.AddField ("password", lPassword);
+
+		WWW lWWW = new WWW ("http://" + mHost + "/connectSess.php", lForm);
+		yield return lWWW;
+
+		if (lWWW.error != null) {
+			Debug.Log ("[ERROR] on WWW Request " + lWWW.error + " / " + lWWW.text);
+		} else {
+			Debug.Log ("WWW " + lWWW.text);
+			Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
+			mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
+
+			mBuddyList = lWWW.text;
+			string lPicture = "";
+			foreach(PhoneUser lUser in mUserList.Users)
+			{
+				if (lUser.FirstName == lFirstName && lUser.LastName == lLastName && lUser.Email == lEmail)
+					lPicture = lUser.Picture;
+			}
+
+			mCurrentUser = new PhoneUser()
+			{
+				IsDefaultUser = false,
+				LastName = lLastName,
+				FirstName = lFirstName,
+				Email = lEmail,
+				Picture = lPicture
+			};
+			ConfirmConnection ();
+		}
+	}
+
     public void ConfirmConnection()
     {
         //Activate Canvas animations
@@ -168,10 +200,11 @@ public class DBManager : MonoBehaviour
     public void StartCreateAccount()
     {
         //Debug.Log("First pw : " + createPassword.text + "; Second pw : " + createPasswordConf.text);
-        string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
-        string lPasswordConf = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>().text;
-        if (string.Compare(lPassword, lPasswordConf) == 0)
-            StartCoroutine(CreateAccount());
+//        string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
+//        string lPasswordConf = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>().text;
+//        if (string.Compare(lPassword, lPasswordConf) == 0)
+//            StartCoroutine(CreateAccount());
+		StartCoroutine(CreateAccountSess());
     }
 
     private IEnumerator CreateAccount()
@@ -203,6 +236,36 @@ public class DBManager : MonoBehaviour
 
         //ResetCreateParameters();
     }
+
+	private IEnumerator CreateAccountSess()
+	{
+		string lFirstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+		string lLastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+		string lEmail = GameObject.Find("Create_Email_Input").GetComponent<InputField>().text;
+		string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
+
+		if (!IsValidEmailAddress (lEmail)) {
+			yield break;
+		}
+
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("firstname", lFirstName);
+		lForm.AddField ("lastname", lLastName);
+		lForm.AddField ("email", lEmail);
+		lForm.AddField ("password", lPassword);
+		lForm.AddField ("hiddenkey", "key");
+
+		WWW lWww = new WWW ("http://" + mHost + "/createAccountSess.php", lForm);
+		yield return lWww;
+
+		if (lWww.error != null) {
+			Debug.Log ("[ERROR] on WWW Request");
+		} else {
+			Debug.Log ("WWW Success : " + lWww.text);
+			AddUserToConfig(lFirstName, lLastName, lEmail);
+			ConfirmAccountCreation();
+		}
+	}
 
     public void StartAddBuddyToUser(Text iBuddyID)
     {
@@ -236,26 +299,30 @@ public class DBManager : MonoBehaviour
         }
     }
 
+	private IEnumerator AddBuddySess()
+	{
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("name", buddyName);
+		lForm.AddField ("specialID", specialID);
+		Dictionary<string, string> lHeaders = lForm.headers;
+		if (mCookie != null) {
+			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
+		}
+		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, lHeaders);
+		yield return lWWW;
+
+		if (lWWW.error != null)
+			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
+		else {
+			Debug.Log ("WWW Success : " + lWWW.text);
+		}
+	}
+
     private void ConfirmAccountCreation()
     {
         //Activate Canvas animations
         menuManager.GoConnectionMenu();
     }
-
-    /*private void ResetCreateParameters()
-    {
-        createPasswordConf.text = "";
-        createPassword.text = "";
-        createLName.text = "";
-        createFName.text = "";
-        createEMail.text = "";
-    }
-
-    private void ResetRequestParameters()
-    {
-        requestEMail.text = "";
-        requestPassword.text = "";
-    }*/
 
     private void ExportToJson(PhoneUserList iUser)
     {
@@ -326,6 +393,15 @@ public class DBManager : MonoBehaviour
         //Save the new user file
         ExportToJson(mUserList);
     }
+
+	private bool IsValidEmailAddress(string iMail) {
+		if (string.IsNullOrEmpty (iMail))
+			return false;
+		else {
+			Regex lRegex = new Regex (@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
+			return lRegex.IsMatch (iMail) && !iMail.EndsWith (".");
+		}
+	}
 
     public Sprite GetCurrentUserImage()
     {

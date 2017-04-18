@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Networking;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 /// <summary>
 /// Buddy configuration manager that interfaces with the Blob storage server
