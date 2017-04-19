@@ -601,6 +601,7 @@ public class PoolManager : MonoBehaviour {
         if (iPopup == true)
         {
             lFinalObject.GetComponentInChildren<Text>().color = new Color32(85, 85, 85, 255);
+			lFinalObject.GetComponentInChildren<Image> ().color = new Color32 (85, 85, 85, 255);
         }
         lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
         return lFinalObject;

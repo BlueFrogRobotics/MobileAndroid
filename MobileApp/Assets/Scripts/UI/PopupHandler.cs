@@ -40,7 +40,7 @@ public class PopupHandler : MonoBehaviour {
 		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
 		lTitle.text = iTitle;
 		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
-		lButton.GetComponent<Button> ().onClick.AddListener (ClosePopup);
+		lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
 		poolManager.fSimple_Text("PopUp_Window/Window/Content", iMessage, true);
 
 		animator.SetTrigger("Open");
@@ -50,6 +50,7 @@ public class PopupHandler : MonoBehaviour {
 	{
 		ResetUI();
 		popupWindow.SetActive(true);
+		//Debug.Log ("Popup Window " + popupWindow.activeInHierarchy + " / " + popupWindow.activeSelf);
 
 		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
 		lTitle.text = "REQUEST ACCESS";
@@ -61,6 +62,7 @@ public class PopupHandler : MonoBehaviour {
 		poolManager.fButton_Square("PopUp_Window/Window/Content", "SEND REQUEST", "", null);
 
 		animator.SetTrigger("Open");
+		//Debug.Log ("Popup Window " + popupWindow.activeInHierarchy + " / " + popupWindow.activeSelf);
 	}
 
     public void OpenYesNo(string iQuestion = "")
@@ -70,10 +72,10 @@ public class PopupHandler : MonoBehaviour {
         animator.SetTrigger("Open");
     }
 
-    public void OpenShowQrCode()
+	public void OpenShowQrCode(string iCode = "12-34-56-78")
     {
         ResetUI();
-        qrCodeManager.CreateQrCode("12-34-56-78");
+		qrCodeManager.CreateQrCode(iCode);
         popupShowQrCode.SetActive(true);
         animator.SetTrigger("Open");
     }

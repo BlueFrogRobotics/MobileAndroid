@@ -26,6 +26,8 @@ public class ConnectBuddyState : ASubState {
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "CHAT WITH BUDDY", "", new List<UnityAction>() { lMenuManager.GoChatMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REMOTE CONTROL", "", new List<UnityAction>() { StartRemoteControl }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "BUDDY SETTINGS", "", new List<UnityAction>() { lMenuManager.GoBuddySettings }));
+			//LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REQUEST ACCESS", "", new List<UnityAction>() { ShowAccessRequest }));
+
             // TOP UI
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", null));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
@@ -45,4 +47,10 @@ public class ConnectBuddyState : ASubState {
         LaunchTelepresence lLauncher = GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>();
         lLauncher.ConnectToBuddy();
     }
+
+	private void ShowAccessRequest()
+	{
+		PopupHandler lHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
+		lHandler.AccesRightWindow();
+	}
 }

@@ -153,6 +153,19 @@ public class DBManager : MonoBehaviour
 		string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
 		string lPassword = GameObject.Find("Password_Input").GetComponent<InputField>().text;
 
+		if (lEmail.Contains("demo") && lPassword.Contains("demo")) {
+			mCurrentUser = new PhoneUser()
+			{
+				IsDefaultUser = false,
+				LastName = "DEMO",
+				FirstName = "Mr.",
+				Email = "demo@demo.com",
+				Picture = "DefaultUser"
+			};
+			ConfirmConnection();
+			yield break;
+		}
+
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("email", lEmail);
 		lForm.AddField ("password", lPassword);
