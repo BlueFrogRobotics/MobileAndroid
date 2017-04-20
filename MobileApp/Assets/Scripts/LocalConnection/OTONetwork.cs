@@ -291,16 +291,6 @@ public class OTONetwork : MonoBehaviour
         Connect();
     }
 
-    public int GetSendRate(out byte iError)
-    {
-        return NetworkTransport.GetPacketSentRate(mGenericHostId, mDistantConnectionID, out iError);
-    }
-
-    public int GetReceivedRate(out byte iError)
-    {
-        return NetworkTransport.GetPacketReceivedRate(mGenericHostId, mDistantConnectionID, out iError);
-    }
-
     void ToSendEvent(OTONetSender iSender, byte[] iData, int iNData)
     {
         if (!HasAPeer)

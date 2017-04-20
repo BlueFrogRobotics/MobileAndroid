@@ -37,21 +37,6 @@ public class DBManager : MonoBehaviour
     public string BuddyList { get { return mBuddyList; } }
     public PhoneUser CurrentUser { get { return mCurrentUser; } }
 
-    /*[SerializeField]
-    private Image profilePicture;*/
-
-    /*[SerializeField]
-    private Text requestFirstname;
-
-    [SerializeField]
-    private Text requestLastName;
-
-    [SerializeField]
-    private InputField requestEMail;
-
-    [SerializeField]
-    private InputField requestPassword;*/
-
     [SerializeField]
     private GameObject popupNoConnection;
 
@@ -63,9 +48,27 @@ public class DBManager : MonoBehaviour
 
     [SerializeField]
     private GoBack menuManager;
-    
+
+	[SerializeField]
+	private string firstname;
+
+	[SerializeField]
+	private string lastname;
+
+	[SerializeField]
+	private string email;
+
+	[SerializeField]
+	private string password;
+
+	[SerializeField]
+	private string buddyName;
+
+	[SerializeField]
+	private string specialID;
+
     private string mHost;
-	private string mBuddyList;
+    private string mBuddyList;
 	private string[] mCookie;
     private PhoneUser mCurrentUser;
     private PhoneUserList mUserList;
@@ -93,7 +96,7 @@ public class DBManager : MonoBehaviour
 
     public void StartRequestConnection()
     {
-		StartCoroutine(ConnectAccountSess());
+        StartCoroutine(ConnectAccountSess());
     }
 
     private IEnumerator RequestConnection()
@@ -192,7 +195,7 @@ public class DBManager : MonoBehaviour
 			string lPicture = "";
 			foreach(PhoneUser lUser in mUserList.Users)
 			{
-				if (lUser.Email == lEmail)// && lUser.FirstName == lFirstName && lUser.LastName == lLastName)
+				if (lUser.FirstName == lFirstName && lUser.LastName == lLastName && lUser.Email == lEmail)
 					lPicture = lUser.Picture;
 			}
 
@@ -276,7 +279,6 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWww.text);
 			if(resp.ok) {
 				Debug.Log("WWW Success");
-
 				AddUserToConfig(lFirstName, lLastName, lEmail);
 				ConfirmAccountCreation();
 				ResetCreateParameters();
@@ -319,15 +321,14 @@ public class DBManager : MonoBehaviour
         }
     }
 
-	//SCRIPT DE BENOIT : A TESTER
-	private IEnumerator AddBuddySess(string iBuddyID)
+	private IEnumerator AddBuddySess()
 	{
 		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("name", "Name");
-		lForm.AddField ("specialID", iBuddyID);
+		lForm.AddField ("name", buddyName);
+		lForm.AddField ("specialID", specialID);
 		Dictionary<string, string> lHeaders = lForm.headers;
 		if (mCookie != null) {
-			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie[1];
+			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
 		}
 		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, lHeaders);
 		yield return lWWW;
@@ -530,13 +531,4 @@ public class DBManager : MonoBehaviour
         System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
         return new string(chars);
     }
-
-	private bool IsValidEmailAddress(string iMail) {
-		if (string.IsNullOrEmpty (iMail))
-			return false;
-		else {
-			Regex lRegex = new Regex (@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
-			return lRegex.IsMatch (iMail) && !iMail.EndsWith (".");
-		}
-	}
 }
