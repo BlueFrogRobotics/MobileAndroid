@@ -6,7 +6,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-//Data structure corresponding to DataBase structure
+public class HttpResponse
+{
+	public bool ok;
+	public string msg;
+}
+
 [Serializable]
 public class PhoneUser
 {
@@ -66,13 +71,16 @@ public class DBManager : MonoBehaviour
     private PhoneUserList mUserList;
     private Texture2D mProfileTexture;
 
+	private PopupHandler popupHandler;
+
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
-        mHost = "52.174.52.152:8080";
+		mHost = "52.174.52.152:8080";
         mBuddyList = "";
         mCurrentUser = new PhoneUser();
         mUserList = ReadPhoneUsers();
+		popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
     }
 
     void Update()
@@ -252,10 +260,6 @@ public class DBManager : MonoBehaviour
 		string lEmail = GameObject.Find("Create_Email_Input").GetComponent<InputField>().text;
 		string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
 
-		if (!IsValidEmailAddress (lEmail)) {
-			yield break;
-		}
-
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("firstname", lFirstName);
 		lForm.AddField ("lastname", lLastName);
@@ -263,15 +267,23 @@ public class DBManager : MonoBehaviour
 		lForm.AddField ("password", lPassword);
 		lForm.AddField ("hiddenkey", "key");
 
-		WWW lWww = new WWW ("http://" + mHost + "/createAccountSess.php", lForm);
+		WWW lWww = new WWW("http://" + mHost + "/createAccountSess.php", lForm);
 		yield return lWww;
 
-		if (lWww.error != null) {
-			Debug.Log ("[ERROR] on WWW Request");
+		if(lWww.error != null) {
+			Debug.Log("[ERROR] on WWW Request" + lWww.error);
 		} else {
-			Debug.Log ("WWW Success : " + lWww.text);
-			AddUserToConfig(lFirstName, lLastName, lEmail);
-			ConfirmAccountCreation();
+			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWww.text);
+			if(resp.ok) {
+				Debug.Log("WWW Success");
+
+				AddUserToConfig(lFirstName, lLastName, lEmail);
+				ConfirmAccountCreation();
+				ResetCreateParameters();
+			} else {
+				popupHandler.DisplayError("Erreur", resp.msg);
+				Debug.Log(resp.msg);
+			}
 		}
 	}
 
