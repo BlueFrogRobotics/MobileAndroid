@@ -36,8 +36,9 @@ public class PopupHandler : MonoBehaviour {
 	{
 		ResetUI();
 		popupWindow.SetActive(true);
+        ResetWindowUI();
 
-		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
+        Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
 		lTitle.text = iTitle;
 		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
 		lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
@@ -50,9 +51,10 @@ public class PopupHandler : MonoBehaviour {
 	{
 		ResetUI();
 		popupWindow.SetActive(true);
-		//Debug.Log ("Popup Window " + popupWindow.activeInHierarchy + " / " + popupWindow.activeSelf);
+        ResetWindowUI();
+        //Debug.Log ("Popup Window " + popupWindow.activeInHierarchy + " / " + popupWindow.activeSelf);
 
-		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
+        Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
 		lTitle.text = "REQUEST ACCESS";
 		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
 		lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
@@ -93,11 +95,19 @@ public class PopupHandler : MonoBehaviour {
         animator.SetTrigger("Close");
     }
 
-    public void ResetUI()
+    private void ResetUI()
     {
         popupWindow.SetActive(false);
         popupYesNo.SetActive(false);
         popupShowQrCode.SetActive(false);
         popupReadQrCode.SetActive(false);
+    }
+
+    private void ResetWindowUI()
+    {
+        GameObject lContent = GameObject.Find("PopUp_Window/Window/Content");
+        foreach(Transform lChild in lContent.transform) {
+            GameObject.Destroy(lChild.gameObject);
+        }
     }
 }
