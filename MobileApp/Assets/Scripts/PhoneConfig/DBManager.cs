@@ -83,7 +83,7 @@ public class DBManager : MonoBehaviour
 		mHost = "52.174.52.152:8080";
         mBuddyList = "";
         mCurrentUser = new PhoneUser();
-        mUserList = ReadPhoneUsers();
+        ReadPhoneUsers();
 		popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
     }
 
@@ -93,10 +93,6 @@ public class DBManager : MonoBehaviour
             popupNoConnection.SetActive(true);
         else
             popupNoConnection.SetActive(false);
-        //if(Input.GetMouseButtonDown(0))
-        //{
-        //    EventSystem.current.currentSelectedGameObject.GetComponent<Renderer>().material.color = Color.red;
-        //}
     }
 
     public void StartRequestConnection()
@@ -287,7 +283,8 @@ public class DBManager : MonoBehaviour
 				AddUserToConfig(lFirstName, lLastName, lEmail);
 				ConfirmAccountCreation();
 				ResetCreateParameters();
-			} else {
+                ReadPhoneUsers();
+            } else {
 				popupHandler.DisplayError("Erreur", resp.msg);
 				Debug.Log(resp.msg);
 			}
@@ -375,6 +372,41 @@ public class DBManager : MonoBehaviour
         menuManager.GoConnectionMenu();
     }
 
+    public void ReadPhoneUsers()
+    {
+        //We read the user file and save the list of registered users on the phone
+        PhoneUserList lUserList = new PhoneUserList();
+
+        StreamReader lstreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
+        string lTemp = lstreamReader.ReadToEnd();
+        lstreamReader.Close();
+
+        lUserList = JsonUtility.FromJson<PhoneUserList>(lTemp);
+
+        //Then we get the default user and register it as the "current" one
+        foreach (PhoneUser lUser in lUserList.Users)
+        {
+            if (lUser.IsDefaultUser)
+            {
+                mCurrentUser = lUser;
+                GameObject.Find("TextFirstName").GetComponent<Text>().text = lUser.FirstName;
+                GameObject.Find("Text_LastName").GetComponent<Text>().text = lUser.LastName;
+                //LoadUserPicture(lUser.Picture);
+                //Debug.Log("Default user is " + lUser.FirstName + " " + lUser.LastName);
+                break;
+            }
+        }
+
+        for (int i = 0; i < lUserList.Users.Length - 1; i++)
+        {
+            GameObject lDot = GameObject.Instantiate(DotOFF);
+            lDot.transform.SetParent(GameObject.Find("Dots").transform);
+            lDot.transform.localScale = Vector3.one;
+        }
+
+        mUserList = lUserList;
+    }
+
     private void ResetCreateParameters()
     {
 		InputField ifCurrent = GameObject.Find("Field_FirstName").GetComponent<InputField>();
@@ -398,12 +430,6 @@ public class DBManager : MonoBehaviour
 		ifCurrent.text = "";
     }
 
-    /*private void ResetRequestParameters()
-    {
-        requestEMail.text = "";
-        requestPassword.text = "";
-    }*/
-
     private void ExportToJson(PhoneUserList iUser)
     {
         //Write User list on user file as JSON format
@@ -411,39 +437,6 @@ public class DBManager : MonoBehaviour
         StreamWriter lStrWriter = new StreamWriter(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
         lStrWriter.Write(lJSON);
         lStrWriter.Close();
-    }
-
-    private PhoneUserList ReadPhoneUsers()
-    {
-        //We read the user file and save the list of registered users on the phone
-        PhoneUserList lUserList = new PhoneUserList();
-
-        StreamReader lstreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
-        string lTemp = lstreamReader.ReadToEnd();
-        lstreamReader.Close();
-
-        lUserList = JsonUtility.FromJson<PhoneUserList>(lTemp);
-        
-        //Then we get the default user and register it as the "current" one
-        foreach(PhoneUser lUser in lUserList.Users) {
-            if(lUser.IsDefaultUser) {
-                mCurrentUser = lUser;
-                GameObject.Find("TextFirstName").GetComponent<Text>().text = lUser.FirstName;
-                GameObject.Find("Text_LastName").GetComponent<Text>().text = lUser.LastName;
-                //LoadUserPicture(lUser.Picture);
-                //Debug.Log("Default user is " + lUser.FirstName + " " + lUser.LastName);
-                break;
-            }
-        }
-
-        for(int i=0; i<lUserList.Users.Length - 1; i++)
-        {
-            GameObject lDot = GameObject.Instantiate(DotOFF);
-            lDot.transform.SetParent(GameObject.Find("Dots").transform);
-            lDot.transform.localScale = Vector3.one;
-        }
-
-        return lUserList;
     }
 
     private void AddUserToConfig(string iFName, string iLName, string iEMail, bool iIsDefaultUser = false, string iPicture="")
@@ -477,12 +470,17 @@ public class DBManager : MonoBehaviour
     public Sprite GetCurrentUserImage()
     {
         //Function name is explicit enough. We load the picture file into the sprite
-        byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(mCurrentUser.Picture));
-        Texture2D lTex = new Texture2D(2, 2);
-        lTex.LoadImage(lFileData);
-        //Image lProfilePicture = GameObject.Find(iObjectName).GetComponentsInChildren<Image>()[2];
-        //lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
-        return Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+        if(!string.IsNullOrEmpty(mCurrentUser.Picture)) {
+            byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(mCurrentUser.Picture));
+            Texture2D lTex = new Texture2D(2, 2);
+            lTex.LoadImage(lFileData);
+            //Image lProfilePicture = GameObject.Find(iObjectName).GetComponentsInChildren<Image>()[2];
+            //lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+            return Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+        } else {
+            Sprite lSprite = Resources.Load<Sprite>("DefaultUser") as Sprite;
+            return lSprite;
+        }
     }
 
     private void LoadUserPicture(string iPictureName)
