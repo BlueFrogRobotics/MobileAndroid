@@ -218,13 +218,10 @@ public class DBManager : MonoBehaviour
         menuManager.GoSelectBuddyMenu();
     }
 
-    public void StartCreateAccount()
+	public void StartCreateAccount(string firstName, string lastName, string email, string password, string passwordConf)
     {
-        //Debug.Log("First pw : " + createPassword.text + "; Second pw : " + createPasswordConf.text);
-        string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
-        string lPasswordConf = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>().text;
-        if (string.Compare(lPassword, lPasswordConf) == 0)
-            StartCoroutine(CreateAccountSess());
+		if (string.Compare(password, passwordConf) == 0)
+			StartCoroutine(CreateAccountSess(firstName, lastName, email, password));
     }
 
     private IEnumerator CreateAccount()
@@ -257,18 +254,13 @@ public class DBManager : MonoBehaviour
         }
     }
 
-	private IEnumerator CreateAccountSess()
+	private IEnumerator CreateAccountSess(string firstName, string lastName, string email, string password)
 	{
-		string lFirstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
-		string lLastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
-		string lEmail = GameObject.Find("Create_Email_Input").GetComponent<InputField>().text;
-		string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
-
 		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("firstname", lFirstName);
-		lForm.AddField ("lastname", lLastName);
-		lForm.AddField ("email", lEmail);
-		lForm.AddField ("password", lPassword);
+		lForm.AddField ("firstname", firstName);
+		lForm.AddField ("lastname", lastName);
+		lForm.AddField ("email", email);
+		lForm.AddField ("password", password);
 		lForm.AddField ("hiddenkey", "key");
 
 		WWW lWww = new WWW("http://" + mHost + "/createAccountSess.php", lForm);
@@ -279,9 +271,9 @@ public class DBManager : MonoBehaviour
 		} else {
 			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWww.text);
 			if(resp.ok) {
-				Debug.Log("WWW Success");
-				AddUserToConfig(lFirstName, lLastName, lEmail);
-				ConfirmAccountCreation();
+				popupHandler.DisplayError("Succes", resp.msg);
+				AddUserToConfig(firstName, lastName, email);
+				menuManager.GoConnectionMenu();
 				ResetCreateParameters();
                 ReadPhoneUsers();
             } else {
@@ -443,12 +435,6 @@ public class DBManager : MonoBehaviour
 			menuManager.GoSelectBuddyMenu();
 		}
 	}
-
-    private void ConfirmAccountCreation()
-    {
-        //Activate Canvas animations
-        menuManager.GoConnectionMenu();
-    }
 
     public void ReadPhoneUsers()
     {

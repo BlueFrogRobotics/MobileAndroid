@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -43,6 +44,11 @@ public class CreateAccountState : ASubState {
 
     private void CreateAccount()
     {
-        GameObject.Find("DBManager").GetComponent<DBManager>().StartCreateAccount();
+		string firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+		string lastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+		string email = GameObject.Find("Create_Email_Input").GetComponent<InputField>().text;
+		string password = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
+		string passwordConf = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>().text;
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartCreateAccount(firstName, lastName, email, password, passwordConf);
     }
 }
