@@ -22,7 +22,7 @@ public class ConnectAccountState : ASubState {
             GameObject lInputFieldEM = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "mymail@example.com", "", "Email", null, null, null);
             lInputFieldEM.name = "EMail_Input";
             LoadingUI.AddObject(lInputFieldEM);
-            GameObject lInputFieldPW = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "**********", "", "Lock", null, null, null);
+            GameObject lInputFieldPW = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Enter your password", "", "Lock", null, null, null);
             lInputFieldPW.name = "Password_Input";
             lInputFieldPW.GetComponent<InputField>().inputType = InputField.InputType.Password;
             LoadingUI.AddObject(lInputFieldPW);
