@@ -291,11 +291,53 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
-    public void StartAddBuddyToUser(Text iBuddyID)
+	public void StartEditAccount(string firstName, string lastName, string password, string passwordConf)
     {
-		StartCoroutine(AddBuddyToUser(iBuddyID.text));
+		if(string.Compare(password, passwordConf) == 0) {
+			StartCoroutine(EditAccount(firstName, lastName, password));
+		}
     }
 
+	private IEnumerator EditAccount(string firstName, string lastName, string password)
+	{
+		string email = mCurrentUser.Email;
+		Debug.Log("User email" + email);
+	
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("firstname", firstName);
+		lForm.AddField ("lastname", lastName);
+		lForm.AddField ("email", email);
+		lForm.AddField ("password", password);
+		lForm.AddField ("hiddenkey", "key");
+
+		Dictionary<string, string> lHeaders = lForm.headers;
+		if (mCookie != null) {
+			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
+		}
+
+		WWW lWww = new WWW("http://" + mHost + "/editAccount.php", lForm.data, lForm.headers);
+		yield return lWww;
+
+		if(lWww.error != null) {
+			Debug.Log("[ERROR] on WWW Request" + lWww.error);
+		} else {
+			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWww.text);
+			if(resp.ok) {
+				popupHandler.DisplayError("Succes", resp.msg);
+				EditUserToConfig(firstName, lastName, email);
+				menuManager.PreviousMenu();
+			} else {
+				popupHandler.DisplayError("Erreur", resp.msg);
+				Debug.Log(resp.msg);
+			}
+		}
+	}
+
+	public void StartAddBuddyToUser(Text iBuddyID)
+	{
+		StartCoroutine(AddBuddyToUser(iBuddyID.text));
+	}
+	
     private IEnumerator AddBuddyToUser(string iBuddyID)
     {
         //Add desired Buddy to the user's list of Buddies on the DataBase
@@ -502,6 +544,16 @@ public class DBManager : MonoBehaviour
         //Save the new user file
         ExportToJson(mUserList);
     }
+
+	private void EditUserToConfig(string firstname, string lastname, string email)
+	{
+		for(int i = 0; i < mUserList.Users.Length; i++) {
+			if(mUserList.Users[i].Email.CompareTo(email) == 0) {
+				mUserList.Users[i].FirstName = firstname;
+				mUserList.Users[i].LastName = lastname;
+			}
+		}
+	}
 
     public Sprite GetCurrentUserImage()
     {
