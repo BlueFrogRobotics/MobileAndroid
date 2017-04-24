@@ -126,6 +126,10 @@ public class HandleGeneric : MonoBehaviour {
         T_ArrowLeft.SetActive(false);
         T_ArrowRight.SetActive(false);
         T_Dots.SetActive(false);
+
+        DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
+        T_FieldFirstName.GetComponent<InputField>().text = lDB.CurrentUser.FirstName;
+        T_FieldLastName.GetComponent<InputField>().text = lDB.CurrentUser.LastName;
     }
 
     private void EnableNavigationDisplay()
