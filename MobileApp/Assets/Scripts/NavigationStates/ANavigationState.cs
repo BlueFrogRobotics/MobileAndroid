@@ -8,7 +8,7 @@ public abstract class ANavigationState : StateMachineBehaviour {
 	public Animator ContentTopAnimator { get; set; }
 	public Animator ContentBottomAnimator { get; set; }
 
-	public override void OnStateEnter (Animator animator, AnimatorStateInfo stateInfo, int layerIndex){
+	public override void OnStateEnter (Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		//OnEnter (animator, stateInfo, layerIndex);
 	}
 

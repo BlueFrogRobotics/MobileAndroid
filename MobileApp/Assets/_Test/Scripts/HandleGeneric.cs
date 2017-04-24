@@ -94,8 +94,8 @@ public class HandleGeneric : MonoBehaviour {
 
     public void SetEditInfos(string iName, string iLastName)
     {
-        T_FieldFirstName.GetComponents<Text>()[1].text = iName;
-        T_FieldLastName.GetComponents<Text>()[1].text = iLastName;
+		T_FieldFirstName.GetComponentsInChildren<Text>()[1].text = iName;
+		T_FieldLastName.GetComponentsInChildren<Text>()[1].text = iLastName;
     }
 
     public void SetDisplayInfos(string iName, string iLastName)

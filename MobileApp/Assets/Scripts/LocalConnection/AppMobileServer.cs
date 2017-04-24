@@ -37,8 +37,11 @@ public class AppMobileServer : MonoBehaviour
 {
     public string BuddyIP { get { return mClientBuddyIP; } set { mClientBuddyIP = value; } }
 
-    [SerializeField]
-    private NetworkDiscovery discovery;
+    //[SerializeField]
+    //private NetworkDiscovery discovery;
+
+	[SerializeField]
+	private BroadcastServer discovery;
 
     private const short BEGIN_MESSAGE = 1004;
     private const short CHAT_MSG = 1010;
@@ -62,6 +65,7 @@ public class AppMobileServer : MonoBehaviour
     private void StartBroadcast()
     {
         //Self-explanatory
+		//discovery.
         discovery.Initialize();
         discovery.StartAsServer();
     }

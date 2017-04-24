@@ -15,7 +15,9 @@ public class CreateAccountState : ASubState {
             LoadingUI.ClearUI();
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
             // DISABLE, ENABLE GENERICS
-            GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationEdit", "TopUI", "BottomUI", "ScrollView" });
+			HandleGeneric lHandler = GameObject.Find("ScriptUI").GetComponent<HandleGeneric>();
+			lHandler.SetEditInfos ("Enter Your First Name", "Enter Your Last Name");
+			lHandler.DisableGeneric(new ArrayList() { "NavigationEdit", "TopUI", "BottomUI", "ScrollView" });
             // CREATE OBJECTS
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "CREATE YOUR ACCOUNT", "", new List<UnityAction>() { CreateAccount }));
@@ -34,7 +36,7 @@ public class CreateAccountState : ASubState {
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
             LoadingUI.AddObject(lPoolManager.fToggle_Underline("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false, null));
-            LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "", null));
+			LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "DefaultUser", null));
             //NEED TO ADD NAVIGATION ACCOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
         }
     }

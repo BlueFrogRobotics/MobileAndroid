@@ -128,28 +128,37 @@ public class BuddyIPList : MonoBehaviour
         //Retrieve the list from Database source and add it to the displayed list
         Debug.Log("Adding DB Buddy");
         LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)"));
-        string[] lBuddyList = buddyDB.BuddyList.Split('\n');
+
+		if (!string.IsNullOrEmpty (buddyDB.BuddyList)) {
+			string[] lBuddyList = buddyDB.BuddyList.Split('\n');
+
+			for (int i = 0; i < lBuddyList.Length - 1; i++)
+			{
+				Debug.Log("Buddy IDs " + lBuddyList[i]);
+				string[] lBuddyIDs = lBuddyList[i].Split('|');
+				
+				GameObject lBuddyDB = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy " + lBuddyIDs[0], "ID " + lBuddyIDs[1], "", false, true, null);
+				LoadingUI.AddObject(lBuddyDB);
+			}
+		}
 
         if(buddyDB.CurrentUser.LastName.Contains("DEMO")) {
             GameObject lBuddyDemo = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy DEMO", "ID DEMO", "", false, true, null);
             LoadingUI.AddObject(lBuddyDemo);
         }
 
-        for (int i = 0; i < lBuddyList.Length - 1; i++)
-        {
-            Debug.Log("Buddy IDs " + lBuddyList[i]);
-            string[] lBuddyIDs = lBuddyList[i].Split('|');
-
-            GameObject lBuddyDB = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy " + lBuddyIDs[0], "ID " + lBuddyIDs[1], "", false, true, null);
-            LoadingUI.AddObject(lBuddyDB);
-        }
     }
     
     private void AddLocalBuddy()
     {
-        LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "NOT ADDED & AVAILABLE IN LOCAL"));
+        LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "CONNECTED ON YOUR WIFI"));
         mIPList.Clear();
         mIPList = mobileServer.GetBuddyConnectedList();
+
+		if(buddyDB.CurrentUser.LastName.Contains("DEMO")) {
+			GameObject lBuddyDemo = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy DEMO Local", "ID DEMO", "", true, true, null);
+			LoadingUI.AddObject(lBuddyDemo);
+		}
 
         //Instiate the prefab for each found Buddy in the displayed list
         int lCount = 0;
