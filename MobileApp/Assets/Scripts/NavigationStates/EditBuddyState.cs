@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -35,7 +36,11 @@ public class EditBuddyState : ASubState {
 
     private void SaveBuddyChanges()
     {
-        GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();
+		string specialID = SelectBuddy.BuddyID;
+		string name = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditBuddy(specialID, name);
+        //GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();
     }
 }
 

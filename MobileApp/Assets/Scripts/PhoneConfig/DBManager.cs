@@ -345,6 +345,42 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
+	public void StartEditBuddy(string iSpecialID, string iName)
+	{
+		StartCoroutine(EditBuddy(iSpecialID, iName));
+	}
+
+	private IEnumerator EditBuddy(string iSpecialID, string iName)
+	{
+		Debug.Log("DBManager.EditBuddy " + iSpecialID + " " + iName);
+
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("specialID", iSpecialID);
+		lForm.AddField ("name", iName);
+
+		Dictionary<string, string> lHeaders = lForm.headers;
+		if (mCookie != null) {
+			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
+		}
+
+		WWW lWWW = new WWW ("http://" + mHost + "/editBuddy.php", lForm.data, lHeaders);
+		yield return lWWW;
+
+		if (lWWW.error != null)
+			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
+		else {
+			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
+			if(resp.ok) {
+				popupHandler.DisplayError("Succes", resp.msg);
+				menuManager.PreviousMenu();
+				Debug.Log("WWW Success");
+			} else {
+				popupHandler.DisplayError("Erreur", resp.msg);
+				Debug.Log(resp.msg);
+			}
+		}
+	}
+
 	private void RetrieveBuddyList()
 	{
 		StartCoroutine(RetrieveBuddyListCo());
