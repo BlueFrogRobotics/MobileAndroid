@@ -45,8 +45,8 @@ public class STTManager : MonoBehaviour
     //Get the said sentence and generate the message in chat
     private void OnSTTComplete(string iSpeech)
     {
-        input.text = iSpeech;
-        chatManager.NewChatMessage();
+        //input.text = iSpeech;
+        chatManager.NewChatMessage(iSpeech);
     }
 
     private void OnEnd()

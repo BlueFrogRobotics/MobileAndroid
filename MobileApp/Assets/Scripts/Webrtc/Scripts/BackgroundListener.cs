@@ -16,6 +16,9 @@ public class BackgroundListener : MonoBehaviour
     [SerializeField]
     private Webrtc webRTC;
 
+    [SerializeField]
+    private ChatManager chatManager;
+
     private AndroidJavaObject mJavaListener;
 
     // Use this for initialization
@@ -36,6 +39,17 @@ public class BackgroundListener : MonoBehaviour
         mJavaListener.Call("SubscribeConnectRequest");
     }
 
+    public void SubscribeChatChannel()
+    {
+        Debug.Log("Connected to chat " + SelectBuddy.BuddyID);
+        mJavaListener.Call("SubscribeChat", SelectBuddy.BuddyID);
+    }
+
+    public void SendChatMessage(string iMessage)
+    {
+        mJavaListener.Call("SendChatMessage", iMessage);
+    }
+
     public void PublishConnectionRequest(string iRemoteID)
     {
         mJavaListener.Call("Publish", "ConnectRequest", webRTC.ID + "/" + iRemoteID);
@@ -49,6 +63,11 @@ public class BackgroundListener : MonoBehaviour
     public void OnConnectionRequest(string iMessage)
     {
         Debug.Log("Received message : " + iMessage);
+    }
+
+    public void OnMessageReceived(string iMessage)
+    {
+        chatManager.NewBuddyMessage(iMessage);
     }
 
     public void OnNotificationMessage(string iMessage)

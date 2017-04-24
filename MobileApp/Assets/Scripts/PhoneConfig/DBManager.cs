@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -89,6 +90,10 @@ public class DBManager : MonoBehaviour
             popupNoConnection.SetActive(true);
         else
             popupNoConnection.SetActive(false);
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    EventSystem.current.currentSelectedGameObject.GetComponent<Renderer>().material.color = Color.red;
+        //}
     }
 
     public void StartRequestConnection()
