@@ -221,40 +221,10 @@ public class DBManager : MonoBehaviour
 	public void StartCreateAccount(string firstName, string lastName, string email, string password, string passwordConf)
     {
 		if (string.Compare(password, passwordConf) == 0)
-			StartCoroutine(CreateAccountSess(firstName, lastName, email, password));
+			StartCoroutine(CreateAccount(firstName, lastName, email, password));
     }
 
-    private IEnumerator CreateAccount()
-    {
-        string lFirstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
-        string lLastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
-        string lEmail = GameObject.Find("Create_Email_Input").GetComponent<InputField>().text;
-        string lPassword = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
-
-        //Fill POST parameters
-        WWWForm lForm = new WWWForm();
-        lForm.AddField("firstname", lFirstName);
-        lForm.AddField("lastname", lLastName);
-        lForm.AddField("email", lEmail);
-        lForm.AddField("password", lPassword);
-		lForm.AddField("hiddenkey", "key");
-
-        WWW lWww = new WWW("http://" + mHost + "/createAccountSess.php", lForm);
-        yield return lWww;
-
-        //Check for errors
-        if (lWww.error != null)
-            Debug.Log("[ERROR] on WWW Request");
-        else {
-            Debug.Log("Received results : " + lWww.text);
-            //New user has been succesfully added to the DataBase. Now add it to the user file
-            AddUserToConfig(lFirstName, lLastName, lEmail);
-			ConfirmAccountCreation();
-			ResetCreateParameters(); // to remove when unity bug fixed
-        }
-    }
-
-	private IEnumerator CreateAccountSess(string firstName, string lastName, string email, string password)
+	private IEnumerator CreateAccount(string firstName, string lastName, string email, string password)
 	{
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("firstname", firstName);
