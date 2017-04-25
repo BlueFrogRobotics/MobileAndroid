@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,8 +20,12 @@ public class EditAccountState: ASubState {
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationEdit", "TopUI", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "ID:5487-BF68-ZD97", "QRCode", null));
-            LoadingUI.AddObject(lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your New Password", "", "Lock", null, null, null));
-            LoadingUI.AddObject(lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Re-enter Your New Password", "", "Lock", null, null, null));
+			GameObject lNewPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your New Password", "", "Lock", null, null, null);
+			lNewPasswordField.name = "New_PW_Input";
+			LoadingUI.AddObject(lNewPasswordField);
+			GameObject lNewPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Re-enter Your New Password", "", "Lock", null, null, null);
+			lNewPasswordConfField.name = "New_PWConf_Input";
+			LoadingUI.AddObject(lNewPasswordConfField);
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
 
@@ -39,6 +44,10 @@ public class EditAccountState: ASubState {
 
     private void SaveProfileChanges()
     {
-        GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();
+		string firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+		string lastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+		string password = GameObject.Find("New_PW_Input").GetComponent<InputField>().text;
+		string passwordConf = GameObject.Find("New_PWConf_Input").GetComponent<InputField>().text;
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditAccount(firstName, lastName, password, passwordConf);
     }
 }
