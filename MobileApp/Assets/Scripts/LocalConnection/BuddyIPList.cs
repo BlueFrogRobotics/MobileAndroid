@@ -129,7 +129,10 @@ public class BuddyIPList : MonoBehaviour
         Debug.Log("Adding DB Buddy");
         LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)"));
 
-		if (!string.IsNullOrEmpty (buddyDB.BuddyList)) {
+        GameObject lBuddyDBFix = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy Kumar", "ID 10-00-00-02", "", false, true, null);
+        LoadingUI.AddObject(lBuddyDBFix);
+
+        if (!string.IsNullOrEmpty (buddyDB.BuddyList)) {
 			string[] lBuddyList = buddyDB.BuddyList.Split('\n');
 
 			for (int i = 0; i < lBuddyList.Length - 1; i++)

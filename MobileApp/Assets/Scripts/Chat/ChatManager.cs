@@ -66,11 +66,15 @@ public class ChatManager : MonoBehaviour
         //Scroll the chat list to the bottom where the new message has appeared
         scrollParent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0F;
 
+        GameObject.Find("Bottom_UI").GetComponentInChildren<InputField>().text = "";
+
         //mTTS.Say(lMsg);
         if (selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL)
             mobileServer.SendChatMessage(iMsg);
         else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC)
             backgroundListener.SendChatMessage(iMsg);
+
+
     }
 
     public void NewBuddyMessage(string iMsg)

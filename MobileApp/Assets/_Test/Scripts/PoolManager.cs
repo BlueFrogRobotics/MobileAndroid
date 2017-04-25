@@ -512,6 +512,8 @@ public class PoolManager : MonoBehaviour {
             else
                 lSprite = new Sprite();
             lTextField_Icon.GetComponentsInChildren<Image>()[3].sprite = lSprite;
+        } else {
+            lTextField_Icon.GetComponentsInChildren<Image>()[3].sprite = null;
         }
 
         // CREATE CALL BACK FOR EVERY CHANGE IN THIS TEXTFIELD

@@ -41,7 +41,7 @@ public class BackgroundListener : MonoBehaviour
 
     public void SubscribeChatChannel()
     {
-        Debug.Log("Connected to chat " + SelectBuddy.BuddyID);
+        Debug.Log("Connecting to chan Chat" + SelectBuddy.BuddyID);
         mJavaListener.Call("SubscribeChat", SelectBuddy.BuddyID);
     }
 
