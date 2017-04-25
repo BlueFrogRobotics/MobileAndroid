@@ -21,10 +21,12 @@ public class AddBuddyState : ASubState {
             // CREATING OBJECTS
             // BOTTOM UI
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "ADD THIS CONTACT", "", null));
+			LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "ADD THIS CONTACT", "", new List<UnityAction>() { OnAddBuddyClicked }));
             LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "toto", true, null));
 
-            LoadingUI.AddObject(lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "ENTER BUDDY'S ID", "", "QRCode", null, null, null));
+			GameObject specialIdField = lPoolManager.fTextField_Icon ("Content_Bottom/ScrollView/Viewport", "ENTER BUDDY'S ID", "", "QRCode", null, null, null);
+			specialIdField.name = "specialIdField";
+			LoadingUI.AddObject(specialIdField);
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/ScrollView/Viewport", "OR", false));
             GameObject lBuddyID = lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", "", new List<UnityAction>() { lPopup.OpenReadQrCode });
             lBuddyID.name = "Buddy_ID";
@@ -35,8 +37,13 @@ public class AddBuddyState : ASubState {
         }
     }
 
-    private void Connection()
+    private void OnAddBuddyClicked()
     {
-        GameObject.Find("DBManager").GetComponent<DBManager>().StartAddBuddyToUser(GameObject.Find("Buddy_ID").GetComponent<Text>());
+		Debug.Log ("OnAddBuddyClicked");
+
+		string specialId = GameObject.Find("specialIdField").GetComponent<InputField>().text;
+		string name = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartAddBuddyToUser(specialId, name);
     }
 }

@@ -219,12 +219,7 @@ public class DBManager : MonoBehaviour
 		lForm.AddField ("password", password);
 		lForm.AddField ("hiddenkey", "key");
 
-		Dictionary<string, string> lHeaders = lForm.headers;
-		if (mCookie != null) {
-			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
-		}
-
-		WWW lWww = new WWW("http://" + mHost + "/editAccount.php", lForm.data, lForm.headers);
+		WWW lWww = new WWW("http://" + mHost + "/editAccount.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWww;
 
 		if(lWww.error != null) {
@@ -241,9 +236,9 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
-	public void StartAddBuddyToUser(Text iBuddyID)
+	public void StartAddBuddyToUser(string iBuddyID, string name)
 	{
-		StartCoroutine(AddBuddyToUser(iBuddyID.text));
+		StartCoroutine(AddBuddySess(iBuddyID, name));
 	}
 	
     private IEnumerator AddBuddyToUser(string iBuddyID)
@@ -273,22 +268,28 @@ public class DBManager : MonoBehaviour
         }
     }
 
-	private IEnumerator AddBuddySess()
+	private IEnumerator AddBuddySess(string iBuddyID, string name)
 	{
+		Debug.Log ("AddBuddySess " + iBuddyID + " " + name);
+
 		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("name", buddyName);
-		lForm.AddField ("specialID", specialID);
-		Dictionary<string, string> lHeaders = lForm.headers;
-		if (mCookie != null) {
-			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
-		}
-		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, lHeaders);
+		lForm.AddField ("specialID", iBuddyID);
+		lForm.AddField ("name", name);
+
+		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
 		if (lWWW.error != null)
 			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
 		else {
 			Debug.Log ("WWW Success : " + lWWW.text);
+			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
+			if(resp.ok) {
+				popupHandler.DisplayError("Succes", resp.msg);
+				menuManager.PreviousMenu();
+			} else {
+				popupHandler.DisplayError("Erreur", resp.msg);
+			}
 		}
 	}
 
@@ -305,12 +306,7 @@ public class DBManager : MonoBehaviour
 		lForm.AddField ("specialID", iSpecialID);
 		lForm.AddField ("name", iName);
 
-		Dictionary<string, string> lHeaders = lForm.headers;
-		if (mCookie != null) {
-			lHeaders ["Cookie"] = "PHPSESSID=" + mCookie [1];
-		}
-
-		WWW lWWW = new WWW ("http://" + mHost + "/editBuddy.php", lForm.data, lHeaders);
+		WWW lWWW = new WWW ("http://" + mHost + "/editBuddy.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
 		if (lWWW.error != null)
@@ -336,11 +332,8 @@ public class DBManager : MonoBehaviour
 	private IEnumerator RetrieveBuddyListCo()
 	{
 		WWWForm lForm = new WWWForm();
-		Dictionary<string, string> lHeaders = lForm.headers;
-		if (mCookie != null) {
-			lHeaders["Cookie"] = "PHPSESSID=" + mCookie[1];
-		}
-		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", lForm.data, lHeaders);
+
+		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
 		if (lWWW.error != null)
@@ -524,4 +517,14 @@ public class DBManager : MonoBehaviour
         System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
         return new string(chars);
     }
+
+	private Dictionary<string, string> addSessionCookie(Dictionary<string, string> dictionary)
+	{
+		if(mCookie != null)
+		{
+			dictionary.Add("Cookie", "PHPSESSID=" + mCookie[4]);
+		}
+
+		return dictionary;
+	}
 }
