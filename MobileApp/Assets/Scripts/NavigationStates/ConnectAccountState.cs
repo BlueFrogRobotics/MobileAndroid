@@ -47,7 +47,11 @@ public class ConnectAccountState : ASubState {
 
     //Gets info from the input fields and connects to remote DB.
     private void Connection()
-    {
-        GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection();
+	{
+		string firstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
+		string lastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		string password = GameObject.Find("Password_Input").GetComponent<InputField>().text;
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection(firstName, lastName, email, password);
     }
 }

@@ -95,77 +95,15 @@ public class DBManager : MonoBehaviour
             popupNoConnection.SetActive(false);
     }
 
-    public void StartRequestConnection()
+	public void StartRequestConnection(string firstName, string lastName, string email, string password)
     {
-        StartCoroutine(ConnectAccountSess());
+		StartCoroutine(ConnectAccountSess(firstName, lastName, email, password));
     }
 
-    private IEnumerator RequestConnection()
-    {
-        string lFirstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
-        string lLastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
-        string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
-        string lPassword = GameObject.Find("Password_Input").GetComponent<InputField>().text;
-
-        if (lEmail.Contains("demo") && lPassword.Contains("demo")) {
-            mCurrentUser = new PhoneUser()
-            {
-                IsDefaultUser = false,
-                LastName = "DEMO",
-                FirstName = "Mr.",
-                Email = "demo@demo.com",
-                Picture = "DefaultUser"
-            };
-            ConfirmConnection();
-            yield break;
-        }
-        
-        //Fill POST parameters
-        WWWForm lForm = new WWWForm();
-        lForm.AddField("firstname", lFirstName);
-        lForm.AddField("lastname", lLastName);
-        lForm.AddField("email", lEmail);
-        lForm.AddField("password", lPassword);
-        
-        WWW lWww = new WWW("http://" + mHost + "/connect.php", lForm);
-        yield return lWww;
-
-        //Check if there are errors
-        if (lWww.error != null)
-            Debug.Log("[ERROR] on WWW Request " + lWww.error);
-        else {
-            Debug.Log("[WWW] WWW result " + lWww.text);
-            if(lWww.text != "KO") {
-                //User is logged in and we retrieve the list of Buddies associated with the account
-                mBuddyList = lWww.text;
-                string lPicture = "";
-                foreach(PhoneUser lUser in mUserList.Users)
-                {
-                    if (lUser.FirstName == lFirstName && lUser.LastName == lLastName && lUser.Email == lEmail)
-                        lPicture = lUser.Picture;
-                }
-
-                mCurrentUser = new PhoneUser()
-                {
-                    IsDefaultUser = false,
-                    LastName = lLastName,
-                    FirstName = lFirstName,
-                    Email = lEmail,
-                    Picture = lPicture
-                };
-                ConfirmConnection();
-            }
-        }
-    }
-
-	private IEnumerator ConnectAccountSess()
+	private IEnumerator ConnectAccountSess(string firstName, string lastName, string email, string password)
 	{
-		string lFirstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
-		string lLastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
-		string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
-		string lPassword = GameObject.Find("Password_Input").GetComponent<InputField>().text;
-
-		if (lEmail.Contains("demo") && lPassword.Contains("demo")) {
+		if (email.Contains("demo") && password.Contains("demo"))
+		{
 			mCurrentUser = new PhoneUser()
 			{
 				IsDefaultUser = false,
@@ -179,36 +117,46 @@ public class DBManager : MonoBehaviour
 		}
 
 		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("email", lEmail);
-		lForm.AddField ("password", lPassword);
+		lForm.AddField ("email", email);
+		lForm.AddField ("password", password);
 
 		WWW lWWW = new WWW ("http://" + mHost + "/connectSess.php", lForm);
 		yield return lWWW;
 
-		if (lWWW.error != null) {
+		if (lWWW.error != null)
+		{
 			Debug.Log ("[ERROR] on WWW Request " + lWWW.error + " / " + lWWW.text);
-		} else {
-			Debug.Log ("WWW " + lWWW.text);
-			Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
-			mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
-
-			mBuddyList = lWWW.text;
-			string lPicture = "";
-			foreach(PhoneUser lUser in mUserList.Users)
+		}
+		else
+		{
+			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
+			if(resp.ok)
 			{
-				if (lUser.FirstName == lFirstName && lUser.LastName == lLastName && lUser.Email == lEmail)
-					lPicture = lUser.Picture;
+				Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
+				mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
+
+				mBuddyList = lWWW.text;
+				string lPicture = "";
+				foreach(PhoneUser lUser in mUserList.Users)
+				{
+					if (lUser.FirstName == firstName && lUser.LastName == lastName && lUser.Email == email)
+						lPicture = lUser.Picture;
+				}
+
+				mCurrentUser = new PhoneUser()
+				{
+					IsDefaultUser = false,
+					LastName = lastName,
+					FirstName = firstName,
+					Email = email,
+					Picture = lPicture
+				};
+				ConfirmConnection();
 			}
-
-			mCurrentUser = new PhoneUser()
+			else
 			{
-				IsDefaultUser = false,
-				LastName = lLastName,
-				FirstName = lFirstName,
-				Email = lEmail,
-				Picture = lPicture
-			};
-			ConfirmConnection ();
+				popupHandler.DisplayError("Erreur", resp.msg);
+			}
 		}
 	}
 
@@ -248,7 +196,6 @@ public class DBManager : MonoBehaviour
                 ReadPhoneUsers();
             } else {
 				popupHandler.DisplayError("Erreur", resp.msg);
-				Debug.Log(resp.msg);
 			}
 		}
 	}
@@ -290,7 +237,6 @@ public class DBManager : MonoBehaviour
 				menuManager.PreviousMenu();
 			} else {
 				popupHandler.DisplayError("Erreur", resp.msg);
-				Debug.Log(resp.msg);
 			}
 		}
 	}
