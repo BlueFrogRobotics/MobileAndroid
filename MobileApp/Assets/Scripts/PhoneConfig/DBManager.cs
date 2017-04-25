@@ -152,6 +152,7 @@ public class DBManager : MonoBehaviour
 					Picture = lPicture
 				};
 				ConfirmConnection();
+				RetrieveBuddyList();
 			}
 			else
 			{
@@ -336,12 +337,22 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
-		if (lWWW.error != null)
-			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
-		else {
-			Debug.Log ("WWW Success : " + lWWW.text);
-			mBuddyList = lWWW.text;
-			menuManager.GoSelectBuddyMenu();
+		if(lWWW.error != null)
+		{
+			Debug.Log("[ERROR] on WWW Request :" + lWWW.error);
+		}
+		else
+		{
+			if(lWWW.text.CompareTo("not logged") == 0)
+			{
+				popupHandler.DisplayError("Erreur", "Veuillez vous identifier");
+			}
+			else
+			{
+				Debug.Log("WWW Success : " + lWWW.text);
+				mBuddyList = lWWW.text;
+				menuManager.GoSelectBuddyMenu();
+			}
 		}
 	}
 
