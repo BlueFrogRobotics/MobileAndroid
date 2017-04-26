@@ -129,7 +129,7 @@ public class BuddyIPList : MonoBehaviour
         Debug.Log("Adding DB Buddy");
         LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)"));
 
-        GameObject lBuddyDBFix = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy Kumar", "ID 10-00-00-02", "", false, true, null);
+        GameObject lBuddyDBFix = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Kumar", "ID 10-00-00-02", "", false, true, null);
         LoadingUI.AddObject(lBuddyDBFix);
 
         if (!string.IsNullOrEmpty (buddyDB.BuddyList)) {
@@ -140,7 +140,7 @@ public class BuddyIPList : MonoBehaviour
 				Debug.Log("Buddy IDs " + lBuddyList[i]);
 				string[] lBuddyIDs = lBuddyList[i].Split('|');
 				
-				GameObject lBuddyDB = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy " + lBuddyIDs[0], "ID " + lBuddyIDs[1], "", false, true, null);
+				GameObject lBuddyDB = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", lBuddyIDs[0], "ID " + lBuddyIDs[1], "", false, true, null);
 				LoadingUI.AddObject(lBuddyDB);
 			}
 		}

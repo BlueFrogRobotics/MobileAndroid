@@ -616,5 +616,19 @@ public class PoolManager : MonoBehaviour {
         lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
         return lFinalObject;
     }
+
+    public Sprite GetSprite(string iSpriteName)
+    {
+        Sprite lSprite = new Sprite();
+
+        if (!string.IsNullOrEmpty(iSpriteName)) {
+            if (mAtlasMobile.ContainsKey(iSpriteName))
+                lSprite = mAtlasMobile[iSpriteName];
+            else if (mAtlasUI.ContainsKey(iSpriteName))
+                lSprite = mAtlasUI[iSpriteName];
+        }
+
+        return lSprite;
+    }
 }
 

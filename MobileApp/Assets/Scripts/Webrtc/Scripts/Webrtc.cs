@@ -11,6 +11,7 @@ public class Webrtc : MonoBehaviour
     public CONNECTION ConnectionState { get { return mConnectionState; } }
     public string ID { get { return mLocalUser; } }
     public string RemoteID { get { return mRemoteUser; } set { mRemoteUser = value; } }
+    public string ConnectionInfo { get { return mConnectionInfos; } }
 
     [SerializeField]
     private DBManager dbManager;
@@ -54,6 +55,8 @@ public class Webrtc : MonoBehaviour
 
 	private Mutex mTextureMutex = new Mutex();
 	private char[] mResolutionSeparator = new char[] {'*'};
+
+    private string mConnectionInfos;
 
 	private const int INIT_WIDTH = 640;
 	private const int INIT_HEIGHT = 480;
@@ -142,7 +145,7 @@ public class Webrtc : MonoBehaviour
     public void SetupWebRTC()
     {
         Debug.Log("DB " + dbManager.CurrentUser.LastName);
-        mLocalUser = dbManager.CurrentUser.LastName + UnityEngine.Random.Range(1000, 9999).ToString();
+        mLocalUser = dbManager.CurrentUser.Email;
         if (mTextLog)
             mTextLog.text += "setup webrtc" + "\n";
 
@@ -342,7 +345,8 @@ public class Webrtc : MonoBehaviour
 
 	public void onWebRTCStats(string data)
 	{
-		Debug.Log("Unity " + data + "\n");
+        mConnectionInfos = data;
+		//Debug.Log("Unity " + data + "\n");
 	}
 }
 

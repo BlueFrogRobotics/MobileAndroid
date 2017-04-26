@@ -75,6 +75,9 @@ public class HandleGeneric : MonoBehaviour {
                     case "NavigationEdit":
                         EnableNavigationEdit();
                         break;
+                    case "NavigationEditBuddy":
+                        EnableNavigationEditBuddy();
+                        break;
                     case "NavigationDisplay":
                         EnableNavigationDisplay();
                         break;
@@ -130,6 +133,21 @@ public class HandleGeneric : MonoBehaviour {
         DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
         T_FieldFirstName.GetComponent<InputField>().text = lDB.CurrentUser.FirstName;
         T_FieldLastName.GetComponent<InputField>().text = lDB.CurrentUser.LastName;
+    }
+
+    private void EnableNavigationEditBuddy()
+    {
+        T_NavigationAccount.SetActive(true);
+        T_FieldFirstName.SetActive(false);
+        T_FieldLastName.SetActive(true);
+        T_TextFirstName.SetActive(true);
+        T_TextLastName.SetActive(false);
+        T_ArrowLeft.SetActive(false);
+        T_ArrowRight.SetActive(false);
+        T_Dots.SetActive(false);
+
+        T_FieldLastName.GetComponent<InputField>().text = SelectBuddy.BuddyName;
+        T_TextFirstName.GetComponent<Text>().text = SelectBuddy.BuddyID;
     }
 
     private void EnableNavigationDisplay()

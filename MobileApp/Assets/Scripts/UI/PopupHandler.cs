@@ -25,6 +25,9 @@ public class PopupHandler : MonoBehaviour {
 	[SerializeField]
 	private PoolManager poolManager;
 
+    [SerializeField]
+    private Webrtc webRTC;
+
     public void OpenWindow()
     {
         ResetUI();
@@ -32,7 +35,34 @@ public class PopupHandler : MonoBehaviour {
         animator.SetTrigger("Open");
     }
 
-	public void DisplayError(string iTitle, string iMessage)
+    public void DisplayRTCNetworkInfo()
+    {
+        ResetUI();
+        popupWindow.SetActive(true);
+        ResetWindowUI();
+
+        GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
+        lButton.GetComponent<Button>().onClick.AddListener(CloseWebRTCInfos);
+
+        GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>().text = "Network Status";
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Connection status local", true);
+        GameObject lLocalLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "", null);
+        lLocalLevel.name = "LocalLevel";
+
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Connection status remote", true);
+        GameObject lRemoteLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "", null);
+        lLocalLevel.name = "RemoteLevel";
+
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Device performance", true);
+        GameObject lDeviceLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "", null);
+        lLocalLevel.name = "DeviceLevel";
+
+        StartCoroutine(UpdateWebRTCInfos());
+
+        animator.SetTrigger("Open");
+    }
+
+    public void DisplayError(string iTitle, string iMessage)
 	{
 		ResetUI();
 		popupWindow.SetActive(true);
@@ -109,5 +139,45 @@ public class PopupHandler : MonoBehaviour {
         foreach(Transform lChild in lContent.transform) {
             GameObject.Destroy(lChild.gameObject);
         }
+    }
+
+    private string SignalLevel(float iIndicator)
+    {
+        string lSignalSprite = "";
+        if (iIndicator > 0.8F)
+            lSignalSprite = "Network4";
+        else if (iIndicator > 0.6F)
+            lSignalSprite = "Network3";
+        else if (iIndicator > 0.4F)
+            lSignalSprite = "Network2";
+        else if (iIndicator > 0.2F)
+            lSignalSprite = "Network1";
+        else
+            lSignalSprite = "Network0";
+
+        return lSignalSprite;
+    }
+
+    private IEnumerator UpdateWebRTCInfos()
+    {
+        Image lLocal = GameObject.Find("LocalLevel").GetComponentsInChildren<Image>()[1];
+        Image lRemote = GameObject.Find("RemoteLevel").GetComponentsInChildren<Image>()[1];
+        Image lDevice = GameObject.Find("DeviceLevel").GetComponentsInChildren<Image>()[1];
+
+        while (true)
+        {
+            string[] lInfos = webRTC.ConnectionInfo.Split('|');
+            lLocal.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[0])));
+            lRemote.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[1])));
+            lDevice.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[2])));
+
+            yield return new WaitForSeconds(1F);
+        }
+    }
+
+    private void CloseWebRTCInfos()
+    {
+        StopCoroutine(UpdateWebRTCInfos());
+        ClosePopup();
     }
 }
