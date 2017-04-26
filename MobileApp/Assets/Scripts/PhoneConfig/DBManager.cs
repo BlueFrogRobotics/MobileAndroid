@@ -151,8 +151,8 @@ public class DBManager : MonoBehaviour
 					Email = email,
 					Picture = lPicture
 				};
-				ConfirmConnection();
 				RetrieveBuddyList();
+				ConfirmConnection();
 			}
 			else
 			{
@@ -334,7 +334,7 @@ public class DBManager : MonoBehaviour
 	{
 		WWWForm lForm = new WWWForm();
 
-		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", lForm.data, addSessionCookie(lForm.headers));
+		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", new byte[] { 0 }, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
 		if(lWWW.error != null)
