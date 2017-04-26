@@ -288,6 +288,7 @@ public class DBManager : MonoBehaviour
 			if(resp.ok) {
 				popupHandler.DisplayError("Succes", resp.msg);
 				menuManager.PreviousMenu();
+				RetrieveBuddyList();
 			} else {
 				popupHandler.DisplayError("Erreur", resp.msg);
 			}
@@ -301,8 +302,6 @@ public class DBManager : MonoBehaviour
 
 	private IEnumerator EditBuddy(string iSpecialID, string iName)
 	{
-		Debug.Log("DBManager.EditBuddy " + iSpecialID + " " + iName);
-
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("specialID", iSpecialID);
 		lForm.AddField ("name", iName);
@@ -317,6 +316,7 @@ public class DBManager : MonoBehaviour
 			if(resp.ok) {
 				popupHandler.DisplayError("Succes", resp.msg);
 				menuManager.PreviousMenu();
+				RetrieveBuddyList();
 				Debug.Log("WWW Success");
 			} else {
 				popupHandler.DisplayError("Erreur", resp.msg);
