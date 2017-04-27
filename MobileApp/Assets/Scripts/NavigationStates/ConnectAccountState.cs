@@ -12,6 +12,7 @@ public class ConnectAccountState : ASubState {
         if (indexState == 1)
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
+            DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
@@ -25,6 +26,7 @@ public class ConnectAccountState : ASubState {
             GameObject lInputFieldPW = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Enter your password", "", "Lock", null, null, null);
             lInputFieldPW.name = "Password_Input";
             lInputFieldPW.GetComponent<InputField>().inputType = InputField.InputType.Password;
+            lInputFieldEM.GetComponent<InputField>().text = lDB.CurrentUser.Email;
             LoadingUI.AddObject(lInputFieldPW);
 
             LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Forgot your password?", null));

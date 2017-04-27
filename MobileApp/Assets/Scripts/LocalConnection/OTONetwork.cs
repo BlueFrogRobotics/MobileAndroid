@@ -144,11 +144,11 @@ public class OTONetwork : MonoBehaviour
         }
         Debug.Log(lDebugString);
 
-        mConfig.PacketSize = ushort.MaxValue;
+        mConfig.PacketSize = 2000;
         mConfig.MaxSentMessageQueueSize = 1024;
         // Global config
         mGlobalConfig = new GlobalConfig();
-        mGlobalConfig.MaxPacketSize = 65000;
+        mGlobalConfig.MaxPacketSize = 2000;
         mGlobalConfig.ReactorMaximumReceivedMessages = 1;//valeur initiale a 256
         mGlobalConfig.ReactorMaximumSentMessages = 1;//valeur initiale a 256
     }

@@ -55,6 +55,7 @@ public class QRCodeManager : MonoBehaviour
                 //popupQRCode.SetActive(false);
                 GameObject lViewport = GameObject.Find("Content_Bottom/ScrollView/Viewport");
                 lViewport.GetComponentsInChildren<InputField>()[0].text = lNameQrCode;
+                GameObject.Find("PopUps").GetComponent<PopupHandler>().CloseReadQrCode();
             }
             //cameraImage.texture = mCamera;
             //Rotate the frame for display

@@ -46,16 +46,16 @@ public class PopupHandler : MonoBehaviour {
 
         GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>().text = "Network Status";
         poolManager.fSimple_Text("PopUp_Window/Window/Content", "Connection status local", true);
-        GameObject lLocalLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "", null);
+        GameObject lLocalLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "Network0", null);
         lLocalLevel.name = "LocalLevel";
 
         poolManager.fSimple_Text("PopUp_Window/Window/Content", "Connection status remote", true);
-        GameObject lRemoteLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "", null);
-        lLocalLevel.name = "RemoteLevel";
+        GameObject lRemoteLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "Network0", null);
+        lRemoteLevel.name = "RemoteLevel";
 
         poolManager.fSimple_Text("PopUp_Window/Window/Content", "Device performance", true);
-        GameObject lDeviceLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "", null);
-        lLocalLevel.name = "DeviceLevel";
+        GameObject lDeviceLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "Network0", null);
+        lDeviceLevel.name = "DeviceLevel";
 
         StartCoroutine(UpdateWebRTCInfos());
 
@@ -120,6 +120,13 @@ public class PopupHandler : MonoBehaviour {
         animator.SetTrigger("Open");
     }
 
+    public void CloseReadQrCode()
+    {
+        qrCodeManager.SwitchQRCodeReader();
+        popupReadQrCode.SetActive(false);
+        animator.SetTrigger("Close");
+    }
+
     public void ClosePopup()
     {
         animator.SetTrigger("Close");
@@ -166,6 +173,7 @@ public class PopupHandler : MonoBehaviour {
 
         while (true)
         {
+            //Debug.Log("RTC INFOS " + webRTC.ConnectionInfo);
             string[] lInfos = webRTC.ConnectionInfo.Split('|');
             lLocal.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[0])));
             lRemote.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[1])));

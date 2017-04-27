@@ -11,6 +11,8 @@ public class SelectBuddyState : ASubState {
 
         if (indexState == 1)
         {
+            BuddyIPList lIPList = GameObject.Find("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList>();
+            lIPList.InSelectBuddy = true;
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             SelectBuddy lSelect = lMenuManager.GetComponentInChildren<SelectBuddy>();
             // CLEANNING PREVIOUS CREATED OBJECT
@@ -35,7 +37,7 @@ public class SelectBuddyState : ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "+", new List<UnityAction>() { lMenuManager.GoAddBuddyMenu }));
             LoadingUI.AddObject(lPoolManager.fTextField_Searching("Content_Top/Top_UI", "Search...", "", null, null));
-            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Undo", null));
+            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Undo", new List<UnityAction>() { lIPList.UpdateIPList }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = true;
         }

@@ -56,7 +56,7 @@ public class Webrtc : MonoBehaviour
 	private Mutex mTextureMutex = new Mutex();
 	private char[] mResolutionSeparator = new char[] {'*'};
 
-    private string mConnectionInfos;
+    private string mConnectionInfos = "";
 
 	private const int INIT_WIDTH = 640;
 	private const int INIT_HEIGHT = 480;
@@ -346,7 +346,7 @@ public class Webrtc : MonoBehaviour
 	public void onWebRTCStats(string data)
 	{
         mConnectionInfos = data;
-		//Debug.Log("Unity " + data + "\n");
-	}
+        //Debug.Log("[STATS] " + data);
+    }
 }
 

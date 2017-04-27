@@ -72,6 +72,7 @@ public class SelectBuddy : MonoBehaviour
         if(lFound) {
             canvasAppAnimator.SetTrigger("GoConnectBuddy");
             canvasAppAnimator.SetTrigger("EndScene");
+            GameObject.Find("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList>().InSelectBuddy = false;
         }
 
     }

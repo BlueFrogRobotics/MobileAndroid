@@ -7,6 +7,8 @@ using System.Collections.Generic;
 /// </summary>
 public class BuddyIPList : MonoBehaviour
 {
+    public bool InSelectBuddy { get { return mInSelectBuddy; } set { mInSelectBuddy = value; } }
+
     [SerializeField]
     private PoolManager mPoolManager;
 
@@ -31,12 +33,14 @@ public class BuddyIPList : MonoBehaviour
     [SerializeField]
     private DBManager buddyDB;
 
+    private bool mInSelectBuddy;
     private int mBuddyNb = 0;
     private float mTime = 20f;
     private List<string> mIPList = new List<string>();
 
     void Start()
     {
+        mInSelectBuddy = false;
         mobileServer.OnNewBudyConnected += UpdateBuddyList;
         mobileServer.OnBuddyDisconnected += RemoveBuddyFromList;
     }
@@ -76,7 +80,7 @@ public class BuddyIPList : MonoBehaviour
         string[] lTab = iNewBuddyIP.Split(':');
         string lBuddyIP = lTab[lTab.Length - 1];
 
-        if (mIPList.Contains(lBuddyIP))
+        if (mIPList.Contains(lBuddyIP) || !mInSelectBuddy)
             return;
 
         GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "New Buddy !", "IP " + iNewBuddyIP, "", true, true, null);
@@ -102,7 +106,9 @@ public class BuddyIPList : MonoBehaviour
         string[] lTab = iDisconnectedBuddy.Split(':');
         string lBuddyIP = lTab[lTab.Length - 1];
         mIPList.Remove(lBuddyIP);
-        UpdateIPList();
+
+        if(mInSelectBuddy)
+            UpdateIPList();
     }
 
     public void UpdateIPList()

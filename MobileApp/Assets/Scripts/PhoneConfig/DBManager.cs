@@ -497,6 +497,7 @@ public class DBManager : MonoBehaviour
         }
         GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
         GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
+        GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
         GameObject lDot = GameObject.Find("Dot_ON");
         lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser) + 1);
         LoadUserPicture(mCurrentUser.Picture);
@@ -515,6 +516,7 @@ public class DBManager : MonoBehaviour
         }
         GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
         GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
+        GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
         GameObject lDot = GameObject.Find("Dot_ON");
         lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser) + 1);
         LoadUserPicture(mCurrentUser.Picture);
