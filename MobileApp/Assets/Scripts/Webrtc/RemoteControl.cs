@@ -68,7 +68,7 @@ public class RemoteControl : MonoBehaviour {
     void Update()
     {
         //The goal here is to get the position of the cursor in the relative plane of the joystick
-        if (!isActiveAndEnabled || Time.time - mTime < 0.1) return;
+        if (!isActiveAndEnabled || Time.time - mTime < 0.2F) return;
         
         mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
         mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
@@ -79,7 +79,7 @@ public class RemoteControl : MonoBehaviour {
             if (toggleController.IsBodyActive) {
                 //Compute the desired body movement and send the serialized command to remote
                 ComputeMobileBase();
-                byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 100).Serialize();
+                byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 200).Serialize();
 
                 webRTC.SendWithDataChannel(GetString(lMobileCmd));
             }
@@ -139,7 +139,7 @@ public class RemoteControl : MonoBehaviour {
     }
 
     // This function is called when a webrtc data is received
-    public void OnMessage(string iMessage)
+    public void onMessage(string iMessage)
     {
         //We use this function to receive sensor data and display it
         byte[] lData = System.Convert.FromBase64String(iMessage);

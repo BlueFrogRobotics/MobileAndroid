@@ -41,6 +41,9 @@ public class Webrtc : MonoBehaviour
     [SerializeField]
     private string mWebrtcReceiverObjectName;
 
+    [SerializeField]
+    private RemoteControl remoteControl;
+
     [Header("GUI")]
     public RawImage mRemoteRawImage = null;
     public RawImage mLocalRawImage = null;

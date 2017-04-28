@@ -78,6 +78,9 @@ public class HandleGeneric : MonoBehaviour {
                     case "NavigationEditBuddy":
                         EnableNavigationEditBuddy();
                         break;
+                    case "NavigationAddBuddy":
+                        EnableNavigationAddBuddy();
+                        break;
                     case "NavigationDisplay":
                         EnableNavigationDisplay();
                         break;
@@ -148,6 +151,20 @@ public class HandleGeneric : MonoBehaviour {
 
         T_FieldLastName.GetComponent<InputField>().text = SelectBuddy.BuddyName;
         T_TextFirstName.GetComponent<Text>().text = SelectBuddy.BuddyID;
+    }
+
+    private void EnableNavigationAddBuddy()
+    {
+        T_NavigationAccount.SetActive(true);
+        T_FieldFirstName.SetActive(false);
+        T_FieldLastName.SetActive(true);
+        T_TextFirstName.SetActive(false);
+        T_TextLastName.SetActive(false);
+        T_ArrowLeft.SetActive(false);
+        T_ArrowRight.SetActive(false);
+        T_Dots.SetActive(false);
+
+        T_FieldLastName.GetComponent<InputField>().text = "Insert Buddy's name";
     }
 
     private void EnableNavigationDisplay()
