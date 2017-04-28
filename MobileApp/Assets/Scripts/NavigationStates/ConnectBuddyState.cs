@@ -19,7 +19,7 @@ public class ConnectBuddyState : ASubState {
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "TopUI", "NavigationDisplay", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
             // BOTTOM UI
-            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoSelectBuddyMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { GoSelectMenu }));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/Bottom_UI", "FULL ACCESS", false ));
             LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "toto", true, new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
 
@@ -38,6 +38,12 @@ public class ConnectBuddyState : ASubState {
             GameObject.Find("Navigation_Account/TextFirstName").GetComponent<Text>().text = SelectBuddy.BuddyID;
             //LoadingUI.AddObject(lPoolManager.fButton_QrCode("Content_Top/Navigation_Account", null));
         }
+    }
+
+    private void GoSelectMenu()
+    {
+        GameObject.Find("MenuManager").GetComponent<GoBack>().GoSelectBuddyMenu();
+        GameObject.Find("UnityWebrtc").SetActive(false);
     }
 
     private void StartRemoteControl()

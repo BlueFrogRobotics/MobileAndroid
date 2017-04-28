@@ -38,6 +38,7 @@ public class LaunchTelepresence : MonoBehaviour
             Debug.Log("Starting local control");
         } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
             Debug.Log("Starting distant control with remote " + webRTC.RemoteID);
+            //webRTC.InitImages();
             remoteControlRTC.SetActive(true);
             rtcListener.PublishConnectionRequest(webRTC.RemoteID);
             //webRTC.Call();
