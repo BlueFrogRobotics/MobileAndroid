@@ -7,14 +7,14 @@ using UnityEngine.UI;
 /// </summary>
 public class CallAcceptOTOReceiver : OTONetReceiver
 {
+    public enum CallStatus { WAITING, ACCEPTED, REJECTED };
+    public CallStatus Status { get; private set; }
+
     [SerializeField]
     private BackToMenu mBackToMenu;
 
     [SerializeField]
     private RawImage mIncomingVideo;
-
-    //[SerializeField]
-    //private Text mWaitingText;
 
     [SerializeField]
     private OTONetwork oTO;
@@ -35,6 +35,7 @@ public class CallAcceptOTOReceiver : OTONetReceiver
 
     void OnEnable()
     {
+        Status = CallStatus.WAITING;
         DisableUI();
     }
 
@@ -46,6 +47,7 @@ public class CallAcceptOTOReceiver : OTONetReceiver
 
     private void CloseCall()
     {
+        Status = CallStatus.REJECTED;
         Debug.Log("Received CloseCall");
         DisableUI();
         mBackToMenu.GoBackToMenu();
@@ -53,6 +55,7 @@ public class CallAcceptOTOReceiver : OTONetReceiver
 
     private void OpenCall()
     {
+        Status = CallStatus.ACCEPTED;
         Debug.Log("Received AcceptCall");
         mIncomingVideo.gameObject.SetActive(true);
         //mWaitingText.gameObject.SetActive(false);

@@ -20,6 +20,13 @@
             "FirstName": "Min-Hee",
             "Email": "mk@naver.com",
             "Picture": "mhk.jpg"
+        },
+        {
+            "IsDefaultUser": false,
+            "LastName": "Martin",
+            "FirstName": "Michel",
+            "Email": "mmm@bfr.fr",
+            "Picture": ""
         }
     ]
 }

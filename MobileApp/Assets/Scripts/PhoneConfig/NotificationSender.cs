@@ -4,12 +4,13 @@ public class NotificationSender : MonoBehaviour {
 
     public void SendNotification()
     {
-        LocalNotification.SendNotification(4, 3, "BuddyApp", "You have a new friend!", new Color32(0x21, 0xba, 0xed, 255));
+        LocalNotification.SendNotification(4, 2, "BuddyApp", "You have a new friend!", new Color32(0x21, 0xba, 0xed, 255));
     }
 
     public void SendNotification(string iMessage, string iTitle = "Buddy needs you")
     {
-        LocalNotification.SendNotification(1, 3, iTitle, iMessage, new Color32(0x21, 0xba, 0xed, 255));
+        Debug.Log("Sending notification " + iTitle + " : " + iMessage);
+        LocalNotification.SendNotification(1, 5, iTitle, iMessage, new Color32(0x21, 0xba, 0xed, 255));
     }
 
     /*float sleepUntil = 0;

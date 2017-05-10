@@ -37,10 +37,19 @@ public class DBManager : MonoBehaviour
     public PhoneUser CurrentUser { get { return mCurrentUser; } }
 
     [SerializeField]
+    private PoolManager poolManager;
+
+    [SerializeField]
     private GameObject popupNoConnection;
 
     [SerializeField]
     private GameObject DotOFF;
+
+    [SerializeField]
+    private GameObject DotON;
+
+    [SerializeField]
+    private Transform DotTransform;
 
     [SerializeField]
     private Animator canvasAppAnimator;
@@ -48,23 +57,11 @@ public class DBManager : MonoBehaviour
     [SerializeField]
     private GoBack menuManager;
 
-	[SerializeField]
-	private string firstname;
+    [SerializeField]
+    private Text textFirstName;
 
-	[SerializeField]
-	private string lastname;
-
-	[SerializeField]
-	private string email;
-
-	[SerializeField]
-	private string password;
-
-	[SerializeField]
-	private string buddyName;
-
-	[SerializeField]
-	private string specialID;
+    [SerializeField]
+    private Text textLastName;
 
     private string mHost;
     private string mBuddyList;
@@ -357,6 +354,7 @@ public class DBManager : MonoBehaviour
     public void ReadPhoneUsers()
     {
         //We read the user file and save the list of registered users on the phone
+        Debug.Log("Reading phone users");
         PhoneUserList lUserList = new PhoneUserList();
 
         StreamReader lstreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
@@ -371,22 +369,35 @@ public class DBManager : MonoBehaviour
             if (lUser.IsDefaultUser)
             {
                 mCurrentUser = lUser;
-                GameObject.Find("TextFirstName").GetComponent<Text>().text = lUser.FirstName;
-                GameObject.Find("Text_LastName").GetComponent<Text>().text = lUser.LastName;
+                textFirstName.text = lUser.FirstName;
+                textLastName.text = lUser.LastName;
+                //GameObject.Find("TextFirstName").GetComponent<Text>().text = lUser.FirstName;
+                //GameObject.Find("Text_LastName").GetComponent<Text>().text = lUser.LastName;
                 //LoadUserPicture(lUser.Picture);
                 //Debug.Log("Default user is " + lUser.FirstName + " " + lUser.LastName);
                 break;
             }
         }
 
+        mUserList = lUserList;
+
+        foreach (Transform lChild in DotTransform)
+            GameObject.Destroy(lChild.gameObject);
+
+        Debug.Log("Length " + lUserList.Users.Length);
+
         for (int i = 0; i < lUserList.Users.Length - 1; i++)
         {
             GameObject lDot = GameObject.Instantiate(DotOFF);
-            lDot.transform.SetParent(GameObject.Find("Dots").transform);
+            lDot.transform.SetParent(DotTransform);
             lDot.transform.localScale = Vector3.one;
         }
 
-        mUserList = lUserList;
+        GameObject lDotOn = GameObject.Instantiate(DotON);
+        lDotOn.name = "Dot_ON";
+        lDotOn.transform.SetParent(DotTransform);
+        lDotOn.transform.localScale = Vector3.one;
+        lDotOn.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser));
     }
 
     private void ResetCreateParameters()
@@ -478,11 +489,18 @@ public class DBManager : MonoBehaviour
     private void LoadUserPicture(string iPictureName)
     {
         //Function name is explicit enough. We load the picture file into the sprite
-        byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(iPictureName));
-        Texture2D lTex = new Texture2D(2, 2);
-        lTex.LoadImage(lFileData);
-        Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
-        lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+        if((!string.IsNullOrEmpty(iPictureName)))
+        {
+            byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(iPictureName));
+            Texture2D lTex = new Texture2D(2, 2);
+            lTex.LoadImage(lFileData);
+            Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
+            lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+        } else {
+            //Sprite lSprite = Resources.Load<Sprite>("DefaultUser") as Sprite;
+            Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
+            lProfilePicture.sprite = poolManager.GetSprite("DefaultUser");
+        }
     }
 
     public void DisplayNextUser()
@@ -498,8 +516,8 @@ public class DBManager : MonoBehaviour
         GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
         GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
         GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
-        GameObject lDot = GameObject.Find("Dot_ON");
-        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser) + 1);
+        GameObject lDot = GameObject.Find("Dots/Dot_ON");
+        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser));
         LoadUserPicture(mCurrentUser.Picture);
     }
 
@@ -517,8 +535,8 @@ public class DBManager : MonoBehaviour
         GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
         GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
         GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
-        GameObject lDot = GameObject.Find("Dot_ON");
-        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser) + 1);
+        GameObject lDot = GameObject.Find("Dots/Dot_ON");
+        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser));
         LoadUserPicture(mCurrentUser.Picture);
     }
 

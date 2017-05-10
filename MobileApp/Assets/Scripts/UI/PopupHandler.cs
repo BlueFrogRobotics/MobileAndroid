@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PopupHandler : MonoBehaviour {
 
@@ -96,6 +98,30 @@ public class PopupHandler : MonoBehaviour {
 		animator.SetTrigger("Open");
 		//Debug.Log ("Popup Window " + popupWindow.activeInHierarchy + " / " + popupWindow.activeSelf);
 	}
+
+    public void DeleteAccountPopup(UnityAction iCallback)
+    {
+        ResetUI();
+        popupWindow.SetActive(true);
+        ResetWindowUI();
+        //Debug.Log ("Popup Window " + popupWindow.activeInHierarchy + " / " + popupWindow.activeSelf);
+
+        Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
+        lTitle.text = "DELETE ACCOUNT - CONFIRMATION";
+
+        GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
+        lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
+
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Enter this account's password", true);
+
+        GameObject lInputField = poolManager.fTextField_Icon("PopUp_Window/Window/Content", "Password", "", null, null, null, null);
+        lInputField.name = "Popup_PasswordConfirm";
+        lInputField.GetComponent<InputField>().inputType = InputField.InputType.Password;
+
+        poolManager.fButton_Square("PopUp_Window/Window/Content", "CONFIRM", "", new List<UnityAction>() { iCallback });
+
+        animator.SetTrigger("Open");
+    }
 
     public void OpenYesNo(string iQuestion = "")
     {
