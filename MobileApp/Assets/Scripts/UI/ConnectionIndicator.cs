@@ -40,4 +40,10 @@ public class ConnectionIndicator : MonoBehaviour
             }
         }
     }
+
+    public void CloseConnection()
+    {
+        greenImage.SetActive(false);
+        redImage.SetActive(true);
+    }
 }

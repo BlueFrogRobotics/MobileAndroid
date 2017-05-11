@@ -24,6 +24,21 @@ public class BackToMenu : MonoBehaviour
     [SerializeField]
     private Animator mAnimator;
 
+    [SerializeField]
+    private ConnectionIndicator indicator;
+
+    [SerializeField]
+    private GameObject leftSensor;
+
+    [SerializeField]
+    private GameObject middleSensor;
+
+    [SerializeField]
+    private GameObject rightSensor;
+
+    [SerializeField]
+    private GameObject backSensor;
+
     public void GoBackToMenu()
     {
         //Reactivate networks depending on which type of remote connection was used
@@ -37,6 +52,14 @@ public class BackToMenu : MonoBehaviour
             remoteControlRTC.SetActive(false);
             webRTC.StopWebRTC();
         }
+
+        leftSensor.GetComponent<ObstacleManager>().lvl = 0;
+        middleSensor.GetComponent<ObstacleManager>().lvl = 0;
+        rightSensor.GetComponent<ObstacleManager>().lvl = 0;
+        backSensor.GetComponent<ObstacleManager>().lvl = 0;
+
+        indicator.CloseConnection();
+
         mAnimator.SetTrigger("GoConnectBuddy");
         mAnimator.SetTrigger("EndScene");
     } 
