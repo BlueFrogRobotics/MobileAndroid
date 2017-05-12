@@ -50,7 +50,7 @@ public class BackToMenu : MonoBehaviour
         } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
             webRTC.HangUp();
             remoteControlRTC.SetActive(false);
-            webRTC.StopWebRTC();
+            //webRTC.StopWebRTC();
         }
 
         leftSensor.GetComponent<ObstacleManager>().lvl = 0;

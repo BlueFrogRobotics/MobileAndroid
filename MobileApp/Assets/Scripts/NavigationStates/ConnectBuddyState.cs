@@ -43,7 +43,14 @@ public class ConnectBuddyState : ASubState {
     private void GoSelectMenu()
     {
         GameObject.Find("MenuManager").GetComponent<GoBack>().GoSelectBuddyMenu();
-        GameObject.Find("UnityWebrtc").SetActive(false);
+        SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
+
+        if(lSelect.Remote == SelectBuddy.RemoteType.WEBRTC) {
+            GameObject UnityWebRTC = GameObject.Find("UnityWebrtc");
+            UnityWebRTC.GetComponent<Webrtc>().StopWebRTC();
+            UnityWebRTC.SetActive(false);
+        }        
+        //GameObject.Find("UnityWebrtc").SetActive(false);
     }
 
     private void StartRemoteControl()

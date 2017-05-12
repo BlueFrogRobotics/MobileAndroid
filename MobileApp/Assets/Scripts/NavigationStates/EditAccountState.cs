@@ -22,10 +22,12 @@ public class EditAccountState: ASubState {
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "ID:5487-BF68-ZD97", "QRCode", null));
 			GameObject lNewPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your New Password", "", "Lock", null, null, null);
 			lNewPasswordField.name = "New_PW_Input";
+            lNewPasswordField.GetComponent<InputField>().inputType = InputField.InputType.Password;
 			LoadingUI.AddObject(lNewPasswordField);
 			GameObject lNewPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Re-enter Your New Password", "", "Lock", null, null, null);
 			lNewPasswordConfField.name = "New_PWConf_Input";
-			LoadingUI.AddObject(lNewPasswordConfField);
+            lNewPasswordConfField.GetComponent<InputField>().inputType = InputField.InputType.Password;
+            LoadingUI.AddObject(lNewPasswordConfField);
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
 

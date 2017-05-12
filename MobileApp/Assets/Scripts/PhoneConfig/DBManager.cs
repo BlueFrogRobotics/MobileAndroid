@@ -354,7 +354,6 @@ public class DBManager : MonoBehaviour
     public void ReadPhoneUsers()
     {
         //We read the user file and save the list of registered users on the phone
-        Debug.Log("Reading phone users");
         PhoneUserList lUserList = new PhoneUserList();
 
         StreamReader lstreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
@@ -383,8 +382,6 @@ public class DBManager : MonoBehaviour
 
         foreach (Transform lChild in DotTransform)
             GameObject.Destroy(lChild.gameObject);
-
-        Debug.Log("Length " + lUserList.Users.Length);
 
         for (int i = 0; i < lUserList.Users.Length - 1; i++)
         {

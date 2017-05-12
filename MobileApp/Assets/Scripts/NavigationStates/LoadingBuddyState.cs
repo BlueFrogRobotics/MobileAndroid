@@ -16,7 +16,7 @@ public class LoadingBuddyState : ASubState {
             // DESACTIVATE, ACTIVATE GENERICS
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(null);
             // CREATING OBJECTS
-            LoadingUI.AddObject(lPoolManager.fLoading("Content_Top", "Waiting for call confirmation..."));
+            LoadingUI.AddObject(lPoolManager.fLoading("Content_Top", GoBack.LoadingBuddyMessage));
             LoadingUI.AddObject(lPoolManager.fLogo("Content_Top"));
         }
 

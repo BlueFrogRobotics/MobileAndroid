@@ -7,6 +7,8 @@ using System.Collections;
 /// </summary>
 public class GoBack : MonoBehaviour
 {
+    public static string LoadingBuddyMessage;
+
     [SerializeField]
     private Animator canvasAnimator;
 
@@ -97,7 +99,7 @@ public class GoBack : MonoBehaviour
 
     public void GoRemoteControlMenu()
     {
-        SwitchToMenu(3);
+        SwitchToMenu(3, "Waiting for call confirmation ...");
     }
 
     public void GoBuddySettings()
@@ -114,8 +116,9 @@ public class GoBack : MonoBehaviour
         canvasAnimator.SetTrigger("EndScene");
     }
 
-    private void SwitchToMenu(int iMenu)
+    private void SwitchToMenu(int iMenu, string iWaitingMessage = "Loading ...")
     {
+        LoadingBuddyMessage = iWaitingMessage;
         mPreviousMenu = mCurrentMenu;
         mCurrentMenu = "GoConnectBuddy";
         linkManager.SetMenuBuddyValue(iMenu);
