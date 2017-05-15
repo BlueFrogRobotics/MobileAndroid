@@ -29,9 +29,11 @@ public class CreateAccountState : ASubState {
             LoadingUI.AddObject(lEmailField);
             GameObject lPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Password", "", "Lock", null, null, null);
             lPasswordField.name = "Create_PW_Input";
+            lPasswordField.GetComponent<InputField>().inputType = InputField.InputType.Password;
             LoadingUI.AddObject(lPasswordField);
             GameObject lPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Repeat Your Password", "", "Lock", null, null, null);
             lPasswordConfField.name = "Create_PWConf_Input";
+            lPasswordConfField.GetComponent<InputField>().inputType = InputField.InputType.Password;
             LoadingUI.AddObject(lPasswordConfField);
 
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));

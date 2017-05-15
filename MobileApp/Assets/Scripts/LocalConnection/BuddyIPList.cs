@@ -53,7 +53,7 @@ public class BuddyIPList : MonoBehaviour
 
     void OnDisable()
     {
-        Debug.Log("[HERE] Disabled");
+        //Debug.Log("[HERE] Disabled");
         mTime = 0f;
     }
 

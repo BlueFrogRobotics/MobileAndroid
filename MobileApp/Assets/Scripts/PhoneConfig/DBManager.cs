@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
+[Serializable]
 public class HttpResponse
 {
 	public bool ok;
@@ -63,8 +64,16 @@ public class DBManager : MonoBehaviour
     [SerializeField]
     private Text textLastName;
 
+    [SerializeField]
+    private InputField inputFirstName;
+
+    [SerializeField]
+    private InputField inputLastName;
+
+    private int mDisplayedIndex;
     private string mHost;
     private string mBuddyList;
+    private string mUserFilePath;
 	private string[] mCookie;
     private PhoneUser mCurrentUser;
     private PhoneUserList mUserList;
@@ -77,8 +86,9 @@ public class DBManager : MonoBehaviour
         //Register Azure public IP for MySQL and PHP requests
 		mHost = "52.174.52.152:8080";
         mBuddyList = "";
+        mUserFilePath = Application.persistentDataPath + "/users.txt";
         mCurrentUser = new PhoneUser();
-        ReadPhoneUsers();
+        ReadPhoneUsers(true);
 		popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
     }
 
@@ -132,21 +142,28 @@ public class DBManager : MonoBehaviour
 
 				mBuddyList = lWWW.text;
 				string lPicture = "";
-				foreach(PhoneUser lUser in mUserList.Users)
-				{
-					if (lUser.FirstName == firstName && lUser.LastName == lastName && lUser.Email == email)
-						lPicture = lUser.Picture;
+                bool lFound = false;
+
+				foreach(PhoneUser lUser in mUserList.Users) {
+                    if (lUser.FirstName == firstName && lUser.LastName == lastName && lUser.Email == email) {
+                        lPicture = lUser.Picture;
+                        lFound = true;
+                    }
 				}
 
-				mCurrentUser = new PhoneUser()
-				{
+				mCurrentUser = new PhoneUser() {
 					IsDefaultUser = false,
 					LastName = lastName,
 					FirstName = firstName,
 					Email = email,
 					Picture = lPicture
 				};
-				RetrieveBuddyList();
+
+                if (!lFound) {
+                    AddUserToConfig(firstName, lastName, email);
+                }
+
+                RetrieveBuddyList();
 				ConfirmConnection();
 			}
 			else
@@ -221,6 +238,7 @@ public class DBManager : MonoBehaviour
 		if(lWww.error != null) {
 			Debug.Log("[ERROR] on WWW Request" + lWww.error);
 		} else {
+            Debug.Log("[HTTP] Response: " + lWww.text);
 			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWww.text);
 			if(resp.ok) {
 				popupHandler.DisplayError("Succes", resp.msg);
@@ -351,16 +369,30 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
-    public void ReadPhoneUsers()
+    public void ReadPhoneUsers(bool iFirstRead = false)
     {
         //We read the user file and save the list of registered users on the phone
         PhoneUserList lUserList = new PhoneUserList();
 
-        StreamReader lstreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
+        if(File.Exists(mUserFilePath)) {
+            //Debug.Log("User file found : " + mUserFilePath);            
+        } else {            
+            File.Copy(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"), mUserFilePath);
+
+            if (iFirstRead)
+                canvasAppAnimator.SetTrigger("GoFirstConnexion");
+        }
+
+        StreamReader lstreamReader = new StreamReader(mUserFilePath);
         string lTemp = lstreamReader.ReadToEnd();
         lstreamReader.Close();
 
         lUserList = JsonUtility.FromJson<PhoneUserList>(lTemp);
+
+        if (iFirstRead && lUserList.Users.Length == 0)
+            canvasAppAnimator.SetTrigger("GoFirstConnexion");
+        else if (iFirstRead && lUserList.Users.Length != 0)
+            canvasAppAnimator.SetTrigger("GoConnectAccount");
 
         //Then we get the default user and register it as the "current" one
         foreach (PhoneUser lUser in lUserList.Users)
@@ -370,10 +402,6 @@ public class DBManager : MonoBehaviour
                 mCurrentUser = lUser;
                 textFirstName.text = lUser.FirstName;
                 textLastName.text = lUser.LastName;
-                //GameObject.Find("TextFirstName").GetComponent<Text>().text = lUser.FirstName;
-                //GameObject.Find("Text_LastName").GetComponent<Text>().text = lUser.LastName;
-                //LoadUserPicture(lUser.Picture);
-                //Debug.Log("Default user is " + lUser.FirstName + " " + lUser.LastName);
                 break;
             }
         }
@@ -394,7 +422,13 @@ public class DBManager : MonoBehaviour
         lDotOn.name = "Dot_ON";
         lDotOn.transform.SetParent(DotTransform);
         lDotOn.transform.localScale = Vector3.one;
-        lDotOn.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser));
+        mDisplayedIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
+        lDotOn.transform.SetSiblingIndex(mDisplayedIndex);
+
+        //We add a last one to add an existing account
+        GameObject lDotLast = GameObject.Instantiate(DotOFF);
+        lDotLast.transform.SetParent(DotTransform);
+        lDotLast.transform.localScale = Vector3.one;
     }
 
     private void ResetCreateParameters()
@@ -424,13 +458,14 @@ public class DBManager : MonoBehaviour
     {
         //Write User list on user file as JSON format
         string lJSON = JsonUtility.ToJson(iUser, true);
-        StreamWriter lStrWriter = new StreamWriter(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"));
+        StreamWriter lStrWriter = new StreamWriter(mUserFilePath);
         lStrWriter.Write(lJSON);
         lStrWriter.Close();
     }
 
     private void AddUserToConfig(string iFName, string iLName, string iEMail, bool iIsDefaultUser = false, string iPicture="")
     {
+        Debug.Log("Adding user to config");
         //Create new user
         PhoneUser lNewUser = new PhoneUser()
         {
@@ -504,37 +539,78 @@ public class DBManager : MonoBehaviour
     {
         //Self-explanatory
         int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
+        string lDisplayedPicture = "";
 
         if(lIndex != mUserList.Users.Length - 1) {
             mCurrentUser = mUserList.Users[lIndex + 1];
+            lDisplayedPicture = mCurrentUser.Picture;
+            mDisplayedIndex++;
         } else {
-            mCurrentUser = mUserList.Users[0];
+            //If we reach the end of users saved locally, we show the "Add already created account option"
+            if(mDisplayedIndex == lIndex) {
+                textFirstName.gameObject.SetActive(false);
+                textLastName.gameObject.SetActive(false);
+                inputFirstName.gameObject.SetActive(true);
+                inputLastName.gameObject.SetActive(true);
+                inputFirstName.text = "Enter your First Name";
+                inputLastName.text = "Enter your Last Name";
+                GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
+                mDisplayedIndex++;
+            } else {
+                mCurrentUser = mUserList.Users[0];
+                lDisplayedPicture = mCurrentUser.Picture;
+                mDisplayedIndex = 0;
+                textFirstName.gameObject.SetActive(true);
+                textLastName.gameObject.SetActive(true);
+                inputFirstName.gameObject.SetActive(false);
+                inputLastName.gameObject.SetActive(false);
+                GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
+            }
         }
-        GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
-        GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
-        GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
+        textFirstName.text = mCurrentUser.FirstName;
+        textLastName.text = mCurrentUser.LastName;
         GameObject lDot = GameObject.Find("Dots/Dot_ON");
-        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser));
-        LoadUserPicture(mCurrentUser.Picture);
+        lDot.transform.SetSiblingIndex(mDisplayedIndex);
+        LoadUserPicture(lDisplayedPicture);
     }
 
     public void DisplayPreviousUser()
     {
         //Self-explanatory
         int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
+        string lDisplayedPicture = "";
 
-        if (lIndex != 0)
+        if (lIndex != 0 && mDisplayedIndex != mUserList.Users.Length)
         {
             mCurrentUser = mUserList.Users[lIndex - 1];
+            lDisplayedPicture = mCurrentUser.Picture;
+            mDisplayedIndex--;
         } else {
             mCurrentUser = mUserList.Users[mUserList.Users.Length - 1];
+            if (mDisplayedIndex == 0) {
+                mDisplayedIndex = mUserList.Users.Length;
+                textFirstName.gameObject.SetActive(false);
+                textLastName.gameObject.SetActive(false);
+                inputFirstName.gameObject.SetActive(true);
+                inputLastName.gameObject.SetActive(true);
+                inputFirstName.text = "Enter your First Name";
+                inputLastName.text = "Enter your Last Name";
+                GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
+            } else {
+                mDisplayedIndex = mUserList.Users.Length - 1;
+                lDisplayedPicture = mCurrentUser.Picture;
+                textFirstName.gameObject.SetActive(true);
+                textLastName.gameObject.SetActive(true);
+                inputFirstName.gameObject.SetActive(false);
+                inputLastName.gameObject.SetActive(false);
+                GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
+            }
         }
-        GameObject.Find("TextFirstName").GetComponent<Text>().text = mCurrentUser.FirstName;
-        GameObject.Find("Text_LastName").GetComponent<Text>().text = mCurrentUser.LastName;
-        GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
+        textFirstName.text = mCurrentUser.FirstName;
+        textLastName.text = mCurrentUser.LastName;
         GameObject lDot = GameObject.Find("Dots/Dot_ON");
-        lDot.transform.SetSiblingIndex(Array.IndexOf(mUserList.Users, mCurrentUser));
-        LoadUserPicture(mCurrentUser.Picture);
+        lDot.transform.SetSiblingIndex(mDisplayedIndex);
+        LoadUserPicture(lDisplayedPicture);
     }
 
     private string GetString(byte[] bytes)
