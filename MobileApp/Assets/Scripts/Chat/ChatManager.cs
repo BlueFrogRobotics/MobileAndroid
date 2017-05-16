@@ -66,11 +66,6 @@ public class ChatManager : MonoBehaviour
     {
         mMessages = new List<ChatMessage>();
     }
-    
-    void Update()
-    {
-
-    }
 
     //Called when user has entered a new message
     public void NewChatMessage(string iMsg)
@@ -195,7 +190,11 @@ public class ChatManager : MonoBehaviour
 
         mMessages = new List<ChatMessage>();
 
-        foreach (Transform lChild in GameObject.Find("Message_UI/ScrollView/Viewport/Content").transform)
+        Transform lContent =  GameObject.Find("Message_UI/ScrollView/Viewport/Content").transform;
+        if (lContent.childCount == 0)
+            return;
+
+        foreach (Transform lChild in lContent)
             GameObject.Destroy(lChild.gameObject);
     }
 }
