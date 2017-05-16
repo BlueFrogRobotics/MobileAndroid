@@ -69,6 +69,7 @@ public class ConnectBuddyState : ASubState {
 
     private void LaunchChat()
     {
+        GameObject.Find("Chat").GetComponent<ChatManager>().LoadMessageHistory();
         BackgroundListener lListener = GameObject.Find("BackgroundListener").GetComponent<BackgroundListener>();
         lListener.SubscribeChatChannel();
     }

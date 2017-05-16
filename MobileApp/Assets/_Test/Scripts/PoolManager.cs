@@ -55,6 +55,8 @@ public class PoolManager : MonoBehaviour {
     private GameObject Toggle;
     [SerializeField]
     private GameObject PopUps;
+    [SerializeField]
+    private GameObject MessageContent;
 
     private Dictionary<string, Sprite> mAtlasMobile;
     private Dictionary<string, Sprite> mAtlasUI;
@@ -88,7 +90,7 @@ public class PoolManager : MonoBehaviour {
             Text lBubble_Blue_Date = lFinalObject.GetComponentsInChildren<Text>()[1];
             lBubble_Blue_Text.text = iText;
             lBubble_Blue_Date.text = iDate;  
-            lFinalObject.transform.SetParent(GameObject.Find("Content_Bottom/Message_UI/ScrollView/Viewport/Content").transform, false);
+            lFinalObject.transform.SetParent(MessageContent.transform, false);
             return lFinalObject;
         }
         else
@@ -99,7 +101,7 @@ public class PoolManager : MonoBehaviour {
             Text lBubble_White_Date = lFinalObject.GetComponentsInChildren<Text>()[1];
             lBubble_White_Text.text = iText;
             lBubble_White_Date.text = iDate;
-            lFinalObject.transform.SetParent(GameObject.Find("Content_Bottom/Message_UI/ScrollView/Viewport/Content").transform, false);
+            lFinalObject.transform.SetParent(MessageContent.transform, false);
             return lFinalObject;
         }
     }
