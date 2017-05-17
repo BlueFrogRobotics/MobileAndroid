@@ -64,6 +64,8 @@ public class Webrtc : MonoBehaviour
 	private const int INIT_WIDTH = 640;
 	private const int INIT_HEIGHT = 480;
 
+    private bool mWasActive;
+
     //For now Startwebrtc is called at init but in the future it will only be 
     //called when receiving a call request or trying to call someone.
     // StartWebrtc tries to acquire the camera resource and so the camera
@@ -75,6 +77,7 @@ public class Webrtc : MonoBehaviour
         StartWebRTC();
 
         InitImages();
+        mWasActive = true;
     }
 
 	//void OnDisable()

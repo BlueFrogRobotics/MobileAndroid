@@ -19,6 +19,7 @@
             "LastName": "Kim",
             "FirstName": "Min-Hee",
             "Email": "mk@naver.com",
-            "Picture": "mhk.jpg"
-        }    ]
+            "Picture": ""
+        }
+    ]
 }

@@ -169,7 +169,11 @@ public class PopupHandler : MonoBehaviour {
     private void ResetWindowUI()
     {
         GameObject lContent = GameObject.Find("PopUp_Window/Window/Content");
-        foreach(Transform lChild in lContent.transform) {
+
+        if (lContent.transform.childCount == 0)
+            return;
+
+        foreach (Transform lChild in lContent.transform) {
             GameObject.Destroy(lChild.gameObject);
         }
     }

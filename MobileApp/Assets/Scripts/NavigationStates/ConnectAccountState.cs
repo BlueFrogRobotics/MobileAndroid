@@ -42,7 +42,7 @@ public class ConnectAccountState : ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", null));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
-            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", null));// new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             //lDB.ReadPhoneUsers();
         }
@@ -51,8 +51,17 @@ public class ConnectAccountState : ASubState {
     //Gets info from the input fields and connects to remote DB.
     private void Connection()
 	{
-		string firstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
-		string lastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+        string firstName;
+        string lastName;
+
+        if (GameObject.Find("TextFirstName") !=null) {
+            firstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
+            lastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+        } else {
+            firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+            lastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+        }
+
 		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
 		string password = GameObject.Find("Password_Input").GetComponent<InputField>().text;
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection(firstName, lastName, email, password);

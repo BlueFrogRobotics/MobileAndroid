@@ -53,6 +53,7 @@ public class BuddyIPList : MonoBehaviour
 
     void OnDisable()
     {
+        //Debug.Log("[HERE] Disabled");
         mTime = 0f;
     }
 
@@ -113,6 +114,9 @@ public class BuddyIPList : MonoBehaviour
 
     public void UpdateIPList()
     {
+        if (!mInSelectBuddy)
+            return;
+
         //Remove all present displayed robots
         foreach (Transform lChild in parentTransform)
             GameObject.Destroy(lChild.gameObject);
@@ -133,7 +137,9 @@ public class BuddyIPList : MonoBehaviour
     {
         //Retrieve the list from Database source and add it to the displayed list
         Debug.Log("Adding DB Buddy");
-        LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)"));
+        GameObject lDistantSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)");
+        lDistantSeparator.name = "DistantSeparator";
+        LoadingUI.AddObject(lDistantSeparator);
 
         if (!string.IsNullOrEmpty (buddyDB.BuddyList)) {
 			string[] lBuddyList = buddyDB.BuddyList.Split('\n');
@@ -157,7 +163,9 @@ public class BuddyIPList : MonoBehaviour
     
     private void AddLocalBuddy()
     {
-        LoadingUI.AddObject(mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "CONNECTED ON YOUR WIFI"));
+        GameObject lLocalSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "CONNECTED ON YOUR WIFI");
+        lLocalSeparator.name = "LocalSeparator";
+        LoadingUI.AddObject(lLocalSeparator);
         mIPList.Clear();
         mIPList = mobileServer.GetBuddyConnectedList();
 
@@ -184,13 +192,12 @@ public class BuddyIPList : MonoBehaviour
         }
     }
 
-    public void SearchForBuddy(Text iSearch)
+    public void SearchForBuddy(string iSearch)
     {
         //We display here only the Buddy that contain the keyword 'iSearch'
         //If the string is null, we show all the Buddy
-        string lSearch = iSearch.text;
-        Debug.Log("Searching for " + lSearch);
-        if(string.IsNullOrEmpty(lSearch)) {
+        Debug.Log("Searching for " + iSearch);
+        if(string.IsNullOrEmpty(iSearch)) {
             foreach(Transform lChild in parentTransform) {
                 lChild.gameObject.SetActive(true);
             }
@@ -201,7 +208,7 @@ public class BuddyIPList : MonoBehaviour
                 Text lBuddyName = lChild.GetComponentInChildren<Text>();
                 Debug.Log("Buddy has name " + lBuddyName.text);
 
-                if (!lBuddyName.text.Contains(lSearch))
+                if (!lBuddyName.text.Contains(iSearch) && lChild.gameObject.name != "LocalSeparator" && lChild.gameObject.name != "DistantSeparator")
                     lChild.gameObject.SetActive(false);
             }
         }

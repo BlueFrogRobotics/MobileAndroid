@@ -12,7 +12,6 @@ public class SelectBuddyState : ASubState {
         if (indexState == 1)
         {
             BuddyIPList lIPList = GameObject.Find("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList>();
-            lIPList.InSelectBuddy = true;
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             SelectBuddy lSelect = lMenuManager.GetComponentInChildren<SelectBuddy>();
             // CLEANNING PREVIOUS CREATED OBJECT
@@ -36,16 +35,23 @@ public class SelectBuddyState : ASubState {
             LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "+", new List<UnityAction>() { lMenuManager.GoAddBuddyMenu }));
-            LoadingUI.AddObject(lPoolManager.fTextField_Searching("Content_Top/Top_UI", "Search...", "", null, null));
+            LoadingUI.AddObject(lPoolManager.fTextField_Searching("Content_Top/Top_UI", "Search...", "", null, new List<UnityAction<string>>() { lIPList.SearchForBuddy }));
             LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Undo", new List<UnityAction>() { lIPList.UpdateIPList }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = true;
+            lIPList.enabled = true;
+            lIPList.InSelectBuddy = true;
         }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = false;
+        if(indexState == 2) {
+            BuddyIPList lIPList = GameObject.Find("Viewport").GetComponent<BuddyIPList>();
+            lIPList.enabled = false;
+            lIPList.InSelectBuddy = false;
+        }
+
         base.OnStateExit(animator, stateInfo, layerIndex);
     }
 }
