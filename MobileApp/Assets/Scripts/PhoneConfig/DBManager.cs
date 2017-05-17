@@ -320,6 +320,37 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
+	public void StartRemoveBuddyFromUser(string specialID)
+	{
+		StartCoroutine(RemoveBuddyFromUser(specialID));
+	}
+
+	private IEnumerator RemoveBuddyFromUser(string specialID)
+	{
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField("specialID", specialID);
+		lForm.AddField ("hiddenkey", "key");
+
+		WWW lWWW = new WWW ("http://" + mHost + "/removeBuddyFromUser.php", lForm.data, addSessionCookie(lForm.headers));
+		yield return lWWW;
+
+		if (lWWW.error != null)
+			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
+		else {
+			Debug.Log (lWWW.text);
+			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
+			if(resp.ok) {
+				popupHandler.DisplayError("Succes", resp.msg);
+				menuManager.PreviousMenu();
+				RetrieveBuddyList();
+				Debug.Log("WWW Success");
+			} else {
+				popupHandler.DisplayError("Erreur", resp.msg);
+				Debug.Log(resp.msg);
+			}
+		}
+	}
+
 	private void RetrieveBuddyList()
 	{
 		StartCoroutine(RetrieveBuddyListCo());
