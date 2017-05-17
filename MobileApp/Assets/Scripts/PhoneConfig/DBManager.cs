@@ -369,6 +369,39 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
+	public void StartDeleteAccount(string password)
+	{
+		StartCoroutine(DeleteAccount(password));
+	}
+
+	private IEnumerator DeleteAccount(string password)
+	{
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField("password", password);
+		lForm.AddField ("hiddenkey", "key");
+
+		WWW lWWW = new WWW ("http://" + mHost + "/deleteAccount.php", lForm.data, addSessionCookie(lForm.headers));
+		yield return lWWW;
+
+		if (lWWW.error != null)
+			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
+		else {
+			Debug.Log (lWWW.text);
+			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
+			if(resp.ok) {
+				GameObject.Find("PopUps").GetComponent<PopupHandler>().ClosePopup();
+				popupHandler.DisplayError("Succes", resp.msg);
+
+				//TODO goto first screen
+
+				Debug.Log("WWW Success");
+			} else {
+				popupHandler.DisplayError("Erreur", resp.msg);
+				Debug.Log(resp.msg);
+			}
+		}
+	}
+
 	private void RetrieveBuddyList()
 	{
 		StartCoroutine(RetrieveBuddyListCo());

@@ -30,6 +30,8 @@ public class PopupHandler : MonoBehaviour {
     [SerializeField]
     private Webrtc webRTC;
 
+	private GameObject deleteAccountInputPasswordField;
+
     public void OpenWindow()
     {
         ResetUI();
@@ -114,14 +116,19 @@ public class PopupHandler : MonoBehaviour {
 
         poolManager.fSimple_Text("PopUp_Window/Window/Content", "Enter this account's password", true);
 
-        GameObject lInputField = poolManager.fTextField_Icon("PopUp_Window/Window/Content", "Password", "", null, null, null, null);
-        lInputField.name = "Popup_PasswordConfirm";
-        lInputField.GetComponent<InputField>().inputType = InputField.InputType.Password;
+		deleteAccountInputPasswordField = poolManager.fTextField_Icon("PopUp_Window/Window/Content", "Password", "", null, null, null, null);
+		deleteAccountInputPasswordField.name = "Popup_PasswordConfirm";
+		deleteAccountInputPasswordField.GetComponent<InputField>().inputType = InputField.InputType.Password;
 
         poolManager.fButton_Square("PopUp_Window/Window/Content", "CONFIRM", "", new List<UnityAction>() { iCallback });
 
         animator.SetTrigger("Open");
     }
+
+	public string GetDeleteAccountPassword()
+	{
+		return deleteAccountInputPasswordField.GetComponent<InputField>().text;
+	}
 
     public void OpenYesNo(string iQuestion = "")
     {
