@@ -29,7 +29,7 @@ public class ConnectBuddyState : ASubState {
 			//LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REQUEST ACCESS", "", new List<UnityAction>() { ShowAccessRequest }));
 
             // TOP UI
-            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", null));
+			LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", new List<UnityAction>() { RemoveBuddy }));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
             LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", new List<UnityAction>() { lMenuManager.GoEditBuddyMenu }));
 
@@ -73,4 +73,9 @@ public class ConnectBuddyState : ASubState {
         BackgroundListener lListener = GameObject.Find("BackgroundListener").GetComponent<BackgroundListener>();
         lListener.SubscribeChatChannel();
     }
+
+	private void RemoveBuddy()
+	{
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartRemoveBuddyFromUser(SelectBuddy.BuddyID);
+	}
 }

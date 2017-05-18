@@ -37,7 +37,7 @@ public class EditAccountState: ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "", null));
 
-            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", null));
+			LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", new List<UnityAction>() { DeleteAccount }));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
             LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Floppy", new List<UnityAction>() { SaveProfileChanges }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
@@ -52,4 +52,15 @@ public class EditAccountState: ASubState {
 		string passwordConf = GameObject.Find("New_PWConf_Input").GetComponent<InputField>().text;
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditAccount(firstName, lastName, password, passwordConf);
     }
+
+	private void DeleteAccount()
+	{
+		GameObject.Find("PopUps").GetComponent<PopupHandler>().DeleteAccountPopup(onDeleteAccountConfirmed);
+	}
+
+	private void onDeleteAccountConfirmed()
+	{
+		string password = GameObject.Find("PopUps").GetComponent<PopupHandler>().GetDeleteAccountPassword();
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartDeleteAccount(password);
+	}
 }
