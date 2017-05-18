@@ -30,7 +30,7 @@ public class SelectBuddyState : ASubState {
             //LoadingUI.AddObject(lPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "BUDDY NOT ADDED2", "ID:5458-FR54-JF59", "", true, false, null));
             //LoadingUI.AddObject(lPoolManager.fSearching("Content_Bottom/ScrollView/Viewport"));
             // OTHER UI OBJECT
-            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoConnectionMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { BackToConnectionMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "SELECT", "", new List<UnityAction>() { lSelect.BuddySelected }));
             LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
 
@@ -53,5 +53,11 @@ public class SelectBuddyState : ASubState {
         }
 
         base.OnStateExit(animator, stateInfo, layerIndex);
+    }
+
+    private void BackToConnectionMenu()
+    {
+        GameObject.Find("DBManager").GetComponent<DBManager>().GenerateUserDisplay();
+        GameObject.Find("MenuManager").GetComponent<GoBack>().GoConnectionMenu();
     }
 }

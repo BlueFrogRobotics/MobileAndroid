@@ -204,9 +204,9 @@ public class DBManager : MonoBehaviour
 			if(resp.ok) {
 				popupHandler.DisplayError("Succes", resp.msg);
 				AddUserToConfig(firstName, lastName, email);
-				menuManager.GoConnectionMenu();
-				ResetCreateParameters();
                 ReadPhoneUsers();
+                menuManager.GoConnectionMenu();
+				ResetCreateParameters();
             } else {
 				popupHandler.DisplayError("Erreur", resp.msg);
 			}
@@ -408,11 +408,15 @@ public class DBManager : MonoBehaviour
 
         mUserList = lUserList;
 
+        GenerateUserDisplay();
+    }
+
+    public void GenerateUserDisplay()
+    {
         foreach (Transform lChild in DotTransform)
             GameObject.Destroy(lChild.gameObject);
 
-        for (int i = 0; i < lUserList.Users.Length - 1; i++)
-        {
+        for (int i = 0; i < mUserList.Users.Length - 1; i++) {
             GameObject lDot = GameObject.Instantiate(DotOFF);
             lDot.transform.SetParent(DotTransform);
             lDot.transform.localScale = Vector3.one;
@@ -500,6 +504,7 @@ public class DBManager : MonoBehaviour
 				mUserList.Users[i].LastName = lastname;
 			}
 		}
+        ExportToJson(mUserList);
 	}
 
     public Sprite GetCurrentUserImage()

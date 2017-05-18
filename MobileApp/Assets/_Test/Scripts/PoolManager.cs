@@ -388,8 +388,7 @@ public class PoolManager : MonoBehaviour {
 			iPicture = "DefaultUser";
 		}
         
-		if (!string.IsNullOrEmpty(iPicture))
-        {
+		if (!string.IsNullOrEmpty(iPicture)) {
             // Checker la photo utilisateur 
             Sprite lSprite;
             if (mAtlasMobile.ContainsKey(iPicture))
@@ -406,19 +405,14 @@ public class PoolManager : MonoBehaviour {
                 lUser_Pic.sprite = lSprite;
         }
 
-        if (iCallbacks != null)
-        {
+        if (iCallbacks != null) {
             foreach (UnityAction lCallback in iCallbacks)
                 lButton.onClick.AddListener(lCallback);
         }
 
-        if (iActive == true)
-        {
+        if (iActive == true) {
             lButton.interactable = true;
-
-        }
-        else
-        {
+        } else {
             lButton.interactable = false;
             lButton.GetComponentsInChildren<Image>()[2].sprite = null;
         }

@@ -141,6 +141,12 @@ public class BuddyIPList : MonoBehaviour
         lDistantSeparator.name = "DistantSeparator";
         LoadingUI.AddObject(lDistantSeparator);
 
+        if (buddyDB.CurrentUser.LastName.Contains("DEMO")) {
+            GameObject lBuddyDemo = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy DEMO", "ID DEMO", "", false, true, null);
+            LoadingUI.AddObject(lBuddyDemo);
+            return;
+        }
+
         if (!string.IsNullOrEmpty (buddyDB.BuddyList)) {
 			string[] lBuddyList = buddyDB.BuddyList.Split('\n');
 
@@ -153,11 +159,6 @@ public class BuddyIPList : MonoBehaviour
 				LoadingUI.AddObject(lBuddyDB);
 			}
 		}
-
-        if(buddyDB.CurrentUser.LastName.Contains("DEMO")) {
-            GameObject lBuddyDemo = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy DEMO", "ID DEMO", "", false, true, null);
-            LoadingUI.AddObject(lBuddyDemo);
-        }
 
     }
     
