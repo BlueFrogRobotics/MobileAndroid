@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,7 +85,7 @@ public class DBManager : MonoBehaviour
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
-		mHost = "52.174.52.152:8080";
+        mHost = "52.174.52.152:8080";
         mBuddyList = "";
         mUserFilePath = Application.persistentDataPath + "/users.txt";
         mCurrentUser = new PhoneUser();
@@ -392,7 +393,9 @@ public class DBManager : MonoBehaviour
 				GameObject.Find("PopUps").GetComponent<PopupHandler>().ClosePopup();
 				popupHandler.DisplayError("Succes", resp.msg);
 
-				//TODO goto first screen
+                RemoveCurrentUserFromLocalStorage();
+                ReadPhoneUsers();
+                menuManager.GoConnectionMenu();
 
 				Debug.Log("WWW Success");
 			} else {
@@ -473,6 +476,16 @@ public class DBManager : MonoBehaviour
         mUserList = lUserList;
 
         GenerateUserDisplay();
+    }
+
+    private void RemoveCurrentUserFromLocalStorage()
+    {
+        List<PhoneUser> lTempList = new List<PhoneUser>(mUserList.Users);
+        if (lTempList.Remove(mCurrentUser)) {
+            Debug.Log("User successfully removed from local storage");
+            mUserList.Users = lTempList.ToArray();
+            ExportToJson(mUserList);
+        }
     }
 
     public void GenerateUserDisplay()
