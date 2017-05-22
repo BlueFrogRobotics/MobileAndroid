@@ -24,34 +24,37 @@ public class ToggleController : MonoBehaviour {
     private Animator toggleAnim;
     
     private bool mIsOnBody = true;
-    private Color mWhiteColor = new Color(255F, 255F, 255F, 255F);
-    private Color mBlackColor = new Color(50F, 50F, 50F, 255F);
+    private Color mWhiteColor = new Color(1F, 1F, 1F);
+    private Color mBlackColor = new Color(0.2F, 0.2F, 0.2F);
 
     //Disable and enable the proper UI elements
     private void MoveToHead()
     {
+        Debug.Log("Switch to Head");
         mIsOnBody = false;
         imageBody.SetActive(false);
         imageHead.SetActive(true);
-        headText.color = mWhiteColor;
-        bodyText.color = mBlackColor;
+        headText.color = mBlackColor;
+        bodyText.color = mWhiteColor;
         toggleAnim.SetTrigger("Head");
     }
 
     //Disable and enable the proper UI elements
     private void MoveToBody()
     {
+        Debug.Log("Switch to Body");
         mIsOnBody = true;
         imageBody.SetActive(true);
         imageHead.SetActive(false);
-        headText.color = mBlackColor;
-        bodyText.color = mWhiteColor;
+        headText.color = mWhiteColor;
+        bodyText.color = mBlackColor;
         toggleAnim.SetTrigger("Body");
     }
 
     //Triggers the switch between the Body and Head control
     public void ToggleActivate()
     {
+        Debug.Log("Toggled");
         mIsOnBody = !mIsOnBody;
         if (mIsOnBody)
             MoveToBody();

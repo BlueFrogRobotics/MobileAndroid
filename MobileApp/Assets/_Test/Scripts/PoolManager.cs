@@ -110,8 +110,8 @@ public class PoolManager : MonoBehaviour {
     public GameObject fBuddy_Contact(string iParent, string iName, string iID, string iUserPic, bool iLocal, bool iListed, List<UnityAction> iCallbacks )
     {
         GameObject lFinalObject = Instantiate(Buddy_Contact);
-        Button lButton_Edit = lFinalObject.GetComponentsInChildren<Button>()[0];
-        Button lButton_Add = lFinalObject.GetComponentsInChildren<Button>()[1];
+        Button lButton_Edit = lFinalObject.GetComponentsInChildren<Button>()[1];
+        Button lButton_Add = lFinalObject.GetComponentsInChildren<Button>()[2];
         Image lUser_Pic = lFinalObject.GetComponentsInChildren<Image>()[7];
         Text lName = lFinalObject.GetComponentsInChildren<Text>()[0];
         Text lID = lFinalObject.GetComponentsInChildren<Text>()[1];

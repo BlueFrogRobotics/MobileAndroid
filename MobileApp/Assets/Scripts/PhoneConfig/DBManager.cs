@@ -626,6 +626,7 @@ public class DBManager : MonoBehaviour
         if(lIndex != mUserList.Users.Length - 1) {
             mCurrentUser = mUserList.Users[lIndex + 1];
             lDisplayedPicture = mCurrentUser.Picture;
+            GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
             mDisplayedIndex++;
         } else {
             //If we reach the end of users saved locally, we show the "Add already created account option"
@@ -666,6 +667,7 @@ public class DBManager : MonoBehaviour
         {
             mCurrentUser = mUserList.Users[lIndex - 1];
             lDisplayedPicture = mCurrentUser.Picture;
+            GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
             mDisplayedIndex--;
         } else {
             mCurrentUser = mUserList.Users[mUserList.Users.Length - 1];

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections.Generic;
 
 /// <summary>
@@ -127,7 +128,9 @@ public class BuddyIPList : MonoBehaviour
         //AddWebRTCBuddy();
         AddLocalBuddy();
         //Add the searching logo to the list for better visuals
-        LoadingUI.AddObject(mPoolManager.fSearching("Content_Bottom/ScrollView/Viewport"));
+        GameObject lSearching = mPoolManager.fSearching("Content_Bottom/ScrollView/Viewport");
+        lSearching.name = "SearchingContact";
+        LoadingUI.AddObject(lSearching);
         //GameObject lSearching = Instantiate(searchingPrefab, transform.position, transform.rotation) as GameObject;
         //lSearching.transform.SetParent(parentTransform);
         //lSearching.transform.localScale = Vector3.one;
@@ -205,11 +208,12 @@ public class BuddyIPList : MonoBehaviour
         }
         //Else, we display only selected Buddies
         else {
-            foreach(Transform lChild in parentTransform) {
+            string lLowerSearch = iSearch.ToLower();
+            foreach (Transform lChild in parentTransform) {
                 Text lBuddyName = lChild.GetComponentInChildren<Text>();
                 Debug.Log("Buddy has name " + lBuddyName.text);
 
-                if (!lBuddyName.text.Contains(iSearch) && lChild.gameObject.name != "LocalSeparator" && lChild.gameObject.name != "DistantSeparator")
+                if (!lBuddyName.text.ToLower().Contains(lLowerSearch) && lChild.gameObject.name != "LocalSeparator" && lChild.gameObject.name != "DistantSeparator")
                     lChild.gameObject.SetActive(false);
             }
         }
