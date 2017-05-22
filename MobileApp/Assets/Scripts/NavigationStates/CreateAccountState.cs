@@ -18,7 +18,8 @@ public class CreateAccountState : ASubState {
             // DISABLE, ENABLE GENERICS
 			HandleGeneric lHandler = GameObject.Find("ScriptUI").GetComponent<HandleGeneric>();
 			lHandler.DisableGeneric(new ArrayList() { "NavigationEdit", "TopUI", "BottomUI", "ScrollView" });
-            lHandler.SetEditInfos("Enter Your First Name", "Enter Your Last Name");
+			lHandler.SetDisplayInfos("Enter Your First Name", "Enter Your Last Name");
+			lHandler.SetEditInfos("", "");
             // CREATE OBJECTS
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "CREATE YOUR ACCOUNT", "", new List<UnityAction>() { CreateAccount }));
@@ -51,6 +52,19 @@ public class CreateAccountState : ASubState {
 		string email = GameObject.Find("Create_Email_Input").GetComponent<InputField>().text;
 		string password = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
 		string passwordConf = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>().text;
+
+		if(firstName == "" || lastName == "" || email == "" || password == "" || passwordConf == "")
+		{
+			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez remplir tous les champs");
+			return;
+		}
+
+		if(password != passwordConf)
+		{
+			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Les mots de passe ne sont pas identiques");
+			return;
+		}
+
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartCreateAccount(firstName, lastName, email, password, passwordConf);
     }
 }
