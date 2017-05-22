@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,7 +85,7 @@ public class DBManager : MonoBehaviour
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
-		mHost = "52.174.52.152:8080";
+        mHost = "52.174.52.152:8080";
         mBuddyList = "";
         mUserFilePath = Application.persistentDataPath + "/users.txt";
         mCurrentUser = new PhoneUser();
@@ -204,9 +205,9 @@ public class DBManager : MonoBehaviour
 			if(resp.ok) {
 				popupHandler.DisplayError("Succes", resp.msg);
 				AddUserToConfig(firstName, lastName, email);
-				menuManager.GoConnectionMenu();
-				ResetCreateParameters();
                 ReadPhoneUsers();
+                menuManager.GoConnectionMenu();
+				ResetCreateParameters();
             } else {
 				popupHandler.DisplayError("Erreur", resp.msg);
 			}
@@ -392,7 +393,9 @@ public class DBManager : MonoBehaviour
 				GameObject.Find("PopUps").GetComponent<PopupHandler>().ClosePopup();
 				popupHandler.DisplayError("Succes", resp.msg);
 
-				//TODO goto first screen
+                RemoveCurrentUserFromLocalStorage();
+                ReadPhoneUsers();
+                menuManager.GoConnectionMenu();
 
 				Debug.Log("WWW Success");
 			} else {
@@ -472,11 +475,25 @@ public class DBManager : MonoBehaviour
 
         mUserList = lUserList;
 
+        GenerateUserDisplay();
+    }
+
+    private void RemoveCurrentUserFromLocalStorage()
+    {
+        List<PhoneUser> lTempList = new List<PhoneUser>(mUserList.Users);
+        if (lTempList.Remove(mCurrentUser)) {
+            Debug.Log("User successfully removed from local storage");
+            mUserList.Users = lTempList.ToArray();
+            ExportToJson(mUserList);
+        }
+    }
+
+    public void GenerateUserDisplay()
+    {
         foreach (Transform lChild in DotTransform)
             GameObject.Destroy(lChild.gameObject);
 
-        for (int i = 0; i < lUserList.Users.Length - 1; i++)
-        {
+        for (int i = 0; i < mUserList.Users.Length - 1; i++) {
             GameObject lDot = GameObject.Instantiate(DotOFF);
             lDot.transform.SetParent(DotTransform);
             lDot.transform.localScale = Vector3.one;
@@ -564,6 +581,7 @@ public class DBManager : MonoBehaviour
 				mUserList.Users[i].LastName = lastname;
 			}
 		}
+        ExportToJson(mUserList);
 	}
 
     public Sprite GetCurrentUserImage()
