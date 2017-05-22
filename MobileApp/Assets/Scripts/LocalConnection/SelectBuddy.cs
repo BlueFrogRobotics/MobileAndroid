@@ -38,7 +38,7 @@ public class SelectBuddy : MonoBehaviour
 
         //Look through the list to see which robot has been selected
         foreach (Transform mBuddy in lBuddyList) {
-            BuddyContactHandler lToggle = mBuddy.gameObject.GetComponent<BuddyContactHandler>();
+            BuddyContactHandler lToggle = mBuddy.gameObject.GetComponentInChildren<BuddyContactHandler>();
 
             //The robot whose Toggle button has been triggered is the one to connect to
             if (lToggle != null && lToggle.IsOn) {
