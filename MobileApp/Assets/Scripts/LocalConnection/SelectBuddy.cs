@@ -38,10 +38,10 @@ public class SelectBuddy : MonoBehaviour
 
         //Look through the list to see which robot has been selected
         foreach (Transform mBuddy in lBuddyList) {
-            Toggle lToggle = mBuddy.gameObject.GetComponent<Toggle>();
+            BuddyContactHandler lToggle = mBuddy.gameObject.GetComponent<BuddyContactHandler>();
 
             //The robot whose Toggle button has been triggered is the one to connect to
-            if (lToggle != null && lToggle.isOn) {
+            if (lToggle != null && lToggle.IsOn) {
                 string[] lBuddySplit = mBuddy.GetChild(6).GetComponent<Text>().text.Split(' ');
                 string lBuddyType = lBuddySplit[0];
                 string lBuddyID = lBuddySplit[1];

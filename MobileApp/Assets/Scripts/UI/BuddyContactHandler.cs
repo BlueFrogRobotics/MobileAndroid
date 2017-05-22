@@ -6,14 +6,14 @@ using UnityEngine.UI;
 /// </summary>
 public class BuddyContactHandler : MonoBehaviour
 {
-    private bool mIsOn;
+    public bool IsOn { get; private set; }
     private Text mBuddyName;
     private Color mSelectedColor;
     private Color mUnselectedColor;
 
     void Start()
     {
-        mIsOn = false;
+        IsOn = false;
         mBuddyName = GetComponent<Text>();
         mSelectedColor = new Color(0, 0.83f, 0.81f);
         mUnselectedColor = Color.white;
@@ -21,8 +21,8 @@ public class BuddyContactHandler : MonoBehaviour
 
     public void ToggleChanged()
     {
-        mIsOn = !mIsOn;
-        if (mIsOn)
+        IsOn = !IsOn;
+        if (IsOn)
             mBuddyName.color = mSelectedColor;
         else
             mBuddyName.color = mUnselectedColor;
@@ -48,7 +48,7 @@ public class BuddyContactHandler : MonoBehaviour
 
     public void UnToggle()
     {
-        mIsOn = false;
+        IsOn = false;
         mBuddyName.color = mUnselectedColor;
     }
 }

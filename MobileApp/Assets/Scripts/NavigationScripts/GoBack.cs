@@ -125,4 +125,50 @@ public class GoBack : MonoBehaviour
         canvasAnimator.SetTrigger("GoLoadingBuddy");
         canvasAnimator.SetTrigger("EndScene");
     }
+
+    public void WaitForCallConfirmation(SelectBuddy.RemoteType iType)
+    {
+        if (iType == SelectBuddy.RemoteType.LOCAL)
+        {
+            StartCoroutine(WaitForLocalConfirmation());
+        }
+        else if (iType == SelectBuddy.RemoteType.WEBRTC)
+        {
+            StartCoroutine(WaitForRTCConfirmation());
+        }
+    }
+
+    private IEnumerator WaitForLocalConfirmation()
+    {
+        CallAcceptOTOReceiver lConfirmation = GameObject.Find("CallAcceptReceiver").GetComponent<CallAcceptOTOReceiver>();
+
+        while (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.WAITING) {
+            yield return new WaitForSeconds(0.5F);
+        }
+
+        if (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED) {
+            canvasAnimator.SetTrigger("EndScene");
+        } else if (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.REJECTED) {
+            canvasAnimator.SetTrigger("GoConnectBuddy");
+            canvasAnimator.SetTrigger("EndScene");
+        }
+    }
+
+    private IEnumerator WaitForRTCConfirmation()
+    {
+        Webrtc lRTC = GameObject.Find("UnityWebrtc").GetComponent<Webrtc>();
+        float lTimeWaited = 0;
+
+        while(!lRTC.Connected && lTimeWaited < 15F) {
+            lTimeWaited += 0.5F;
+            yield return new WaitForSeconds(0.5F);
+        }
+
+        if(lTimeWaited < 15F) {
+            canvasAnimator.SetTrigger("EndScene");
+        } else {
+            canvasAnimator.SetTrigger("GoConnectBuddy");
+            canvasAnimator.SetTrigger("EndScene");
+        }
+    }
 }

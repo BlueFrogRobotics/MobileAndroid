@@ -9,6 +9,7 @@ public class Webrtc : MonoBehaviour
     public enum CONNECTION { CONNECTING = 0, DISCONNECTING = 1 };
 
     public CONNECTION ConnectionState { get { return mConnectionState; } }
+    public bool Connected { get; private set; }
     public string ID { get { return mLocalUser; } }
     public string RemoteID { get { return mRemoteUser; } set { mRemoteUser = value; } }
     public string ConnectionInfo { get { return mConnectionInfos; } }
@@ -238,6 +239,7 @@ public class Webrtc : MonoBehaviour
         {
             using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
             {
+                Connected = false;
                 cls.CallStatic("Hangup", mRemoteUser);
             }
         }
@@ -297,6 +299,7 @@ public class Webrtc : MonoBehaviour
         else {
             Debug.Log("Webrtc status : DISCONNECTING");
             mConnectionState = CONNECTION.DISCONNECTING;
+            Connected = false;
             if (mTextLog)
                 mTextLog.text += "Webrtc connection OFF" + "\n";
         }
@@ -333,6 +336,9 @@ public class Webrtc : MonoBehaviour
         Debug.Log(iMessage);
         if (mTextLog)
             mTextLog.text += "Android Debug : " + iMessage + "\n";
+
+        else if (iMessage.Contains("CONNECTED"))
+            Connected = true;
     }
 
 	public void onLocalTextureSizeChanged(string size)

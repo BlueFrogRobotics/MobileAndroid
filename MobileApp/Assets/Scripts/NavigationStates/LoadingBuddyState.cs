@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class LoadingBuddyState : ASubState {
@@ -24,30 +25,7 @@ public class LoadingBuddyState : ASubState {
         {
             mAnimator = animator;
             SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
-            if (lSelect.Remote == SelectBuddy.RemoteType.LOCAL)
-            {
-                
-            }
-            else if (lSelect.Remote == SelectBuddy.RemoteType.WEBRTC)
-            {
-
-            }
-        }
-    }
-
-    private IEnumerator WaitForLocalConfirmation()
-    {
-        CallAcceptOTOReceiver lConfirmation = GameObject.Find("CallAcceptReceiver").GetComponent<CallAcceptOTOReceiver>();
-
-        while(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.WAITING) {
-            yield return new WaitForSeconds(0.5F);
-        }
-
-        if(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED) {
-            mAnimator.SetTrigger("EndScene");
-        } else if(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.REJECTED) {
-            mAnimator.SetTrigger("GoConnectBuddy");
-            mAnimator.SetTrigger("EndScene");
+            //GameObject.Find("MenuManager").GetComponent<GoBack>().WaitForCallConfirmation(lSelect.Remote);
         }
     }
 }
