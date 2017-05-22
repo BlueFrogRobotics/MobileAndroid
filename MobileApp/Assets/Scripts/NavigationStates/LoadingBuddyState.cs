@@ -25,7 +25,7 @@ public class LoadingBuddyState : ASubState {
         {
             mAnimator = animator;
             SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
-            //GameObject.Find("MenuManager").GetComponent<GoBack>().WaitForCallConfirmation(lSelect.Remote);
+            GameObject.Find("MenuManager").GetComponent<GoBack>().WaitForCallConfirmation(lSelect.Remote);
         }
     }
 }

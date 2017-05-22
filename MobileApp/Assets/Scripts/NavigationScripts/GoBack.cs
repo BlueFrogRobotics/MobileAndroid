@@ -89,6 +89,7 @@ public class GoBack : MonoBehaviour
 
     public void GoConnectedMenu()
     {
+        linkManager.SetMenuBuddyValue(15);
         SwitchToMenu("GoConnectBuddy");
     }
 
@@ -121,7 +122,7 @@ public class GoBack : MonoBehaviour
         LoadingBuddyMessage = iWaitingMessage;
         mPreviousMenu = mCurrentMenu;
         mCurrentMenu = "GoConnectBuddy";
-        linkManager.SetMenuBuddyValue(iMenu);
+        //linkManager.SetMenuBuddyValue(iMenu);
         canvasAnimator.SetTrigger("GoLoadingBuddy");
         canvasAnimator.SetTrigger("EndScene");
     }
@@ -147,6 +148,7 @@ public class GoBack : MonoBehaviour
         }
 
         if (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED) {
+            linkManager.SetMenuBuddyValue(3);
             canvasAnimator.SetTrigger("EndScene");
         } else if (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.REJECTED) {
             canvasAnimator.SetTrigger("GoConnectBuddy");
@@ -165,6 +167,7 @@ public class GoBack : MonoBehaviour
         }
 
         if(lTimeWaited < 15F) {
+            linkManager.SetMenuBuddyValue(3);
             canvasAnimator.SetTrigger("EndScene");
         } else {
             canvasAnimator.SetTrigger("GoConnectBuddy");

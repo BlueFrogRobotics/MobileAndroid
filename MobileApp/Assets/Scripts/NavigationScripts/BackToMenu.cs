@@ -22,7 +22,7 @@ public class BackToMenu : MonoBehaviour
     private GameObject remoteControlRTC;
 
     [SerializeField]
-    private Animator mAnimator;
+    private GoBack menuManager;
 
     [SerializeField]
     private ConnectionIndicator indicator;
@@ -59,8 +59,7 @@ public class BackToMenu : MonoBehaviour
         backSensor.GetComponent<ObstacleManager>().lvl = 0;
 
         indicator.CloseConnection();
-
-        mAnimator.SetTrigger("GoConnectBuddy");
-        mAnimator.SetTrigger("EndScene");
+        
+        menuManager.GoConnectedMenu();
     } 
 }

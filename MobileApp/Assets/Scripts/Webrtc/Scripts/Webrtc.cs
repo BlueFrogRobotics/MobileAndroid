@@ -333,11 +333,11 @@ public class Webrtc : MonoBehaviour
     /// <param name="iMessage">The message that has been received.</param>
     public void onAndroidDebugLog(string iMessage)
     {
-        Debug.Log(iMessage);
+        //Debug.Log(iMessage);
         if (mTextLog)
             mTextLog.text += "Android Debug : " + iMessage + "\n";
 
-        else if (iMessage.Contains("CONNECTED"))
+        else if (iMessage == "CONNECTED")
             Connected = true;
     }
 
