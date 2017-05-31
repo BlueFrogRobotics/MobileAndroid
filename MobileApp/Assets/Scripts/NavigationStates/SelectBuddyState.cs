@@ -36,7 +36,7 @@ public class SelectBuddyState : ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "+", new List<UnityAction>() { lMenuManager.GoAddBuddyMenu }));
             LoadingUI.AddObject(lPoolManager.fTextField_Searching("Content_Top/Top_UI", "Search...", "", null, new List<UnityAction<string>>() { lIPList.SearchForBuddy }));
-            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Undo", new List<UnityAction>() { lIPList.UpdateIPList }));
+            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Undo", new List<UnityAction>() { lIPList.CreateListDisplay }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = true;
             lIPList.enabled = true;

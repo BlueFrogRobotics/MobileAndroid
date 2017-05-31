@@ -49,7 +49,7 @@ public class BuddyIPList : MonoBehaviour
     void OnEnable()
     {
         mobileServer.gameObject.SetActive(true);
-        UpdateIPList();
+        CreateListDisplay();
     }
 
     void OnDisable()
@@ -67,7 +67,7 @@ public class BuddyIPList : MonoBehaviour
         mTime -= Time.deltaTime;
         if(mTime <= 0f) {
             mTime = 20f;
-            UpdateIPList();
+            //CreateListDisplay();
         }
     }
 
@@ -110,10 +110,10 @@ public class BuddyIPList : MonoBehaviour
         mIPList.Remove(lBuddyIP);
 
         if(mInSelectBuddy)
-            UpdateIPList();
+            CreateListDisplay();
     }
 
-    public void UpdateIPList()
+    public void CreateListDisplay()
     {
         if (!mInSelectBuddy)
             return;
