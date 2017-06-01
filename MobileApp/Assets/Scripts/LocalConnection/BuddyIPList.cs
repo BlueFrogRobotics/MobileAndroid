@@ -67,7 +67,7 @@ public class BuddyIPList : MonoBehaviour
         mTime -= Time.deltaTime;
         if(mTime <= 0f) {
             mTime = 20f;
-            //CreateListDisplay();
+            CreateListDisplay();
         }
     }
 

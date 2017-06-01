@@ -27,7 +27,7 @@ class LocalNotification
     }
     
     public static void SendNotification(int id, long delay, string title, string message, Color32 bgColor,
-        bool sound = true, bool vibrate = false, bool lights = true, string bigIcon = "",
+        bool sound = true, bool vibrate = false, bool lights = true, string bigIcon = "notify_buddy",
         NotificationExecuteMode executeMode = NotificationExecuteMode.Exact)
     {
 #if UNITY_ANDROID && !UNITY_EDITOR

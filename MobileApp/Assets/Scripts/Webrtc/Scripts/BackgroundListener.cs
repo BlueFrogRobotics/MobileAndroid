@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 public class BackgroundListener : MonoBehaviour
@@ -18,6 +18,9 @@ public class BackgroundListener : MonoBehaviour
 
     [SerializeField]
     private ChatManager chatManager;
+
+    [SerializeField]
+    private DBManager dbManager;
 
     private AndroidJavaObject mJavaListener;
 
@@ -41,8 +44,17 @@ public class BackgroundListener : MonoBehaviour
 
     public void SubscribeChatChannel()
     {
-        Debug.Log("Connecting to chan Chat" + SelectBuddy.BuddyID);
         mJavaListener.Call("SubscribeChat", SelectBuddy.BuddyID);
+    }
+
+    public void SubscribeNotificationChannels(List<Buddy> iBuddies)
+    {
+        string lBuddyIDs = "";
+        for (int i = 0; i < iBuddies.Capacity; i++)
+        {
+            lBuddyIDs += iBuddies[i].ID + "/";
+        }
+        mJavaListener.Call("SubscribeNotificationChannel", lBuddyIDs);
     }
 
     public void SendChatMessage(string iMessage)
@@ -73,11 +85,19 @@ public class BackgroundListener : MonoBehaviour
     public void OnNotificationMessage(string iMessage)
     {
         //Format of the notification is the following BuddyID / Title @ Message
-        Debug.Log("Received notification : " + iMessage);
         string[] lSplit = iMessage.Split('/');
+
         string lBuddyID = lSplit[0];
+        Buddy lBuddy = new Buddy() { name = "NAN", ID = "00-00-00-00" };
+        foreach (Buddy lFindingBuddy in dbManager.BuddiesList) {
+            if (lFindingBuddy.ID == lBuddyID) {
+                lBuddy = lFindingBuddy;
+                break;
+            }
+        }
+
         string[] lMessageContent = lSplit[1].Split('@');
-        string lTitle = lMessageContent[0] + "@Buddy " + lBuddyID;
+        string lTitle = lBuddy.name + " : " + lMessageContent[0];
         string lMessage = lMessageContent[1];
 
         notification.SendNotification(lMessage, lTitle);

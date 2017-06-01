@@ -30,13 +30,23 @@ public class PhoneUserList
     public PhoneUser[] Users;
 }
 
+public class Buddy
+{
+    public string ID;
+    public string name;
+}
+
 /// <summary>
 /// Manages all requests to DataBase : connection, account creation, etc.
 /// </summary>
 public class DBManager : MonoBehaviour
 {
     public string BuddyList { get { return mBuddyList; } }
+    public List<Buddy> BuddiesList { get { return mBuddiesList; } }
     public PhoneUser CurrentUser { get { return mCurrentUser; } }
+
+    [SerializeField]
+    private BackgroundListener backgroundListener;
 
     [SerializeField]
     private PoolManager poolManager;
@@ -74,6 +84,7 @@ public class DBManager : MonoBehaviour
     private int mDisplayedIndex;
     private string mHost;
     private string mBuddyList;
+    private List<Buddy> mBuddiesList;
     private string mUserFilePath;
 	private string[] mCookie;
     private PhoneUser mCurrentUser;
@@ -429,10 +440,21 @@ public class DBManager : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("WWW Success : " + lWWW.text);
+				//Debug.Log("WWW Success : " + lWWW.text);
 				mBuddyList = lWWW.text;
+                mBuddiesList = new List<Buddy>();
 				menuManager.GoSelectBuddyMenu();
-			}
+
+                if (!string.IsNullOrEmpty(mBuddyList)) {
+                    string[] lBuddyList = mBuddyList.Split('\n');
+
+                    for (int i = 0; i < lBuddyList.Length - 1; i++) {
+                        string[] lBuddyIDs = lBuddyList[i].Split('|');
+                        mBuddiesList.Add(new Buddy { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
+                    }
+                }
+                backgroundListener.SubscribeNotificationChannels(mBuddiesList);
+            }
 		}
 	}
 
