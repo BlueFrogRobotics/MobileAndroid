@@ -81,6 +81,7 @@ public class DBManager : MonoBehaviour
     [SerializeField]
     private InputField inputLastName;
 
+    private bool mNotifAllowed;
     private int mDisplayedIndex;
     private string mHost;
     private string mBuddyList;
@@ -112,14 +113,15 @@ public class DBManager : MonoBehaviour
             popupNoConnection.SetActive(false);
     }
 
-	public void StartRequestConnection(string firstName, string lastName, string email, string password)
+	public void StartRequestConnection(string iFirstName, string iLastName, string iEmail, string iPassword, bool iNotif)
     {
-		StartCoroutine(ConnectAccountSess(firstName, lastName, email, password));
+        mNotifAllowed = iNotif;
+		StartCoroutine(ConnectAccountSess(iFirstName, iLastName, iEmail, iPassword));
     }
 
-	private IEnumerator ConnectAccountSess(string firstName, string lastName, string email, string password)
+	private IEnumerator ConnectAccountSess(string iFirstName, string iLastName, string iEmail, string iPassword)
 	{
-		if (email.Contains("demo") && password.Contains("demo"))
+		if (iEmail.Contains("demo") && iPassword.Contains("demo"))
 		{
 			mCurrentUser = new PhoneUser()
 			{
@@ -134,8 +136,8 @@ public class DBManager : MonoBehaviour
 		}
 
 		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("email", email);
-		lForm.AddField ("password", password);
+		lForm.AddField ("email", iEmail);
+		lForm.AddField ("password", iPassword);
 
 		WWW lWWW = new WWW ("http://" + mHost + "/connectSess.php", lForm);
 		yield return lWWW;
@@ -157,7 +159,7 @@ public class DBManager : MonoBehaviour
                 bool lFound = false;
 
 				foreach(PhoneUser lUser in mUserList.Users) {
-                    if (lUser.FirstName == firstName && lUser.LastName == lastName && lUser.Email == email) {
+                    if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail) {
                         lPicture = lUser.Picture;
                         lFound = true;
                     }
@@ -165,14 +167,14 @@ public class DBManager : MonoBehaviour
 
 				mCurrentUser = new PhoneUser() {
 					IsDefaultUser = false,
-					LastName = lastName,
-					FirstName = firstName,
-					Email = email,
+					LastName = iLastName,
+					FirstName = iFirstName,
+					Email = iEmail,
 					Picture = lPicture
 				};
 
                 if (!lFound) {
-                    AddUserToConfig(firstName, lastName, email);
+                    AddUserToConfig(iFirstName, iLastName, iEmail);
                 }
 
                 RetrieveBuddyList();
@@ -428,18 +430,12 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", new byte[] { 0 }, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
-		if(lWWW.error != null)
-		{
+		if(lWWW.error != null) {
 			Debug.Log("[ERROR] on WWW Request :" + lWWW.error);
-		}
-		else
-		{
-			if(lWWW.text.CompareTo("not logged") == 0)
-			{
+		} else {
+			if(lWWW.text.CompareTo("not logged") == 0) {
 				popupHandler.DisplayError("Erreur", "Veuillez vous identifier");
-			}
-			else
-			{
+			} else {
 				//Debug.Log("WWW Success : " + lWWW.text);
 				mBuddyList = lWWW.text;
                 mBuddiesList = new List<Buddy>();
@@ -453,7 +449,9 @@ public class DBManager : MonoBehaviour
                         mBuddiesList.Add(new Buddy { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
                     }
                 }
-                backgroundListener.SubscribeNotificationChannels(mBuddiesList);
+
+                if(mNotifAllowed)
+                    backgroundListener.SubscribeNotificationChannels(mBuddiesList);
             }
 		}
 	}

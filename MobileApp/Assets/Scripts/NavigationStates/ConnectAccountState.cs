@@ -31,7 +31,11 @@ public class ConnectAccountState : ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Forgot your password?", null));
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
+
+            GameObject lNotifToggle = lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false);
+            lNotifToggle.name = "Notification_Toggle";
+            LoadingUI.AddObject(lNotifToggle);
+
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "LOGIN", "", new List<UnityAction>() { Connection }));
             LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
@@ -64,6 +68,7 @@ public class ConnectAccountState : ASubState {
 
 		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
 		string password = GameObject.Find("Password_Input").GetComponent<InputField>().text;
-		GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection(firstName, lastName, email, password);
+        bool lNotif = GameObject.Find("Notification_Toggle").GetComponent<Toggle>().isOn;
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection(firstName, lastName, email, password, lNotif);
     }
 }
