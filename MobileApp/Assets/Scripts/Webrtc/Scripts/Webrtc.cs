@@ -45,6 +45,12 @@ public class Webrtc : MonoBehaviour
     [SerializeField]
     private RemoteControl remoteControl;
 
+	[SerializeField]
+	private GameObject joystick;
+
+	[SerializeField]
+	private GameObject remoteMessage;
+
     [Header("GUI")]
     public RawImage mRemoteRawImage = null;
     public RawImage mLocalRawImage = null;
@@ -366,7 +372,33 @@ public class Webrtc : MonoBehaviour
 	public void onWebRTCStats(string data)
 	{
         mConnectionInfos = data;
-        //Debug.Log("[STATS] " + data);
+
+		bool controlsDisabled = false;
+
+		string[] cuts = mConnectionInfos.Split('|');
+		float local = float.Parse(cuts[0]);
+		float remote = float.Parse(cuts[1]);
+
+		if(local != -1 && remote != -1)
+		{
+			float threshold = 0.3f;
+			if(local < threshold || remote < threshold)
+			{
+				controlsDisabled = true;
+			}
+		}
+
+		GameObject.Find("RemoteControlRTC").GetComponent<RemoteControl>().ControlsDisabled = controlsDisabled;
+		if(controlsDisabled)
+		{
+			joystick.SetActive(false);
+			remoteMessage.SetActive(true);
+		}
+		else
+		{
+			joystick.SetActive(true);
+			remoteMessage.SetActive(false);
+		}
     }
 }
 

@@ -57,6 +57,11 @@ public class RemoteControl : MonoBehaviour {
     private float mLeftSpeed = 0f;
     private float mRightSpeed = 0f;
 
+	private bool mControlsDisabled = false;
+	private bool mAlreadyDisabled = false;
+
+	public bool ControlsDisabled { get { return mControlsDisabled; } set { mControlsDisabled = value; } }
+
     void OnEnable()
     {
         mTime = Time.time;
@@ -73,29 +78,43 @@ public class RemoteControl : MonoBehaviour {
         mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
         mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
 
-        if (mXPosition != 0 && mYPosition != 0) {
-            //The cursor of the joystick is being moved
-            //We are controlling the body movement
-            if (toggleController.IsBodyActive) {
-                //Compute the desired body movement and send the serialized command to remote
-                ComputeMobileBase();
-                byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 200).Serialize();
+		if(mControlsDisabled) 
+		{
+			if(!mAlreadyDisabled)
+			{
+				Debug.Log ("BAD CONNECTION, stopping Buddy...");
+				webRTC.SendWithDataChannel(GetString(new SetWheelsSpeedCmd(0, 0, 200).Serialize()));
+				mAlreadyDisabled = true;
+			}
+		}
+		else
+		{
+			mAlreadyDisabled = false;
 
-                webRTC.SendWithDataChannel(GetString(lMobileCmd));
-            }
-            //We are controlling the head movement
-            else {
-                //Compute the desired head movement and send the serialized command to remote
-                ComputeNoAxis();
-                ComputeYesAxis();
+			if (mXPosition != 0 && mYPosition != 0) {
+				//The cursor of the joystick is being moved
+				//We are controlling the body movement
+				if (toggleController.IsBodyActive) {
+					//Compute the desired body movement and send the serialized command to remote
+					ComputeMobileBase ();
+					byte[] lMobileCmd = new SetWheelsSpeedCmd (mLeftSpeed, mRightSpeed, 200).Serialize ();
 
-                byte[] lNoCmd = new SetPosNoCmd(mAngleNo, mNoSpeed).Serialize();
-                byte[] lYesCmd = new SetPosYesCmd(mAngleYes, mYesSpeed).Serialize();
+					webRTC.SendWithDataChannel (GetString (lMobileCmd));
+				}
+	            //We are controlling the head movement
+	            else {
+					//Compute the desired head movement and send the serialized command to remote
+					ComputeNoAxis ();
+					ComputeYesAxis ();
 
-                webRTC.SendWithDataChannel(GetString(lNoCmd));
-                webRTC.SendWithDataChannel(GetString(lYesCmd));
-            }
-        }
+					byte[] lNoCmd = new SetPosNoCmd (mAngleNo, mNoSpeed).Serialize ();
+					byte[] lYesCmd = new SetPosYesCmd (mAngleYes, mYesSpeed).Serialize ();
+
+					webRTC.SendWithDataChannel (GetString (lNoCmd));
+					webRTC.SendWithDataChannel (GetString (lYesCmd));
+				}
+			}
+		}
 
         mTime = Time.time;
     }
