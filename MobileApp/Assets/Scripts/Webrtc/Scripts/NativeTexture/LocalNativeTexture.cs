@@ -11,10 +11,10 @@ public class LocalNativeTexture : NativeTexture
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
             int NativeTexture2Pointer = cls.CallStatic<int>("createLocalTexture", iWidth, iHeight);
-            Debug.Log("Unity get Pointer from android of value : " + NativeTexture2Pointer);
+            //Debug.Log("Unity get Pointer from android of value : " + NativeTexture2Pointer);
             Texture2D lTexture = Texture2D.CreateExternalTexture(iWidth, iHeight, TextureFormat.RGBA32, false, true, new IntPtr(NativeTexture2Pointer));
 
-            Debug.Log("Create texture null : " + (lTexture == null).ToString());
+            //Debug.Log("Create texture null : " + (lTexture == null).ToString());
             return lTexture;
         }
     }

@@ -13,6 +13,14 @@ public class NotificationSender : MonoBehaviour {
         LocalNotification.SendNotification(1, 5, iTitle, iMessage, new Color32(0x21, 0xba, 0xed, 255));
     }
 
+    private void OnApplicationPause(bool pause)
+    {
+        if(pause)
+        {
+
+        }
+    }
+
     /*float sleepUntil = 0;
 	
 	void OnGUI () {

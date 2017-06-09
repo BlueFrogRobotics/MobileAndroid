@@ -32,9 +32,15 @@ public class BackgroundListener : MonoBehaviour
 
     private void StartBackgroundListener(string iUri, string iRealm)
     {
-        mJavaListener = new AndroidJavaObject("my.maylab.unitywebrtc.BackgroundListener", iUri, iRealm,
-            BuddyTools.Utils.GetStreamingAssetFilePath("client_cert.pem"),
-            BuddyTools.Utils.GetStreamingAssetFilePath("server_key.pem"));
+        using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        {
+            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+
+            mJavaListener = new AndroidJavaObject("my.maylab.unitywebrtc.BackgroundListener", iUri, iRealm,
+                BuddyTools.Utils.GetStreamingAssetFilePath("client_cert.pem"),
+                BuddyTools.Utils.GetStreamingAssetFilePath("server_key.pem"),
+                jo);
+        }
     }
 
     public void SubscribeConnectRequest()
@@ -54,7 +60,12 @@ public class BackgroundListener : MonoBehaviour
         {
             lBuddyIDs += iBuddies[i].ID + "/";
         }
-        mJavaListener.Call("SubscribeNotificationChannel", lBuddyIDs);
+        mJavaListener.Call("StartNotificationService", lBuddyIDs);
+    }
+
+    public void UnsubscribeNotifications()
+    {
+        mJavaListener.Call("StopNotificationService");
     }
 
     public void SendChatMessage(string iMessage)

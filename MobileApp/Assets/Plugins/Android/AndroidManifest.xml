@@ -37,6 +37,8 @@
 		<receiver android:name="net.agasper.unitynotification.UnityNotificationManager"></receiver>
 		<!-- end -->
 		
+		<service android:enabled="true" android:name="my.maylab.unitywebrtc.NotificationService" />
+		
         <activity
             android:name=".MainActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"

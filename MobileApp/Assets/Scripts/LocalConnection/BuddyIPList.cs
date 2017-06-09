@@ -13,18 +13,6 @@ public class BuddyIPList : MonoBehaviour
     [SerializeField]
     private PoolManager mPoolManager;
 
-    //[SerializeField]
-    //private GameObject searchingPrefab;
-
-    //[SerializeField]
-    //private GameObject prefab;
-
-    //[SerializeField]
-    //private Text prefabName;
-
-    //[SerializeField]
-    //private Text prefabID;
-
     [SerializeField]
     private Transform parentTransform;
 
@@ -54,7 +42,6 @@ public class BuddyIPList : MonoBehaviour
 
     void OnDisable()
     {
-        //Debug.Log("[HERE] Disabled");
         mTime = 0f;
     }
 
@@ -67,7 +54,8 @@ public class BuddyIPList : MonoBehaviour
         mTime -= Time.deltaTime;
         if(mTime <= 0f) {
             mTime = 20f;
-            CreateListDisplay();
+            //CreateListDisplay();
+            UpdateListDisplay();
         }
     }
 
@@ -88,17 +76,6 @@ public class BuddyIPList : MonoBehaviour
         GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "New Buddy !", "IP " + iNewBuddyIP, "", true, true, null);
         lBuddyLocal.transform.SetSiblingIndex(parentTransform.childCount - 2);
         LoadingUI.AddObject(lBuddyLocal);
-
-        //mIPList.Add(lBuddyIP);
-        //prefabName.text = "Buddy " + mBuddyNb;
-        //prefabID.text = "IP " + iNewBuddyIP;
-        
-        ////When instantiating the prefab, make sure to give it a unit localScale
-        //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-        //lClone.transform.SetParent(parentTransform);
-        ////The following makes sure that the newly connected Buddy is not under the "searching" icon
-        //lClone.transform.SetSiblingIndex(parentTransform.childCount - 2);
-        //lClone.transform.localScale = Vector3.one;
         mBuddyNb++;
     }
 
@@ -110,7 +87,22 @@ public class BuddyIPList : MonoBehaviour
         mIPList.Remove(lBuddyIP);
 
         if(mInSelectBuddy)
-            CreateListDisplay();
+        {
+            GameObject lList = GameObject.Find("Content_Bottom/ScrollView/Viewport");
+            bool lLocal = false;
+            foreach(Transform lChild in lList.transform)
+            {
+                if (!lLocal || lChild.gameObject.name != "LocalSeparator")
+                    continue;
+                else if (lChild.gameObject.name == "LocalSeparator")
+                    lLocal = true;
+                else if(lLocal && lChild.GetComponentsInChildren<Text>()[1].text.Contains(lBuddyIP)) {
+                    GameObject.Destroy(lChild.gameObject);
+                    break;
+                }
+            }
+            //CreateListDisplay();
+        }
     }
 
     public void CreateListDisplay()
@@ -125,15 +117,32 @@ public class BuddyIPList : MonoBehaviour
         //Add Buddies from all different sources. 
         //NOTE : WebRTC Buddies and Database ones will be merged
         AddBuddyFromDB();
-        //AddWebRTCBuddy();
         AddLocalBuddy();
         //Add the searching logo to the list for better visuals
         GameObject lSearching = mPoolManager.fSearching("Content_Bottom/ScrollView/Viewport");
         lSearching.name = "SearchingContact";
         LoadingUI.AddObject(lSearching);
-        //GameObject lSearching = Instantiate(searchingPrefab, transform.position, transform.rotation) as GameObject;
-        //lSearching.transform.SetParent(parentTransform);
-        //lSearching.transform.localScale = Vector3.one;
+    }
+
+    private void UpdateListDisplay()
+    {
+        GameObject lViewport = GameObject.Find("Content_Bottom/ScrollView/Viewport");
+
+        if(lViewport.transform.childCount == 0) {
+            CreateListDisplay();
+        } else {
+            bool lDistantPart = true;
+            foreach (Transform lChild in parentTransform) {
+                if (lChild.gameObject.name == "DistantSeparator")
+                    continue;
+                else if (lChild.gameObject.name == "LocalSeparator") {
+                    lDistantPart = false;
+                    continue;
+                } else {
+
+                }
+            }
+        }
     }
 
     private void AddBuddyFromDB()
@@ -185,14 +194,6 @@ public class BuddyIPList : MonoBehaviour
             GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy " + lCount, "IP " + lIP, "", true, true, null);
             LoadingUI.AddObject(lBuddyLocal);
             lCount++;
-
-            //prefabName.text = "Buddy " + mBuddyNb;
-            //prefabID.text = "IP " + lIP;
-
-            ////When instantiating the prefab, make sure to give it a unit localScale
-            //GameObject lClone = Instantiate(prefab, transform.position, transform.rotation) as GameObject;
-            //lClone.transform.SetParent(parentTransform);
-            //lClone.transform.localScale = Vector3.one;
         }
     }
 
