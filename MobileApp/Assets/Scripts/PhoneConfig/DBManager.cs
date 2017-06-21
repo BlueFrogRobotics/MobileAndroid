@@ -145,44 +145,52 @@ public class DBManager : MonoBehaviour
 		if (lWWW.error != null)
 		{
 			Debug.Log ("[ERROR] on WWW Request " + lWWW.error + " / " + lWWW.text);
+			popupHandler.DisplayError("Erreur", "Echec de communication avec le serveur");
 		}
 		else
 		{
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
-			if(resp.ok)
+			try
 			{
-				Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
-				mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
+				HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
+				if(resp.ok)
+				{
+					Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
+					mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
 
-				mBuddyList = lWWW.text;
-				string lPicture = "";
-                bool lFound = false;
+					mBuddyList = lWWW.text;
+					string lPicture = "";
+	                bool lFound = false;
 
-				foreach(PhoneUser lUser in mUserList.Users) {
-                    if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail) {
-                        lPicture = lUser.Picture;
-                        lFound = true;
-                    }
+					foreach(PhoneUser lUser in mUserList.Users) {
+	                    if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail) {
+	                        lPicture = lUser.Picture;
+	                        lFound = true;
+	                    }
+					}
+
+					mCurrentUser = new PhoneUser() {
+						IsDefaultUser = false,
+						LastName = iLastName,
+						FirstName = iFirstName,
+						Email = iEmail,
+						Picture = lPicture
+					};
+
+	                if (!lFound) {
+	                    AddUserToConfig(iFirstName, iLastName, iEmail);
+	                }
+
+	                RetrieveBuddyList();
+					ConfirmConnection();
 				}
-
-				mCurrentUser = new PhoneUser() {
-					IsDefaultUser = false,
-					LastName = iLastName,
-					FirstName = iFirstName,
-					Email = iEmail,
-					Picture = lPicture
-				};
-
-                if (!lFound) {
-                    AddUserToConfig(iFirstName, iLastName, iEmail);
-                }
-
-                RetrieveBuddyList();
-				ConfirmConnection();
+				else
+				{
+					popupHandler.DisplayError("Erreur", resp.msg);
+				}
 			}
-			else
+			catch(Exception e)
 			{
-				popupHandler.DisplayError("Erreur", resp.msg);
+				popupHandler.DisplayError("Erreur", "Un problème est survenu lors de la lecture de la réponse du serveur");
 			}
 		}
 	}
