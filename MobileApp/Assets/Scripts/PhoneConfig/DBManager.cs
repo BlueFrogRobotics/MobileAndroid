@@ -94,6 +94,8 @@ public class DBManager : MonoBehaviour
 
 	private PopupHandler popupHandler;
 
+	private PhoneUser mUser;
+
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
@@ -237,7 +239,6 @@ public class DBManager : MonoBehaviour
 	private IEnumerator EditAccount(string firstName, string lastName, string password)
 	{
 		string email = mCurrentUser.Email;
-		Debug.Log("User email" + email);
 	
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("firstname", firstName);
@@ -374,7 +375,7 @@ public class DBManager : MonoBehaviour
 					GameObject.Find ("PopUps").GetComponent<PopupHandler> ().ClosePopup ();
 					popupHandler.DisplayError ("Succes", resp.msg);
 
-					RemoveCurrentUserFromLocalStorage ();
+					RemoveUserFromLocalStorage (mCurrentUser);
 					ReadPhoneUsers ();
 					menuManager.GoConnectionMenu ();
 
@@ -465,14 +466,23 @@ public class DBManager : MonoBehaviour
         GenerateUserDisplay();
     }
 
-    private void RemoveCurrentUserFromLocalStorage()
+	private void RemoveUserFromLocalStorage(PhoneUser user)
     {
-        List<PhoneUser> lTempList = new List<PhoneUser>(mUserList.Users);
-        if (lTempList.Remove(mCurrentUser)) {
-            Debug.Log("User successfully removed from local storage");
-            mUserList.Users = lTempList.ToArray();
-            ExportToJson(mUserList);
-        }
+		int lUserLength = mUserList.Users.Length;
+		PhoneUser[] lTempList = new PhoneUser[lUserLength - 1];
+
+		for(int i = 0, j = 0; i < lUserLength; i++, j++) {
+			if(mUserList.Users[i].Email == user.Email && mUserList.Users[i].FirstName == user.FirstName && mUserList.Users[i].LastName == user.LastName) {
+				j--;
+				Debug.Log("User successfully removed from local storage");
+			}
+			else {
+				lTempList[j] = mUserList.Users[i];
+			}
+		}
+
+		mUserList.Users = lTempList;
+		ExportToJson(mUserList);
     }
 
     public void GenerateUserDisplay()
@@ -569,6 +579,23 @@ public class DBManager : MonoBehaviour
 			}
 		}
         ExportToJson(mUserList);
+	}
+
+	public void RemoveUserToConfig(string iFName, string iLName, string iEMail)
+	{
+		mUser = new PhoneUser()
+		{
+			FirstName = iFName,
+			LastName = iLName,
+			Email = iEMail
+		};
+		popupHandler.PopupConfirmCancel ("Suppression", "Supprimer le compte local " + iEMail + " ?", DeleteUserFromList);
+	}
+
+	public void DeleteUserFromList()
+	{
+		RemoveUserFromLocalStorage (mUser);
+		ReadPhoneUsers ();
 	}
 
     public Sprite GetCurrentUserImage()
