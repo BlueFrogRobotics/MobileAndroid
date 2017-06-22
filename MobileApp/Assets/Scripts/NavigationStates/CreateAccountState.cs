@@ -17,7 +17,7 @@ public class CreateAccountState : ASubState {
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
             // DISABLE, ENABLE GENERICS
 			HandleGeneric lHandler = GameObject.Find("ScriptUI").GetComponent<HandleGeneric>();
-			lHandler.DisableGeneric(new ArrayList() { "NavigationEdit", "TopUI", "BottomUI", "ScrollView" });
+			lHandler.DisableGeneric(new ArrayList() { "NavigationCreateAccount", "TopUI", "BottomUI", "ScrollView" });
 			lHandler.SetDisplayInfos("Enter Your First Name", "Enter Your Last Name");
 			lHandler.SetEditInfos("", "");
             // CREATE OBJECTS
