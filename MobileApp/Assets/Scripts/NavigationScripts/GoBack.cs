@@ -147,13 +147,7 @@ public class GoBack : MonoBehaviour
             yield return new WaitForSeconds(0.5F);
         }
 
-        if (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED) {
-            linkManager.SetMenuBuddyValue(3);
-            canvasAnimator.SetTrigger("EndScene");
-        } else if (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.REJECTED) {
-            canvasAnimator.SetTrigger("GoConnectBuddy");
-            canvasAnimator.SetTrigger("EndScene");
-        }
+		processConnectionState(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED);
     }
 
     private IEnumerator WaitForRTCConfirmation()
@@ -166,12 +160,21 @@ public class GoBack : MonoBehaviour
             yield return new WaitForSeconds(0.5F);
         }
 
-        if(lTimeWaited < 15F) {
-            linkManager.SetMenuBuddyValue(3);
-            canvasAnimator.SetTrigger("EndScene");
-        } else {
-            canvasAnimator.SetTrigger("GoConnectBuddy");
-            canvasAnimator.SetTrigger("EndScene");
-        }
+		processConnectionState(lTimeWaited < 15F);
     }
+
+	private void processConnectionState(bool connected)
+	{
+		if(connected)
+		{
+			linkManager.SetMenuBuddyValue (3);
+			canvasAnimator.SetTrigger ("EndScene");
+		}
+		else
+		{
+			canvasAnimator.SetTrigger("GoConnectBuddy");
+			canvasAnimator.SetTrigger("EndScene");
+			GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Impossible d'établir la connection avec le robot");
+		}
+	}
 }
