@@ -150,6 +150,7 @@ public class HandleGeneric : MonoBehaviour {
         T_Dots.SetActive(false);
 
         T_FieldLastName.GetComponent<InputField>().text = SelectBuddy.BuddyName;
+		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
         T_TextFirstName.GetComponent<Text>().text = SelectBuddy.BuddyID;
     }
 
@@ -164,7 +165,8 @@ public class HandleGeneric : MonoBehaviour {
         T_ArrowRight.SetActive(false);
         T_Dots.SetActive(false);
 
-        T_FieldLastName.GetComponent<InputField>().text = "Insert Buddy's name";
+        T_FieldLastName.GetComponent<InputField>().text = "";
+		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
     }
 
     private void EnableNavigationDisplay()
