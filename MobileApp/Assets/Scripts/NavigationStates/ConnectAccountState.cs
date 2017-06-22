@@ -38,7 +38,7 @@ public class ConnectAccountState : ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "LOGIN", "", new List<UnityAction>() { Connection }));
-            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
+            //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
 
             GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "", null);
             lUserPicture.name = "Connect_User_Picture";

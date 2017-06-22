@@ -31,7 +31,7 @@ public class AddBuddyState : ASubState {
             GameObject lBuddyID = lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", "", new List<UnityAction>() { lPopup.OpenReadQrCode });
             lBuddyID.name = "Buddy_ID";
             LoadingUI.AddObject(lBuddyID);
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Connect By Default", false));
+            //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Connect By Default", false));
             // TOP UI
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "Default_Buddy", null));
         }

@@ -134,38 +134,35 @@ public class PoolManager : MonoBehaviour {
             lUser_Pic.sprite = lSprite;
         }
 
-        // ACTIVATE OR DESACTIVATE BUTTON ADD IF iListed = False OR ON EDIT IF iListed = True
-        if (iListed == true)
-        {
-            lButton_Edit.gameObject.SetActive(true);
-            lButton_Add.gameObject.SetActive(false);
-        }
-        else
-        {
-            lButton_Edit.gameObject.SetActive(false);
-            lButton_Add.gameObject.SetActive(true);
-        }
-
         // HANDLE LOCAL OR INTERNET SPRITE.
         if (iLocal == true)
             lLocal.GetComponent<Image>().sprite = mAtlasMobile["Icon_Local"];
         else
             lLocal.GetComponent<Image>().sprite = mAtlasMobile["Icon_Net"];
 
+		// Desactivate all buttons for now (not used)
+		lButton_Edit.gameObject.SetActive(false);
+		lButton_Add.gameObject.SetActive(false);
+
         // CREATE CALL BACK ON BUTTON ADD IF iListed = False OR ON EDIT IF iListed = True
         if (iCallbacks != null)
         {
-            if (iListed == true)
-            {
-                foreach (UnityAction lCallback in iCallbacks)
-                    lButton_Edit.onClick.AddListener(lCallback);
-            }
-            else
-            {
-                foreach (UnityAction lCallback in iCallbacks)
-                    lButton_Add.onClick.AddListener(lCallback);
-            }
-        }
+			// ACTIVATE OR DESACTIVATE BUTTON ADD IF iListed = False OR ON EDIT IF iListed = True
+			if (iListed)
+			{
+				lButton_Edit.gameObject.SetActive(true);
+				lButton_Add.gameObject.SetActive(false);
+				foreach (UnityAction lCallback in iCallbacks)
+					lButton_Edit.onClick.AddListener(lCallback);
+			}
+			else
+			{
+				lButton_Edit.gameObject.SetActive(false);
+				lButton_Add.gameObject.SetActive(true);
+				foreach (UnityAction lCallback in iCallbacks)
+					lButton_Add.onClick.AddListener(lCallback);
+			}
+		}
 
         lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
         return lFinalObject;
