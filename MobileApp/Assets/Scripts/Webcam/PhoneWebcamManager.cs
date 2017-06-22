@@ -23,38 +23,44 @@ public class PhoneWebcamManager : MonoBehaviour
     private Mat mTempMat;
     private MatOfInt mCompression;
     private WebCamTexture mWebcamTexture;
-    private bool mIsWebRTCConnection = false;
 
+	void OnStart()
+	{
+		Debug.Log ("[PhoneWebcamManager] OnStart");
+	}
 
-    void Start()
-    {
-        if (mWebRTC.activeSelf)
-        {
-            mIsWebRTCConnection = true;
-        }
-        else {
-            mTime = Time.time;
-            WebCamDevice[] lDevices = WebCamTexture.devices;
+	void OnEnable()
+	{
+		Debug.Log ("[PhoneWebcamManager] OnEnable");
 
-            //Get front facing camera
-            for (int i = 0; i < lDevices.Length; i++)
-            {
-                if (lDevices[i].isFrontFacing)
-                {
-                    mWebcamTexture = new WebCamTexture(lDevices[i].name, mRequestedWidth, mRequestedHeight, mFPS);
-                    break;
-                }
-            }
+		if(!mWebRTC.activeSelf)
+		{
+			Debug.Log ("[PhoneWebcamManager] not webrtc");
 
-            //Initialize compression matrix
-            mTempMat = new Mat(mRequestedHeight, mRequestedWidth, CvType.CV_8UC3);
-            mCompression = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, mCompressQuality);
-        }
-    }
+			mTime = Time.time;
+			WebCamDevice[] lDevices = WebCamTexture.devices;
+
+			//Get front facing camera
+			for (int i = 0; i < lDevices.Length; i++)
+			{
+				if (lDevices[i].isFrontFacing)
+				{
+					mWebcamTexture = new WebCamTexture(lDevices[i].name, mRequestedWidth, mRequestedHeight, mFPS);
+					break;
+				}
+			}
+
+			//Initialize compression matrix
+			mTempMat = new Mat(mRequestedHeight, mRequestedWidth, CvType.CV_8UC3);
+			mCompression = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, mCompressQuality);
+		}
+	}
 
     void OnDisable()
     {
-        if (!mIsWebRTCConnection)
+		Debug.Log ("[PhoneWebcamManager] OnDisable");
+
+		if (!mWebRTC.activeSelf)
         {
             mWebcamTexture.Stop();
             mPhoneWebcamStream.gameObject.SetActive(false);
@@ -63,7 +69,7 @@ public class PhoneWebcamManager : MonoBehaviour
 
     void Update()
     {
-        if (!mIsWebRTCConnection)
+		if (!mWebRTC.activeSelf)
         {
             if (!mWebcamTexture.didUpdateThisFrame || Time.time - mTime < 1 / mFPS)
                 return;
@@ -99,7 +105,7 @@ public class PhoneWebcamManager : MonoBehaviour
     //Switch the activity of camera
     public void ActivatePhoneWebcam()
     {
-        if (!mIsWebRTCConnection)
+		if (!mWebRTC.activeSelf)
         {
             if (!mPhoneWebcamStream.IsActive())
             {
