@@ -72,8 +72,11 @@ public class HandleGeneric : MonoBehaviour {
                     case "NavigationAccount":
                         EnableNavigationAccount();
                         break;
-                    case "NavigationEdit":
-                        EnableNavigationEdit();
+					case "NavigationCreateAccount":
+						EnableNavigationCreateAccount();
+						break;
+                    case "NavigationEditAccount":
+                        EnableNavigationEditAccount();
                         break;
                     case "NavigationEditBuddy":
                         EnableNavigationEditBuddy();
@@ -122,7 +125,24 @@ public class HandleGeneric : MonoBehaviour {
         T_FieldLastName.SetActive(false);
     }
 
-    private void EnableNavigationEdit()
+	private void EnableNavigationCreateAccount()
+	{
+		T_NavigationAccount.SetActive(true);
+		T_FieldFirstName.SetActive(true);
+		T_FieldLastName.SetActive(true);
+		T_TextFirstName.SetActive(false);
+		T_TextLastName.SetActive(false);
+		T_ArrowLeft.SetActive(false);
+		T_ArrowRight.SetActive(false);
+		T_Dots.SetActive(false);
+
+		T_FieldFirstName.GetComponent<InputField>().text = "";
+		T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
+		T_FieldLastName.GetComponent<InputField>().text = "";
+		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
+	}
+
+    private void EnableNavigationEditAccount()
     {
         T_NavigationAccount.SetActive(true);
         T_FieldFirstName.SetActive(true);
@@ -135,7 +155,9 @@ public class HandleGeneric : MonoBehaviour {
 
         DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
         T_FieldFirstName.GetComponent<InputField>().text = lDB.CurrentUser.FirstName;
+		T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
         T_FieldLastName.GetComponent<InputField>().text = lDB.CurrentUser.LastName;
+		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
     }
 
     private void EnableNavigationEditBuddy()
@@ -150,6 +172,7 @@ public class HandleGeneric : MonoBehaviour {
         T_Dots.SetActive(false);
 
         T_FieldLastName.GetComponent<InputField>().text = SelectBuddy.BuddyName;
+		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
         T_TextFirstName.GetComponent<Text>().text = SelectBuddy.BuddyID;
     }
 
@@ -164,7 +187,8 @@ public class HandleGeneric : MonoBehaviour {
         T_ArrowRight.SetActive(false);
         T_Dots.SetActive(false);
 
-        T_FieldLastName.GetComponent<InputField>().text = "Insert Buddy's name";
+        T_FieldLastName.GetComponent<InputField>().text = "";
+		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
     }
 
     private void EnableNavigationDisplay()

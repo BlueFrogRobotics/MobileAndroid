@@ -130,6 +130,22 @@ public class PopupHandler : MonoBehaviour {
 		return deleteAccountInputPasswordField.GetComponent<InputField>().text;
 	}
 
+	public void PopupConfirmCancel(string title, string message, UnityAction iCallback)
+	{
+		ResetUI();
+		popupWindow.SetActive(true);
+		ResetWindowUI();
+
+		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
+		lTitle.text = title;
+
+		poolManager.fSimple_Text("PopUp_Window/Window/Content", message, true);
+		poolManager.fButton_Square("PopUp_Window/Window/Content", "CONFIRM", "", new List<UnityAction>() { iCallback, ClosePopup });
+		poolManager.fButton_Square("PopUp_Window/Window/Content", "CANCEL", "", new List<UnityAction>() { ClosePopup });
+
+		animator.SetTrigger("Open");
+	}
+
     public void OpenYesNo(string iQuestion = "")
     {
         ResetUI();

@@ -94,6 +94,8 @@ public class DBManager : MonoBehaviour
 
 	private PopupHandler popupHandler;
 
+	private PhoneUser mUser;
+
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
@@ -142,47 +144,46 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/connectSess.php", lForm);
 		yield return lWWW;
 
-		if (lWWW.error != null)
+		if (requestOK(lWWW))
 		{
-			Debug.Log ("[ERROR] on WWW Request " + lWWW.error + " / " + lWWW.text);
-		}
-		else
-		{
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
-			if(resp.ok)
+			HttpResponse resp = parseResp(lWWW);
+			if(resp != null)
 			{
-				Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
-				mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
+				if(resp.ok)
+				{
+					Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
+					mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
 
-				mBuddyList = lWWW.text;
-				string lPicture = "";
-                bool lFound = false;
+					mBuddyList = lWWW.text;
+					string lPicture = "";
+					bool lFound = false;
 
-				foreach(PhoneUser lUser in mUserList.Users) {
-                    if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail) {
-                        lPicture = lUser.Picture;
-                        lFound = true;
-                    }
+					foreach(PhoneUser lUser in mUserList.Users) {
+						if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail) {
+							lPicture = lUser.Picture;
+							lFound = true;
+						}
+					}
+
+					mCurrentUser = new PhoneUser() {
+						IsDefaultUser = false,
+						LastName = iLastName,
+						FirstName = iFirstName,
+						Email = iEmail,
+						Picture = lPicture
+					};
+
+					if (!lFound) {
+						AddUserToConfig(iFirstName, iLastName, iEmail);
+					}
+
+					RetrieveBuddyList();
+					ConfirmConnection();
 				}
-
-				mCurrentUser = new PhoneUser() {
-					IsDefaultUser = false,
-					LastName = iLastName,
-					FirstName = iFirstName,
-					Email = iEmail,
-					Picture = lPicture
-				};
-
-                if (!lFound) {
-                    AddUserToConfig(iFirstName, iLastName, iEmail);
-                }
-
-                RetrieveBuddyList();
-				ConfirmConnection();
-			}
-			else
-			{
-				popupHandler.DisplayError("Erreur", resp.msg);
+				else
+				{
+					popupHandler.DisplayError("Erreur", resp.msg);
+				}
 			}
 		}
 	}
@@ -208,21 +209,22 @@ public class DBManager : MonoBehaviour
 		lForm.AddField ("password", password);
 		lForm.AddField ("hiddenkey", "key");
 
-		WWW lWww = new WWW("http://" + mHost + "/createAccountSess.php", lForm);
-		yield return lWww;
+		WWW lWWW = new WWW ("http://" + mHost + "/createAccountSess.php", lForm);
+		yield return lWWW;
 
-		if(lWww.error != null) {
-			Debug.Log("[ERROR] on WWW Request" + lWww.error);
-		} else {
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWww.text);
-			if(resp.ok) {
-				popupHandler.DisplayError("Succes", resp.msg);
-				AddUserToConfig(firstName, lastName, email);
-                ReadPhoneUsers();
-                menuManager.GoConnectionMenu();
-				ResetCreateParameters();
-            } else {
-				popupHandler.DisplayError("Erreur", resp.msg);
+		if(requestOK(lWWW))
+		{
+			HttpResponse resp = parseResp(lWWW);
+			if (resp != null) {
+				if (resp.ok) {
+					popupHandler.DisplayError ("Succes", resp.msg);
+					AddUserToConfig (firstName, lastName, email);
+					ReadPhoneUsers ();
+					menuManager.GoConnectionMenu ();
+					ResetCreateParameters ();
+				} else {
+					popupHandler.DisplayError ("Erreur", resp.msg);
+				}
 			}
 		}
 	}
@@ -237,7 +239,6 @@ public class DBManager : MonoBehaviour
 	private IEnumerator EditAccount(string firstName, string lastName, string password)
 	{
 		string email = mCurrentUser.Email;
-		Debug.Log("User email" + email);
 	
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("firstname", firstName);
@@ -246,20 +247,19 @@ public class DBManager : MonoBehaviour
 		lForm.AddField ("password", password);
 		lForm.AddField ("hiddenkey", "key");
 
-		WWW lWww = new WWW("http://" + mHost + "/editAccount.php", lForm.data, addSessionCookie(lForm.headers));
-		yield return lWww;
+		WWW lWWW = new WWW ("http://" + mHost + "/editAccount.php", lForm.data, addSessionCookie(lForm.headers));
+		yield return lWWW;
 
-		if(lWww.error != null) {
-			Debug.Log("[ERROR] on WWW Request" + lWww.error);
-		} else {
-            Debug.Log("[HTTP] Response: " + lWww.text);
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWww.text);
-			if(resp.ok) {
-				popupHandler.DisplayError("Succes", resp.msg);
-				EditUserToConfig(firstName, lastName, email);
-				menuManager.PreviousMenu();
-			} else {
-				popupHandler.DisplayError("Erreur", resp.msg);
+		if(requestOK(lWWW)) {
+			HttpResponse resp = parseResp(lWWW);
+			if (resp != null) {
+				if (resp.ok) {
+					popupHandler.DisplayError ("Succes", resp.msg);
+					EditUserToConfig (firstName, lastName, email);
+					menuManager.PreviousMenu ();
+				} else {
+					popupHandler.DisplayError ("Erreur", resp.msg);
+				}
 			}
 		}
 	}
@@ -268,33 +268,6 @@ public class DBManager : MonoBehaviour
 	{
 		StartCoroutine(AddBuddySess(iBuddyID, name));
 	}
-	
-    private IEnumerator AddBuddyToUser(string iBuddyID)
-    {
-        //Add desired Buddy to the user's list of Buddies on the DataBase
-        //Fill POST parameters
-        WWWForm lForm = new WWWForm();
-        lForm.AddField("firstname", mCurrentUser.FirstName);
-        lForm.AddField("lastname", mCurrentUser.LastName);
-        lForm.AddField("email", mCurrentUser.Email);
-        lForm.AddField("buddyid", iBuddyID);
-        
-        WWW lWww = new WWW("http://" + mHost + "/AddBuddy.php", lForm);
-        yield return lWww;
-
-        //Check for errors
-        if (lWww.error != null)
-            Debug.Log("[ERROR] on WWW Request");
-        else
-        {
-            if (lWww.text != "KO") {
-                Debug.Log("Succesfully added Buddy to current User.");
-				RetrieveBuddyList();
-            }
-            else
-                Debug.Log("Request failed : " + lWww.text);
-        }
-    }
 
 	private IEnumerator AddBuddySess(string iBuddyID, string name)
 	{
@@ -307,17 +280,16 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
-		if (lWWW.error != null)
-			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
-		else {
-			Debug.Log ("WWW Success : " + lWWW.text);
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
-			if(resp.ok) {
-				popupHandler.DisplayError("Succes", resp.msg);
-				menuManager.PreviousMenu();
-				RetrieveBuddyList();
-			} else {
-				popupHandler.DisplayError("Erreur", resp.msg);
+		if (requestOK (lWWW)) {
+			HttpResponse resp = parseResp (lWWW);
+			if (resp != null) {
+				if (resp.ok) {
+					popupHandler.DisplayError ("Succes", resp.msg);
+					menuManager.PreviousMenu ();
+					RetrieveBuddyList ();
+				} else {
+					popupHandler.DisplayError ("Erreur", resp.msg);
+				}
 			}
 		}
 	}
@@ -336,18 +308,18 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/editBuddy.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
-		if (lWWW.error != null)
-			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
-		else {
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
-			if(resp.ok) {
-				popupHandler.DisplayError("Succes", resp.msg);
-				menuManager.PreviousMenu();
-				RetrieveBuddyList();
-				Debug.Log("WWW Success");
-			} else {
-				popupHandler.DisplayError("Erreur", resp.msg);
-				Debug.Log(resp.msg);
+		if (requestOK (lWWW)) {
+			HttpResponse resp = parseResp (lWWW);
+			if (resp != null) {
+				if (resp.ok) {
+					popupHandler.DisplayError ("Succes", resp.msg);
+					menuManager.PreviousMenu ();
+					RetrieveBuddyList ();
+					Debug.Log ("WWW Success");
+				} else {
+					popupHandler.DisplayError ("Erreur", resp.msg);
+					Debug.Log (resp.msg);
+				}
 			}
 		}
 	}
@@ -366,19 +338,18 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/removeBuddyFromUser.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
-		if (lWWW.error != null)
-			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
-		else {
-			Debug.Log (lWWW.text);
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
-			if(resp.ok) {
-				popupHandler.DisplayError("Succes", resp.msg);
-				menuManager.PreviousMenu();
-				RetrieveBuddyList();
-				Debug.Log("WWW Success");
-			} else {
-				popupHandler.DisplayError("Erreur", resp.msg);
-				Debug.Log(resp.msg);
+		if (requestOK (lWWW)) {
+			HttpResponse resp = parseResp (lWWW);
+			if (resp != null) {
+				if (resp.ok) {
+					popupHandler.DisplayError ("Succes", resp.msg);
+					menuManager.PreviousMenu ();
+					RetrieveBuddyList ();
+					Debug.Log ("WWW Success");
+				} else {
+					popupHandler.DisplayError ("Erreur", resp.msg);
+					Debug.Log (resp.msg);
+				}
 			}
 		}
 	}
@@ -397,23 +368,22 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/deleteAccount.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
-		if (lWWW.error != null)
-			Debug.Log ("[ERROR] on WWW Request :" + lWWW.error);
-		else {
-			Debug.Log (lWWW.text);
-			HttpResponse resp = JsonUtility.FromJson<HttpResponse>(lWWW.text);
-			if(resp.ok) {
-				GameObject.Find("PopUps").GetComponent<PopupHandler>().ClosePopup();
-				popupHandler.DisplayError("Succes", resp.msg);
+		if (requestOK (lWWW)) {
+			HttpResponse resp = parseResp (lWWW);
+			if (resp != null) {
+				if (resp.ok) {
+					GameObject.Find ("PopUps").GetComponent<PopupHandler> ().ClosePopup ();
+					popupHandler.DisplayError ("Succes", resp.msg);
 
-                RemoveCurrentUserFromLocalStorage();
-                ReadPhoneUsers();
-                menuManager.GoConnectionMenu();
+					RemoveUserFromLocalStorage (mCurrentUser);
+					ReadPhoneUsers ();
+					menuManager.GoConnectionMenu ();
 
-				Debug.Log("WWW Success");
-			} else {
-				popupHandler.DisplayError("Erreur", resp.msg);
-				Debug.Log(resp.msg);
+					Debug.Log ("WWW Success");
+				} else {
+					popupHandler.DisplayError ("Erreur", resp.msg);
+					Debug.Log (resp.msg);
+				}
 			}
 		}
 	}
@@ -430,29 +400,27 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", new byte[] { 0 }, addSessionCookie(lForm.headers));
 		yield return lWWW;
 
-		if(lWWW.error != null) {
-			Debug.Log("[ERROR] on WWW Request :" + lWWW.error);
-		} else {
+		if(requestOK(lWWW)) {
 			if(lWWW.text.CompareTo("not logged") == 0) {
 				popupHandler.DisplayError("Erreur", "Veuillez vous identifier");
 			} else {
 				//Debug.Log("WWW Success : " + lWWW.text);
 				mBuddyList = lWWW.text;
-                mBuddiesList = new List<Buddy>();
+				mBuddiesList = new List<Buddy>();
 				menuManager.GoSelectBuddyMenu();
 
-                if (!string.IsNullOrEmpty(mBuddyList)) {
-                    string[] lBuddyList = mBuddyList.Split('\n');
+				if (!string.IsNullOrEmpty(mBuddyList)) {
+					string[] lBuddyList = mBuddyList.Split('\n');
 
-                    for (int i = 0; i < lBuddyList.Length - 1; i++) {
-                        string[] lBuddyIDs = lBuddyList[i].Split('|');
-                        mBuddiesList.Add(new Buddy { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
-                    }
-                }
+					for (int i = 0; i < lBuddyList.Length - 1; i++) {
+						string[] lBuddyIDs = lBuddyList[i].Split('|');
+						mBuddiesList.Add(new Buddy { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
+					}
+				}
 
-                if(mNotifAllowed)
-                    backgroundListener.SubscribeNotificationChannels(mBuddiesList);
-            }
+				if(mNotifAllowed)
+					backgroundListener.SubscribeNotificationChannels(mBuddiesList);
+			}
 		}
 	}
 
@@ -498,14 +466,23 @@ public class DBManager : MonoBehaviour
         GenerateUserDisplay();
     }
 
-    private void RemoveCurrentUserFromLocalStorage()
+	private void RemoveUserFromLocalStorage(PhoneUser user)
     {
-        List<PhoneUser> lTempList = new List<PhoneUser>(mUserList.Users);
-        if (lTempList.Remove(mCurrentUser)) {
-            Debug.Log("User successfully removed from local storage");
-            mUserList.Users = lTempList.ToArray();
-            ExportToJson(mUserList);
-        }
+		int lUserLength = mUserList.Users.Length;
+		PhoneUser[] lTempList = new PhoneUser[lUserLength - 1];
+
+		for(int i = 0, j = 0; i < lUserLength; i++, j++) {
+			if(mUserList.Users[i].Email == user.Email && mUserList.Users[i].FirstName == user.FirstName && mUserList.Users[i].LastName == user.LastName) {
+				j--;
+				Debug.Log("User successfully removed from local storage");
+			}
+			else {
+				lTempList[j] = mUserList.Users[i];
+			}
+		}
+
+		mUserList.Users = lTempList;
+		ExportToJson(mUserList);
     }
 
     public void GenerateUserDisplay()
@@ -602,6 +579,23 @@ public class DBManager : MonoBehaviour
 			}
 		}
         ExportToJson(mUserList);
+	}
+
+	public void RemoveUserToConfig(string iFName, string iLName, string iEMail)
+	{
+		mUser = new PhoneUser()
+		{
+			FirstName = iFName,
+			LastName = iLName,
+			Email = iEMail
+		};
+		popupHandler.PopupConfirmCancel ("Suppression", "Supprimer le compte local " + iEMail + " ?", DeleteUserFromList);
+	}
+
+	public void DeleteUserFromList()
+	{
+		RemoveUserFromLocalStorage (mUser);
+		ReadPhoneUsers ();
 	}
 
     public Sprite GetCurrentUserImage()
@@ -732,5 +726,32 @@ public class DBManager : MonoBehaviour
 		}
 
 		return dictionary;
+	}
+
+	private bool requestOK(WWW www)
+	{
+		if(www.error != null)
+		{
+			Debug.Log ("[ERROR] on WWW Request " + www.url + " : " + www.error + " / " + www.text);
+			popupHandler.DisplayError("Erreur", "Echec de communication avec le serveur");
+			return false;
+		}
+
+		return true;
+	}
+
+	private HttpResponse parseResp(WWW www)
+	{
+		HttpResponse resp = null;
+		try
+		{
+			resp = JsonUtility.FromJson<HttpResponse>(www.text);
+		}
+		catch(Exception e)
+		{
+			popupHandler.DisplayError("Erreur", "Un problème est survenu lors de la lecture de la réponse du serveur");
+		}
+
+		return resp;
 	}
 }

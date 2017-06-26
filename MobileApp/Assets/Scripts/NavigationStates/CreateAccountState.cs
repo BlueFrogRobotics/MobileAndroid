@@ -17,13 +17,13 @@ public class CreateAccountState : ASubState {
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
             // DISABLE, ENABLE GENERICS
 			HandleGeneric lHandler = GameObject.Find("ScriptUI").GetComponent<HandleGeneric>();
-			lHandler.DisableGeneric(new ArrayList() { "NavigationEdit", "TopUI", "BottomUI", "ScrollView" });
+			lHandler.DisableGeneric(new ArrayList() { "NavigationCreateAccount", "TopUI", "BottomUI", "ScrollView" });
 			lHandler.SetDisplayInfos("Enter Your First Name", "Enter Your Last Name");
 			lHandler.SetEditInfos("", "");
             // CREATE OBJECTS
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "CREATE YOUR ACCOUNT", "", new List<UnityAction>() { CreateAccount }));
-            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false, null));
+            //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false, null));
 
             GameObject lEmailField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Email Address", "", "Email", null, null, null);
             lEmailField.name = "Create_Email_Input";

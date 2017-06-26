@@ -38,13 +38,13 @@ public class ConnectAccountState : ASubState {
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "LOGIN", "", new List<UnityAction>() { Connection }));
-            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
+            //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
 
             GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "", null);
             lUserPicture.name = "Connect_User_Picture";
             LoadingUI.AddObject(lUserPicture);
 
-            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", null));
+			LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", new List<UnityAction>() { RemoveLocalAccount }));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
             //LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", null));// new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
@@ -58,7 +58,7 @@ public class ConnectAccountState : ASubState {
         string firstName;
         string lastName;
 
-        if (GameObject.Find("TextFirstName") !=null) {
+        if (GameObject.Find("TextFirstName") != null) {
             firstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
             lastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
         } else {
@@ -71,4 +71,21 @@ public class ConnectAccountState : ASubState {
         bool lNotif = GameObject.Find("Notification_Toggle").GetComponent<Toggle>().isOn;
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection(firstName, lastName, email, password, lNotif);
     }
+
+	private void RemoveLocalAccount()
+	{
+		string firstName;
+		string lastName;
+
+		if (GameObject.Find("TextFirstName") != null) {
+			firstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
+			lastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+		} else {
+			firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+			lastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+		}
+
+		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		GameObject.Find ("DBManager").GetComponent<DBManager> ().RemoveUserToConfig (firstName, lastName, email);
+	}
 }

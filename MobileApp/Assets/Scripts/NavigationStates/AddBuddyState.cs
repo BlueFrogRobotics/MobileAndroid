@@ -22,7 +22,7 @@ public class AddBuddyState : ASubState {
             // BOTTOM UI
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
 			LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "ADD THIS CONTACT", "", new List<UnityAction>() { OnAddBuddyClicked }));
-            LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "toto", true, null));
+            //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "toto", true, null));
 
 			GameObject specialIdField = lPoolManager.fTextField_Icon ("Content_Bottom/ScrollView/Viewport", "ENTER BUDDY'S ID", "", "QRCode", null, null, null);
 			specialIdField.name = "specialIdField";
@@ -31,7 +31,7 @@ public class AddBuddyState : ASubState {
             GameObject lBuddyID = lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", "", new List<UnityAction>() { lPopup.OpenReadQrCode });
             lBuddyID.name = "Buddy_ID";
             LoadingUI.AddObject(lBuddyID);
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Connect By Default", false));
+            //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Connect By Default", false));
             // TOP UI
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "Default_Buddy", null));
         }
