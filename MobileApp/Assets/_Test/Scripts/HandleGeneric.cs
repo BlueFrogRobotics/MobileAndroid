@@ -164,16 +164,14 @@ public class HandleGeneric : MonoBehaviour {
     {
         T_NavigationAccount.SetActive(true);
         T_FieldFirstName.SetActive(false);
-        T_FieldLastName.SetActive(true);
-        T_TextFirstName.SetActive(true);
-        T_TextLastName.SetActive(false);
+        T_FieldLastName.SetActive(false);
+        T_TextFirstName.SetActive(false);
+        T_TextLastName.SetActive(true);
         T_ArrowLeft.SetActive(false);
         T_ArrowRight.SetActive(false);
         T_Dots.SetActive(false);
 
-        T_FieldLastName.GetComponent<InputField>().text = SelectBuddy.BuddyName;
-		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
-        T_TextFirstName.GetComponent<Text>().text = SelectBuddy.BuddyID;
+		T_TextLastName.GetComponent<Text>().text = SelectBuddy.BuddyID;
     }
 
     private void EnableNavigationAddBuddy()

@@ -17,10 +17,14 @@ public class EditBuddyState : ASubState {
             // DESACTIVATE, ACTIVATE GENERICS
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationEditBuddy", "TopUI", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
-            LoadingUI.AddObject(lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "12-34-56-78", "", "QRCode", null, null, null));
-            LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/ScrollView/Viewport", "OR", false));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", null, null));
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Set as default connection", false));
+            //LoadingUI.AddObject(lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "12-34-56-78", "", "QRCode", null, null, null));
+            //LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/ScrollView/Viewport", "OR", false));
+            //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", null, null));
+            //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Set as default connection", false));
+
+			GameObject lbuddyNameField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Buddy's name", SelectBuddy.BuddyName, "", null, null, null);
+			lbuddyNameField.name = "BuddyNameField";
+			LoadingUI.AddObject(lbuddyNameField);
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "Confirm Changes", "", new List<UnityAction>() { SaveBuddyChanges }));
@@ -37,7 +41,13 @@ public class EditBuddyState : ASubState {
     private void SaveBuddyChanges()
     {
 		string specialID = SelectBuddy.BuddyID;
-		string name = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+		string name = GameObject.Find("BuddyNameField").GetComponent<InputField>().text;
+
+		if(name == "")
+		{
+			GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Le nom ne peut pas être vide");
+			return;
+		}
 
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditBuddy(specialID, name);
         //GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();

@@ -19,7 +19,7 @@ public class EditAccountState: ASubState {
             // DESACTIVATE, ACTIVATE GENERICS
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationEditAccount", "TopUI", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "ID:5487-BF68-ZD97", "QRCode", null));
+            //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "ID:5487-BF68-ZD97", "QRCode", null));
 			GameObject lNewPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your New Password", "", "Lock", null, null, null);
 			lNewPasswordField.name = "New_PW_Input";
             lNewPasswordField.GetComponent<InputField>().inputType = InputField.InputType.Password;
@@ -28,7 +28,7 @@ public class EditAccountState: ASubState {
 			lNewPasswordConfField.name = "New_PWConf_Input";
             lNewPasswordConfField.GetComponent<InputField>().inputType = InputField.InputType.Password;
             LoadingUI.AddObject(lNewPasswordConfField);
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
+            //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
             LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
@@ -48,9 +48,23 @@ public class EditAccountState: ASubState {
     {
 		string firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
 		string lastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+
+		if(firstName == "" || lastName == "")
+		{
+			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Le prénom ou le nom ne peuvent pas être vide");
+			return;
+		}
+
 		string password = GameObject.Find("New_PW_Input").GetComponent<InputField>().text;
 		string passwordConf = GameObject.Find("New_PWConf_Input").GetComponent<InputField>().text;
-		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditAccount(firstName, lastName, password, passwordConf);
+
+		if(password != passwordConf)
+		{
+			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Les mots de passe ne sont pas identiques");
+			return;
+		}
+
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditAccount(firstName, lastName, password);
     }
 
 	private void DeleteAccount()

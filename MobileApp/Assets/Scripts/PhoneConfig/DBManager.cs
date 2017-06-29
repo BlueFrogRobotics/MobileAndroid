@@ -227,24 +227,23 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
-	public void StartEditAccount(string firstName, string lastName, string password, string passwordConf)
+	public void StartEditAccount(string firstName, string lastName, string password)
     {
-		if(string.Compare(password, passwordConf) == 0) {
-			StartCoroutine(EditAccount(firstName, lastName, password));
-		}
+		StartCoroutine(EditAccount(firstName, lastName, password));
     }
 
 	private IEnumerator EditAccount(string firstName, string lastName, string password)
 	{
 		string email = mCurrentUser.Email;
-		Debug.Log("User email" + email);
-	
+
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("firstname", firstName);
 		lForm.AddField ("lastname", lastName);
 		lForm.AddField ("email", email);
-		lForm.AddField ("password", password);
-		lForm.AddField ("hiddenkey", "key");
+		if(password != "")
+		{
+			lForm.AddField ("password", password);
+		}
 
 		WWW lWWW = new WWW ("http://" + mHost + "/editAccount.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;

@@ -30,7 +30,7 @@ public class ConnectAccountState : ASubState {
             LoadingUI.AddObject(lInputFieldPW);
 
             LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Forgot your password?", null));
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
+            //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
 
             GameObject lNotifToggle = lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false);
             lNotifToggle.name = "Notification_Toggle";
