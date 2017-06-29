@@ -92,15 +92,15 @@ public class RemoteControl : MonoBehaviour {
 			mAlreadyDisabled = false;
 
 			if (mXPosition != 0 && mYPosition != 0) {
-				//The cursor of the joystick is being moved
-				//We are controlling the body movement
-				if (toggleController.IsBodyActive) {
+                //The cursor of the joystick is being moved
+                //We are controlling the body movement
+                if (toggleController.IsBodyActive) {
 					//Compute the desired body movement and send the serialized command to remote
 					ComputeMobileBase ();
-					byte[] lMobileCmd = new SetWheelsSpeedCmd (mLeftSpeed, mRightSpeed, 200).Serialize ();
+                    byte[] lMobileCmd = new SetWheelsSpeedCmd (mLeftSpeed, mRightSpeed, 200).Serialize ();
 
 					webRTC.SendWithDataChannel (GetString (lMobileCmd));
-				}
+                }
 	            //We are controlling the head movement
 	            else {
 					//Compute the desired head movement and send the serialized command to remote
