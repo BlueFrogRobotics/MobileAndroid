@@ -4,8 +4,6 @@ using System;
 
 public class LocalNativeTexture : NativeTexture
 {
-
-
     public override Texture2D createTextureFromNativePtr(int iWidth, int iHeight)
     {
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
@@ -18,8 +16,6 @@ public class LocalNativeTexture : NativeTexture
             return lTexture;
         }
     }
-
-
 
     public override void Update()
     {
