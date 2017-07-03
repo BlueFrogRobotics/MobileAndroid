@@ -229,6 +229,29 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
+	public void StartForgottenPassword(string email)
+	{
+		StartCoroutine(ForgottenPassword(email));
+	}
+
+	private IEnumerator ForgottenPassword(string email)
+	{
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("email", email);
+
+		WWW lWWW = new WWW ("http://" + mHost + "/forgottenPassword.php", lForm);
+		yield return lWWW;
+
+		if(requestOK(lWWW))
+		{
+			HttpResponse resp = parseResp(lWWW);
+			if(resp != null)
+			{
+				popupHandler.DisplayError (resp.ok ? "Succes" : "Erreur", resp.msg);
+			}
+		}
+	}
+
 	public void StartEditAccount(string firstName, string lastName, string password)
     {
 		StartCoroutine(EditAccount(firstName, lastName, password));
