@@ -59,8 +59,8 @@ public class Webrtc : MonoBehaviour
     /// <summary>
     /// Android Texture object
     /// </summary>
-    public RemoteNativeTexture mRemoteNativeTexture = null;
-    public LocalNativeTexture mLocalNativeTexture = null;
+    public NativeTexture mRemoteNativeTexture = null;
+    public NativeTexture mLocalNativeTexture = null;
     private CONNECTION mConnectionState = CONNECTION.DISCONNECTING;
 
 	private Mutex mTextureMutex = new Mutex();
@@ -115,7 +115,7 @@ public class Webrtc : MonoBehaviour
 			mLocalNativeTexture.Destroy();
 		}
 
-		mLocalNativeTexture = new LocalNativeTexture(width, height);
+		mLocalNativeTexture = new NativeTexture(width, height, true);
 		mLocalRawImage.texture = mLocalNativeTexture.texture;
 
 		mTextureMutex.ReleaseMutex();
@@ -132,7 +132,7 @@ public class Webrtc : MonoBehaviour
 			mRemoteNativeTexture.Destroy();
 		}
 
-		mRemoteNativeTexture = new RemoteNativeTexture(width, height);
+		mRemoteNativeTexture = new NativeTexture(width, height, false);
 		mRemoteRawImage.texture = mRemoteNativeTexture.texture;
 
 		mTextureMutex.ReleaseMutex();

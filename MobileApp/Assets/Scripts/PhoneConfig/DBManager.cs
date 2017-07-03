@@ -229,23 +229,45 @@ public class DBManager : MonoBehaviour
 		}
 	}
 
-	public void StartEditAccount(string firstName, string lastName, string password, string passwordConf)
-    {
-		if(string.Compare(password, passwordConf) == 0) {
-			StartCoroutine(EditAccount(firstName, lastName, password));
+	public void StartForgottenPassword(string email)
+	{
+		StartCoroutine(ForgottenPassword(email));
+	}
+
+	private IEnumerator ForgottenPassword(string email)
+	{
+		WWWForm lForm = new WWWForm ();
+		lForm.AddField ("email", email);
+
+		WWW lWWW = new WWW ("http://" + mHost + "/forgottenPassword.php", lForm);
+		yield return lWWW;
+
+		if(requestOK(lWWW))
+		{
+			HttpResponse resp = parseResp(lWWW);
+			if(resp != null)
+			{
+				popupHandler.DisplayError (resp.ok ? "Succes" : "Erreur", resp.msg);
+			}
 		}
+	}
+
+	public void StartEditAccount(string firstName, string lastName, string password)
+    {
+		StartCoroutine(EditAccount(firstName, lastName, password));
     }
 
 	private IEnumerator EditAccount(string firstName, string lastName, string password)
 	{
 		string email = mCurrentUser.Email;
-	
 		WWWForm lForm = new WWWForm ();
 		lForm.AddField ("firstname", firstName);
 		lForm.AddField ("lastname", lastName);
 		lForm.AddField ("email", email);
-		lForm.AddField ("password", password);
-		lForm.AddField ("hiddenkey", "key");
+		if(password != "")
+		{
+			lForm.AddField ("password", password);
+		}
 
 		WWW lWWW = new WWW ("http://" + mHost + "/editAccount.php", lForm.data, addSessionCookie(lForm.headers));
 		yield return lWWW;

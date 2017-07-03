@@ -29,8 +29,8 @@ public class ConnectAccountState : ASubState {
             lInputFieldEM.GetComponent<InputField>().text = lDB.CurrentUser.Email;
             LoadingUI.AddObject(lInputFieldPW);
 
-            LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Forgot your password?", null));
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
+			LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Forgot your password?", new List<UnityAction>() { onForgottenPasswordClicked }));
+            //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
 
             GameObject lNotifToggle = lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false);
             lNotifToggle.name = "Notification_Toggle";
@@ -87,5 +87,24 @@ public class ConnectAccountState : ASubState {
 
 		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
 		GameObject.Find ("DBManager").GetComponent<DBManager> ().RemoveUserToConfig (firstName, lastName, email);
+	}
+
+	private void onForgottenPasswordClicked()
+	{
+		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		if(email.Length == 0)
+		{
+			GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez renseigner le champ email.");
+		}
+		else
+		{
+			GameObject.Find("PopUps").GetComponent<PopupHandler>().PopupConfirmCancel("Mot de passe oublié", "Réinitialiser le mot de passe du compte " + email + " ?", onForgottenPasswordConfirmed);
+		}
+	}
+
+	private void onForgottenPasswordConfirmed()
+	{
+		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartForgottenPassword(email);
 	}
 }
