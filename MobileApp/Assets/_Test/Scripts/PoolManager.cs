@@ -60,20 +60,26 @@ public class PoolManager : MonoBehaviour {
 
     private Dictionary<string, Sprite> mAtlasMobile;
     private Dictionary<string, Sprite> mAtlasUI;
+    private Dictionary<string, Sprite> mAtlasIcon;
 
     // Retrive All used Atlas sprites
     void Start () {
         mAtlasUI = new Dictionary<string, Sprite>();
         mAtlasMobile = new Dictionary<string, Sprite>();
+        mAtlasIcon = new Dictionary<string, Sprite>();
 
         Sprite[] lSpritesMobile = Resources.LoadAll<Sprite>("Sprites/AtlasMobile");
         Sprite[] lSpritesUI = Resources.LoadAll<Sprite>("Sprites/AtlasUI");
+        Sprite[] lSpritesIcon = Resources.LoadAll<Sprite>("Sprites/Atlas_Icons");
 
         foreach (Sprite lSprite in lSpritesMobile)
             mAtlasMobile.Add(lSprite.name, lSprite);
 
         foreach (Sprite lSprite in lSpritesUI)
             mAtlasUI.Add(lSprite.name, lSprite);
+
+        foreach (Sprite lSprite in lSpritesIcon)
+            mAtlasIcon.Add(lSprite.name, lSprite);
     }
 
     // Buble
@@ -619,6 +625,8 @@ public class PoolManager : MonoBehaviour {
                 lSprite = mAtlasMobile[iSpriteName];
             else if (mAtlasUI.ContainsKey(iSpriteName))
                 lSprite = mAtlasUI[iSpriteName];
+            else if (mAtlasIcon.ContainsKey(iSpriteName))
+                lSprite = mAtlasIcon[iSpriteName];
         }
 
         return lSprite;

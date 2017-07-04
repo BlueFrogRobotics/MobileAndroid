@@ -19,6 +19,9 @@ public class PopupHandler : MonoBehaviour {
     private GameObject popupYesNo;
 
     [SerializeField]
+    private GameObject popupYesNoIcon;
+
+    [SerializeField]
     private GameObject popupReadQrCode;
 
     [SerializeField]
@@ -150,6 +153,29 @@ public class PopupHandler : MonoBehaviour {
     {
         ResetUI();
         popupYesNo.SetActive(true);
+        animator.SetTrigger("Open");
+    }
+
+    public void OpenYesNoIcon(string iQuestion, UnityAction iCallBackYes, string iIconName = "")
+    {
+        ResetUI();
+        popupYesNoIcon.SetActive(true);
+
+        Text lQuestion = GameObject.Find("Popup_YesNoIcon/Text").GetComponent<Text>();
+        lQuestion.text = iQuestion;
+
+        Button lYesButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_Yes").GetComponent<Button>();
+        lYesButton.onClick.AddListener(iCallBackYes);
+
+        Button lNoButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_Yes").GetComponent<Button>();
+        lYesButton.onClick.AddListener(ClosePopup);
+
+        if(string.IsNullOrEmpty(iIconName))
+            iIconName = "Locked";
+
+        Image lIcon = GameObject.Find("Popup_YesNoIcon/Top_Icon/Icon").GetComponent<Image>();
+        lIcon.sprite = poolManager.GetSprite(iIconName);
+
         animator.SetTrigger("Open");
     }
 
