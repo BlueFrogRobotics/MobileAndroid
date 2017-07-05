@@ -23,9 +23,17 @@ public class LoadingBuddyState : ASubState {
 
         else if(indexState == 2)
         {
-            mAnimator = animator;
-            SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
-            GameObject.Find("MenuManager").GetComponent<GoBack>().WaitForCallConfirmation(lSelect.Remote);
+            int lMenuSelected = animator.GetInteger("MenuBuddy");
+            //Chat menu selected
+            if(lMenuSelected == 1) {
+                animator.SetTrigger("EndScene");
+            }
+            //Distant control selected
+            else if(lMenuSelected == 3) {
+                mAnimator = animator;
+                SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
+                GameObject.Find("MenuManager").GetComponent<GoBack>().WaitForCallConfirmation(lSelect.Remote);
+            }
         }
     }
 }

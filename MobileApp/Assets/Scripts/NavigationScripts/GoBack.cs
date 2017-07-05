@@ -122,7 +122,7 @@ public class GoBack : MonoBehaviour
         LoadingBuddyMessage = iWaitingMessage;
         mPreviousMenu = mCurrentMenu;
         mCurrentMenu = "GoConnectBuddy";
-        //linkManager.SetMenuBuddyValue(iMenu);
+        linkManager.SetMenuBuddyValue(iMenu);
         canvasAnimator.SetTrigger("GoLoadingBuddy");
         canvasAnimator.SetTrigger("EndScene");
     }
