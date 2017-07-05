@@ -45,8 +45,10 @@ public class EditBuddyState : ASubState {
 
 		if(name == "")
 		{
-			GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Le nom ne peut pas être vide");
-			return;
+            //GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Le nom ne peut pas être vide");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Le nom ne peut pas être vide", "Warning");
+
+            return;
 		}
 
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditBuddy(specialID, name);

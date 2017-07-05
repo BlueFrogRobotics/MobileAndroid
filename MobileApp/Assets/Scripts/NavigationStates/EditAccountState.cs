@@ -51,8 +51,10 @@ public class EditAccountState: ASubState {
 
 		if(firstName == "" || lastName == "")
 		{
-			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Le prénom ou le nom ne peuvent pas être vide");
-			return;
+            //GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Le prénom ou le nom ne peuvent pas être vide");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Le prénom ou le nom ne peuvent pas être vide", "Warning");
+
+            return;
 		}
 
 		string password = GameObject.Find("New_PW_Input").GetComponent<InputField>().text;
@@ -60,8 +62,9 @@ public class EditAccountState: ASubState {
 
 		if(password != passwordConf)
 		{
-			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Les mots de passe ne sont pas identiques");
-			return;
+			//GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Les mots de passe ne sont pas identiques");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Les mots de passe ne sont pas identiques", "Warning");
+            return;
 		}
 
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditAccount(firstName, lastName, password);
@@ -69,6 +72,7 @@ public class EditAccountState: ASubState {
 
 	private void DeleteAccount()
 	{
+        //TODO : Restylize this
 		GameObject.Find("PopUps").GetComponent<PopupHandler>().DeleteAccountPopup(onDeleteAccountConfirmed);
 	}
 

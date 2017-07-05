@@ -63,8 +63,7 @@ public class ConnectBuddyState : ASubState {
 
 	private void ShowAccessRequest()
 	{
-		PopupHandler lHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
-		lHandler.AccesRightWindow();
+		GameObject.Find("PopUps").GetComponent<PopupHandler>().AccesRightWindow();
 	}
 
     private void LaunchChat()
@@ -76,8 +75,9 @@ public class ConnectBuddyState : ASubState {
 
 	private void DeleteBuddy()
 	{
-		GameObject.Find("PopUps").GetComponent<PopupHandler>().PopupConfirmCancel("Supression", "Voulez-vous supprimer ce Buddy de la liste ?", onDeleteBuddyConfirmed);
-	}
+		//GameObject.Find("PopUps").GetComponent<PopupHandler>().PopupConfirmCancel("Supression", "Voulez-vous supprimer ce Buddy de la liste ?", onDeleteBuddyConfirmed);
+        GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenYesNoIcon("Voulez-vous supprimer ce Buddy de la liste ?", onDeleteBuddyConfirmed, "Warning");
+    }
 
 	private void onDeleteBuddyConfirmed()
 	{

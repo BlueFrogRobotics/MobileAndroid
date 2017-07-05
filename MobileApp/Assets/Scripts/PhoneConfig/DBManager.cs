@@ -182,7 +182,8 @@ public class DBManager : MonoBehaviour
 				}
 				else
 				{
-					popupHandler.DisplayError("Erreur", resp.msg);
+                    //popupHandler.DisplayError("Erreur", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Warning");
 				}
 			}
 		}
@@ -217,13 +218,15 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp(lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-					popupHandler.DisplayError ("Succes", resp.msg);
+                    //popupHandler.DisplayError ("Succes", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Check");
 					AddUserToConfig (firstName, lastName, email);
 					ReadPhoneUsers ();
 					menuManager.GoConnectionMenu ();
 					ResetCreateParameters ();
 				} else {
-					popupHandler.DisplayError ("Erreur", resp.msg);
+                    //popupHandler.DisplayError ("Erreur", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Warning");
 				}
 			}
 		}
@@ -247,7 +250,8 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp(lWWW);
 			if(resp != null)
 			{
-				popupHandler.DisplayError (resp.ok ? "Succes" : "Erreur", resp.msg);
+                //popupHandler.DisplayError (resp.ok ? "Succes" : "Erreur", resp.msg);
+                popupHandler.OpenDisplayIcon(resp.msg, resp.ok ? "Check" : "Warning");
 			}
 		}
 	}
@@ -276,12 +280,14 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp(lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-					popupHandler.DisplayError ("Succes", resp.msg);
+                    //popupHandler.DisplayError ("Succes", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Check");
 					EditUserToConfig (firstName, lastName, email);
 					menuManager.PreviousMenu ();
 				} else {
-					popupHandler.DisplayError ("Erreur", resp.msg);
-				}
+					//popupHandler.DisplayError ("Erreur", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Warning");
+                }
 			}
 		}
 	}
@@ -306,12 +312,14 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp (lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-					popupHandler.DisplayError ("Succes", resp.msg);
-					menuManager.PreviousMenu ();
+                    //popupHandler.DisplayError ("Succes", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Check");
+                    menuManager.PreviousMenu ();
 					RetrieveBuddyList ();
 				} else {
-					popupHandler.DisplayError ("Erreur", resp.msg);
-				}
+                    //popupHandler.DisplayError ("Erreur", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Warning");
+                }
 			}
 		}
 	}
@@ -334,13 +342,15 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp (lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-					popupHandler.DisplayError ("Succes", resp.msg);
-					menuManager.PreviousMenu ();
+                    //popupHandler.DisplayError ("Succes", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Check");
+                    menuManager.PreviousMenu ();
 					RetrieveBuddyList ();
 					Debug.Log ("WWW Success");
 				} else {
-					popupHandler.DisplayError ("Erreur", resp.msg);
-					Debug.Log (resp.msg);
+                    //popupHandler.DisplayError ("Erreur", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Warning");
+                    Debug.Log (resp.msg);
 				}
 			}
 		}
@@ -364,13 +374,15 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp (lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-					popupHandler.DisplayError ("Succes", resp.msg);
-					menuManager.PreviousMenu ();
+					//popupHandler.DisplayError ("Succes", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Check");
+                    menuManager.PreviousMenu ();
 					RetrieveBuddyList ();
 					Debug.Log ("WWW Success");
 				} else {
-					popupHandler.DisplayError ("Erreur", resp.msg);
-					Debug.Log (resp.msg);
+                    //popupHandler.DisplayError ("Erreur", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Warning");
+                    Debug.Log (resp.msg);
 				}
 			}
 		}
@@ -395,16 +407,18 @@ public class DBManager : MonoBehaviour
 			if (resp != null) {
 				if (resp.ok) {
 					GameObject.Find ("PopUps").GetComponent<PopupHandler> ().ClosePopup ();
-					popupHandler.DisplayError ("Succes", resp.msg);
+					//popupHandler.DisplayError ("Succes", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Check");
 
-					RemoveUserFromLocalStorage (mCurrentUser);
+                    RemoveUserFromLocalStorage (mCurrentUser);
 					ReadPhoneUsers ();
 					menuManager.GoConnectionMenu ();
 
 					Debug.Log ("WWW Success");
 				} else {
-					popupHandler.DisplayError ("Erreur", resp.msg);
-					Debug.Log (resp.msg);
+					//popupHandler.DisplayError ("Erreur", resp.msg);
+                    popupHandler.OpenDisplayIcon(resp.msg, "Warning");
+                    Debug.Log (resp.msg);
 				}
 			}
 		}
@@ -424,8 +438,9 @@ public class DBManager : MonoBehaviour
 
 		if(requestOK(lWWW)) {
 			if(lWWW.text.CompareTo("not logged") == 0) {
-				popupHandler.DisplayError("Erreur", "Veuillez vous identifier");
-			} else {
+                //popupHandler.DisplayError("Erreur", "Veuillez vous identifier");
+                popupHandler.OpenDisplayIcon("Veuillez vous identifier", "Warning");
+            } else {
 				//Debug.Log("WWW Success : " + lWWW.text);
 				mBuddyList = lWWW.text;
 				mBuddiesList = new List<Buddy>();
@@ -611,7 +626,8 @@ public class DBManager : MonoBehaviour
 			LastName = iLName,
 			Email = iEMail
 		};
-		popupHandler.PopupConfirmCancel ("Suppression", "Supprimer le compte local " + iEMail + " ?", DeleteUserFromList);
+        //popupHandler.PopupConfirmCancel ("Suppression", "Supprimer le compte local " + iEMail + " ?", DeleteUserFromList);
+        popupHandler.OpenYesNoIcon("VOULEZ-VOUS VRAIMENT SUPPRIMER LE COMPTE LOCAL ?\n" + iEMail, DeleteUserFromList, "Warning");
 	}
 
 	public void DeleteUserFromList()
@@ -755,8 +771,9 @@ public class DBManager : MonoBehaviour
 		if(www.error != null)
 		{
 			Debug.Log ("[ERROR] on WWW Request " + www.url + " : " + www.error + " / " + www.text);
-			popupHandler.DisplayError("Erreur", "Echec de communication avec le serveur");
-			return false;
+            //popupHandler.DisplayError("Erreur", "Echec de communication avec le serveur");
+            popupHandler.OpenDisplayIcon("ECHEC DE COMMUNICATION AVEC LE SERVEUR", "Warning");
+            return false;
 		}
 
 		return true;
@@ -771,7 +788,8 @@ public class DBManager : MonoBehaviour
 		}
 		catch(Exception e)
 		{
-			popupHandler.DisplayError("Erreur", "Un problème est survenu lors de la lecture de la réponse du serveur");
+            //popupHandler.DisplayError("Erreur", "Un problème est survenu lors de la lecture de la réponse du serveur");
+            popupHandler.OpenDisplayIcon("UN PROBLEME EST SURVENU LORS DE LA LECTURE DE LA REPONSE DU SERVEUR", "Warning");
 		}
 
 		return resp;

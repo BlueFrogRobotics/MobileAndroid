@@ -55,14 +55,17 @@ public class CreateAccountState : ASubState {
 
 		if(firstName == "" || lastName == "" || email == "" || password == "" || passwordConf == "")
 		{
-			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez remplir tous les champs");
-			return;
+			//GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez remplir tous les champs");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Veuillez remplir tous les champs", "Warning");
+
+            return;
 		}
 
 		if(password != passwordConf)
 		{
-			GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Les mots de passe ne sont pas identiques");
-			return;
+			//GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Les mots de passe ne sont pas identiques");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Les mots de passe ne sont pas identiques", "Warning");
+            return;
 		}
 
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartCreateAccount(firstName, lastName, email, password, passwordConf);

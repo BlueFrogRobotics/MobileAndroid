@@ -22,6 +22,9 @@ public class PopupHandler : MonoBehaviour {
     private GameObject popupYesNoIcon;
 
     [SerializeField]
+    private GameObject popupDisplayIcon;
+
+    [SerializeField]
     private GameObject popupReadQrCode;
 
     [SerializeField]
@@ -166,14 +169,32 @@ public class PopupHandler : MonoBehaviour {
 
         Button lYesButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_Yes").GetComponent<Button>();
         lYesButton.onClick.AddListener(iCallBackYes);
-
-        Button lNoButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_Yes").GetComponent<Button>();
         lYesButton.onClick.AddListener(ClosePopup);
+
+        Button lNoButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_No").GetComponent<Button>();
+        lNoButton.onClick.AddListener(ClosePopup);
 
         if(string.IsNullOrEmpty(iIconName))
             iIconName = "Locked";
 
         Image lIcon = GameObject.Find("Popup_YesNoIcon/Top_Icon/Icon").GetComponent<Image>();
+        lIcon.sprite = poolManager.GetSprite(iIconName);
+
+        animator.SetTrigger("Open");
+    }
+
+    public void OpenDisplayIcon(string iMessage, string iIconName = "")
+    {
+        ResetUI();
+        popupDisplayIcon.SetActive(true);
+
+        Text lQuestion = GameObject.Find("Popup_DisplayIcon/Text").GetComponent<Text>();
+        lQuestion.text = iMessage;
+
+        if (string.IsNullOrEmpty(iIconName))
+            iIconName = "Locked";
+
+        Image lIcon = GameObject.Find("Popup_DisplayIcon/Top_Icon/Icon").GetComponent<Image>();
         lIcon.sprite = poolManager.GetSprite(iIconName);
 
         animator.SetTrigger("Open");

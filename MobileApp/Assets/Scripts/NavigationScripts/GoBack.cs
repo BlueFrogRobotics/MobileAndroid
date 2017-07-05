@@ -174,7 +174,8 @@ public class GoBack : MonoBehaviour
 		{
 			canvasAnimator.SetTrigger("GoConnectBuddy");
 			canvasAnimator.SetTrigger("EndScene");
-			GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Impossible d'établir la connection avec le robot");
-		}
+			//GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Impossible d'établir la connection avec le robot");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Impossible d'établir la connection avec le robot", "NoResponse");
+        }
 	}
 }

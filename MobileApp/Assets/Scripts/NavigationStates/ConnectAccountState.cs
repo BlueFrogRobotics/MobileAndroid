@@ -94,12 +94,14 @@ public class ConnectAccountState : ASubState {
 		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
 		if(email.Length == 0)
 		{
-			GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez renseigner le champ email.");
-		}
+            //GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez renseigner le champ email.");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Veuillez renseigner le champ email", "Warning");
+        }
 		else
 		{
-			GameObject.Find("PopUps").GetComponent<PopupHandler>().PopupConfirmCancel("Mot de passe oublié", "Réinitialiser le mot de passe du compte " + email + " ?", onForgottenPasswordConfirmed);
-		}
+            //GameObject.Find("PopUps").GetComponent<PopupHandler>().PopupConfirmCancel("Mot de passe oublié", "Réinitialiser le mot de passe du compte " + email + " ?", onForgottenPasswordConfirmed);
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenYesNoIcon("Voulez-vous vraiment réinitialiser le mot de passe du compte suivant ?\n" + email, onForgottenPasswordConfirmed, "Locked");
+        }
 	}
 
 	private void onForgottenPasswordConfirmed()
