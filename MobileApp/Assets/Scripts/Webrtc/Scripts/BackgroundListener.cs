@@ -56,7 +56,7 @@ public class BackgroundListener : MonoBehaviour
     public void SubscribeNotificationChannels(List<Buddy> iBuddies)
     {
         string lBuddyIDs = "";
-        for (int i = 0; i < iBuddies.Capacity; i++)
+        for (int i = 0; i < iBuddies.Count; i++)
         {
             lBuddyIDs += iBuddies[i].ID + "/";
         }
