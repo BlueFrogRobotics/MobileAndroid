@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using BuddyOS;
-using BuddyOS.Command;
+
+using Buddy;
+using Buddy.Command;
 
 /// <summary>
 /// Useless class here since we won't receive anything

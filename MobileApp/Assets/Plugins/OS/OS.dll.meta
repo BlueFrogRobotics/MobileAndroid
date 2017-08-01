@@ -1,29 +1,73 @@
 fileFormatVersion: 2
 guid: ecf5bb8773c8fb94f9066bd24505e74f
-timeCreated: 1477479796
+timeCreated: 1497623865
 licenseType: Free
 PluginImporter:
-  serializedVersion: 1
+  serializedVersion: 2
   iconMap: {}
   executionOrder:
-    BuddyOS.BYOS: -1
-    BuddyOS.Impl.Core: -5
+    Buddy.APIBridge: -26
+    Buddy.BYOS: -18
+    Buddy.DialogManager: -9
+    Buddy.IOT: -13
+    Buddy.Interaction: -16
+    Buddy.Internal.AppManagement.AppManager: -3
+    Buddy.Internal.AppManagement.AppUpdater: -2
+    Buddy.Internal.AppManagement.Sandbox: -4
+    Buddy.Internal.Net.AnomalyLogger: -22
+    Buddy.Internal.Net.AnomalySearcher: -13
+    Buddy.Internal.Net.CommandLogger: -21
+    Buddy.Internal.Net.SharedAccessSignature: -23
+    Buddy.Internal.System.InnerClock: -19
+    Buddy.Internal.System.ScreenLocker: -20
+    Buddy.Navigation: -14
+    Buddy.Perception: -15
+    Buddy.Primitive: -17
+    Buddy.Stimuli: -11
+    Buddy.UI.Explorer: -12
+    Buddy.UI.ExplorerPool: -25
+    Buddy.UI.Notifier: -24
+    Buddy.VocalManager: -10
+    Buddy.WiFiManager: -4
+    BuddyOS.App.AppManager: -1
+    BuddyOS.BYOS: -8
+    BuddyOS.Geolocation: -16
+    BuddyOS.Impl.Core: -16
+    BuddyOS.Net.AnomalyLogger: -12
+    BuddyOS.Net.CommandLogger: -11
+    BuddyOS.Net.SharedAccessSignature: -15
+    BuddyOS.Net.WiFiManager: -10
+    BuddyOS.NotificationManager: -17
+    BuddyOS.SoundManager: -13
+    BuddyOS.System.AnomalySearcher: -14
+    BuddyOS.System.GarbageManager: -13
     BuddyOS.UI.MenuPanel: -3
-    BuddyOS.UI.Pool: -4
+    BuddyOS.UI.Pool: -18
     BuddyOS.VocalActivation: -2
+    BuddyOS.VocalManager: -2
   isPreloaded: 0
+  isOverridable: 0
   platformData:
-    Any:
-      enabled: 1
-      settings: {}
-    Editor:
-      enabled: 0
-      settings:
-        DefaultValueInitialized: true
-    WindowsStoreApps:
-      enabled: 0
-      settings:
-        CPU: AnyCPU
+    data:
+      first:
+        Any: 
+      second:
+        enabled: 1
+        settings: {}
+    data:
+      first:
+        Editor: Editor
+      second:
+        enabled: 0
+        settings:
+          DefaultValueInitialized: true
+    data:
+      first:
+        Windows Store Apps: WindowsStoreApps
+      second:
+        enabled: 0
+        settings:
+          CPU: AnyCPU
   userData: 
   assetBundleName: 
   assetBundleVariant: 

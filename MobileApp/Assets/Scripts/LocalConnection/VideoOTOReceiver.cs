@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using OpenCVUnity;
-using BuddyTools;
+
+using Buddy;
 
 /// <summary>
 /// Receiver for the video streaming between the remote and phone

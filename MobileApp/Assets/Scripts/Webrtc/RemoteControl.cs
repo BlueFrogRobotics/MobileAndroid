@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using BuddyOS.Command;
+
+using Buddy.Command;
 
 public class RemoteControl : MonoBehaviour {
 
@@ -97,9 +97,9 @@ public class RemoteControl : MonoBehaviour {
                 if (toggleController.IsBodyActive) {
 					//Compute the desired body movement and send the serialized command to remote
 					ComputeMobileBase ();
-                    byte[] lMobileCmd = new SetWheelsSpeedCmd (mLeftSpeed, mRightSpeed, 200).Serialize ();
+                    byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 200).Serialize();
 
-					webRTC.SendWithDataChannel (GetString (lMobileCmd));
+					webRTC.SendWithDataChannel(GetString (lMobileCmd));
                 }
 	            //We are controlling the head movement
 	            else {
@@ -107,11 +107,11 @@ public class RemoteControl : MonoBehaviour {
 					ComputeNoAxis ();
 					ComputeYesAxis ();
 
-					byte[] lNoCmd = new SetPosNoCmd (mAngleNo, mNoSpeed).Serialize ();
-					byte[] lYesCmd = new SetPosYesCmd (mAngleYes, mYesSpeed).Serialize ();
+					byte[] lNoCmd = new SetPosNoCmd(mAngleNo, mNoSpeed).Serialize();
+					byte[] lYesCmd = new SetPosYesCmd(mAngleYes, mYesSpeed).Serialize();
 
-					webRTC.SendWithDataChannel (GetString (lNoCmd));
-					webRTC.SendWithDataChannel (GetString (lYesCmd));
+					webRTC.SendWithDataChannel(GetString (lNoCmd));
+					webRTC.SendWithDataChannel(GetString (lYesCmd));
 				}
 			}
 		}

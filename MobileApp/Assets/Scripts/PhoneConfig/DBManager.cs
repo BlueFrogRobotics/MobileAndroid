@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+
+using Buddy;
 
 [Serializable]
 public class HttpResponse
@@ -30,7 +31,7 @@ public class PhoneUserList
     public PhoneUser[] Users;
 }
 
-public class Buddy
+public class BuddyDB
 {
     public string ID;
     public string name;
@@ -42,7 +43,7 @@ public class Buddy
 public class DBManager : MonoBehaviour
 {
     public string BuddyList { get { return mBuddyList; } }
-    public List<Buddy> BuddiesList { get { return mBuddiesList; } }
+    public List<BuddyDB> BuddiesList { get { return mBuddiesList; } }
     public PhoneUser CurrentUser { get { return mCurrentUser; } }
 
     [SerializeField]
@@ -85,7 +86,7 @@ public class DBManager : MonoBehaviour
     private int mDisplayedIndex;
     private string mHost;
     private string mBuddyList;
-    private List<Buddy> mBuddiesList;
+    private List<BuddyDB> mBuddiesList;
     private string mUserFilePath;
 	private string[] mCookie;
     private PhoneUser mCurrentUser;
@@ -179,10 +180,7 @@ public class DBManager : MonoBehaviour
 
 					RetrieveBuddyList();
 					ConfirmConnection();
-				}
-				else
-				{
-                    //popupHandler.DisplayError("Erreur", resp.msg);
+				} else {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
 				}
 			}
@@ -218,14 +216,12 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp(lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-                    //popupHandler.DisplayError ("Succes", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
 					AddUserToConfig (firstName, lastName, email);
 					ReadPhoneUsers ();
 					menuManager.GoConnectionMenu ();
 					ResetCreateParameters ();
 				} else {
-                    //popupHandler.DisplayError ("Erreur", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
 				}
 			}
@@ -245,12 +241,9 @@ public class DBManager : MonoBehaviour
 		WWW lWWW = new WWW ("http://" + mHost + "/forgottenPassword.php", lForm);
 		yield return lWWW;
 
-		if(requestOK(lWWW))
-		{
+		if(requestOK(lWWW)) {
 			HttpResponse resp = parseResp(lWWW);
-			if(resp != null)
-			{
-                //popupHandler.DisplayError (resp.ok ? "Succes" : "Erreur", resp.msg);
+			if(resp != null) {
                 popupHandler.OpenDisplayIcon(resp.msg, resp.ok ? "Check" : "Warning");
 			}
 		}
@@ -268,8 +261,7 @@ public class DBManager : MonoBehaviour
 		lForm.AddField ("firstname", firstName);
 		lForm.AddField ("lastname", lastName);
 		lForm.AddField ("email", email);
-		if(password != "")
-		{
+		if(password != "") {
 			lForm.AddField ("password", password);
 		}
 
@@ -280,12 +272,10 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp(lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-                    //popupHandler.DisplayError ("Succes", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
 					EditUserToConfig (firstName, lastName, email);
 					menuManager.PreviousMenu ();
 				} else {
-					//popupHandler.DisplayError ("Erreur", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                 }
 			}
@@ -312,12 +302,10 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp (lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-                    //popupHandler.DisplayError ("Succes", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
                     menuManager.PreviousMenu ();
 					RetrieveBuddyList ();
 				} else {
-                    //popupHandler.DisplayError ("Erreur", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                 }
 			}
@@ -342,13 +330,11 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp (lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-                    //popupHandler.DisplayError ("Succes", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
                     menuManager.PreviousMenu ();
 					RetrieveBuddyList ();
 					Debug.Log ("WWW Success");
 				} else {
-                    //popupHandler.DisplayError ("Erreur", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                     Debug.Log (resp.msg);
 				}
@@ -374,13 +360,11 @@ public class DBManager : MonoBehaviour
 			HttpResponse resp = parseResp (lWWW);
 			if (resp != null) {
 				if (resp.ok) {
-					//popupHandler.DisplayError ("Succes", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
                     menuManager.PreviousMenu ();
 					RetrieveBuddyList ();
 					Debug.Log ("WWW Success");
 				} else {
-                    //popupHandler.DisplayError ("Erreur", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                     Debug.Log (resp.msg);
 				}
@@ -407,7 +391,6 @@ public class DBManager : MonoBehaviour
 			if (resp != null) {
 				if (resp.ok) {
 					GameObject.Find ("PopUps").GetComponent<PopupHandler> ().ClosePopup ();
-					//popupHandler.DisplayError ("Succes", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
 
                     RemoveUserFromLocalStorage (mCurrentUser);
@@ -416,7 +399,6 @@ public class DBManager : MonoBehaviour
 
 					Debug.Log ("WWW Success");
 				} else {
-					//popupHandler.DisplayError ("Erreur", resp.msg);
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                     Debug.Log (resp.msg);
 				}
@@ -438,12 +420,11 @@ public class DBManager : MonoBehaviour
 
 		if(requestOK(lWWW)) {
 			if(lWWW.text.CompareTo("not logged") == 0) {
-                //popupHandler.DisplayError("Erreur", "Veuillez vous identifier");
                 popupHandler.OpenDisplayIcon("Veuillez vous identifier", "Warning");
             } else {
 				//Debug.Log("WWW Success : " + lWWW.text);
 				mBuddyList = lWWW.text;
-				mBuddiesList = new List<Buddy>();
+				mBuddiesList = new List<BuddyDB>();
 				menuManager.GoSelectBuddyMenu();
 
 				if (!string.IsNullOrEmpty(mBuddyList)) {
@@ -451,7 +432,7 @@ public class DBManager : MonoBehaviour
 
 					for (int i = 0; i < lBuddyList.Length - 1; i++) {
 						string[] lBuddyIDs = lBuddyList[i].Split('|');
-						mBuddiesList.Add(new Buddy { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
+						mBuddiesList.Add(new BuddyDB { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
 					}
 				}
 
@@ -469,7 +450,7 @@ public class DBManager : MonoBehaviour
         if(File.Exists(mUserFilePath)) {
             //Debug.Log("User file found : " + mUserFilePath);            
         } else {            
-            File.Copy(BuddyTools.Utils.GetStreamingAssetFilePath("users.txt"), mUserFilePath);
+            File.Copy(ResourceManager.StreamingAssetFilePath("users.txt"), mUserFilePath);
 
             if (iFirstRead)
                 canvasAppAnimator.SetTrigger("GoFirstConnexion");
@@ -487,10 +468,8 @@ public class DBManager : MonoBehaviour
             canvasAppAnimator.SetTrigger("GoConnectAccount");
 
         //Then we get the default user and register it as the "current" one
-        foreach (PhoneUser lUser in lUserList.Users)
-        {
-            if (lUser.IsDefaultUser)
-            {
+        foreach (PhoneUser lUser in lUserList.Users) {
+            if (lUser.IsDefaultUser) {
                 mCurrentUser = lUser;
                 textFirstName.text = lUser.FirstName;
                 textLastName.text = lUser.LastName;
@@ -512,8 +491,7 @@ public class DBManager : MonoBehaviour
 			if(mUserList.Users[i].Email == user.Email && mUserList.Users[i].FirstName == user.FirstName && mUserList.Users[i].LastName == user.LastName) {
 				j--;
 				Debug.Log("User successfully removed from local storage");
-			}
-			else {
+			} else {
 				lTempList[j] = mUserList.Users[i];
 			}
 		}
@@ -626,7 +604,6 @@ public class DBManager : MonoBehaviour
 			LastName = iLName,
 			Email = iEMail
 		};
-        //popupHandler.PopupConfirmCancel ("Suppression", "Supprimer le compte local " + iEMail + " ?", DeleteUserFromList);
         popupHandler.OpenYesNoIcon("VOULEZ-VOUS VRAIMENT SUPPRIMER LE COMPTE LOCAL ?\n" + iEMail, DeleteUserFromList, "Warning");
 	}
 
@@ -640,7 +617,7 @@ public class DBManager : MonoBehaviour
     {
         //Function name is explicit enough. We load the picture file into the sprite
         if(!string.IsNullOrEmpty(mCurrentUser.Picture)) {
-            byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(mCurrentUser.Picture));
+            byte[] lFileData = File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(mCurrentUser.Picture));
             Texture2D lTex = new Texture2D(2, 2);
             lTex.LoadImage(lFileData);
             //Image lProfilePicture = GameObject.Find(iObjectName).GetComponentsInChildren<Image>()[2];
@@ -655,9 +632,8 @@ public class DBManager : MonoBehaviour
     private void LoadUserPicture(string iPictureName)
     {
         //Function name is explicit enough. We load the picture file into the sprite
-        if((!string.IsNullOrEmpty(iPictureName)))
-        {
-            byte[] lFileData = File.ReadAllBytes(BuddyTools.Utils.GetStreamingAssetFilePath(iPictureName));
+        if((!string.IsNullOrEmpty(iPictureName))) {
+            byte[] lFileData = File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(iPictureName));
             Texture2D lTex = new Texture2D(2, 2);
             lTex.LoadImage(lFileData);
             Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
@@ -752,14 +728,13 @@ public class DBManager : MonoBehaviour
     private string GetString(byte[] bytes)
     {
         char[] chars = new char[bytes.Length / sizeof(char)];
-        System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+        Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
         return new string(chars);
     }
 
 	private Dictionary<string, string> addSessionCookie(Dictionary<string, string> dictionary)
 	{
-		if(mCookie != null)
-		{
+		if(mCookie != null) {
 			dictionary.Add("Cookie", "PHPSESSID=" + mCookie[4]);
 		}
 
@@ -768,10 +743,8 @@ public class DBManager : MonoBehaviour
 
 	private bool requestOK(WWW www)
 	{
-		if(www.error != null)
-		{
+		if(www.error != null) {
 			Debug.Log ("[ERROR] on WWW Request " + www.url + " : " + www.error + " / " + www.text);
-            //popupHandler.DisplayError("Erreur", "Echec de communication avec le serveur");
             popupHandler.OpenDisplayIcon("ECHEC DE COMMUNICATION AVEC LE SERVEUR", "Warning");
             return false;
 		}
@@ -782,13 +755,9 @@ public class DBManager : MonoBehaviour
 	private HttpResponse parseResp(WWW www)
 	{
 		HttpResponse resp = null;
-		try
-		{
+		try {
 			resp = JsonUtility.FromJson<HttpResponse>(www.text);
-		}
-		catch(Exception e)
-		{
-            //popupHandler.DisplayError("Erreur", "Un problème est survenu lors de la lecture de la réponse du serveur");
+		} catch(Exception e) {
             popupHandler.OpenDisplayIcon("UN PROBLEME EST SURVENU LORS DE LA LECTURE DE LA REPONSE DU SERVEUR", "Warning");
 		}
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using BuddyOS;
 using OpenCVUnity;
+
+using Buddy;
 
 public class WebcamManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class WebcamManager : MonoBehaviour
 
     void Start()
     {
-        mWebcam = BYOS.Instance.RGBCam;
+        mWebcam = BYOS.Instance.Primitive.RGBCam;
         mWebcam.Open();
         Debug.Log("Opening Webcam");
     }

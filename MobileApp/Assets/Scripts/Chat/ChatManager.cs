@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
 using System;
-using BuddyAPI;
 
 [Serializable]
 public class UserMessages
@@ -49,11 +48,11 @@ public class ChatManager : MonoBehaviour
     [SerializeField]
     private InputField chatInput;
 
-    [SerializeField]
-    private TextToSpeech mTTS;
+    //[SerializeField]
+    //private TextToSpeech mTTS;
 
-    [SerializeField]
-    private RegularFace mFace;
+    //[SerializeField]
+    //private RegularFace mFace;
 
     private string mCurrentFilePath;
     private string mCurrentBuddy;

@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using OpenCVUnity;
-using System.IO;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
+
+using Buddy;
 
 public class QRCodeManager : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class QRCodeManager : MonoBehaviour
             //cameraImage.texture = mCamera;
             //Rotate the frame for display
             Debug.Log("Camera rotation " + mCamera.videoRotationAngle);
-            BuddyTools.Utils.WebCamTextureToMat(mCamera, mTempMat);
+            Utils.WebCamTextureToMat(mCamera, mTempMat);
 
             if (mCamera.videoRotationAngle == 0)
                 Core.flip(mTempMat, mTempMat, 1);
@@ -69,7 +70,7 @@ public class QRCodeManager : MonoBehaviour
             else if (mCamera.videoRotationAngle == 270)
                 Core.flip(mTempMat, mTempMat, 1);
 
-            cameraImage.texture = BuddyTools.Utils.MatToTexture2D(mTempMat);
+            cameraImage.texture = Utils.MatToTexture2D(mTempMat);
         }
     }
 

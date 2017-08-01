@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 
+using Buddy;
+
 public class BackgroundListener : MonoBehaviour
 {
     [SerializeField]
@@ -37,8 +39,8 @@ public class BackgroundListener : MonoBehaviour
             AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
             mJavaListener = new AndroidJavaObject("my.maylab.unitywebrtc.BackgroundListener", iUri, iRealm,
-                BuddyTools.Utils.GetStreamingAssetFilePath("client_cert.pem"),
-                BuddyTools.Utils.GetStreamingAssetFilePath("server_key.pem"),
+                ResourceManager.StreamingAssetFilePath("client_cert.pem"),
+                ResourceManager.StreamingAssetFilePath("server_key.pem"),
                 jo);
         }
     }
@@ -53,7 +55,7 @@ public class BackgroundListener : MonoBehaviour
         mJavaListener.Call("SubscribeChat", SelectBuddy.BuddyID);
     }
 
-    public void SubscribeNotificationChannels(List<Buddy> iBuddies)
+    public void SubscribeNotificationChannels(List<BuddyDB> iBuddies)
     {
         string lBuddyIDs = "";
         for (int i = 0; i < iBuddies.Count; i++)
@@ -99,8 +101,8 @@ public class BackgroundListener : MonoBehaviour
         string[] lSplit = iMessage.Split('/');
 
         string lBuddyID = lSplit[0];
-        Buddy lBuddy = new Buddy() { name = "NAN", ID = "00-00-00-00" };
-        foreach (Buddy lFindingBuddy in dbManager.BuddiesList) {
+        BuddyDB lBuddy = new BuddyDB() { name = "NAN", ID = "00-00-00-00" };
+        foreach (BuddyDB lFindingBuddy in dbManager.BuddiesList) {
             if (lFindingBuddy.ID == lBuddyID) {
                 lBuddy = lFindingBuddy;
                 break;

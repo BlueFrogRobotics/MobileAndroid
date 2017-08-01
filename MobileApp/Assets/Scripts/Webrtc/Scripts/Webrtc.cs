@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System;
 using System.Threading;
 
+using Buddy;
 
 public class Webrtc : MonoBehaviour
 {
@@ -177,7 +178,8 @@ public class Webrtc : MonoBehaviour
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
                 cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName,
-                    BuddyTools.Utils.GetStreamingAssetFilePath("client_cert.pem"));
+                    ResourceManager.StreamingAssetFilePath("client_cert.pem"));
+                
             }
         }
     }

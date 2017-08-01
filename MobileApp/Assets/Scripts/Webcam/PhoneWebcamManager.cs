@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using OpenCVUnity;
 
+using Buddy;
+
 /// <summary>
 /// Takes care of getting the camera frame and set it to the correct format
 /// </summary>
@@ -83,7 +85,7 @@ public class PhoneWebcamManager : MonoBehaviour
     {
         //Get camera frame, rotate and convert it to a byte array
         MatOfByte lBuffer = new MatOfByte();
-        BuddyTools.Utils.WebCamTextureToMat(mWebcamTexture, mTempMat);
+        Utils.WebCamTextureToMat(mWebcamTexture, mTempMat);        
 
         if (mWebcamTexture.videoRotationAngle == 0)
             Core.flip(mTempMat, mTempMat, 1);

@@ -5,10 +5,12 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using BuddyAPI;
-using BuddyOS;
-using SpeechToText = BuddyAPI.SpeechToText;
-using TextToSpeech = BuddyAPI.TextToSpeech;
+//using BuddyAPI;
+//using BuddyOS;
+//using SpeechToText = BuddyAPI.SpeechToText;
+//using TextToSpeech = BuddyAPI.TextToSpeech;
+
+using Buddy;
 
 internal enum RequestType
 {
@@ -31,7 +33,7 @@ public class VocalChat : MonoBehaviour
     private SpeechToText mSTT;
 
     [SerializeField]
-    private RegularFace mFace;
+    private Face mFace;
 
     [SerializeField]
     private ChatManager mChat;
@@ -79,10 +81,10 @@ public class VocalChat : MonoBehaviour
     {
         mErrorCount = 0;
 
-        StreamReader lstreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("questions.xml"));
+        StreamReader lstreamReader = new StreamReader(ResourceManager.StreamingAssetFilePath("questions.xml"));
         mQuestionsFile = lstreamReader.ReadToEnd();
         lstreamReader.Close();
-        lstreamReader = new StreamReader(BuddyTools.Utils.GetStreamingAssetFilePath("synonymes.xml"));
+        lstreamReader = new StreamReader(ResourceManager.StreamingAssetFilePath("synonymes.xml"));
         mSynonymesFile = lstreamReader.ReadToEnd();
         lstreamReader.Close();
 
@@ -182,7 +184,7 @@ public class VocalChat : MonoBehaviour
     public void StartDialogueWithPhrase()
     {
         TTSProcessAndSay("Que puis-je faire pour vous?");
-        mFace.SetMood(MoodType.LISTENING);
+        mFace.SetExpression(MoodType.LISTENING);
         mSTT.Request();
     }
 
@@ -208,12 +210,12 @@ public class VocalChat : MonoBehaviour
     private void OnSpeechRecognition(string iVoiceInput)
     {
         //Debug.Log("OnSpeechReco");
-        mFace.SetMood(MoodType.NEUTRAL);
+        mFace.SetExpression(MoodType.NEUTRAL);
         //mLED.SetBodyLight(LEDColor.BLUE_NEUTRAL);          
         mErrorCount = 0;
         string lLowVoiceInput = iVoiceInput.ToLower();
         Debug.Log("On Speech Recognition input : " + lLowVoiceInput);
-            
+
         if (!SpecialRequest(lLowVoiceInput))
             BuildGeneralAnswer(lLowVoiceInput);
     }
@@ -222,12 +224,12 @@ public class VocalChat : MonoBehaviour
     {
         //Debug.Log("OnPartialReco");
         //Debug.Log("[chatbot Partial Reco] : " + iVoiceInput);
-        mFace.SetMood(MoodType.NEUTRAL);
+        mFace.SetExpression(MoodType.NEUTRAL);
         //mLED.SetBodyLight(LEDColor.BLUE_NEUTRAL);
         mErrorCount = 0;
         string lLowVoiceInput = iVoiceInput.ToLower();
         Debug.Log("On Partial Recognition input : " + lLowVoiceInput);
-            
+
         if (!SpecialRequest(lLowVoiceInput))
             BuildGeneralAnswer(lLowVoiceInput);
     }
@@ -531,11 +533,11 @@ public class VocalChat : MonoBehaviour
             loutValue = loutValue - 274;
             lFinalSentence = RandomString(mTempSpeech) + " " + loutValue.ToString() + " " + RandomString(mDegreesCSpeech);
         }
-        BYOS.Instance.NotManager.Display<MeteoNot>(10F).With(loutValue, "",
-                                                        DateTime.Now.ToString(),
-                                                        string.IsNullOrEmpty(iData) ? "" : iData,
-                                                        "",
-                                                        lInfos);
+        //BYOS.Instance.NotManager.Display<MeteoNot>(10F).With(loutValue, "",
+        //                                                DateTime.Now.ToString(),
+        //                                                string.IsNullOrEmpty(iData) ? "" : iData,
+        //                                                "",
+        //                                                lInfos);
         TTSProcessAndSay(lFinalSentence);
     }
 
