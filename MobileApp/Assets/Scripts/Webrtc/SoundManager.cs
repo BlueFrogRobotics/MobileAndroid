@@ -26,7 +26,7 @@ public class SoundManager : MonoBehaviour
 				cls.CallStatic("setSoundActive", mActive);
 			}
 
-			lButtonImage.sprite =  GameObject.Find("CanvasApp").GetComponent<PoolManager>().GetSprite(mActive ? "MicroOn" : "MicroOff");
+			lButtonImage.sprite =  GameObject.Find("CanvasApp").GetComponent<PoolManager>().GetSprite(mActive ? "Micro" : "MicroOff");
 		}
 	}
 }
