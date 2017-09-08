@@ -153,7 +153,7 @@ public class DBManager : MonoBehaviour
 				if(resp.ok)
 				{
 					Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
-					mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { '=', ';' });
+					mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { ';' });
 
 					mBuddyList = lWWW.text;
 					string lPicture = "";
@@ -735,7 +735,7 @@ public class DBManager : MonoBehaviour
 	private Dictionary<string, string> addSessionCookie(Dictionary<string, string> dictionary)
 	{
 		if(mCookie != null) {
-			dictionary.Add("Cookie", "PHPSESSID=" + mCookie[4]);
+			dictionary.Add("Cookie", mCookie[0]);
 		}
 
 		return dictionary;
