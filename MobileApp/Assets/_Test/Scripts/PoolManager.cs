@@ -56,7 +56,9 @@ public class PoolManager : MonoBehaviour {
     [SerializeField]
     private GameObject PopUps;
     [SerializeField]
-    private GameObject MessageContent;
+	private GameObject MessageContent;
+	[SerializeField]
+	private GameObject Buddy_Status;
 
     private Dictionary<string, Sprite> mAtlasMobile;
     private Dictionary<string, Sprite> mAtlasUI;
@@ -112,20 +114,39 @@ public class PoolManager : MonoBehaviour {
         }
     }
 
+	public GameObject fBuddy_Status(string iParent, string iId)
+	{
+		GameObject lFinalObject = Instantiate(Buddy_Status);
+		Debug.Log("BUDDY FBUDDY_STATUS " + iId);
+
+		GameObject status = GameObject.FindGameObjectWithTag("Buddy_Status");
+		BuddyStatus statusScript = status.GetComponent<BuddyStatus>();
+		statusScript.SetData(iId);
+
+		lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
+		return lFinalObject;
+	}
+
     // Buddy Contact
-    public GameObject fBuddy_Contact(string iParent, string iName, string iID, string iUserPic, bool iLocal, bool iListed, List<UnityAction> iCallbacks )
+	public GameObject fBuddy_Contact(string iParent, string iName, string iID, string iUserPic, bool iLocal, bool iListed, string iStatus, List<UnityAction> iCallbacks)
     {
+		
         GameObject lFinalObject = Instantiate(Buddy_Contact);
         Button lButton_Edit = lFinalObject.GetComponentsInChildren<Button>()[1];
         Button lButton_Add = lFinalObject.GetComponentsInChildren<Button>()[2];
         Image lUser_Pic = lFinalObject.GetComponentsInChildren<Image>()[7];
         Text lName = lFinalObject.GetComponentsInChildren<Text>()[0];
-        Text lID = lFinalObject.GetComponentsInChildren<Text>()[1];
+		Text lID = lFinalObject.GetComponentsInChildren<Text>()[1];
         Image lLocal = lFinalObject.GetComponentsInChildren<Image>()[11];
+		GameObject status = GameObject.FindGameObjectWithTag("Buddy_Status");
+		BuddyStatus statusScript = status.GetComponent<BuddyStatus>();
+		//statusScript.SetData(iStatus, iID);
+		Debug.Log("BUDDY FBUDDY_CONTACT " + iID);
 
         // ADD TEXT NAME AND ID OF THIS CONTACT
         lName.text = iName;
-        lID.text = iID;
+		lID.text = (iLocal ? "IP " : "ID ") + iID;
+
 
         // GET USER PICS OR SET IT TO DEFAULT
         if (!string.IsNullOrEmpty(iUserPic))

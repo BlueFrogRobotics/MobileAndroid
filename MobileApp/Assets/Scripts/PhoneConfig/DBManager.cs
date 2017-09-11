@@ -35,6 +35,9 @@ public class BuddyDB
 {
     public string ID;
     public string name;
+	public string status;
+	public string appName;
+	public Int32 timestamp;
 }
 
 /// <summary>
@@ -97,6 +100,8 @@ public class DBManager : MonoBehaviour
 
 	private PhoneUser mUser;
 
+	private List<string> mBuddiesIDs;
+
     void Start()
     {
         //Register Azure public IP for MySQL and PHP requests
@@ -106,6 +111,9 @@ public class DBManager : MonoBehaviour
         mCurrentUser = new PhoneUser();
         ReadPhoneUsers(true);
 		popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
+		mBuddiesIDs = new List<string>();
+		mBuddiesList = new List<BuddyDB>();
+		Debug.Log ("DB MANAGER STARTED");
     }
 
     void Update()
@@ -115,6 +123,11 @@ public class DBManager : MonoBehaviour
         else
             popupNoConnection.SetActive(false);
     }
+
+	public bool IsBuddiesListEmpty()
+	{
+		return (mBuddiesList.Count > 0 ? false : true);
+	}
 
 	public void StartRequestConnection(string iFirstName, string iLastName, string iEmail, string iPassword, bool iNotif)
     {
@@ -436,10 +449,16 @@ public class DBManager : MonoBehaviour
 					}
 				}
 
+				backgroundListener.SubscribeStatusChannels(mBuddiesList);
 				if(mNotifAllowed)
 					backgroundListener.SubscribeNotificationChannels(mBuddiesList);
 			}
 		}
+	}
+
+	public void SubscribeStatus()
+	{
+		backgroundListener.SubscribeStatusChannels(mBuddiesList);
 	}
 
     public void ReadPhoneUsers(bool iFirstRead = false)

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -53,6 +54,16 @@ public class BackgroundListener : MonoBehaviour
     public void SubscribeChatChannel()
     {
         mJavaListener.Call("SubscribeChat", SelectBuddy.BuddyID);
+    }
+
+	public void SubscribeStatusChannels(List<BuddyDB> iBuddies)
+	{
+		string lBuddyIDs = "";
+		for(int i = 0; i < iBuddies.Count; i++)
+		{
+			lBuddyIDs += iBuddies[i].ID + "/";
+		}
+		mJavaListener.Call("SubscribeStatus", lBuddyIDs);
     }
 
     public void SubscribeNotificationChannels(List<BuddyDB> iBuddies)
@@ -115,6 +126,30 @@ public class BackgroundListener : MonoBehaviour
 
         notification.SendNotification(lMessage, lTitle);
     }
+
+	public void OnStatusMessage(string iMessage)
+	{
+		//Status format is buddyID | appName
+		string[] lSplit = iMessage.Split('|');
+		string lBuddyID = lSplit[0];
+		Debug.Log ("OnStatusMessage received " + lBuddyID + " " + lSplit [1]);
+		foreach (BuddyDB lFindingBuddy in dbManager.BuddiesList) {
+			if (lFindingBuddy.ID.Equals(lBuddyID)) {
+				if (lSplit [1] != "") {
+					Debug.Log ("BUDDY BUSY");
+					lFindingBuddy.status = "busy";
+					lFindingBuddy.appName = lSplit [1];
+				} else {
+					Debug.Log ("BUDDY PAS BUSY");
+					lFindingBuddy.status = "online";
+					lFindingBuddy.appName = lSplit [1];
+				}
+
+				lFindingBuddy.timestamp = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+				break;
+			}
+		}
+	}
 
     public void OnAndroidLog(string iLogText)
     {
