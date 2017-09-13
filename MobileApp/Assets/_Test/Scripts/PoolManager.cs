@@ -114,16 +114,14 @@ public class PoolManager : MonoBehaviour {
         }
     }
 
-	public GameObject fBuddy_Status(string iParent, string iId)
+	public GameObject fBuddy_Status(string iParent, string iId, bool displayText)
 	{
 		GameObject lFinalObject = Instantiate(Buddy_Status);
-		Debug.Log("BUDDY FBUDDY_STATUS " + iId);
-
-		GameObject status = GameObject.FindGameObjectWithTag("Buddy_Status");
-		BuddyStatus statusScript = status.GetComponent<BuddyStatus>();
-		statusScript.SetData(iId);
-
 		lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
+
+		BuddyStatus statusScript = lFinalObject.GetComponent<BuddyStatus>();
+		statusScript.SetData(iId, true);
+
 		return lFinalObject;
 	}
 
@@ -138,10 +136,9 @@ public class PoolManager : MonoBehaviour {
         Text lName = lFinalObject.GetComponentsInChildren<Text>()[0];
 		Text lID = lFinalObject.GetComponentsInChildren<Text>()[1];
         Image lLocal = lFinalObject.GetComponentsInChildren<Image>()[11];
-		GameObject status = GameObject.FindGameObjectWithTag("Buddy_Status");
-		BuddyStatus statusScript = status.GetComponent<BuddyStatus>();
-		//statusScript.SetData(iStatus, iID);
-		Debug.Log("BUDDY FBUDDY_CONTACT " + iID);
+		BuddyStatus statusScript = lFinalObject.GetComponentsInChildren<BuddyStatus>()[0];
+
+		statusScript.SetData(iID, false);
 
         // ADD TEXT NAME AND ID OF THIS CONTACT
         lName.text = iName;

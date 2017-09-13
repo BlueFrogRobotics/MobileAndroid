@@ -18,9 +18,11 @@ public class BuddyStatus : MonoBehaviour
 	private GameObject greenImage;
 
 	[SerializeField]
+	private GameObject text;
+
+	[SerializeField]
 	private DBManager dbManager;
 
-	private string mStatus = "offline";
 	private string mId = "";
 
 	void Start()
@@ -30,44 +32,47 @@ public class BuddyStatus : MonoBehaviour
 		redImage.SetActive (true);
 	}
 
-	public void SetData(string id)
+	public void SetData(string id, bool displayText)
 	{
-		//mStatus = status;
 		mId = id;
-		Debug.Log ("BUDDY STATUS CIRCLE SET DATA ID " + mId);
+		if (displayText) {
+			text.SetActive(true);
+			text.GetComponent<Text>().text = "hors ligne";
+		} else {
+			text.SetActive (false);
+		}
+
 		StartCoroutine(UpdateBuddyStatus());
 	}
 
 	private IEnumerator UpdateBuddyStatus()
-	//void update()
 	{
 		Image[] childs = this.transform.GetComponents<Image> ();
 		while (true) {
 			if (!dbManager.IsBuddiesListEmpty ()) {
-				//Debug.Log ("BUDDY STATUS CIRCLE BUDDIES LIST NOT EMPTY");
 				foreach (BuddyDB lBuddy in dbManager.BuddiesList) {
-					//Debug.Log ("BUDDY STATUS CIRCLE IDS " + lBuddy.ID + " " + mId);
 					if (lBuddy.ID == mId) {
 						if (lBuddy.status.Equals ("online")) {
-							Debug.Log ("BUDDY STATUS CIRCLE ONLINE " + lBuddy.ID);
 							redImage.SetActive (false);
 							orangeImage.SetActive (false);
 							greenImage.SetActive (true);
-							//childs[0].color = new Color32 (18, 218, 64, 255);
+							if (text.activeInHierarchy) {
+								text.GetComponent<Text>().text = "en ligne";
+							}
 						} else if (lBuddy.status.Equals ("offline")) {
-							Debug.Log ("BUDDY STATUS CIRCLE OFFLINE" + lBuddy.ID);
 							greenImage.SetActive (false);
 							orangeImage.SetActive (false);
 							redImage.SetActive (true);
-							//redImage.GetComponent<Image> ().color = new Color32 (255, 0, 0, 255);
+							if (text.activeInHierarchy) {
+								text.GetComponent<Text>().text = "hors ligne";
+							}
 						} else if (lBuddy.status.Equals ("busy")) {
-							Debug.Log ("BUDDY STATUS CIRCLE BUSY" + lBuddy.ID);
 							greenImage.SetActive (false);
 							redImage.SetActive (false);
-							orangeImage.SetActive (true);	
-							//redImage.GetComponent<Image> ().color = new Color32 (249, 145, 13, 255);	
-						} else {
-							Debug.Log ("BUDDY STATUS CIRCLE NOTHING");			
+							orangeImage.SetActive (true);
+							if (text.activeInHierarchy) {
+								text.GetComponent<Text>().text = "occupé... (" + lBuddy.appName + ")";
+							}
 						}
 
 						break;
@@ -81,8 +86,8 @@ public class BuddyStatus : MonoBehaviour
 
 	public void CloseConnection()
 	{
-		/*greenImage.SetActive(false);
+		greenImage.SetActive(false);
 		redImage.SetActive(false);
-		redImage.SetActive(true);*/
+		redImage.SetActive(true);
 	}
 }

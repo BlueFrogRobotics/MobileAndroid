@@ -182,21 +182,7 @@ public class BuddyIPList : MonoBehaviour
             return;
         }
 
-        /*if (!string.IsNullOrEmpty (buddyDB.BuddyList)) {
-			string[] lBuddyList = buddyDB.BuddyList.Split('\n');
-
-			for (int i = 0; i < lBuddyList.Length - 1; i++)
-			{
-				Debug.Log("Buddy IDs " + lBuddyList[i]);
-				string[] lBuddyIDs = lBuddyList[i].Split('|');
-				
-				GameObject lBuddyDB = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", lBuddyIDs[0], "ID " + lBuddyIDs[1], "", false, true, null);
-				LoadingUI.AddObject(lBuddyDB);
-			}
-		}*/
-
 		foreach (BuddyDB lBuddy in buddyDB.BuddiesList) {
-			//Debug.Log ("Buddy IDs " + lBuddy.ID);
 			GameObject lBuddyDB = mPoolManager.fBuddy_Contact ("Content_Bottom/ScrollView/Viewport", lBuddy.name, lBuddy.ID, "", false, true, lBuddy.status, null);
 			LoadingUI.AddObject(lBuddyDB);
 		}
