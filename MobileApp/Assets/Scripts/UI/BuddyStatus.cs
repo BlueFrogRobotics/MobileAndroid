@@ -37,7 +37,7 @@ public class BuddyStatus : MonoBehaviour
 		mId = id;
 		if (displayText) {
 			text.SetActive(true);
-			text.GetComponent<Text>().text = "hors ligne";
+			text.GetComponent<Text>().text = "Hors ligne";
 		} else {
 			text.SetActive (false);
 		}
@@ -57,21 +57,21 @@ public class BuddyStatus : MonoBehaviour
 							orangeImage.SetActive (false);
 							greenImage.SetActive (true);
 							if (text.activeInHierarchy) {
-								text.GetComponent<Text>().text = "en ligne";
+								text.GetComponent<Text>().text = "En ligne";
 							}
 						} else if (lBuddy.status.Equals ("offline")) {
 							greenImage.SetActive (false);
 							orangeImage.SetActive (false);
 							redImage.SetActive (true);
 							if (text.activeInHierarchy) {
-								text.GetComponent<Text>().text = "hors ligne";
+								text.GetComponent<Text>().text = "Hors ligne";
 							}
 						} else if (lBuddy.status.Equals ("busy")) {
 							greenImage.SetActive (false);
 							redImage.SetActive (false);
 							orangeImage.SetActive (true);
 							if (text.activeInHierarchy) {
-								text.GetComponent<Text>().text = "occupé... (" + lBuddy.appName + ")";
+								text.GetComponent<Text>().text = "Occupé... (" + lBuddy.appName + ")";
 							}
 						}
 
