@@ -390,16 +390,20 @@ public class Webrtc : MonoBehaviour
 			}
 		}
 
-		GameObject.Find("RemoteControlRTC").GetComponent<RemoteControl>().ControlsDisabled = controlsDisabled;
-		if(controlsDisabled)
+		GameObject rc = GameObject.Find ("RemoteControlRTC");
+		if(rc)
 		{
-			joystick.SetActive(false);
-			remoteMessage.SetActive(true);
-		}
-		else
-		{
-			joystick.SetActive(true);
-			remoteMessage.SetActive(false);
+			rc.GetComponent<RemoteControl>().ControlsDisabled = controlsDisabled;
+			if(controlsDisabled)
+			{
+				joystick.SetActive(false);
+				remoteMessage.SetActive(true);
+			}
+			else
+			{
+				joystick.SetActive(true);
+				remoteMessage.SetActive(false);
+			}
 		}
     }
 }
