@@ -47,6 +47,9 @@ public class Webrtc : MonoBehaviour
     private RemoteControl remoteControl;
 
 	[SerializeField]
+	private GoBack menuManager;
+
+	[SerializeField]
 	private GameObject joystick;
 
 	[SerializeField]
@@ -95,6 +98,7 @@ public class Webrtc : MonoBehaviour
 
     public void InitImages()
     {
+		Debug.Log("WebRTC.InitImages");
         mRemoteRawImage.transform.localScale = new Vector3(1, -1, 0);
         mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
 
@@ -222,13 +226,13 @@ public class Webrtc : MonoBehaviour
     public void Call()
     {
 
-        Debug.Log("Call : " + mRemoteUser + "!");
+        Debug.Log("Webrtc cs | Call : " + mRemoteUser + "!");
         if (mTextLog)
             mTextLog.text += "Call : " + mRemoteUser + "\n";
         // mTextSend.text += "\nCall : " + iChannel;
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
-            Debug.Log("Starting call");
+			Debug.Log("Webrtc cs | Starting call");
             cls.CallStatic("Call", mRemoteUser);
         }
 
@@ -341,12 +345,17 @@ public class Webrtc : MonoBehaviour
     /// <param name="iMessage">The message that has been received.</param>
     public void onAndroidDebugLog(string iMessage)
     {
-        //Debug.Log(iMessage);
+        Debug.Log("webrtc.cs onAndroidDebugLog " + iMessage);
         if (mTextLog)
             mTextLog.text += "Android Debug : " + iMessage + "\n";
 
-        else if (iMessage == "CONNECTED")
-            Connected = true;
+		if (iMessage == "CONNECTED")
+			Connected = true;
+		else if (iMessage.Contains("onStateChange: CLOSED")) {
+			Connected = false;
+			StopWebRTC();
+			menuManager.GoConnectedMenu();
+		}
     }
 
 	public void onLocalTextureSizeChanged(string size)

@@ -142,6 +142,9 @@ public class PopupHandler : MonoBehaviour {
 		popupWindow.SetActive(true);
 		ResetWindowUI();
 
+		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
+		lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
+
 		Text lTitle = GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>();
 		lTitle.text = title;
 
