@@ -23,7 +23,7 @@ public class Webrtc : MonoBehaviour
     /// URI locating the crossbar server.
     /// </summary>
     [SerializeField]
-    private string mCrossbarUri;
+    private string mCrossbarUri; 
 
     /// <summary>
     /// Crossbar realm used.
@@ -45,6 +45,9 @@ public class Webrtc : MonoBehaviour
 
     [SerializeField]
     private RemoteControl remoteControl;
+
+	[SerializeField]
+	private GoBack menuManager;
 
 	[SerializeField]
 	private GameObject joystick;
@@ -345,8 +348,13 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "Android Debug : " + iMessage + "\n";
 
-        else if (iMessage == "CONNECTED")
+        if (iMessage == "CONNECTED")
             Connected = true;
+		else if (iMessage.Contains("onStateChange: CLOSED")) {
+			Connected = false;
+			StopWebRTC();
+			menuManager.GoConnectedMenu();
+		}
     }
 
 	public void onLocalTextureSizeChanged(string size)
