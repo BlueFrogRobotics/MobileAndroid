@@ -59,7 +59,7 @@ public class GoBack : MonoBehaviour
 
     public void GoCreationMenu()
     {
-        SwitchToMenu("GoCreationAccount");
+        SwitchToMenu("GoCreateAccount");
     }
 
     public void GoConnectionMenu()
