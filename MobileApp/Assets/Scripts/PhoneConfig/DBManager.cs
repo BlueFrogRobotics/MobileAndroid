@@ -438,7 +438,6 @@ public class DBManager : MonoBehaviour
 				//Debug.Log("WWW Success : " + lWWW.text);
 				mBuddyList = lWWW.text;
 				mBuddiesList = new List<BuddyDB>();
-				menuManager.GoSelectBuddyMenu();
 
 				if (!string.IsNullOrEmpty(mBuddyList)) {
 					string[] lBuddyList = mBuddyList.Split('\n');
