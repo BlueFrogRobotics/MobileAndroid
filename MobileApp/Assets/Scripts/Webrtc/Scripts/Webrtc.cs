@@ -199,9 +199,6 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StopWebRTC()
     {
-        mRemoteRawImage.transform.localScale = new Vector3(1, 1, 0);
-        mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
-
 		mRemoteNativeTexture.Destroy();
 		mLocalNativeTexture.Destroy();
 
