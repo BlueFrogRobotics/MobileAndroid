@@ -232,8 +232,10 @@ public class PopupHandler : MonoBehaviour {
     {
         popupWindow.SetActive(false);
         popupYesNo.SetActive(false);
+		popupYesNoIcon.SetActive(false);
         popupShowQrCode.SetActive(false);
         popupReadQrCode.SetActive(false);
+		popupDisplayIcon.SetActive(false);
     }
 
     private void ResetWindowUI()
