@@ -40,7 +40,7 @@ public class LaunchTelepresence : MonoBehaviour
             Debug.Log("Starting distant control with remote " + webRTC.RemoteID);
             //webRTC.InitImages();
             remoteControlRTC.SetActive(true);
-            rtcListener.PublishConnectionRequest(webRTC.RemoteID);
+            rtcListener.PublishConnectionRequest(webRTC.ID,webRTC.RemoteID);
             //webRTC.Call();
             //Debug.Log("Starting distant control");
         }

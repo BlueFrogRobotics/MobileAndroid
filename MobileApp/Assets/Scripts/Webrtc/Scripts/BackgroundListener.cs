@@ -17,9 +17,6 @@ public class BackgroundListener : MonoBehaviour
     private NotificationSender notification;
 
     [SerializeField]
-    private Webrtc webRTC;
-
-    [SerializeField]
     private ChatManager chatManager;
 
     [SerializeField]
@@ -86,9 +83,9 @@ public class BackgroundListener : MonoBehaviour
         mJavaListener.Call("SendChatMessage", iMessage);
     }
 
-    public void PublishConnectionRequest(string iRemoteID)
+    public void PublishConnectionRequest(string iWebrtcID, string iRemoteID)
     {
-        mJavaListener.Call("Publish", "ConnectRequest", webRTC.ID + "/" + iRemoteID);
+        mJavaListener.Call("Publish", "ConnectRequest", iWebrtcID + "/" + iRemoteID);
     }
 
     public void PublishNotification()
