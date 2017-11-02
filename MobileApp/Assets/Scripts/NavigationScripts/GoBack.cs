@@ -160,10 +160,10 @@ public class GoBack : MonoBehaviour
             yield return new WaitForSeconds(0.5F);
         }
 
-		processConnectionState(lTimeWaited < 15F);
+		processConnectionState(lRTC.Connected,lRTC);
     }
 
-	private void processConnectionState(bool connected)
+	private void processConnectionState(bool connected, Webrtc lRTC = null)
 	{
 		if(connected)
 		{
@@ -172,10 +172,14 @@ public class GoBack : MonoBehaviour
 		}
 		else
 		{
+			if (lRTC != null) {
+				lRTC.StopWebRTC ();
+			}
+			
 			canvasAnimator.SetTrigger("GoConnectBuddy");
 			canvasAnimator.SetTrigger("EndScene");
 			//GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Impossible d'établir la connection avec le robot");
-            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Impossible d'établir la connection avec le robot", "NoResponse");
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Impossible d'établir la connexion avec le robot", "NoResponse");
         }
 	}
 }

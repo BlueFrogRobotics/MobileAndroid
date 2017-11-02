@@ -47,19 +47,15 @@ public class ConnectBuddyState : ASubState {
         SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
 
         if(lSelect.Remote == SelectBuddy.RemoteType.WEBRTC) {
-            GameObject UnityWebRTC = GameObject.Find("UnityWebrtc");
-            UnityWebRTC.GetComponent<Webrtc>().StopWebRTC();
-            UnityWebRTC.SetActive(false);
+            GameObject.Find("UnityWebrtc").SetActive(false);
         }        
-        //GameObject.Find("UnityWebrtc").SetActive(false);
     }
 
     private void StartRemoteControl()
     {
-        GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
-        lMenuManager.GoRemoteControlMenu();
-        LaunchTelepresence lLauncher = GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>();
-        lLauncher.ConnectToBuddy();
+        GameObject.Find ("UnityWebrtc").GetComponent<Webrtc>().InitWebRTC();
+        GameObject.Find("MenuManager").GetComponent<GoBack>().GoRemoteControlMenu();
+        GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy();
     }
 
 	private void ShowAccessRequest()

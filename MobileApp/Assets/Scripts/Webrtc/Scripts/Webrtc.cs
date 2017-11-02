@@ -81,7 +81,7 @@ public class Webrtc : MonoBehaviour
     //called when receiving a call request or trying to call someone.
     // StartWebrtc tries to acquire the camera resource and so the camera
     // must be released beforehand.
-    void OnEnable()
+    public void InitWebRTC()
     {
         // Setup and start webRTC
         SetupWebRTC();
