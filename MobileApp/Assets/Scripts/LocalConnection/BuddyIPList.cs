@@ -9,8 +9,6 @@ using System.Collections.Generic;
 /// </summary>
 public class BuddyIPList : MonoBehaviour
 {
-    public bool InSelectBuddy { get { return mInSelectBuddy; } set { mInSelectBuddy = value; } }
-
     [SerializeField]
     private PoolManager mPoolManager;
 
@@ -23,14 +21,12 @@ public class BuddyIPList : MonoBehaviour
     [SerializeField]
     private DBManager buddyDB;
 
-    private bool mInSelectBuddy;
     private int mBuddyNb = 0;
     private float mTime = 20f;
     private List<string> mIPList = new List<string>();
 
     void Start()
     {
-        mInSelectBuddy = false;
         mobileServer.OnNewBudyConnected += UpdateBuddyList;
         mobileServer.OnBuddyDisconnected += RemoveBuddyFromList;
     }
@@ -91,7 +87,7 @@ public class BuddyIPList : MonoBehaviour
         string[] lTab = iNewBuddyIP.Split(':');
         string lBuddyIP = lTab[lTab.Length - 1];
 
-        if (mIPList.Contains(lBuddyIP) || !mInSelectBuddy)
+        if (mIPList.Contains(lBuddyIP))
             return;
 
 		GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "New Buddy !", iNewBuddyIP, "", true, true, "online", null);
@@ -107,30 +103,24 @@ public class BuddyIPList : MonoBehaviour
         string lBuddyIP = lTab[lTab.Length - 1];
         mIPList.Remove(lBuddyIP);
 
-        if(mInSelectBuddy)
+        GameObject lList = GameObject.Find("Content_Bottom/ScrollView/Viewport");
+        bool lLocal = false;
+        foreach(Transform lChild in lList.transform)
         {
-            GameObject lList = GameObject.Find("Content_Bottom/ScrollView/Viewport");
-            bool lLocal = false;
-            foreach(Transform lChild in lList.transform)
-            {
-                if (!lLocal || lChild.gameObject.name != "LocalSeparator")
-                    continue;
-                else if (lChild.gameObject.name == "LocalSeparator")
-                    lLocal = true;
-                else if(lLocal && lChild.GetComponentsInChildren<Text>()[1].text.Contains(lBuddyIP)) {
-                    GameObject.Destroy(lChild.gameObject);
-                    break;
-                }
+            if (!lLocal || lChild.gameObject.name != "LocalSeparator")
+                continue;
+            else if (lChild.gameObject.name == "LocalSeparator")
+                lLocal = true;
+            else if(lLocal && lChild.GetComponentsInChildren<Text>()[1].text.Contains(lBuddyIP)) {
+                GameObject.Destroy(lChild.gameObject);
+                break;
             }
-            //CreateListDisplay();
         }
+        //CreateListDisplay();
     }
 
     public void CreateListDisplay()
     {
-        if (!mInSelectBuddy)
-            return;
-
         //Remove all present displayed robots
         foreach (Transform lChild in parentTransform)
             GameObject.Destroy(lChild.gameObject);

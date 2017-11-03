@@ -70,9 +70,7 @@ public class SelectBuddy : MonoBehaviour
         }
 
         if(lFound) {
-            BuddyIPList lIPList = GameObject.Find("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList>();
-            lIPList.InSelectBuddy = false;
-            lIPList.enabled = false;
+            GameObject.Find("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList>().enabled = false;
 			GameObject.Find("MenuManager").GetComponent<GoBack>().GoConnectedMenu();
         }
 

@@ -40,7 +40,6 @@ public class SelectBuddyState : ASubState {
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = true;
             lIPList.enabled = true;
-            lIPList.InSelectBuddy = true;
         }
     }
 
@@ -49,7 +48,6 @@ public class SelectBuddyState : ASubState {
         if(indexState == 2) {
             BuddyIPList lIPList = GameObject.Find("Viewport").GetComponent<BuddyIPList>();
             lIPList.enabled = false;
-            lIPList.InSelectBuddy = false;
         }
 
         base.OnStateExit(animator, stateInfo, layerIndex);
