@@ -381,6 +381,8 @@ public class DBManager : MonoBehaviour
                     menuManager.PreviousMenu();
                     RetrieveBuddyList();
                     Debug.Log("WWW Success");
+                    //Modify the name of the selected buddy
+                    SelectBuddy.BuddyName = iName;
                 }
                 else
                 {

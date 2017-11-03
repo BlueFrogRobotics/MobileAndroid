@@ -10,8 +10,8 @@ public class SelectBuddy : MonoBehaviour
 
     public RemoteType Remote { get { return mRemote; } set { mRemote = value; } }
 
-    public static string BuddyName { get; private set; }
-    public static string BuddyID { get; private set; }
+    public static string BuddyName { get; /*private*/ set; }
+    public static string BuddyID { get; /*private*/ set; }
 
     [SerializeField]
     private OTONetwork oTONetwork;
@@ -77,4 +77,5 @@ public class SelectBuddy : MonoBehaviour
         }
 
     }
+
 }
