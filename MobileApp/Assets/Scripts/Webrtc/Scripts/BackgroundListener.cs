@@ -60,6 +60,7 @@ public class BackgroundListener : MonoBehaviour
 		{
 			lBuddyIDs += iBuddies[i].ID + "/";
 		}
+        Debug.Log("lBuddyIDs = " + lBuddyIDs);
 		mJavaListener.Call("SubscribeStatus", lBuddyIDs);
     }
 
@@ -126,7 +127,7 @@ public class BackgroundListener : MonoBehaviour
 
 	public void OnStatusMessage(string iMessage)
 	{
-		//Status format is buddyID | appName
+        //Status format is buddyID | appName
 		string[] lSplit = iMessage.Split('|');
 		string lBuddyID = lSplit[0];
 		Debug.Log ("OnStatusMessage received " + lBuddyID + " " + lSplit [1]);
