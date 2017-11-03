@@ -58,7 +58,7 @@ public class SelectBuddyState : ASubState {
     private void BackToConnectionMenu()
     {
         GameObject.Find("DBManager").GetComponent<DBManager>().GenerateUserDisplay();
-        GameObject.Find("MenuManager").GetComponent<GoBack>().GoConnectionMenu();
+        GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();
         GameObject.Find("BackgroundListener").GetComponent<BackgroundListener>().UnsubscribeNotifications();
     }
 }

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Back button manager. Saves the previous state and goes back to it when asked
@@ -15,13 +17,13 @@ public class GoBack : MonoBehaviour
     [SerializeField]
     private LinkManager linkManager;
 
-    private string mPreviousMenu;
     private string mCurrentMenu;
+    private List<string> mViewTree;
 
     // Use this for initialization
     void Start()
     {
-        mPreviousMenu = "GoConnectAccount";
+        mViewTree = new List<string> ();
         mCurrentMenu = "GoConnectAccount";
     }
 
@@ -39,11 +41,14 @@ public class GoBack : MonoBehaviour
     //Go to previously saved menu
     public void PreviousMenu()
     {
-        string lTemp = mCurrentMenu;
-        canvasAnimator.SetTrigger(mPreviousMenu);
-        Debug.Log("Previous menu " + mPreviousMenu);
-        mCurrentMenu = mPreviousMenu;
-        mPreviousMenu = lTemp;
+        //Because Chat and RemoteControl do not have their own views...
+        while (mViewTree.Last () == mCurrentMenu)
+            mViewTree.Remove (mCurrentMenu);
+        
+        mCurrentMenu = mViewTree.Last();
+        mViewTree.Remove(mCurrentMenu);
+
+        canvasAnimator.SetTrigger(mCurrentMenu);
         canvasAnimator.SetTrigger("EndScene");
     }
 
@@ -111,16 +116,15 @@ public class GoBack : MonoBehaviour
     //Self-explanatory
     private void SwitchToMenu(string iMenu)
     {
-        mPreviousMenu = mCurrentMenu;
+        mViewTree.Add (mCurrentMenu);
         mCurrentMenu = iMenu;
-        canvasAnimator.SetTrigger(iMenu);
+        canvasAnimator.SetTrigger(mCurrentMenu);
         canvasAnimator.SetTrigger("EndScene");
     }
 
     private void SwitchToMenu(int iMenu, string iWaitingMessage = "Loading ...")
     {
         LoadingBuddyMessage = iWaitingMessage;
-        mPreviousMenu = mCurrentMenu;
         mCurrentMenu = "GoConnectBuddy";
         linkManager.SetMenuBuddyValue(iMenu);
         canvasAnimator.SetTrigger("GoLoadingBuddy");
