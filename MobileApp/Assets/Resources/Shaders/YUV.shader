@@ -81,9 +81,15 @@
                 float u = tex2D(_MainTex, float2(ux, uy));
                 float v = tex2D(_MainTex, float2(vx, vy));
 
-                float3 yuv = float3(y, u - 0.5f, v - 0.5f);
-
-                return float4(mul(yuvCoef, yuv) , 1.0f);
+                if(y == 0.0f && u == 0.0f && v == 0.0f)
+                {
+                	return fixed4(0.0f, 0.0f, 0.0f, 1.0f);
+                }
+                else
+                {
+                	float3 yuv = float3(y, u - 0.5f, v - 0.5f);
+                	return float4(mul(yuvCoef, yuv) , 1.0f);
+                }
             }
 
             ENDCG
