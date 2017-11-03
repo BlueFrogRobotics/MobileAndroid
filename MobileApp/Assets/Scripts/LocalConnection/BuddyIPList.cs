@@ -69,14 +69,12 @@ public class BuddyIPList : MonoBehaviour
 
 	private IEnumerator CheckBuddiesStatus()
 	{
-		while (true)
+        while (true)
 		{
 			if (!buddyDB.IsBuddiesListEmpty ()) {
-				//Debug.Log ("Buddies List NOT EMPTY!!!!!!!!!!!!!!!!!!");
-
 				foreach (BuddyDB lBuddy in buddyDB.BuddiesList) {
 					Int32 currTimestamp = (Int32)(DateTime.UtcNow.Subtract (new DateTime (1970, 1, 1))).TotalSeconds;
-					//Debug.Log ("Buddy " + lBuddy.ID + " " + lBuddy.status);
+					//Debug.Log ("Buddy " + lBuddy.name + " " + lBuddy.status);
 					if (currTimestamp - lBuddy.timestamp > 40) {
 						lBuddy.status = "offline";
 					}
@@ -183,7 +181,10 @@ public class BuddyIPList : MonoBehaviour
         }
 
 		foreach (BuddyDB lBuddy in buddyDB.BuddiesList) {
-			GameObject lBuddyDB = mPoolManager.fBuddy_Contact ("Content_Bottom/ScrollView/Viewport", lBuddy.name, lBuddy.ID, "", false, true, lBuddy.status, null);
+            //Debug.Log("************");
+            //Debug.Log("Buddy Name = " + lBuddy.name);
+            //Debug.Log("Buddy State = " + lBuddy.status);
+            GameObject lBuddyDB = mPoolManager.fBuddy_Contact ("Content_Bottom/ScrollView/Viewport", lBuddy.name, lBuddy.ID, "", false, true, lBuddy.status, null);
 			LoadingUI.AddObject(lBuddyDB);
 		}
     }

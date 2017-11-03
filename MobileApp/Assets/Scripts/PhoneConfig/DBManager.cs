@@ -35,9 +35,9 @@ public class BuddyDB
 {
     public string ID;
     public string name;
-	public string status;
-	public string appName;
-	public Int32 timestamp;
+    public string status;
+    public string appName;
+    public Int32 timestamp;
 }
 
 /// <summary>
@@ -91,16 +91,16 @@ public class DBManager : MonoBehaviour
     private string mBuddyList;
     private List<BuddyDB> mBuddiesList;
     private string mUserFilePath;
-	private string[] mCookie;
+    private string[] mCookie;
     private PhoneUser mCurrentUser;
     private PhoneUserList mUserList;
     private Texture2D mProfileTexture;
 
-	private PopupHandler popupHandler;
+    private PopupHandler popupHandler;
 
-	private PhoneUser mUser;
+    private PhoneUser mUser;
 
-	private List<string> mBuddiesIDs;
+    private List<string> mBuddiesIDs;
 
     void Start()
     {
@@ -110,10 +110,10 @@ public class DBManager : MonoBehaviour
         mUserFilePath = Application.persistentDataPath + "/users.txt";
         mCurrentUser = new PhoneUser();
         ReadPhoneUsers(true);
-		popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
-		mBuddiesIDs = new List<string>();
-		mBuddiesList = new List<BuddyDB>();
-		Debug.Log ("DB MANAGER STARTED");
+        popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
+        mBuddiesIDs = new List<string>();
+        mBuddiesList = new List<BuddyDB>();
+        Debug.Log("DB MANAGER STARTED");
     }
 
     void Update()
@@ -124,350 +124,405 @@ public class DBManager : MonoBehaviour
             popupNoConnection.SetActive(false);
     }
 
-	public bool IsBuddiesListEmpty()
-	{
-		return (mBuddiesList.Count > 0 ? false : true);
-	}
-
-	public void StartRequestConnection(string iFirstName, string iLastName, string iEmail, string iPassword, bool iNotif)
+    public bool IsBuddiesListEmpty()
     {
-        mNotifAllowed = iNotif;
-		StartCoroutine(ConnectAccountSess(iFirstName, iLastName, iEmail, iPassword));
+        return (mBuddiesList.Count > 0 ? false : true);
     }
 
-	private IEnumerator ConnectAccountSess(string iFirstName, string iLastName, string iEmail, string iPassword)
-	{
-		if (iEmail.Contains("demo") && iPassword.Contains("demo"))
-		{
-			mCurrentUser = new PhoneUser()
-			{
-				IsDefaultUser = false,
-				LastName = "DEMO",
-				FirstName = "Mr.",
-				Email = "demo@demo.com",
-				Picture = "DefaultUser"
-			};
-			ConfirmConnection();
-			yield break;
-		}
+    public void StartRequestConnection(string iFirstName, string iLastName, string iEmail, string iPassword, bool iNotif)
+    {
+        mNotifAllowed = iNotif;
+        StartCoroutine(ConnectAccountSess(iFirstName, iLastName, iEmail, iPassword));
+    }
 
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("email", iEmail);
-		lForm.AddField ("password", iPassword);
+    private IEnumerator ConnectAccountSess(string iFirstName, string iLastName, string iEmail, string iPassword)
+    {
+        //TO Clean 
+        /* if (iEmail.Contains("demo") && iPassword.Contains("demo"))
+         {
+             mCurrentUser = new PhoneUser()
+             {
+                 IsDefaultUser = false,
+                 LastName = "DEMO",
+                 FirstName = "Mr.",
+                 Email = "demo@demo.com",
+                 Picture = "DefaultUser"
+             };
+             ConfirmConnection();
+             yield break;
+         }*/
+        Debug.Log("iLastName = " + iLastName);
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("email", iEmail);
+        lForm.AddField("password", iPassword);
 
-		WWW lWWW = new WWW ("http://" + mHost + "/connectSess.php", lForm);
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/connectSess.php", lForm);
+        yield return lWWW;
 
-		if (requestOK(lWWW))
-		{
-			HttpResponse resp = parseResp(lWWW);
-			if(resp != null)
-			{
-				if(resp.ok)
-				{
-					Debug.Log ("WWW Success : " + lWWW.responseHeaders ["SET-COOKIE"]);
-					mCookie = lWWW.responseHeaders ["SET-COOKIE"].Split (new char[] { ';' });
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            if (resp != null)
+            {
+                if (resp.ok)
+                {
+                    Debug.Log("WWW Success : " + lWWW.responseHeaders["SET-COOKIE"]);
+                    mCookie = lWWW.responseHeaders["SET-COOKIE"].Split(new char[] { ';' });
 
-					mBuddyList = lWWW.text;
-					string lPicture = "";
-					bool lFound = false;
+                    mBuddyList = lWWW.text;
+                    string lPicture = "";
+                    bool lFound = false;
 
-					foreach(PhoneUser lUser in mUserList.Users) {
-						if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail) {
-							lPicture = lUser.Picture;
-							lFound = true;
-						}
-					}
+                    foreach (PhoneUser lUser in mUserList.Users)
+                    {
+                        if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail)
+                        {
+                            lPicture = lUser.Picture;
+                            lFound = true;
+                            //Bug 1: MG
+                            mCurrentUser = lUser;
+                        }
+                    }
+                    //Bug 1: MG
+                    //					mCurrentUser = new PhoneUser() {
+                    //						IsDefaultUser = false,
+                    //						LastName = iLastName,
+                    //						FirstName = iFirstName,
+                    //						Email = iEmail,
+                    //						Picture = lPicture
+                    //					};
+                    if (!lFound)
+                    {
+                        AddUserToConfig(iFirstName, iLastName, iEmail);
+                    }
 
-					mCurrentUser = new PhoneUser() {
-						IsDefaultUser = false,
-						LastName = iLastName,
-						FirstName = iFirstName,
-						Email = iEmail,
-						Picture = lPicture
-					};
-
-					if (!lFound) {
-						AddUserToConfig(iFirstName, iLastName, iEmail);
-					}
-
-					RetrieveBuddyList();
-					ConfirmConnection();
-				} else {
+                    RetrieveBuddyList();
+                    ConfirmConnection();
+                }
+                else
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 
     public void ConfirmConnection()
     {
+        foreach (Transform lChild in DotTransform)
+            GameObject.Destroy(lChild.gameObject);
         //Activate Canvas animations
         menuManager.GoSelectBuddyMenu();
     }
 
-	public void StartCreateAccount(string firstName, string lastName, string email, string password, string passwordConf)
+    public void StartCreateAccount(string firstName, string lastName, string email, string password, string passwordConf)
     {
-		if (string.Compare(password, passwordConf) == 0)
-			StartCoroutine(CreateAccount(firstName, lastName, email, password));
+        if (string.Compare(password, passwordConf) == 0)
+            StartCoroutine(CreateAccount(firstName, lastName, email, password));
     }
 
-	private IEnumerator CreateAccount(string firstName, string lastName, string email, string password)
-	{
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("firstname", firstName);
-		lForm.AddField ("lastname", lastName);
-		lForm.AddField ("email", email);
-		lForm.AddField ("password", password);
-		lForm.AddField ("hiddenkey", "key");
+    private IEnumerator CreateAccount(string firstName, string lastName, string email, string password)
+    {
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("firstname", firstName);
+        lForm.AddField("lastname", lastName);
+        lForm.AddField("email", email);
+        lForm.AddField("password", password);
+        lForm.AddField("hiddenkey", "key");
 
-		WWW lWWW = new WWW ("http://" + mHost + "/createAccountSess.php", lForm);
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/createAccountSess.php", lForm);
+        yield return lWWW;
 
-		if(requestOK(lWWW))
-		{
-			HttpResponse resp = parseResp(lWWW);
-			if (resp != null) {
-				if (resp.ok) {
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            
+            if (resp != null)
+            {
+                if (resp.ok)
+                {
+                    //Bug 2: MG
+                    foreach (Transform lChild in DotTransform)
+                        GameObject.Destroy(lChild.gameObject);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-					AddUserToConfig (firstName, lastName, email);
-					ReadPhoneUsers ();
-					menuManager.GoConnectionMenu ();
-					ResetCreateParameters ();
-				} else {
+                    AddUserToConfig(firstName, lastName, email);
+                    
+                    ReadPhoneUsers(true, /*Op 1: MG*/ true);
+                    menuManager.GoConnectionMenu();
+                    ResetCreateParameters();
+                }
+                else
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 
-	public void StartForgottenPassword(string email)
-	{
-		StartCoroutine(ForgottenPassword(email));
-	}
+    public void StartForgottenPassword(string email)
+    {
+        StartCoroutine(ForgottenPassword(email));
+    }
 
-	private IEnumerator ForgottenPassword(string email)
-	{
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("email", email);
+    private IEnumerator ForgottenPassword(string email)
+    {
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("email", email);
 
-		WWW lWWW = new WWW ("http://" + mHost + "/forgottenPassword.php", lForm);
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/forgottenPassword.php", lForm);
+        yield return lWWW;
 
-		if(requestOK(lWWW)) {
-			HttpResponse resp = parseResp(lWWW);
-			if(resp != null) {
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            if (resp != null)
+            {
                 popupHandler.OpenDisplayIcon(resp.msg, resp.ok ? "Check" : "Warning");
-			}
-		}
-	}
-
-	public void StartEditAccount(string firstName, string lastName, string password)
-    {
-		StartCoroutine(EditAccount(firstName, lastName, password));
+            }
+        }
     }
 
-	private IEnumerator EditAccount(string firstName, string lastName, string password)
-	{
-		string email = mCurrentUser.Email;
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("firstname", firstName);
-		lForm.AddField ("lastname", lastName);
-		lForm.AddField ("email", email);
-		if(password != "") {
-			lForm.AddField ("password", password);
-		}
+    public void StartEditAccount(string firstName, string lastName, string password)
+    {
+        StartCoroutine(EditAccount(firstName, lastName, password));
+    }
 
-		WWW lWWW = new WWW ("http://" + mHost + "/editAccount.php", lForm.data, addSessionCookie(lForm.headers));
-		yield return lWWW;
+    private IEnumerator EditAccount(string firstName, string lastName, string password)
+    {
+        string email = mCurrentUser.Email;
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("firstname", firstName);
+        lForm.AddField("lastname", lastName);
+        lForm.AddField("email", email);
+        if (password != "")
+        {
+            lForm.AddField("password", password);
+        }
 
-		if(requestOK(lWWW)) {
-			HttpResponse resp = parseResp(lWWW);
-			if (resp != null) {
-				if (resp.ok) {
+        WWW lWWW = new WWW("http://" + mHost + "/editAccount.php", lForm.data, addSessionCookie(lForm.headers));
+        yield return lWWW;
+
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            if (resp != null)
+            {
+                if (resp.ok)
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-					EditUserToConfig (firstName, lastName, email);
-					menuManager.PreviousMenu ();
-				} else {
+                    EditUserToConfig(firstName, lastName, email);
+                    menuManager.PreviousMenu();
+                }
+                else
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	public void StartAddBuddyToUser(string iBuddyID, string name)
-	{
-		StartCoroutine(AddBuddySess(iBuddyID, name));
-	}
+    public void StartAddBuddyToUser(string iBuddyID, string name)
+    {
+        StartCoroutine(AddBuddySess(iBuddyID, name));
+    }
 
-	private IEnumerator AddBuddySess(string iBuddyID, string name)
-	{
-		Debug.Log ("AddBuddySess " + iBuddyID + " " + name);
+    private IEnumerator AddBuddySess(string iBuddyID, string name)
+    {
+        Debug.Log("AddBuddySess " + iBuddyID + " " + name);
 
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("specialID", iBuddyID);
-		lForm.AddField ("name", name);
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("specialID", iBuddyID);
+        lForm.AddField("name", name);
 
-		WWW lWWW = new WWW ("http://" + mHost + "/addBuddySess.php", lForm.data, addSessionCookie(lForm.headers));
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/addBuddySess.php", lForm.data, addSessionCookie(lForm.headers));
+        yield return lWWW;
 
-		if (requestOK (lWWW)) {
-			HttpResponse resp = parseResp (lWWW);
-			if (resp != null) {
-				if (resp.ok) {
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            if (resp != null)
+            {
+                if (resp.ok)
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-                    menuManager.PreviousMenu ();
-					RetrieveBuddyList ();
-				} else {
+                    menuManager.PreviousMenu();
+                    RetrieveBuddyList();
+                }
+                else
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 
-	public void StartEditBuddy(string iSpecialID, string iName)
-	{
-		StartCoroutine(EditBuddy(iSpecialID, iName));
-	}
+    public void StartEditBuddy(string iSpecialID, string iName)
+    {
+        StartCoroutine(EditBuddy(iSpecialID, iName));
+    }
 
-	private IEnumerator EditBuddy(string iSpecialID, string iName)
-	{
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField ("specialID", iSpecialID);
-		lForm.AddField ("name", iName);
+    private IEnumerator EditBuddy(string iSpecialID, string iName)
+    {
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("specialID", iSpecialID);
+        lForm.AddField("name", iName);
 
-		WWW lWWW = new WWW ("http://" + mHost + "/editBuddy.php", lForm.data, addSessionCookie(lForm.headers));
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/editBuddy.php", lForm.data, addSessionCookie(lForm.headers));
+        yield return lWWW;
 
-		if (requestOK (lWWW)) {
-			HttpResponse resp = parseResp (lWWW);
-			if (resp != null) {
-				if (resp.ok) {
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            if (resp != null)
+            {
+                if (resp.ok)
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-                    menuManager.PreviousMenu ();
-					RetrieveBuddyList ();
-					Debug.Log ("WWW Success");
-				} else {
+                    menuManager.PreviousMenu();
+                    RetrieveBuddyList();
+                    Debug.Log("WWW Success");
+                }
+                else
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
-                    Debug.Log (resp.msg);
-				}
-			}
-		}
-	}
+                    Debug.Log(resp.msg);
+                }
+            }
+        }
+    }
 
-	public void StartRemoveBuddyFromUser(string specialID)
-	{
-		StartCoroutine(RemoveBuddyFromUser(specialID));
-	}
+    public void StartRemoveBuddyFromUser(string specialID)
+    {
+        StartCoroutine(RemoveBuddyFromUser(specialID));
+    }
 
-	private IEnumerator RemoveBuddyFromUser(string specialID)
-	{
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField("specialID", specialID);
-		lForm.AddField ("hiddenkey", "key");
+    private IEnumerator RemoveBuddyFromUser(string specialID)
+    {
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("specialID", specialID);
+        lForm.AddField("hiddenkey", "key");
 
-		WWW lWWW = new WWW ("http://" + mHost + "/removeBuddyFromUser.php", lForm.data, addSessionCookie(lForm.headers));
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/removeBuddyFromUser.php", lForm.data, addSessionCookie(lForm.headers));
+        yield return lWWW;
 
-		if (requestOK (lWWW)) {
-			HttpResponse resp = parseResp (lWWW);
-			if (resp != null) {
-				if (resp.ok) {
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            if (resp != null)
+            {
+                if (resp.ok)
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-                    menuManager.PreviousMenu ();
-					RetrieveBuddyList ();
-					Debug.Log ("WWW Success");
-				} else {
+                    menuManager.PreviousMenu();
+                    RetrieveBuddyList();
+                    Debug.Log("WWW Success");
+                }
+                else
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
-                    Debug.Log (resp.msg);
-				}
-			}
-		}
-	}
+                    Debug.Log(resp.msg);
+                }
+            }
+        }
+    }
 
-	public void StartDeleteAccount(string password)
-	{
-		StartCoroutine(DeleteAccount(password));
-	}
+    public void StartDeleteAccount(string password)
+    {
+        StartCoroutine(DeleteAccount(password));
+    }
 
-	private IEnumerator DeleteAccount(string password)
-	{
-		WWWForm lForm = new WWWForm ();
-		lForm.AddField("password", password);
-		lForm.AddField ("hiddenkey", "key");
+    private IEnumerator DeleteAccount(string password)
+    {
+        WWWForm lForm = new WWWForm();
+        lForm.AddField("password", password);
+        lForm.AddField("hiddenkey", "key");
 
-		WWW lWWW = new WWW ("http://" + mHost + "/deleteAccount.php", lForm.data, addSessionCookie(lForm.headers));
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/deleteAccount.php", lForm.data, addSessionCookie(lForm.headers));
+        yield return lWWW;
 
-		if (requestOK (lWWW)) {
-			HttpResponse resp = parseResp (lWWW);
-			if (resp != null) {
-				if (resp.ok) {
-					GameObject.Find ("PopUps").GetComponent<PopupHandler> ().ClosePopup ();
+        if (requestOK(lWWW))
+        {
+            HttpResponse resp = parseResp(lWWW);
+            if (resp != null)
+            {
+                if (resp.ok)
+                {
+                    GameObject.Find("PopUps").GetComponent<PopupHandler>().ClosePopup();
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
 
-                    RemoveUserFromLocalStorage (mCurrentUser);
-					ReadPhoneUsers ();
-					menuManager.GoConnectionMenu ();
+                    RemoveUserFromLocalStorage(mCurrentUser);
+                    ReadPhoneUsers();
+                    menuManager.GoConnectionMenu();
 
-					Debug.Log ("WWW Success");
-				} else {
+                    Debug.Log("WWW Success");
+                }
+                else
+                {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
-                    Debug.Log (resp.msg);
-				}
-			}
-		}
-	}
+                    Debug.Log(resp.msg);
+                }
+            }
+        }
+    }
 
-	private void RetrieveBuddyList()
-	{
-		StartCoroutine(RetrieveBuddyListCo());
-	}
+    private void RetrieveBuddyList()
+    {
+        StartCoroutine(RetrieveBuddyListCo());
+    }
 
-	private IEnumerator RetrieveBuddyListCo()
-	{
-		WWWForm lForm = new WWWForm();
+    private IEnumerator RetrieveBuddyListCo()
+    {
+        WWWForm lForm = new WWWForm();
 
-		WWW lWWW = new WWW ("http://" + mHost + "/retrieveBuddyList.php", new byte[] { 0 }, addSessionCookie(lForm.headers));
-		yield return lWWW;
+        WWW lWWW = new WWW("http://" + mHost + "/retrieveBuddyList.php", new byte[] { 0 }, addSessionCookie(lForm.headers));
+        yield return lWWW;
 
-		if(requestOK(lWWW)) {
-			if(lWWW.text.CompareTo("not logged") == 0) {
+        if (requestOK(lWWW))
+        {
+            if (lWWW.text.CompareTo("not logged") == 0)
+            {
                 popupHandler.OpenDisplayIcon("Veuillez vous identifier", "Warning");
-            } else {
-				//Debug.Log("WWW Success : " + lWWW.text);
-				mBuddyList = lWWW.text;
-				mBuddiesList = new List<BuddyDB>();
+            }
+            else
+            {
+                //Debug.Log("WWW Success : " + lWWW.text);
+                mBuddyList = lWWW.text;
+                mBuddiesList = new List<BuddyDB>();
 
-				if (!string.IsNullOrEmpty(mBuddyList)) {
-					string[] lBuddyList = mBuddyList.Split('\n');
+                if (!string.IsNullOrEmpty(mBuddyList))
+                {
+                    string[] lBuddyList = mBuddyList.Split('\n');
 
-					for (int i = 0; i < lBuddyList.Length - 1; i++) {
-						string[] lBuddyIDs = lBuddyList[i].Split('|');
-						mBuddiesList.Add(new BuddyDB { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
-					}
-				}
+                    for (int i = 0; i < lBuddyList.Length - 1; i++)
+                    {
+                        string[] lBuddyIDs = lBuddyList[i].Split('|');
+                        mBuddiesList.Add(new BuddyDB { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
+                    }
+                }
 
-				backgroundListener.SubscribeStatusChannels(mBuddiesList);
-				if(mNotifAllowed)
-					backgroundListener.SubscribeNotificationChannels(mBuddiesList);
-			}
-		}
-	}
+                backgroundListener.SubscribeStatusChannels(mBuddiesList);
+                if (mNotifAllowed)
+                    backgroundListener.SubscribeNotificationChannels(mBuddiesList);
+            }
+        }
+    }
 
-	public void SubscribeStatus()
-	{
-		backgroundListener.SubscribeStatusChannels(mBuddiesList);
-	}
+    public void SubscribeStatus()
+    {
+        backgroundListener.SubscribeStatusChannels(mBuddiesList);
+    }
 
-    public void ReadPhoneUsers(bool iFirstRead = false)
+    public void ReadPhoneUsers(bool iFirstRead = false, /*Op 1: MG*/ bool iCreateAccount = false)
     {
         //We read the user file and save the list of registered users on the phone
         PhoneUserList lUserList = new PhoneUserList();
 
-        if(File.Exists(mUserFilePath)) {
+        if (File.Exists(mUserFilePath))
+        {
             //Debug.Log("User file found : " + mUserFilePath);            
-        } else {            
+        }
+        else
+        {
             File.Copy(ResourceManager.StreamingAssetFilePath("users.txt"), mUserFilePath);
 
             if (iFirstRead)
@@ -486,8 +541,10 @@ public class DBManager : MonoBehaviour
             canvasAppAnimator.SetTrigger("GoConnectAccount");
 
         //Then we get the default user and register it as the "current" one
-        foreach (PhoneUser lUser in lUserList.Users) {
-            if (lUser.IsDefaultUser) {
+        foreach (PhoneUser lUser in lUserList.Users)
+        {
+            if (lUser.IsDefaultUser)
+            {
                 mCurrentUser = lUser;
                 textFirstName.text = lUser.FirstName;
                 textLastName.text = lUser.LastName;
@@ -495,35 +552,55 @@ public class DBManager : MonoBehaviour
             }
         }
 
-        mUserList = lUserList;
+        if (iCreateAccount) mCurrentUser = mUserList.Users [mUserList.Users.Length - 1];
 
+        mUserList = lUserList;
         GenerateUserDisplay();
+
+        //TO Ameliorate when adding selecting the photo of a new user 
+        //We can use iCreateAccount option instead
+        GameObject lImage = GameObject.Find("Connect_User_Picture");
+        if (!iFirstRead && lImage != null)
+        {
+            string lDisplayedPicture = mCurrentUser.Picture;
+            LoadUserPicture(lDisplayedPicture);
+            GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
+            GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
+        }
+
     }
 
-	private void RemoveUserFromLocalStorage(PhoneUser user)
+    private void RemoveUserFromLocalStorage(PhoneUser user)
     {
-		int lUserLength = mUserList.Users.Length;
-		PhoneUser[] lTempList = new PhoneUser[lUserLength - 1];
+        int lUserLength = mUserList.Users.Length;
+        PhoneUser[] lTempList = new PhoneUser[lUserLength - 1];
+        Debug.Log("Length " + lUserLength);
+        for (int i = 0, j = 0; i < lUserLength; i++, j++)
+        {
+            if (mUserList.Users[i].Email == user.Email && mUserList.Users[i].FirstName == user.FirstName && mUserList.Users[i].LastName == user.LastName)
+            {
+                j--;
+                Debug.Log("User successfully removed from local storage");
+            }
+            else
+            {
+                lTempList[j] = mUserList.Users[i];
+            }
+        }
+        
+        mUserList.Users = lTempList;
+        ExportToJson(mUserList);
+        
+        
 
-		for(int i = 0, j = 0; i < lUserLength; i++, j++) {
-			if(mUserList.Users[i].Email == user.Email && mUserList.Users[i].FirstName == user.FirstName && mUserList.Users[i].LastName == user.LastName) {
-				j--;
-				Debug.Log("User successfully removed from local storage");
-			} else {
-				lTempList[j] = mUserList.Users[i];
-			}
-		}
-
-		mUserList.Users = lTempList;
-		ExportToJson(mUserList);
+        foreach (Transform lChild in DotTransform)
+            GameObject.Destroy(lChild.gameObject);
     }
 
     public void GenerateUserDisplay()
     {
-        foreach (Transform lChild in DotTransform)
-            GameObject.Destroy(lChild.gameObject);
-
-        for (int i = 0; i < mUserList.Users.Length - 1; i++) {
+        for (int i = 0; i < mUserList.Users.Length - 1; i++)
+        {
             GameObject lDot = GameObject.Instantiate(DotOFF);
             lDot.transform.SetParent(DotTransform);
             lDot.transform.localScale = Vector3.one;
@@ -535,34 +612,38 @@ public class DBManager : MonoBehaviour
         lDotOn.transform.localScale = Vector3.one;
         mDisplayedIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
         lDotOn.transform.SetSiblingIndex(mDisplayedIndex);
-
+        lDotOn.transform.SetAsLastSibling();
+        lDotOn.transform.SetSiblingIndex(mDisplayedIndex);
         //We add a last one to add an existing account
         GameObject lDotLast = GameObject.Instantiate(DotOFF);
         lDotLast.transform.SetParent(DotTransform);
         lDotLast.transform.localScale = Vector3.one;
+       
+        textFirstName.text = mCurrentUser.FirstName;
+        textLastName.text = mCurrentUser.LastName;
     }
 
     private void ResetCreateParameters()
     {
-		InputField ifCurrent = GameObject.Find("Field_FirstName").GetComponent<InputField>();
-		ifCurrent.Select();
-		ifCurrent.text = ""; // with unity 5.6 > change this line and the previous to ifCurrent.Clear();
+        InputField ifCurrent = GameObject.Find("Field_FirstName").GetComponent<InputField>();
+        ifCurrent.Select();
+        ifCurrent.text = ""; // with unity 5.6 > change this line and the previous to ifCurrent.Clear();
 
-		ifCurrent = GameObject.Find("Field_LastName").GetComponent<InputField>();
-		ifCurrent.Select();
-		ifCurrent.text = "";
+        ifCurrent = GameObject.Find("Field_LastName").GetComponent<InputField>();
+        ifCurrent.Select();
+        ifCurrent.text = "";
 
-		ifCurrent = GameObject.Find("Create_Email_Input").GetComponent<InputField>();
-		ifCurrent.Select();
-		ifCurrent.text = "";
+        ifCurrent = GameObject.Find("Create_Email_Input").GetComponent<InputField>();
+        ifCurrent.Select();
+        ifCurrent.text = "";
 
-		ifCurrent = GameObject.Find("Create_PW_Input").GetComponent<InputField>();
-		ifCurrent.Select();
-		ifCurrent.text = "";
+        ifCurrent = GameObject.Find("Create_PW_Input").GetComponent<InputField>();
+        ifCurrent.Select();
+        ifCurrent.text = "";
 
-		ifCurrent = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>();
-		ifCurrent.Select();
-		ifCurrent.text = "";
+        ifCurrent = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>();
+        ifCurrent.Select();
+        ifCurrent.text = "";
     }
 
     private void ExportToJson(PhoneUserList iUser)
@@ -574,7 +655,7 @@ public class DBManager : MonoBehaviour
         lStrWriter.Close();
     }
 
-    private void AddUserToConfig(string iFName, string iLName, string iEMail, bool iIsDefaultUser = false, string iPicture="")
+    private void AddUserToConfig(string iFName, string iLName, string iEMail, bool iIsDefaultUser = false, string iPicture = "")
     {
         Debug.Log("Adding user to config");
         //Create new user
@@ -590,9 +671,10 @@ public class DBManager : MonoBehaviour
         //Add new user to current list
         //As only arrays can be used in json, we need to create an intermediate bigger list.
         int lUserLength = mUserList.Users.Length;
-        PhoneUser[] lTempList = new PhoneUser[lUserLength+1];
+        PhoneUser[] lTempList = new PhoneUser[lUserLength + 1];
 
-        for(int i=0; i<lUserLength; i++) {
+        for (int i = 0; i < lUserLength; i++)
+        {
             lTempList[i] = mUserList.Users[i];
         }
         lTempList[lUserLength] = lNewUser;
@@ -601,47 +683,53 @@ public class DBManager : MonoBehaviour
 
         //Save the new user file
         ExportToJson(mUserList);
+        mCurrentUser = lNewUser;
     }
 
-	private void EditUserToConfig(string firstname, string lastname, string email)
-	{
-		for(int i = 0; i < mUserList.Users.Length; i++) {
-			if(mUserList.Users[i].Email.CompareTo(email) == 0) {
-				mUserList.Users[i].FirstName = firstname;
-				mUserList.Users[i].LastName = lastname;
-			}
-		}
+    private void EditUserToConfig(string firstname, string lastname, string email)
+    {
+        for (int i = 0; i < mUserList.Users.Length; i++)
+        {
+            if (mUserList.Users[i].Email.CompareTo(email) == 0)
+            {
+                mUserList.Users[i].FirstName = firstname;
+                mUserList.Users[i].LastName = lastname;
+            }
+        }
         ExportToJson(mUserList);
-	}
+    }
 
-	public void RemoveUserToConfig(string iFName, string iLName, string iEMail)
-	{
-		mUser = new PhoneUser()
-		{
-			FirstName = iFName,
-			LastName = iLName,
-			Email = iEMail
-		};
+    public void RemoveUserToConfig(string iFName, string iLName, string iEMail)
+    {
+        mUser = new PhoneUser()
+        {
+            FirstName = iFName,
+            LastName = iLName,
+            Email = iEMail
+        };
         popupHandler.OpenYesNoIcon("VOULEZ-VOUS VRAIMENT SUPPRIMER LE COMPTE LOCAL ?\n" + iEMail, DeleteUserFromList, "Warning");
-	}
+    }
 
-	public void DeleteUserFromList()
-	{
-		RemoveUserFromLocalStorage (mUser);
-		ReadPhoneUsers ();
-	}
+    public void DeleteUserFromList()
+    {
+        RemoveUserFromLocalStorage(mUser);
+        ReadPhoneUsers();
+    }
 
     public Sprite GetCurrentUserImage()
     {
         //Function name is explicit enough. We load the picture file into the sprite
-        if(!string.IsNullOrEmpty(mCurrentUser.Picture)) {
+        if (!string.IsNullOrEmpty(mCurrentUser.Picture))
+        {
             byte[] lFileData = File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(mCurrentUser.Picture));
             Texture2D lTex = new Texture2D(2, 2);
             lTex.LoadImage(lFileData);
             //Image lProfilePicture = GameObject.Find(iObjectName).GetComponentsInChildren<Image>()[2];
             //lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
             return Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
-        } else {
+        }
+        else
+        {
             Sprite lSprite = Resources.Load<Sprite>("DefaultUser") as Sprite;
             return lSprite;
         }
@@ -650,13 +738,16 @@ public class DBManager : MonoBehaviour
     private void LoadUserPicture(string iPictureName)
     {
         //Function name is explicit enough. We load the picture file into the sprite
-        if((!string.IsNullOrEmpty(iPictureName))) {
+        if ((!string.IsNullOrEmpty(iPictureName)))
+        {
             byte[] lFileData = File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(iPictureName));
             Texture2D lTex = new Texture2D(2, 2);
             lTex.LoadImage(lFileData);
             Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
             lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
-        } else {
+        }
+        else
+        {
             //Sprite lSprite = Resources.Load<Sprite>("DefaultUser") as Sprite;
             Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
             lProfilePicture.sprite = poolManager.GetSprite("DefaultUser");
@@ -669,23 +760,35 @@ public class DBManager : MonoBehaviour
         int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
         string lDisplayedPicture = "";
 
-        if(lIndex != mUserList.Users.Length - 1) {
+        GameObject lTrashButton = GameObject.Find("Content_Top/Top_UI/Button_L(Clone)");
+
+        if (lIndex != mUserList.Users.Length - 1)
+        {
             mCurrentUser = mUserList.Users[lIndex + 1];
             lDisplayedPicture = mCurrentUser.Picture;
+            GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
             GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
             mDisplayedIndex++;
-        } else {
+            lTrashButton.SetActive(true);
+        }
+        else
+        {
             //If we reach the end of users saved locally, we show the "Add already created account option"
-            if(mDisplayedIndex == lIndex) {
+            if (mDisplayedIndex == lIndex)
+            {
                 textFirstName.gameObject.SetActive(false);
                 textLastName.gameObject.SetActive(false);
                 inputFirstName.gameObject.SetActive(true);
                 inputLastName.gameObject.SetActive(true);
                 inputFirstName.text = "Enter your First Name";
                 inputLastName.text = "Enter your Last Name";
+                GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
                 GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
                 mDisplayedIndex++;
-            } else {
+                lTrashButton.SetActive(false);
+            }
+            else
+            {
                 mCurrentUser = mUserList.Users[0];
                 lDisplayedPicture = mCurrentUser.Picture;
                 mDisplayedIndex = 0;
@@ -693,7 +796,9 @@ public class DBManager : MonoBehaviour
                 textLastName.gameObject.SetActive(true);
                 inputFirstName.gameObject.SetActive(false);
                 inputLastName.gameObject.SetActive(false);
+                GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
                 GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
+                lTrashButton.SetActive(true);
             }
         }
         textFirstName.text = mCurrentUser.FirstName;
@@ -708,16 +813,22 @@ public class DBManager : MonoBehaviour
         //Self-explanatory
         int lIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
         string lDisplayedPicture = "";
+        GameObject lTrashButton = GameObject.Find("Content_Top/Top_UI/Button_L(Clone)");
 
         if (lIndex != 0 && mDisplayedIndex != mUserList.Users.Length)
         {
             mCurrentUser = mUserList.Users[lIndex - 1];
             lDisplayedPicture = mCurrentUser.Picture;
+            GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
             GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
             mDisplayedIndex--;
-        } else {
+            lTrashButton.SetActive(true);
+        }
+        else
+        {
             mCurrentUser = mUserList.Users[mUserList.Users.Length - 1];
-            if (mDisplayedIndex == 0) {
+            if (mDisplayedIndex == 0)
+            {
                 mDisplayedIndex = mUserList.Users.Length;
                 textFirstName.gameObject.SetActive(false);
                 textLastName.gameObject.SetActive(false);
@@ -725,15 +836,21 @@ public class DBManager : MonoBehaviour
                 inputLastName.gameObject.SetActive(true);
                 inputFirstName.text = "Enter your First Name";
                 inputLastName.text = "Enter your Last Name";
+                GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
                 GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
-            } else {
+                lTrashButton.SetActive(false);
+            }
+            else
+            {
                 mDisplayedIndex = mUserList.Users.Length - 1;
                 lDisplayedPicture = mCurrentUser.Picture;
                 textFirstName.gameObject.SetActive(true);
                 textLastName.gameObject.SetActive(true);
                 inputFirstName.gameObject.SetActive(false);
                 inputLastName.gameObject.SetActive(false);
+                GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
                 GameObject.Find("EMail_Input").GetComponent<InputField>().text = mCurrentUser.Email;
+                lTrashButton.SetActive(true);
             }
         }
         textFirstName.text = mCurrentUser.FirstName;
@@ -750,35 +867,40 @@ public class DBManager : MonoBehaviour
         return new string(chars);
     }
 
-	private Dictionary<string, string> addSessionCookie(Dictionary<string, string> dictionary)
-	{
-		if(mCookie != null) {
-			dictionary.Add("Cookie", mCookie[0]);
-		}
+    private Dictionary<string, string> addSessionCookie(Dictionary<string, string> dictionary)
+    {
+        if (mCookie != null)
+        {
+            dictionary.Add("Cookie", mCookie[0]);
+        }
 
-		return dictionary;
-	}
+        return dictionary;
+    }
 
-	private bool requestOK(WWW www)
-	{
-		if(www.error != null) {
-			Debug.Log ("[ERROR] on WWW Request " + www.url + " : " + www.error + " / " + www.text);
+    private bool requestOK(WWW www)
+    {
+        if (www.error != null)
+        {
+            Debug.Log("[ERROR] on WWW Request " + www.url + " : " + www.error + " / " + www.text);
             popupHandler.OpenDisplayIcon("ECHEC DE COMMUNICATION AVEC LE SERVEUR", "Warning");
             return false;
-		}
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	private HttpResponse parseResp(WWW www)
-	{
-		HttpResponse resp = null;
-		try {
-			resp = JsonUtility.FromJson<HttpResponse>(www.text);
-		} catch(Exception e) {
+    private HttpResponse parseResp(WWW www)
+    {
+        HttpResponse resp = null;
+        try
+        {
+            resp = JsonUtility.FromJson<HttpResponse>(www.text);
+        }
+        catch (Exception e)
+        {
             popupHandler.OpenDisplayIcon("UN PROBLEME EST SURVENU LORS DE LA LECTURE DE LA REPONSE DU SERVEUR", "Warning");
-		}
+        }
 
-		return resp;
-	}
+        return resp;
+    }
 }

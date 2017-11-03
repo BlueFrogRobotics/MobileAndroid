@@ -162,16 +162,22 @@ public class PopupHandler : MonoBehaviour {
     public void OpenYesNoIcon(string iQuestion, UnityAction iCallBackYes, string iIconName = "")
     {
         ResetUI();
+        
         popupYesNoIcon.SetActive(true);
 
         Text lQuestion = GameObject.Find("Popup_YesNoIcon/Text").GetComponent<Text>();
         lQuestion.text = iQuestion;
 
         Button lYesButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_Yes").GetComponent<Button>();
+        //Bug 7: MG
+        lYesButton.onClick.RemoveAllListeners();
         lYesButton.onClick.AddListener(iCallBackYes);
         lYesButton.onClick.AddListener(ClosePopup);
+        
 
         Button lNoButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_No").GetComponent<Button>();
+        //Bug 7: MG
+        lNoButton.onClick.RemoveAllListeners();
         lNoButton.onClick.AddListener(ClosePopup);
 
         if(string.IsNullOrEmpty(iIconName))
