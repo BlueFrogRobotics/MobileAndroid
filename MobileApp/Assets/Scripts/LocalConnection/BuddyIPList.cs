@@ -34,8 +34,8 @@ public class BuddyIPList : MonoBehaviour
     void OnEnable()
     {
         mobileServer.gameObject.SetActive(true);
-		CreateListDisplay();
 		StartCoroutine(CheckBuddiesStatus());
+		CreateListDisplay();
     }
 
     void OnDisable()
