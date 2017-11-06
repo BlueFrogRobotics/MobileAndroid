@@ -3,8 +3,11 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _TexWidth ("texture width", Float) = 480.0
-        _TexHeight ("texture height", Float) = 640.0
+        _Witdh ("Width", Float) = 1280.0
+    	_Height ("Height", Float) = 960.0
+    	_YSize ("YSize", Float) = 1228800.0 // _Witdh * _Height;
+    	_USize ("USize", Float) = 307200.0 // _YSize / 4;
+    	_FrameSize ("FrameSize", Float) = 1843200.0 // _YSize * 1.5f;
     }
     SubShader
     {
@@ -44,10 +47,13 @@
             };
 
             sampler2D _MainTex;
-            float _TexWidth;
-            float _TexHeight;
             float4 _MainTex_ST;
-            
+            float _Witdh;
+            float _Height;
+    		float _YSize;
+    		float _USize;
+    		float _FrameSize;
+
             v2f vert (appdata v)
             {
                 v2f o;
@@ -59,23 +65,20 @@
             
             fixed4 frag (v2f input) : SV_Target
             {
-                float i = input.uv.x * _TexWidth;
-                float j = input.uv.y * _TexHeight;
+                float i = input.uv.x * _Witdh;
+                float j = input.uv.y * _Height;
 
                 float iSub = floor(i / 2);
                 float jSub = floor(j / 2);
-                float uOffset = jSub * (_TexWidth / 2) + iSub;
+                float uOffset = jSub * (_Witdh / 2) + iSub;
 
-                float ySize = _TexWidth * _TexHeight;
-                float uSize = ySize / 4;
+                float uIndex = _YSize + uOffset;
+                float vIndex = uIndex + _USize;
 
-                float uIndex = ySize + uOffset;
-                float vIndex = uIndex + uSize;
-
-                float ux = (uIndex % _TexWidth) / _TexWidth;
-                float uy = floor(uIndex / _TexWidth) / (_TexHeight * 1.5f);
-                float vx = (vIndex % _TexWidth) / _TexWidth;
-                float vy = floor(vIndex / _TexWidth) / (_TexHeight * 1.5f);
+                float ux = (uIndex % _Witdh) / _Witdh;
+                float uy = uIndex / _FrameSize;
+                float vx = (vIndex % _Witdh) / _Witdh;
+                float vy = vIndex / _FrameSize;
 
                 float y = tex2D(_MainTex, float2(input.uv.x, input.uv.y / 1.5f));
                 float u = tex2D(_MainTex, float2(ux, uy));
