@@ -49,6 +49,7 @@ public class ConnectAccountState : ASubState {
             //LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", null));// new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             //lDB.ReadPhoneUsers();
+            lDB.GenerateUserDisplay();
         }
     }
 

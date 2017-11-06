@@ -557,7 +557,6 @@ public class DBManager : MonoBehaviour
         if (iCreateAccount) mCurrentUser = mUserList.Users [mUserList.Users.Length - 1];
 
         mUserList = lUserList;
-        GenerateUserDisplay();
 
         //TO Ameliorate when adding selecting the photo of a new user 
         //We can use iCreateAccount option instead
