@@ -708,6 +708,7 @@ public class DBManager : MonoBehaviour
     {
         RemoveUserFromLocalStorage(mUser);
         ReadPhoneUsers();
+        GenerateUserDisplay ();
     }
 
     public Sprite GetCurrentUserImage()
