@@ -110,4 +110,15 @@ public class ConnectAccountState : ASubState {
 		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartForgottenPassword(email);
 	}
+
+	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+	{
+		if (indexState == (int)State.CLOSE) {
+			GameObject Dots = GameObject.Find ("CanvasApp/Content_Top/Navigation_Account/Dots");
+			Debug.Log ("ConnectAccount OnStateExit : " + Dots);
+			foreach (Transform lChild in Dots.transform)
+				GameObject.Destroy (lChild.gameObject);
+		}
+		base.OnStateExit(animator, stateInfo, layerIndex);
+	}
 }

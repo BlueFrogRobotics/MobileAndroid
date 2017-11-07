@@ -209,8 +209,6 @@ public class DBManager : MonoBehaviour
 
     public void ConfirmConnection()
     {
-        foreach (Transform lChild in DotTransform)
-            GameObject.Destroy(lChild.gameObject);
         //Activate Canvas animations
         menuManager.GoSelectBuddyMenu();
     }
@@ -241,9 +239,6 @@ public class DBManager : MonoBehaviour
             {
                 if (resp.ok)
                 {
-                    //Bug 2: MG
-                    foreach (Transform lChild in DotTransform)
-                        GameObject.Destroy(lChild.gameObject);
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
                     AddUserToConfig(firstName, lastName, email);
                     
@@ -590,9 +585,7 @@ public class DBManager : MonoBehaviour
         }
         
         mUserList.Users = lTempList;
-        ExportToJson(mUserList);
-        
-        
+        ExportToJson(mUserList);     
 
         foreach (Transform lChild in DotTransform)
             GameObject.Destroy(lChild.gameObject);
