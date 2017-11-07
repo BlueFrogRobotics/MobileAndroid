@@ -9,7 +9,7 @@ public class EditAccountState: ASubState {
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
-        if (indexState == 1)
+        if (indexState == (int)State.OPEN)
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             PhoneUser lPhoneUser = GameObject.Find("DBManager").GetComponent<DBManager>().CurrentUser;

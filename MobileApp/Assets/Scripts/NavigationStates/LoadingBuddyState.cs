@@ -9,7 +9,7 @@ public class LoadingBuddyState : ASubState {
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
-        if (indexState == 1)
+        if (indexState == (int)State.OPEN)
         {
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();
@@ -21,7 +21,7 @@ public class LoadingBuddyState : ASubState {
             LoadingUI.AddObject(lPoolManager.fLogo("Content_Top"));
         }
 
-        else if(indexState == 2)
+        else if(indexState == (int)State.IDLE)
         {
             int lMenuSelected = animator.GetInteger("MenuBuddy");
             //Chat menu selected

@@ -16,6 +16,8 @@ public abstract class ASubState : StateMachineBehaviour {
 	[SerializeField]
 	protected int indexState;
 
+    protected enum State{OPEN=1, IDLE, CLOSE};
+
     public GameObject ContentBottom { get; set; }
 	public GameObject ContentTop { get; set; }
 	public Animator BackgroundAnimator { get; set; }
@@ -38,7 +40,7 @@ public abstract class ASubState : StateMachineBehaviour {
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
-        if (indexState == 3) {
+        if (indexState == (int)State.CLOSE) {
 			if (ContentTop != null)
 				ContentTop.SetActive (false);
 			if (ContentBottom != null)

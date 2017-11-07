@@ -9,7 +9,7 @@ public class SelectBuddyState : ASubState {
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
 
-        if (indexState == 1)
+        if (indexState == (int)State.OPEN)
         {
             BuddyIPList lIPList = GameObject.Find("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList>();
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
@@ -45,7 +45,7 @@ public class SelectBuddyState : ASubState {
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(indexState == 2) {
+        if(indexState == (int)State.IDLE) {
             BuddyIPList lIPList = GameObject.Find("Viewport").GetComponent<BuddyIPList>();
             lIPList.enabled = false;
         }
