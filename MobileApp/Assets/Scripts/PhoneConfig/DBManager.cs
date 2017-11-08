@@ -376,10 +376,13 @@ public class DBManager : MonoBehaviour
                 {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
                     menuManager.PreviousMenu();
-                    RetrieveBuddyList();
                     Debug.Log("WWW Success");
                     //Modify the name of the selected buddy
                     SelectBuddy.BuddyName = iName;
+                    foreach (BuddyDB lBuddy in mBuddiesList) {
+                        if (lBuddy.ID == SelectBuddy.BuddyID)
+                            lBuddy.name = SelectBuddy.BuddyName;
+                    }
                 }
                 else
                 {
