@@ -209,6 +209,8 @@ public class DBManager : MonoBehaviour
 
     public void ConfirmConnection()
     {
+        foreach (Transform lChild in DotTransform)
+            GameObject.Destroy(lChild.gameObject);
         //Activate Canvas animations
         menuManager.GoSelectBuddyMenu();
     }
@@ -591,7 +593,7 @@ public class DBManager : MonoBehaviour
             GameObject.Destroy(lChild.gameObject);
     }
 
-    public void GenerateUserDisplay()
+	public void GenerateUserDisplay()
     {
         for (int i = 0; i < mUserList.Users.Length - 1; i++)
         {

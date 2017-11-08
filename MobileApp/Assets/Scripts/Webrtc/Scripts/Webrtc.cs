@@ -98,14 +98,8 @@ public class Webrtc : MonoBehaviour
 
     public void InitImages()
     {
-        mRemoteRawImage.transform.localScale = new Vector3(1, -1, 0);
-        mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
-
-        //if(mLocalNativeTexture == null && mRemoteNativeTexture == null)
-        {
-            InitLocalTexture(INIT_WIDTH, INIT_HEIGHT);
-            InitRemoteTexture(INIT_WIDTH, INIT_HEIGHT);
-        }
+		InitLocalTexture(INIT_WIDTH, INIT_HEIGHT);
+		InitRemoteTexture(INIT_WIDTH, INIT_HEIGHT);
     }
 
 	void InitLocalTexture(int width, int height)
@@ -205,9 +199,6 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StopWebRTC()
     {
-        mRemoteRawImage.transform.localScale = new Vector3(1, 1, 0);
-        mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
-
 		mRemoteNativeTexture.Destroy();
 		mLocalNativeTexture.Destroy();
 
