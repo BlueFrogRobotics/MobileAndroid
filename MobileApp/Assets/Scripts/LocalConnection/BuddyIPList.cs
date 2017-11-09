@@ -87,7 +87,7 @@ public class BuddyIPList : MonoBehaviour
         string[] lTab = iNewBuddyIP.Split(':');
         string lBuddyIP = lTab[lTab.Length - 1];
 
-        if (mIPList.Contains(lBuddyIP))
+        if (mIPList.Contains(lBuddyIP) || this.enabled==false)
             return;
 
 		GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "New Buddy !", iNewBuddyIP, "", true, true, "online", null);
