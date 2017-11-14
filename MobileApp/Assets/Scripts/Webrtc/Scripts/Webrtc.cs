@@ -205,6 +205,7 @@ public class Webrtc : MonoBehaviour
         Debug.Log("Stop WebRTC");
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
+            Connected = false;
             cls.CallStatic("StopWebrtc");
         }
     }
@@ -341,10 +342,9 @@ public class Webrtc : MonoBehaviour
 
         if (iMessage == "CONNECTED")
             Connected = true;
-		else if (iMessage.Contains("onStateChange: CLOSED")) {
-			Connected = false;
+        else if (iMessage.Contains("onStateChange: CLOSED") && Connected) {
 			StopWebRTC();
-			menuManager.GoConnectedMenu();
+            menuManager.PreviousMenu();
 		}
     }
 

@@ -4,8 +4,6 @@ using System.Collections;
 
 public class LoadingBuddyState : ASubState {
 
-    private Animator mAnimator;
-
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
@@ -19,20 +17,34 @@ public class LoadingBuddyState : ASubState {
             // CREATING OBJECTS
             LoadingUI.AddObject(lPoolManager.fLoading("Content_Top", GoBack.LoadingBuddyMessage));
             LoadingUI.AddObject(lPoolManager.fLogo("Content_Top"));
+
+            switch(animator.GetInteger("MenuBuddy"))
+            {
+                case 1: //Chat menu selected
+                    GameObject.Find("Chat").GetComponent<ChatManager>().LoadMessageHistory();
+                    BackgroundListener lListener = GameObject.Find("BackgroundListener").GetComponent<BackgroundListener>();
+                    lListener.SubscribeChatChannel();
+                    break;
+                case 2 : //Distant control selected
+                    GameObject.Find ("UnityWebrtc").GetComponent<Webrtc>().InitWebRTC();
+                    GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy();
+                    break;
+            }
+
         }
 
         else if(indexState == (int)State.IDLE)
         {
-            int lMenuSelected = animator.GetInteger("MenuBuddy");
-            //Chat menu selected
-            if(lMenuSelected == 1) {
-                animator.SetTrigger("EndScene");
-            }
-            //Distant control selected
-            else if(lMenuSelected == 3) {
-                mAnimator = animator;
-                SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
-                GameObject.Find("MenuManager").GetComponent<GoBack>().WaitForCallConfirmation(lSelect.Remote);
+            GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
+            switch(animator.GetInteger("MenuBuddy"))
+            {
+                case 1: //Chat menu selected
+                    lMenuManager.GoChatMenu();
+                    break;
+                case 2: //Distant control selected
+                    SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
+                    lMenuManager.WaitForCallConfirmation(lSelect.Remote);
+                    break;
             }
         }
     }

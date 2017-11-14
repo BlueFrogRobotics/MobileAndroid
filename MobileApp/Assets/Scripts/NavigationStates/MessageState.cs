@@ -19,7 +19,7 @@ public class MessageState : ASubState {
             // DESACTIVATE, ACTIVATE GENERICS
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "MessageUI", "BottomUI" });
             // CREATING OBJECTS
-            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { chatManager.SaveMessageHistory, lMenuManager.GoConnectedMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { chatManager.SaveMessageHistory, lMenuManager.PreviousMenu }));
 
             GameObject lInputField = lPoolManager.fTextField_Icon("Content_Bottom/Bottom_UI", "ASK SOMETHING...", "", "Message", null, new List<UnityAction<string>>() { chatManager.NewChatMessage }, null);
             lInputField.GetComponent<InputField>().characterLimit = 0;
