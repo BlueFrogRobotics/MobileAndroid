@@ -17,9 +17,6 @@ public class BackgroundListener : MonoBehaviour
     private NotificationSender notification;
 
     [SerializeField]
-    private Webrtc webRTC;
-
-    [SerializeField]
     private ChatManager chatManager;
 
     [SerializeField]
@@ -63,6 +60,7 @@ public class BackgroundListener : MonoBehaviour
 		{
 			lBuddyIDs += iBuddies[i].ID + "/";
 		}
+        Debug.Log("lBuddyIDs = " + lBuddyIDs);
 		mJavaListener.Call("SubscribeStatus", lBuddyIDs);
     }
 
@@ -86,9 +84,9 @@ public class BackgroundListener : MonoBehaviour
         mJavaListener.Call("SendChatMessage", iMessage);
     }
 
-    public void PublishConnectionRequest(string iRemoteID)
+    public void PublishConnectionRequest(string iWebrtcID, string iRemoteID)
     {
-        mJavaListener.Call("Publish", "ConnectRequest", webRTC.ID + "/" + iRemoteID);
+        mJavaListener.Call("Publish", "ConnectRequest", iWebrtcID + "/" + iRemoteID);
     }
 
     public void PublishNotification()
@@ -129,7 +127,7 @@ public class BackgroundListener : MonoBehaviour
 
 	public void OnStatusMessage(string iMessage)
 	{
-		//Status format is buddyID | appName
+        //Status format is buddyID | appName
 		string[] lSplit = iMessage.Split('|');
 		string lBuddyID = lSplit[0];
 		Debug.Log ("OnStatusMessage received " + lBuddyID + " " + lSplit [1]);

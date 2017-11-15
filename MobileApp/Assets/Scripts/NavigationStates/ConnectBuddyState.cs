@@ -4,12 +4,13 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class ConnectBuddyState : ASubState {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
-        if (indexState == 1)
+        if (indexState == (int)State.OPEN)
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             // CLEANNING PREVIOUS CREATED OBJECT
@@ -23,14 +24,14 @@ public class ConnectBuddyState : ASubState {
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/Bottom_UI", "FULL ACCESS", false ));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "toto", true, new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
 
-			LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "CHAT WITH BUDDY", "", new List<UnityAction>() { lMenuManager.GoChatMenu, LaunchChat }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REMOTE CONTROL", "", new List<UnityAction>() { StartRemoteControl }));
+			LoadingUI.AddObject(lPoolManager.fBuddy_Status("Content_Bottom/ScrollView/Viewport", SelectBuddy.BuddyID, true));
+			LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "CHAT WITH BUDDY", "", new List<UnityAction>() { lMenuManager.LoadChatMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REMOTE CONTROL", "", new List<UnityAction>() { lMenuManager.LoadRemoteControlMenu }));
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "BUDDY SETTINGS", "", new List<UnityAction>() { lMenuManager.GoBuddySettings }));
 			//LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REQUEST ACCESS", "", new List<UnityAction>() { ShowAccessRequest }));
 
             // TOP UI
 			LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", new List<UnityAction>() { DeleteBuddy }));
-            //LoadingUI.AddObject(lPoolManager.fBuddy_Status("Content_Top/Top_UI", SelectBuddy.BuddyID, true));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
             LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", new List<UnityAction>() { lMenuManager.GoEditBuddyMenu }));
 
@@ -43,23 +44,12 @@ public class ConnectBuddyState : ASubState {
 
     private void GoSelectMenu()
     {
-        GameObject.Find("MenuManager").GetComponent<GoBack>().GoSelectBuddyMenu();
+        GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();
         SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
 
         if(lSelect.Remote == SelectBuddy.RemoteType.WEBRTC) {
-            GameObject UnityWebRTC = GameObject.Find("UnityWebrtc");
-            UnityWebRTC.GetComponent<Webrtc>().StopWebRTC();
-            UnityWebRTC.SetActive(false);
+            GameObject.Find("UnityWebrtc").SetActive(false);
         }        
-        //GameObject.Find("UnityWebrtc").SetActive(false);
-    }
-
-    private void StartRemoteControl()
-    {
-        GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
-        lMenuManager.GoRemoteControlMenu();
-        LaunchTelepresence lLauncher = GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>();
-        lLauncher.ConnectToBuddy();
     }
 
 	private void ShowAccessRequest()
@@ -67,16 +57,8 @@ public class ConnectBuddyState : ASubState {
 		GameObject.Find("PopUps").GetComponent<PopupHandler>().AccesRightWindow();
 	}
 
-    private void LaunchChat()
-    {
-        GameObject.Find("Chat").GetComponent<ChatManager>().LoadMessageHistory();
-        BackgroundListener lListener = GameObject.Find("BackgroundListener").GetComponent<BackgroundListener>();
-        lListener.SubscribeChatChannel();
-    }
-
 	private void DeleteBuddy()
 	{
-		//GameObject.Find("PopUps").GetComponent<PopupHandler>().PopupConfirmCancel("Supression", "Voulez-vous supprimer ce Buddy de la liste ?", onDeleteBuddyConfirmed);
         GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenYesNoIcon("Voulez-vous supprimer ce Buddy de la liste ?", onDeleteBuddyConfirmed, "Warning");
     }
 

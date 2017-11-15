@@ -9,7 +9,7 @@ public class SelectBuddyState : ASubState {
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
 
-        if (indexState == 1)
+        if (indexState == (int)State.OPEN)
         {
             BuddyIPList lIPList = GameObject.Find("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList>();
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
@@ -40,16 +40,14 @@ public class SelectBuddyState : ASubState {
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = true;
             lIPList.enabled = true;
-            lIPList.InSelectBuddy = true;
         }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(indexState == 2) {
+        if(indexState == (int)State.IDLE) {
             BuddyIPList lIPList = GameObject.Find("Viewport").GetComponent<BuddyIPList>();
             lIPList.enabled = false;
-            lIPList.InSelectBuddy = false;
         }
 
         base.OnStateExit(animator, stateInfo, layerIndex);
@@ -57,8 +55,7 @@ public class SelectBuddyState : ASubState {
 
     private void BackToConnectionMenu()
     {
-        GameObject.Find("DBManager").GetComponent<DBManager>().GenerateUserDisplay();
-        GameObject.Find("MenuManager").GetComponent<GoBack>().GoConnectionMenu();
+        GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();
         GameObject.Find("BackgroundListener").GetComponent<BackgroundListener>().UnsubscribeNotifications();
     }
 }

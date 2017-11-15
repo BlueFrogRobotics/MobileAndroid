@@ -23,7 +23,7 @@ public class Webrtc : MonoBehaviour
     /// URI locating the crossbar server.
     /// </summary>
     [SerializeField]
-    private string mCrossbarUri;
+    private string mCrossbarUri; 
 
     /// <summary>
     /// Crossbar realm used.
@@ -45,6 +45,9 @@ public class Webrtc : MonoBehaviour
 
     [SerializeField]
     private RemoteControl remoteControl;
+
+	[SerializeField]
+	private GoBack menuManager;
 
 	[SerializeField]
 	private GameObject joystick;
@@ -78,7 +81,7 @@ public class Webrtc : MonoBehaviour
     //called when receiving a call request or trying to call someone.
     // StartWebrtc tries to acquire the camera resource and so the camera
     // must be released beforehand.
-    void OnEnable()
+    public void InitWebRTC()
     {
         // Setup and start webRTC
         SetupWebRTC();
@@ -95,14 +98,8 @@ public class Webrtc : MonoBehaviour
 
     public void InitImages()
     {
-        mRemoteRawImage.transform.localScale = new Vector3(1, -1, 0);
-        mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
-
-        //if(mLocalNativeTexture == null && mRemoteNativeTexture == null)
-        {
-            InitLocalTexture(INIT_WIDTH, INIT_HEIGHT);
-            InitRemoteTexture(INIT_WIDTH, INIT_HEIGHT);
-        }
+		InitLocalTexture(INIT_WIDTH, INIT_HEIGHT);
+		InitRemoteTexture(INIT_WIDTH, INIT_HEIGHT);
     }
 
 	void InitLocalTexture(int width, int height)
@@ -202,15 +199,13 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StopWebRTC()
     {
-        mRemoteRawImage.transform.localScale = new Vector3(1, 1, 0);
-        mLocalRawImage.transform.localScale = new Vector3(1, 1, 0);
-
 		mRemoteNativeTexture.Destroy();
 		mLocalNativeTexture.Destroy();
 
         Debug.Log("Stop WebRTC");
         using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
         {
+            Connected = false;
             cls.CallStatic("StopWebrtc");
         }
     }
@@ -345,8 +340,12 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "Android Debug : " + iMessage + "\n";
 
-        else if (iMessage == "CONNECTED")
+        if (iMessage == "CONNECTED")
             Connected = true;
+        else if (iMessage.Contains("onStateChange: CLOSED") && Connected) {
+			StopWebRTC();
+            menuManager.PreviousMenu();
+		}
     }
 
 	public void onLocalTextureSizeChanged(string size)
@@ -390,16 +389,20 @@ public class Webrtc : MonoBehaviour
 			}
 		}
 
-		GameObject.Find("RemoteControlRTC").GetComponent<RemoteControl>().ControlsDisabled = controlsDisabled;
-		if(controlsDisabled)
+		GameObject rc = GameObject.Find ("RemoteControlRTC");
+		if(rc)
 		{
-			joystick.SetActive(false);
-			remoteMessage.SetActive(true);
-		}
-		else
-		{
-			joystick.SetActive(true);
-			remoteMessage.SetActive(false);
+			rc.GetComponent<RemoteControl>().ControlsDisabled = controlsDisabled;
+			if(controlsDisabled)
+			{
+				joystick.SetActive(false);
+				remoteMessage.SetActive(true);
+			}
+			else
+			{
+				joystick.SetActive(true);
+				remoteMessage.SetActive(false);
+			}
 		}
     }
 }

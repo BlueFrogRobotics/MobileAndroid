@@ -9,8 +9,6 @@ using System.Collections.Generic;
 /// </summary>
 public class BuddyIPList : MonoBehaviour
 {
-    public bool InSelectBuddy { get { return mInSelectBuddy; } set { mInSelectBuddy = value; } }
-
     [SerializeField]
     private PoolManager mPoolManager;
 
@@ -23,14 +21,12 @@ public class BuddyIPList : MonoBehaviour
     [SerializeField]
     private DBManager buddyDB;
 
-    private bool mInSelectBuddy;
     private int mBuddyNb = 0;
     private float mTime = 20f;
     private List<string> mIPList = new List<string>();
 
     void Start()
     {
-        mInSelectBuddy = false;
         mobileServer.OnNewBudyConnected += UpdateBuddyList;
         mobileServer.OnBuddyDisconnected += RemoveBuddyFromList;
     }
@@ -38,8 +34,8 @@ public class BuddyIPList : MonoBehaviour
     void OnEnable()
     {
         mobileServer.gameObject.SetActive(true);
-		CreateListDisplay();
 		StartCoroutine(CheckBuddiesStatus());
+		CreateListDisplay();
     }
 
     void OnDisable()
@@ -69,14 +65,12 @@ public class BuddyIPList : MonoBehaviour
 
 	private IEnumerator CheckBuddiesStatus()
 	{
-		while (true)
+        while (true)
 		{
 			if (!buddyDB.IsBuddiesListEmpty ()) {
-				//Debug.Log ("Buddies List NOT EMPTY!!!!!!!!!!!!!!!!!!");
-
 				foreach (BuddyDB lBuddy in buddyDB.BuddiesList) {
 					Int32 currTimestamp = (Int32)(DateTime.UtcNow.Subtract (new DateTime (1970, 1, 1))).TotalSeconds;
-					//Debug.Log ("Buddy " + lBuddy.ID + " " + lBuddy.status);
+					//Debug.Log ("Buddy " + lBuddy.name + " " + lBuddy.status);
 					if (currTimestamp - lBuddy.timestamp > 40) {
 						lBuddy.status = "offline";
 					}
@@ -93,7 +87,7 @@ public class BuddyIPList : MonoBehaviour
         string[] lTab = iNewBuddyIP.Split(':');
         string lBuddyIP = lTab[lTab.Length - 1];
 
-        if (mIPList.Contains(lBuddyIP) || !mInSelectBuddy)
+        if (mIPList.Contains(lBuddyIP) || this.enabled==false)
             return;
 
 		GameObject lBuddyLocal = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "New Buddy !", iNewBuddyIP, "", true, true, "online", null);
@@ -109,30 +103,24 @@ public class BuddyIPList : MonoBehaviour
         string lBuddyIP = lTab[lTab.Length - 1];
         mIPList.Remove(lBuddyIP);
 
-        if(mInSelectBuddy)
+        GameObject lList = GameObject.Find("Content_Bottom/ScrollView/Viewport");
+        bool lLocal = false;
+        foreach(Transform lChild in lList.transform)
         {
-            GameObject lList = GameObject.Find("Content_Bottom/ScrollView/Viewport");
-            bool lLocal = false;
-            foreach(Transform lChild in lList.transform)
-            {
-                if (!lLocal || lChild.gameObject.name != "LocalSeparator")
-                    continue;
-                else if (lChild.gameObject.name == "LocalSeparator")
-                    lLocal = true;
-                else if(lLocal && lChild.GetComponentsInChildren<Text>()[1].text.Contains(lBuddyIP)) {
-                    GameObject.Destroy(lChild.gameObject);
-                    break;
-                }
+            if (!lLocal || lChild.gameObject.name != "LocalSeparator")
+                continue;
+            else if (lChild.gameObject.name == "LocalSeparator")
+                lLocal = true;
+            else if(lLocal && lChild.GetComponentsInChildren<Text>()[1].text.Contains(lBuddyIP)) {
+                GameObject.Destroy(lChild.gameObject);
+                break;
             }
-            //CreateListDisplay();
         }
+        //CreateListDisplay();
     }
 
     public void CreateListDisplay()
     {
-        if (!mInSelectBuddy)
-            return;
-
         //Remove all present displayed robots
         foreach (Transform lChild in parentTransform)
             GameObject.Destroy(lChild.gameObject);
@@ -183,7 +171,10 @@ public class BuddyIPList : MonoBehaviour
         }
 
 		foreach (BuddyDB lBuddy in buddyDB.BuddiesList) {
-			GameObject lBuddyDB = mPoolManager.fBuddy_Contact ("Content_Bottom/ScrollView/Viewport", lBuddy.name, lBuddy.ID, "", false, true, lBuddy.status, null);
+            //Debug.Log("************");
+            //Debug.Log("Buddy Name = " + lBuddy.name);
+            //Debug.Log("Buddy State = " + lBuddy.status);
+            GameObject lBuddyDB = mPoolManager.fBuddy_Contact ("Content_Bottom/ScrollView/Viewport", lBuddy.name, lBuddy.ID, "", false, true, lBuddy.status, null);
 			LoadingUI.AddObject(lBuddyDB);
 		}
     }

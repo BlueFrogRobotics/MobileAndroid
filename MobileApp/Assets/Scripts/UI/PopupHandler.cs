@@ -36,7 +36,6 @@ public class PopupHandler : MonoBehaviour {
     [SerializeField]
     private Webrtc webRTC;
 
-    private bool mDisplayRTCInfo;
 	private GameObject deleteAccountInputPasswordField;
 
     public void OpenWindow()
@@ -68,7 +67,6 @@ public class PopupHandler : MonoBehaviour {
         GameObject lDeviceLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "Network0", null);
         lDeviceLevel.name = "DeviceLevel";
 
-        mDisplayRTCInfo = true;
         StartCoroutine(UpdateWebRTCInfos());
 
         animator.SetTrigger("Open");
@@ -164,16 +162,22 @@ public class PopupHandler : MonoBehaviour {
     public void OpenYesNoIcon(string iQuestion, UnityAction iCallBackYes, string iIconName = "")
     {
         ResetUI();
+        
         popupYesNoIcon.SetActive(true);
 
         Text lQuestion = GameObject.Find("Popup_YesNoIcon/Text").GetComponent<Text>();
         lQuestion.text = iQuestion;
 
         Button lYesButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_Yes").GetComponent<Button>();
+        //Bug 7: MG
+        lYesButton.onClick.RemoveAllListeners();
         lYesButton.onClick.AddListener(iCallBackYes);
         lYesButton.onClick.AddListener(ClosePopup);
+        
 
         Button lNoButton = GameObject.Find("Popup_YesNoIcon/YesNo/Button_No").GetComponent<Button>();
+        //Bug 7: MG
+        lNoButton.onClick.RemoveAllListeners();
         lNoButton.onClick.AddListener(ClosePopup);
 
         if(string.IsNullOrEmpty(iIconName))
@@ -234,10 +238,10 @@ public class PopupHandler : MonoBehaviour {
     {
         popupWindow.SetActive(false);
         popupYesNo.SetActive(false);
-        popupYesNoIcon.SetActive(false);
-        popupDisplayIcon.SetActive(false);
+		popupYesNoIcon.SetActive(false);
         popupShowQrCode.SetActive(false);
         popupReadQrCode.SetActive(false);
+		popupDisplayIcon.SetActive(false);
     }
 
     private void ResetWindowUI()
@@ -271,31 +275,25 @@ public class PopupHandler : MonoBehaviour {
 
     private IEnumerator UpdateWebRTCInfos()
     {
-        Debug.Log("[RTC] Local");
         Image lLocal = GameObject.Find("LocalLevel").GetComponentsInChildren<Image>()[1];
-        Debug.Log("[RTC] Remote");
         Image lRemote = GameObject.Find("RemoteLevel").GetComponentsInChildren<Image>()[1];
-        Debug.Log("[RTC] Device");
         Image lDevice = GameObject.Find("DeviceLevel").GetComponentsInChildren<Image>()[1];
 
-        while (mDisplayRTCInfo)
+        while (true)
         {
-            Debug.Log("[RTC] Info");
             //Debug.Log("RTC INFOS " + webRTC.ConnectionInfo);
             string[] lInfos = webRTC.ConnectionInfo.Split('|');
             lLocal.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[0])));
             lRemote.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[1])));
             lDevice.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[2])));
 
-            yield return new WaitForSeconds(.5F);
+            yield return new WaitForSeconds(1F);
         }
-        ClosePopup();
     }
 
     private void CloseWebRTCInfos()
     {
-        mDisplayRTCInfo = false;
-        //StopCoroutine(UpdateWebRTCInfos());
-        //ClosePopup();
+        StopCoroutine(UpdateWebRTCInfos());
+        ClosePopup();
     }
 }

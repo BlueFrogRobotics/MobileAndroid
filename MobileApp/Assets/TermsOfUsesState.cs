@@ -6,7 +6,7 @@ public class TermsOfUsesState : ASubState {
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
-        if (indexState == 1)
+        if (indexState == (int)State.OPEN)
         {
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();

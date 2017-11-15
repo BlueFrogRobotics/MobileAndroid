@@ -48,9 +48,8 @@ public class BackToMenu : MonoBehaviour
             mobileServer.gameObject.SetActive(true);
 
         } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
-            webRTC.HangUp();
+            webRTC.StopWebRTC();
             remoteControlRTC.SetActive(false);
-            //webRTC.StopWebRTC();
         }
 
         leftSensor.GetComponent<ObstacleManager>().lvl = 0;
@@ -59,7 +58,7 @@ public class BackToMenu : MonoBehaviour
         backSensor.GetComponent<ObstacleManager>().lvl = 0;
 
         indicator.CloseConnection();
-        
-        menuManager.GoConnectedMenu();
+
+        menuManager.PreviousMenu();
     } 
 }

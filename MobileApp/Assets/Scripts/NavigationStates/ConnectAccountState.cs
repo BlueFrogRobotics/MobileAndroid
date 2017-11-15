@@ -9,7 +9,7 @@ public class ConnectAccountState : ASubState {
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
-        if (indexState == 1)
+        if (indexState == (int)State.OPEN)
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
@@ -49,6 +49,7 @@ public class ConnectAccountState : ASubState {
             //LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", null));// new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             //lDB.ReadPhoneUsers();
+            lDB.GenerateUserDisplay();
         }
     }
 
@@ -108,5 +109,16 @@ public class ConnectAccountState : ASubState {
 	{
 		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartForgottenPassword(email);
+	}
+
+	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+	{
+		if (indexState == (int)State.CLOSE) {
+			GameObject Dots = GameObject.Find ("CanvasApp/Content_Top/Navigation_Account/Dots");
+			Debug.Log ("ConnectAccount OnStateExit : " + Dots);
+			foreach (Transform lChild in Dots.transform)
+				GameObject.Destroy (lChild.gameObject);
+		}
+		base.OnStateExit(animator, stateInfo, layerIndex);
 	}
 }

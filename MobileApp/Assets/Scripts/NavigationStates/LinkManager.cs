@@ -25,10 +25,6 @@ public class LinkManager : MonoBehaviour {
 		}
 	}
 
-	public void SetMenuBuddyValue(int iValue) {
-		navigationAnimator.SetInteger ("MenuBuddy", iValue);		
-	}
-
 	private void AssignGOToState<T>(GameObject iTop, GameObject iBottom) where T : ASubState {
 		T[] lStates = navigationAnimator.GetBehaviours<T>();
 		foreach (T lState in lStates) {

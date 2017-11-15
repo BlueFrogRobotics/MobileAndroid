@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Back button manager. Saves the previous state and goes back to it when asked
@@ -15,13 +17,13 @@ public class GoBack : MonoBehaviour
     [SerializeField]
     private LinkManager linkManager;
 
-    private string mPreviousMenu;
     private string mCurrentMenu;
+    private List<string> mViewTree;
 
     // Use this for initialization
     void Start()
     {
-        mPreviousMenu = "GoConnectAccount";
+        mViewTree = new List<string> ();
         mCurrentMenu = "GoConnectAccount";
     }
 
@@ -31,6 +33,15 @@ public class GoBack : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape)) {
             if (mCurrentMenu == "GoConnectAccount")
                 Application.Quit();
+            else if (mCurrentMenu == "GoRemoteControl")
+            {
+                Webrtc lRTC = GameObject.Find("UnityWebrtc").GetComponent<Webrtc>();
+                if (lRTC.Connected)
+                {
+                    lRTC.StopWebRTC();
+                    PreviousMenu();
+                }
+            }
             else
                 PreviousMenu();
         }
@@ -39,11 +50,10 @@ public class GoBack : MonoBehaviour
     //Go to previously saved menu
     public void PreviousMenu()
     {
-        string lTemp = mCurrentMenu;
-        canvasAnimator.SetTrigger(mPreviousMenu);
-        Debug.Log("Previous menu " + mPreviousMenu);
-        mCurrentMenu = mPreviousMenu;
-        mPreviousMenu = lTemp;
+        mCurrentMenu = mViewTree.Last();
+        mViewTree.Remove(mCurrentMenu);
+
+        canvasAnimator.SetTrigger(mCurrentMenu);
         canvasAnimator.SetTrigger("EndScene");
     }
 
@@ -59,7 +69,7 @@ public class GoBack : MonoBehaviour
 
     public void GoCreationMenu()
     {
-        SwitchToMenu("GoCreationAccount");
+        SwitchToMenu("GoCreateAccount");
     }
 
     public void GoConnectionMenu()
@@ -89,41 +99,43 @@ public class GoBack : MonoBehaviour
 
     public void GoConnectedMenu()
     {
-        linkManager.SetMenuBuddyValue(15);
         SwitchToMenu("GoConnectBuddy");
+    }
+
+    public void LoadChatMenu()
+    {
+        LoadingBuddyMessage = "Loading chat room...";
+        canvasAnimator.SetInteger("MenuBuddy",1);
+        SwitchToMenu("GoLoadingBuddy");
     }
 
     public void GoChatMenu()
     {
-        SwitchToMenu(1);
+        SwitchToMenu("GoMessage");
+    }
+
+    public void LoadRemoteControlMenu()
+    {
+        LoadingBuddyMessage = "Waiting for call confirmation...";
+        canvasAnimator.SetInteger("MenuBuddy", 2);
+        SwitchToMenu("GoLoadingBuddy");
     }
 
     public void GoRemoteControlMenu()
     {
-        SwitchToMenu(3, "Waiting for call confirmation ...");
+        SwitchToMenu("GoRemoteControl");
     }
 
-    public void GoBuddySettings()
-    {
-        SwitchToMenu(4);
-    }
-
-    //Self-explanatory
     private void SwitchToMenu(string iMenu)
     {
-        mPreviousMenu = mCurrentMenu;
+        // Do not add LoadingBuddy state in view tree as it is a transitory state
+        if (mCurrentMenu != "GoLoadingBuddy")
+        {
+            mViewTree.Add(mCurrentMenu);
+        }
         mCurrentMenu = iMenu;
-        canvasAnimator.SetTrigger(iMenu);
-        canvasAnimator.SetTrigger("EndScene");
-    }
 
-    private void SwitchToMenu(int iMenu, string iWaitingMessage = "Loading ...")
-    {
-        LoadingBuddyMessage = iWaitingMessage;
-        mPreviousMenu = mCurrentMenu;
-        mCurrentMenu = "GoConnectBuddy";
-        linkManager.SetMenuBuddyValue(iMenu);
-        canvasAnimator.SetTrigger("GoLoadingBuddy");
+        canvasAnimator.SetTrigger(mCurrentMenu);
         canvasAnimator.SetTrigger("EndScene");
     }
 
@@ -160,22 +172,23 @@ public class GoBack : MonoBehaviour
             yield return new WaitForSeconds(0.5F);
         }
 
-		processConnectionState(lTimeWaited < 15F);
+		processConnectionState(lRTC.Connected,lRTC);
     }
 
-	private void processConnectionState(bool connected)
+	private void processConnectionState(bool connected, Webrtc lRTC = null)
 	{
 		if(connected)
 		{
-			linkManager.SetMenuBuddyValue (3);
-			canvasAnimator.SetTrigger ("EndScene");
+            GoRemoteControlMenu();
 		}
 		else
 		{
-			canvasAnimator.SetTrigger("GoConnectBuddy");
-			canvasAnimator.SetTrigger("EndScene");
-			//GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Impossible d'établir la connection avec le robot");
-            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Impossible d'établir la connection avec le robot", "NoResponse");
+			if (lRTC != null) {
+				lRTC.StopWebRTC ();
+			}
+			
+            PreviousMenu();
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Impossible d'établir la connexion avec le robot", "NoResponse");
         }
 	}
 }
