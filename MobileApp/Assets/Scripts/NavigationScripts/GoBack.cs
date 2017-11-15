@@ -33,6 +33,15 @@ public class GoBack : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape)) {
             if (mCurrentMenu == "GoConnectAccount")
                 Application.Quit();
+            else if (mCurrentMenu == "GoRemoteControl")
+            {
+                Webrtc lRTC = GameObject.Find("UnityWebrtc").GetComponent<Webrtc>();
+                if (lRTC.Connected)
+                {
+                    lRTC.StopWebRTC();
+                    PreviousMenu();
+                }
+            }
             else
                 PreviousMenu();
         }
