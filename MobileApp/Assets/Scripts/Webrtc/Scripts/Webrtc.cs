@@ -380,29 +380,20 @@ public class Webrtc : MonoBehaviour
 		float local = float.Parse(cuts[0]);
 		float remote = float.Parse(cuts[1]);
 
-		if(local != -1 && remote != -1)
-		{
+		if(local != -1 && remote != -1) {
 			float threshold = 0.3f;
-			if(local < threshold || remote < threshold)
-			{
+			if(local < threshold || remote < threshold) {
 				controlsDisabled = true;
 			}
 		}
-
-		GameObject rc = GameObject.Find ("RemoteControlRTC");
-		if(rc)
-		{
-			rc.GetComponent<RemoteControl>().ControlsDisabled = controlsDisabled;
-			if(controlsDisabled)
-			{
-				joystick.SetActive(false);
-				remoteMessage.SetActive(true);
-			}
-			else
-			{
-				joystick.SetActive(true);
-				remoteMessage.SetActive(false);
-			}
+        
+		remoteControl.ControlsDisabled = controlsDisabled;
+		if(controlsDisabled) {
+			joystick.SetActive(false);
+			remoteMessage.SetActive(true);
+		} else {
+			joystick.SetActive(true);
+			remoteMessage.SetActive(false);
 		}
     }
 }
