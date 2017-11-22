@@ -55,9 +55,14 @@ public class Webrtc : MonoBehaviour
 	[SerializeField]
 	private GameObject remoteMessage;
 
+	[SerializeField]
+	private Material mYUV2RGBAMaterial;
+
     [Header("GUI")]
     public RawImage mRemoteRawImage = null;
     public RawImage mLocalRawImage = null;
+	public RenderTexture mRemoteRenderTexture = null;
+	public RenderTexture mLocalRenderTexture = null;
     public Text mTextLog = null;
 
     /// <summary>
@@ -65,6 +70,7 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public NativeTexture mRemoteNativeTexture = null;
     public NativeTexture mLocalNativeTexture = null;
+
     private CONNECTION mConnectionState = CONNECTION.DISCONNECTING;
 
 	private Mutex mTextureMutex = new Mutex();
@@ -114,7 +120,8 @@ public class Webrtc : MonoBehaviour
 		}
 
 		mLocalNativeTexture = new NativeTexture(width, height, true);
-		mLocalRawImage.texture = mLocalNativeTexture.texture;
+		mLocalRawImage.texture = mLocalRenderTexture;
+		//mLocalRawImage.texture = mLocalNativeTexture.texture;
 
 		mTextureMutex.ReleaseMutex();
 	}
@@ -131,7 +138,8 @@ public class Webrtc : MonoBehaviour
 		}
 
 		mRemoteNativeTexture = new NativeTexture(width, height, false);
-		mRemoteRawImage.texture = mRemoteNativeTexture.texture;
+		mRemoteRawImage.texture = mRemoteRenderTexture;
+		//mRemoteRawImage.texture = mRemoteNativeTexture.texture;
 
 		mTextureMutex.ReleaseMutex();
 	}
@@ -145,11 +153,13 @@ public class Webrtc : MonoBehaviour
 		if(mRemoteNativeTexture != null)
 		{
 			mRemoteNativeTexture.Update();
+			Graphics.Blit(mRemoteNativeTexture.texture, mRemoteRenderTexture, mYUV2RGBAMaterial);
 		}
 
 		if(mLocalNativeTexture != null)
 		{
 			mLocalNativeTexture.Update();
+			Graphics.Blit(mLocalNativeTexture.texture, mLocalRenderTexture, mYUV2RGBAMaterial);
 		}
 
 		mTextureMutex.ReleaseMutex();
