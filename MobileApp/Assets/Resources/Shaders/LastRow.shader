@@ -1,15 +1,15 @@
-﻿Shader "Unlit/repeat"
+﻿Shader "Unlit/LastRow"
 {
 	Properties
 	{
 		_MainTex ("Texture", 2D) = "white" {}
-		_StepSize ("StepSize", Float) = 0.005
-		_StepCnt ("StepCnt", Float) = 10
+		_KernelHalfSize ("KernelHalfSize", Float) = 10
 	}
 	SubShader
 	{
 		Tags { "RenderType"="Opaque" }
 		LOD 100
+		Cull off //duty
 
 		Pass
 		{
@@ -36,8 +36,8 @@
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
-			float _StepSize;
-            float _StepCnt;
+			float _KernelHalfSize;
+            float4 _MainTex_TexelSize;
 
 			v2f vert (appdata v)
 			{
@@ -50,25 +50,7 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				float sumR = 0;
-				float sumG = 0;
-				float sumB = 0;
-				float cnt = 0;
-
-				for(int j = -_StepCnt; j <= _StepCnt; j++)
-				{
-					float y = i.uv.y + j * _StepSize;
-					if(y >= 0 && y <= 1)
-					{
-						float4 c = tex2D(_MainTex, float2(0, y));
-						sumR += c.r;
-						sumG += c.g;
-						sumB += c.b;
-						cnt++;
-					}
-				}
-
-				return float4(sumR / cnt, sumG / cnt, sumB / cnt, 1.0);
+				return tex2D(_MainTex, float2(0, i.uv.y));
 			}
 			ENDCG
 		}
