@@ -1,4 +1,4 @@
-﻿Shader "Unlit/LastRow"
+﻿Shader "Unlit/FirstRow"
 {
 	Properties
 	{
@@ -54,7 +54,7 @@
 
 				for(int j = -_KernelHalfSize; j <= _KernelHalfSize; j++)
 				{
-					sum += tex2D(_MainTex, float2(i.uv.x + _MainTex_TexelSize.x * j, 1)).rgb;
+					sum += tex2D(_MainTex, float2(i.uv.x + _MainTex_TexelSize.x * j, 0)).rgb;
 				}
 
 				return float4(sum / (2 * _KernelHalfSize + 1), 1.0);
