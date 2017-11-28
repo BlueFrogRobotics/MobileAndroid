@@ -1,10 +1,16 @@
 fileFormatVersion: 2
 guid: adb9a49fd66084c40bbf6ac84829303c
-timeCreated: 1477472063
+timeCreated: 1511877257
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - oTONetwork: {instanceID: 0}
+  - mobileServer: {instanceID: 0}
+  - webRTC: {fileID: 187482, guid: 76b9e7b11bc033f42bd9fb65e69f85ed, type: 2}
+  - buddyStatus: {instanceID: 0}
+  - canvasAppAnimator: {instanceID: 0}
+  - notifications: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

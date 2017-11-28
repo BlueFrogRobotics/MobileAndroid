@@ -45,6 +45,19 @@ public class BuddyStatus : MonoBehaviour
 		StartCoroutine(UpdateBuddyStatus());
 	}
 
+	public bool BuddyOnline(string id)
+	{
+		if (!dbManager.IsBuddiesListEmpty ()) {
+			foreach (BuddyDB lBuddy in dbManager.BuddiesList) {
+				if (lBuddy.ID == id && !lBuddy.status.Equals ("offline")) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	private IEnumerator UpdateBuddyStatus()
 	{
 		Image[] childs = this.transform.GetComponents<Image> ();
