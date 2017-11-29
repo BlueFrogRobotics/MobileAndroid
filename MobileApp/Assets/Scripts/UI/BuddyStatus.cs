@@ -45,12 +45,17 @@ public class BuddyStatus : MonoBehaviour
 		StartCoroutine(UpdateBuddyStatus());
 	}
 
-	public bool BuddyOnline(string id)
+	public bool BuddyAccess(string id, bool startRC)
 	{
 		if (!dbManager.IsBuddiesListEmpty ()) {
 			foreach (BuddyDB lBuddy in dbManager.BuddiesList) {
 				if (lBuddy.ID == id && !lBuddy.status.Equals ("offline")) {
-					return true;
+					if (!startRC) {
+						return true;
+					}
+					if(!lBuddy.appName.Equals("RemoteControl")) {
+						return true;
+					}
 				}
 			}
 		}

@@ -116,9 +116,14 @@ public class GoBack : MonoBehaviour
 
     public void LoadRemoteControlMenu()
     {
-        LoadingBuddyMessage = "Waiting for call confirmation...";
-        canvasAnimator.SetInteger("MenuBuddy", 2);
-        SwitchToMenu("GoLoadingBuddy");
+		SelectBuddy lSelect = this.GetComponentInChildren<SelectBuddy>();
+		if (lSelect.BuddyAccess()) {
+			LoadingBuddyMessage = "Waiting for call confirmation...";
+			canvasAnimator.SetInteger ("MenuBuddy", 2);
+			SwitchToMenu ("GoLoadingBuddy");
+		} else {
+			GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Buddy est déjà en ligne", "Warning");
+		}
     }
 
     public void GoRemoteControlMenu()

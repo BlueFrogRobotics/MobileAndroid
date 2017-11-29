@@ -52,7 +52,7 @@ public class SelectBuddy : MonoBehaviour
                 string lBuddyName = mBuddy.GetChild(5).GetComponent<Text>().text;
                 BuddyName = lBuddyName;
                 BuddyID = lBuddyID;
-				mBuddyOnline = buddyStatus.BuddyOnline(BuddyID);
+				mBuddyOnline = buddyStatus.BuddyAccess(BuddyID, false);
 
                 //Check wether it's a WebRTC or local connection
                 if(lBuddyName.Contains("DEMO")) {
@@ -83,4 +83,9 @@ public class SelectBuddy : MonoBehaviour
 			}
 		}
     }
+
+	public bool BuddyAccess()
+	{
+		return buddyStatus.BuddyAccess(BuddyID, true);
+	}
 }
