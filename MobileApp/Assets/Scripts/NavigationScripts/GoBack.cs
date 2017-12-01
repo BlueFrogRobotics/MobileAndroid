@@ -2,7 +2,6 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 /// <summary>
 /// Back button manager. Saves the previous state and goes back to it when asked
@@ -50,7 +49,7 @@ public class GoBack : MonoBehaviour
     //Go to previously saved menu
     public void PreviousMenu()
     {
-        mCurrentMenu = mViewTree.Last();
+		mCurrentMenu = mViewTree[mViewTree.Count - 1];
         mViewTree.Remove(mCurrentMenu);
 
         canvasAnimator.SetTrigger(mCurrentMenu);
