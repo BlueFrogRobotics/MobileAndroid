@@ -79,7 +79,7 @@ public class SelectBuddy : MonoBehaviour
 				GameObject.Find ("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList> ().enabled = false;
 				GameObject.Find ("MenuManager").GetComponent<GoBack> ().GoConnectedMenu ();
 			} else {
-				GameObject.Find ("PopUps").GetComponent<PopupHandler> ().OpenDisplayIcon ("Buddy est actuellement hors ligne", "Warning");
+				GameObject.Find ("PopUps").GetComponent<PopupHandler> ().OpenDisplayIcon ("Buddy est actuellement hors ligne", "NoResponse");
 			}
 		}
     }

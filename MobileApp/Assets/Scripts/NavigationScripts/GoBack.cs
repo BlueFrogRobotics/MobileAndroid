@@ -122,7 +122,7 @@ public class GoBack : MonoBehaviour
 			canvasAnimator.SetInteger ("MenuBuddy", 2);
 			SwitchToMenu ("GoLoadingBuddy");
 		} else {
-			GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Buddy est déjà en ligne", "Warning");
+			GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Buddy est déjà en ligne", "NoResponse");
 		}
     }
 
