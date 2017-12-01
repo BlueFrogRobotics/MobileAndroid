@@ -168,7 +168,7 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "setup webrtc" + "\n";
 
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
         {
             using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
             {
@@ -188,7 +188,7 @@ public class Webrtc : MonoBehaviour
     {
         if (mTextLog)
             mTextLog.text += "Starting webRTC" + "\n";
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
         {
             cls.CallStatic("StartWebrtc");
         }
@@ -203,7 +203,7 @@ public class Webrtc : MonoBehaviour
 		mLocalNativeTexture.Destroy();
 
         Debug.Log("Stop WebRTC");
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
         {
             Connected = false;
             cls.CallStatic("StopWebrtc");
@@ -221,7 +221,7 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "Call : " + mRemoteUser + "\n";
         // mTextSend.text += "\nCall : " + iChannel;
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
         {
             Debug.Log("Starting call");
             cls.CallStatic("Call", mRemoteUser);
@@ -240,7 +240,7 @@ public class Webrtc : MonoBehaviour
             mTextLog.text += "Hang Up : " + mRemoteUser + "\n";
         if (mConnectionState == CONNECTION.CONNECTING)
         {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+			using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
             {
                 Connected = false;
                 cls.CallStatic("Hangup", mRemoteUser);
@@ -268,7 +268,7 @@ public class Webrtc : MonoBehaviour
 
         if ((mConnectionState == CONNECTION.CONNECTING) && iThroughDataChannel)
         {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+			using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
             {
                 Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through data channel");
                 cls.CallStatic("SendMessage", iMessage, mRemoteUser);
@@ -276,7 +276,7 @@ public class Webrtc : MonoBehaviour
         }
         else if (!iThroughDataChannel)
         {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+			using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
             {
                 Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through messaging channel");
                 cls.CallStatic("SendMessage", iMessage, mRemoteUser, false);
@@ -334,19 +334,24 @@ public class Webrtc : MonoBehaviour
     /// This function is called by the RTC library when it receives a message.
     /// </summary>
     /// <param name="iMessage">The message that has been received.</param>
-    public void onAndroidDebugLog(string iMessage)
-    {
-        //Debug.Log(iMessage);
-        if (mTextLog)
-            mTextLog.text += "Android Debug : " + iMessage + "\n";
-
-        if (iMessage == "CONNECTED")
-            Connected = true;
-        else if (iMessage.Contains("onStateChange: CLOSED") && Connected) {
-			StopWebRTC();
-            menuManager.PreviousMenu();
+	public void onAndroidDebugLog(string iMessage)
+	{
+		if (mTextLog)
+		{
+			mTextLog.text += "Android Debug : " + iMessage + "\n";
 		}
-    }
+	}
+
+	public void onRTCStateChanged(string state)
+	{
+		if (state == "CONNECTED")
+			Connected = true;
+		else if (state.Contains("onStateChange: CLOSED") && Connected) {
+			Connected = false;
+			StopWebRTC();
+			menuManager.PreviousMenu();
+		}
+	}
 
 	public void onLocalTextureSizeChanged(string size)
 	{

@@ -11,7 +11,7 @@ public class NativeTexture
 
     public Texture2D createTextureFromNativePtr(int iWidth, int iHeight)
 	{
-		using(AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		using(AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
 		{
 			int nativeTexturePointer = cls.CallStatic<int>(mLocal ? "createLocalTexture" : "createRemoteTexture", iWidth, iHeight);
 			return Texture2D.CreateExternalTexture(iWidth, iHeight, TextureFormat.RGBA32, false, true, new IntPtr(nativeTexturePointer));
@@ -32,7 +32,7 @@ public class NativeTexture
 
 	private void CallStatic(string functionName)
 	{
-		using(AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		using(AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
 		{
 			cls.CallStatic(functionName);
 		}

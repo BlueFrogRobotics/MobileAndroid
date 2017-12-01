@@ -21,9 +21,9 @@ public class SoundManager : MonoBehaviour
 		if (mWebRTC.activeSelf)
 		{
 			mActive = !mActive;
-			using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+			using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.unityrtc.Webrtc"))
 			{
-				cls.CallStatic("setSoundActive", mActive);
+				cls.CallStatic("SetSoundActive", mActive);
 			}
 
 			lButtonImage.sprite =  GameObject.Find("CanvasApp").GetComponent<PoolManager>().GetSprite(mActive ? "Micro" : "MicroOff");

@@ -36,7 +36,7 @@ public class BackgroundListener : MonoBehaviour
         {
             AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
-            mJavaListener = new AndroidJavaObject("my.maylab.unitywebrtc.BackgroundListener", iUri, iRealm,
+            mJavaListener = new AndroidJavaObject("com.bfr.mobile.BackgroundListener", iUri, iRealm,
                 ResourceManager.StreamingAssetFilePath("client_cert.pem"),
                 ResourceManager.StreamingAssetFilePath("server_key.pem"),
                 jo);

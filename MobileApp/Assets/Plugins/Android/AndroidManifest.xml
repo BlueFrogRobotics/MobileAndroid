@@ -37,7 +37,7 @@
 		<receiver android:name="net.agasper.unitynotification.UnityNotificationManager"></receiver>
 		<!-- end -->
 		
-		<service android:enabled="true" android:name="my.maylab.unitywebrtc.NotificationService" />
+		<service android:enabled="true" android:name="com.bfr.unityrtc.NotificationService" />
 		
         <activity
             android:name=".MainActivity"
