@@ -163,22 +163,16 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void SetupWebRTC()
     {
-        Debug.Log("DB " + dbManager.CurrentUser.LastName);
-        mLocalUser = dbManager.CurrentUser.Email;
-        if (mTextLog)
-            mTextLog.text += "setup webrtc" + "\n";
+		Debug.Log("DB " + dbManager.CurrentUser.LastName);
+		mLocalUser = dbManager.CurrentUser.Email;
 
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
-            using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-            {
-                AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-
-                cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName,
-                    ResourceManager.StreamingAssetFilePath("client_cert.pem"));
-                
-            }
-        }
+		if (mTextLog) 
+		{
+			mTextLog.text += "setup webrtc" + "\n";
+		}
+			
+		String mCertificate = ResourceManager.StreamingAssetFilePath("client_cert.pem");
+		NativeWrapper.SetupWebrtcWrapper (mCrossbarUri, mRealm, mLocalUser, mRemoteUser, mWebrtcReceiverObjectName, mCertificate);
     }
 
     /// <summary>
@@ -186,12 +180,12 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StartWebRTC()
     {
-        if (mTextLog)
-            mTextLog.text += "Starting webRTC" + "\n";
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
-            cls.CallStatic("StartWebrtc");
-        }
+		if (mTextLog) 
+		{
+			mTextLog.text += "Starting webRTC" + "\n";
+		}
+
+		NativeWrapper.StartWebrtcWrapper ();
     }
 
     /// <summary>
@@ -203,11 +197,8 @@ public class Webrtc : MonoBehaviour
 		mLocalNativeTexture.Destroy();
 
         Debug.Log("Stop WebRTC");
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
-            Connected = false;
-            cls.CallStatic("StopWebrtc");
-        }
+
+		NativeWrapper.StopWebrtcWrapper ();
     }
 
     /// <summary>
@@ -216,17 +207,14 @@ public class Webrtc : MonoBehaviour
     /// <param name="iChannel">The channel the user you want to call is subscribed to</param>
     public void Call()
     {
-
         Debug.Log("Call : " + mRemoteUser + "!");
         if (mTextLog)
-            mTextLog.text += "Call : " + mRemoteUser + "\n";
-        // mTextSend.text += "\nCall : " + iChannel;
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
-            Debug.Log("Starting call");
-            cls.CallStatic("Call", mRemoteUser);
-        }
+		{
+			mTextLog.text += "Call : " + mRemoteUser + "\n";
+		}
 
+		Debug.Log("Starting call");
+		NativeWrapper.CallWrapper (mRemoteUser);
     }
 
     /// <summary>
@@ -236,15 +224,16 @@ public class Webrtc : MonoBehaviour
     public void HangUp()
     {
         Debug.Log("Hang Up : " + mRemoteUser);
+
         if (mTextLog)
-            mTextLog.text += "Hang Up : " + mRemoteUser + "\n";
+		{
+			mTextLog.text += "Hang Up : " + mRemoteUser + "\n";
+		}
+
         if (mConnectionState == CONNECTION.CONNECTING)
         {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-            {
-                Connected = false;
-                cls.CallStatic("Hangup", mRemoteUser);
-            }
+			Connected = false;
+			NativeWrapper.HangupWrapper (mRemoteUser);
         }
     }
 
@@ -261,27 +250,16 @@ public class Webrtc : MonoBehaviour
     /// </param>
     public void SendWithDataChannel(string iMessage)//, string iChannel,bool iThroughDataChannel=true)
     {
-        bool iThroughDataChannel = true;
-        //Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser);
-        if (mTextLog)
-            mTextLog.text += "sending message : " + iMessage + " to : " + mRemoteUser + "\n";
+		if (mTextLog) 
+		{
+			mTextLog.text += "sending message : " + iMessage + " to : " + mRemoteUser + "\n";
+		}
 
-        if ((mConnectionState == CONNECTION.CONNECTING) && iThroughDataChannel)
-        {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-            {
-                Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through data channel");
-                cls.CallStatic("SendMessage", iMessage, mRemoteUser);
-            }
-        }
-        else if (!iThroughDataChannel)
-        {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-            {
-                Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through messaging channel");
-                cls.CallStatic("SendMessage", iMessage, mRemoteUser, false);
-            }
-        }
+		if (mConnectionState == CONNECTION.CONNECTING)
+		{
+			Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through data channel");
+			NativeWrapper.SendMessageWrapper (iMessage, mRemoteUser);
+		}
     }
 
     /// <summary>
@@ -336,17 +314,27 @@ public class Webrtc : MonoBehaviour
     /// <param name="iMessage">The message that has been received.</param>
     public void onAndroidDebugLog(string iMessage)
     {
-        //Debug.Log(iMessage);
         if (mTextLog)
-            mTextLog.text += "Android Debug : " + iMessage + "\n";
+		{
+			mTextLog.text += "Android Debug : " + iMessage + "\n";
+		}
 
         if (iMessage == "CONNECTED")
             Connected = true;
         else if (iMessage.Contains("onStateChange: CLOSED") && Connected) {
+			Connected = false;
 			StopWebRTC();
             menuManager.PreviousMenu();
 		}
     }
+
+	public void onRTCStateChanged(string state)
+	{
+		if (state.Contains("CONNECTED"))
+		{
+			Connected = true;
+		}
+	}
 
 	public void onLocalTextureSizeChanged(string size)
 	{
@@ -356,7 +344,7 @@ public class Webrtc : MonoBehaviour
 		int width = Int32.Parse(cuts[0]);
 		int height = Int32.Parse(cuts[1]);
 
-		InitLocalTexture(width, height);
+		//InitLocalTexture(width, height);
 	}
 
 	public void onRemoteTextureSizeChanged(string size)
@@ -367,7 +355,7 @@ public class Webrtc : MonoBehaviour
 		int width = Int32.Parse (cuts [0]);
 		int height = Int32.Parse (cuts [1]);
 
-		InitRemoteTexture (width, height);
+		//InitRemoteTexture (width, height);
 	}
 
 	public void onWebRTCStats(string data)

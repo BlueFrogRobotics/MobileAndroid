@@ -22,8 +22,6 @@ public class BackgroundListener : MonoBehaviour
     [SerializeField]
     private DBManager dbManager;
 
-    private AndroidJavaObject mJavaListener;
-
     // Use this for initialization
     void Start()
     {
@@ -32,25 +30,15 @@ public class BackgroundListener : MonoBehaviour
 
     private void StartBackgroundListener(string iUri, string iRealm)
     {
-        using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+		string certificate = ResourceManager.StreamingAssetFilePath("client_cert.pem");
+		string key = ResourceManager.StreamingAssetFilePath("server_key.pem");
 
-            mJavaListener = new AndroidJavaObject("my.maylab.unitywebrtc.BackgroundListener", iUri, iRealm,
-                ResourceManager.StreamingAssetFilePath("client_cert.pem"),
-                ResourceManager.StreamingAssetFilePath("server_key.pem"),
-                jo);
-        }
-    }
-
-    public void SubscribeConnectRequest()
-    {
-        mJavaListener.Call("SubscribeConnectRequest");
+		NativeWrapper.SetupCrossbarConnectionWrapper (iUri, iRealm, certificate, key);
     }
 
     public void SubscribeChatChannel()
     {
-        mJavaListener.Call("SubscribeChat", SelectBuddy.BuddyID);
+		NativeWrapper.SubscribeToChatWrapper (SelectBuddy.BuddyID);
     }
 
 	public void SubscribeStatusChannels(List<BuddyDB> iBuddies)
@@ -60,8 +48,8 @@ public class BackgroundListener : MonoBehaviour
 		{
 			lBuddyIDs += iBuddies[i].ID + "/";
 		}
-        Debug.Log("lBuddyIDs = " + lBuddyIDs);
-		mJavaListener.Call("SubscribeStatus", lBuddyIDs);
+
+		NativeWrapper.SubscribeToStatusWrapper (lBuddyIDs);
     }
 
     public void SubscribeNotificationChannels(List<BuddyDB> iBuddies)
@@ -71,27 +59,29 @@ public class BackgroundListener : MonoBehaviour
         {
             lBuddyIDs += iBuddies[i].ID + "/";
         }
-        mJavaListener.Call("StartNotificationService", lBuddyIDs);
+
+		NativeWrapper.SubscribeToNotificationChannelsWrapper (lBuddyIDs);
     }
 
     public void UnsubscribeNotifications()
     {
-        mJavaListener.Call("StopNotificationService");
+		NativeWrapper.UnsubscribeFromNotificationChannelsWrapper ();
     }
 
     public void SendChatMessage(string iMessage)
     {
-        mJavaListener.Call("SendChatMessage", iMessage);
+		NativeWrapper.SendChatMessageWrapper (iMessage);
     }
 
     public void PublishConnectionRequest(string iWebrtcID, string iRemoteID)
     {
-        mJavaListener.Call("Publish", "ConnectRequest", iWebrtcID + "/" + iRemoteID);
+		string message = iWebrtcID + "/" + iRemoteID;
+		NativeWrapper.PublishConnectionRequest (message);
     }
 
     public void PublishNotification()
     {
-        mJavaListener.Call("Publish", "NotificationChannel", "R2D2/A New Hope@Please Obi Wan Kenobi, you're my only hope!");
+		NativeWrapper.PublishNotificationWrapper ("R2D2/A New Hope@Please Obi Wan Kenobi, you're my only hope!");
     }
 
     public void OnConnectionRequest(string iMessage)

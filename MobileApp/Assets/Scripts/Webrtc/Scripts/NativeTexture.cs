@@ -11,32 +11,29 @@ public class NativeTexture
 
     public Texture2D createTextureFromNativePtr(int iWidth, int iHeight)
 	{
-		using(AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
+		int nativeTexturePointer = NativeWrapper.CreateTextureWrapper (mLocal, iWidth, iHeight);
+
+		if (nativeTexturePointer == NativeWrapper.UNDEFINED_TEXTURE_POINTER)
 		{
-			int nativeTexturePointer = cls.CallStatic<int>(mLocal ? "createLocalTexture" : "createRemoteTexture", iWidth, iHeight);
-			return Texture2D.CreateExternalTexture(iWidth, iHeight, TextureFormat.RGBA32, false, true, new IntPtr(nativeTexturePointer));
+			Debug.Log ("NATIVETEXTURE - Error creating" + ( mLocal ? "local" : "remote" ) + "native texture");
 		}
+
+		Debug.Log ("NATIVETEXTURE - " + (mLocal ? "LOCAL" : "REMOTE") + "ID = " + nativeTexturePointer);
+
+		return Texture2D.CreateExternalTexture (iWidth, iHeight, TextureFormat.RGBA32, false, true, new IntPtr (nativeTexturePointer));
 	}
 
     public void Update()
 	{
-		CallStatic(mLocal ? "updateLocalTexture" : "updateRemoteTexture");
+		NativeWrapper.UpdateTextureWrapper (mLocal);	
 	}
 
 	public void Destroy()
 	{
-		CallStatic(mLocal ? "destroyLocalTexture" : "destroyRemoteTexture");
+		NativeWrapper.DestroyTextureWrapper (mLocal);	
 	}
 
 	public Texture2D texture { get { return mNativeTexture; } }
-
-	private void CallStatic(string functionName)
-	{
-		using(AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-		{
-			cls.CallStatic(functionName);
-		}
-	}
 
 	private Texture2D mNativeTexture = null;
 	private bool mLocal;
