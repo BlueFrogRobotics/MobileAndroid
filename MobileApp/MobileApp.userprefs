@@ -1,19 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UI\ConnectionIndicator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Shaders/YUV.shader">
     <Files>
-      <File FileName="Assets\_Test\Scripts\PoolManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\PhoneConfig\DBManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LocalConnection\BuddyIPList.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Webrtc\Scripts\Webrtc.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Webrtc\Scripts\BackgroundListener.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UI\BuddyStatus.cs" Line="53" Column="26" />
-      <File FileName="Assets\Scripts\NavigationStates\ConnectBuddyState.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\NavigationStates\ConnectAccountState.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\NavigationStates\DistantControlState.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\NavigationScripts\GoBack.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\LocalConnection\LaunchTelepresence.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UI\ConnectionIndicator.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Webrtc/Scripts/Webrtc.cs" Line="266" Column="25" />
+      <File FileName="Assets/Scripts/Webrtc/Scripts/NativeTexture.cs" Line="13" Column="3" />
+      <File FileName="Assets/Scripts/Webrtc/Scripts/NativeWrapper.cs" Line="283" Column="2" />
+      <File FileName="Assets/Scripts/Webrtc/Scripts/BackgroundListener.cs" Line="38" Column="81" />
+      <File FileName="Assets/Scripts/Webrtc/RemoteControl.cs" Line="101" Column="54" />
+      <File FileName="Assets/Scripts/Webrtc/SoundManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Shaders/YUV.shader" Line="7" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;ENABLE_RUNTIME_GI;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_NETWORK;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_IOS_NATIVE_CRASH_REPORTING;PLAYERCONNECTION_LISTENS_FIXED_PORT;DEBUGGER_LISTENS_FIXED_PORT;PLATFORM_SUPPORTS_ADS_ID;SUPPORT_ENVIRONMENT_VARIABLES;PLATFORM_SUPPORTS_PROFILER;PLATFORM_HAS_NO_SUPPORT_FOR_BUCKET_ALLOCATOR;STRICTCPP_NEW_DELETE_SIGNATURES;HAS_NEON_SKINNIG;UNITY_GFX_USE_PLATFORM_VSYNC;UNITY_INPUT_SIMULATE_EVENTS;PLATFORM_ALWAYS_USES_STDOUT_FOR_LOG;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;UNITY_IOS;UNITY_IPHONE;UNITY_IPHONE_API;SUPPORT_MULTIPLE_DISPLAYS;ENABLE_IL2CPP;NET_2_0_SUBSET;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_IOS_ON_DEMAND_RESOURCES;ENABLE_IOS_APP_SLICING;UNITY_HAS_GOOGLEVR</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -39,10 +39,10 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -71,7 +71,6 @@
      <Compile Include="Assets\Scripts\NavigationStates\ConnectAccountState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\ConnectBuddyState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\CreateAccountState.cs" />
-     <Compile Include="Assets\Scripts\NavigationStates\DistantControlState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\EditAccountState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\EditBuddyState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\FirstConnectionState.cs" />
@@ -80,8 +79,8 @@
      <Compile Include="Assets\Scripts\NavigationStates\LoadingState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\MenuAdminState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\MessageState.cs" />
+     <Compile Include="Assets\Scripts\NavigationStates\RemoteControlState.cs" />
      <Compile Include="Assets\Scripts\NavigationStates\SelectBuddyState.cs" />
-     <Compile Include="Assets\Scripts\NavigationStates\VideoCallState.cs" />
      <Compile Include="Assets\Scripts\PhoneConfig\ConfigManager.cs" />
      <Compile Include="Assets\Scripts\PhoneConfig\DBManager.cs" />
      <Compile Include="Assets\Scripts\PhoneConfig\DataStructure.cs" />
@@ -104,6 +103,7 @@
      <Compile Include="Assets\Scripts\Webrtc\RemoteControl.cs" />
      <Compile Include="Assets\Scripts\Webrtc\Scripts\BackgroundListener.cs" />
      <Compile Include="Assets\Scripts\Webrtc\Scripts\NativeTexture.cs" />
+     <Compile Include="Assets\Scripts\Webrtc\Scripts\NativeWrapper.cs" />
      <Compile Include="Assets\Scripts\Webrtc\Scripts\Webrtc.cs" />
      <Compile Include="Assets\Scripts\Webrtc\SoundManager.cs" />
      <Compile Include="Assets\TermsOfUsesState.cs" />
@@ -119,6 +119,7 @@
      <None Include="Assets\Plugins\OS\OS.xml" />
      <None Include="Assets\Plugins\OpenCVUnity\Raw\haarcascade_frontalface_alt.xml" />
      <None Include="Assets\Plugins\Utils\Utils.xml" />
+     <None Include="Assets\Resources\Shaders\YUV.shader" />
      <None Include="Assets\StreamingAssets\synonymes.xml" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\StreamingAssets\questions.xml" />
@@ -127,73 +128,73 @@
      <None Include="Assets\Plugins\OpenCVUnity\Raw\lbpcascade_frontalface.xml" />
      <None Include="Assets\Plugins\OpenCVUnity\OpenCVUnity.xml" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.TestRunner">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
  </Reference>
  <Reference Include="nunit.framework">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/nunit.framework.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/TestRunner/nunit.framework.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
  <Reference Include="Ionic.Zlib">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Ionic.Zlib.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Ionic.Zlib.dll</HintPath>
  </Reference>
  <Reference Include="ManagedWifi">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/ManagedWifi.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/ManagedWifi.dll</HintPath>
  </Reference>
  <Reference Include="API">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/API/API.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/API/API.dll</HintPath>
  </Reference>
  <Reference Include="OpenCVUnity">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/OpenCVUnity/OpenCVUnity.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/OpenCVUnity/OpenCVUnity.dll</HintPath>
  </Reference>
  <Reference Include="OS">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/OS/OS.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/OS/OS.dll</HintPath>
  </Reference>
  <Reference Include="DepthPointStruct">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Royale/DepthPointStruct.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Royale/DepthPointStruct.dll</HintPath>
  </Reference>
  <Reference Include="RoyaleDotNet">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Royale/RoyaleDotNet.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Royale/RoyaleDotNet.dll</HintPath>
  </Reference>
  <Reference Include="Utils">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Utils/Utils.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Utils/Utils.dll</HintPath>
  </Reference>
  <Reference Include="I18N.CJK">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.CJK.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.CJK.dll</HintPath>
  </Reference>
  <Reference Include="I18N">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.dll</HintPath>
  </Reference>
  <Reference Include="I18N.MidEast">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.MidEast.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.MidEast.dll</HintPath>
  </Reference>
  <Reference Include="I18N.Other">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.Other.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.Other.dll</HintPath>
  </Reference>
  <Reference Include="I18N.Rare">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.Rare.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.Rare.dll</HintPath>
  </Reference>
  <Reference Include="I18N.West">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.West.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/I18N.West.dll</HintPath>
  </Reference>
  <Reference Include="Ionic.Zip">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/Ionic.Zip.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/Zip/Ionic.Zip.dll</HintPath>
  </Reference>
  <Reference Include="zxing.unity">
- <HintPath>D:/windows/projets/buddy/smartPhoneApp/MobileApp/Assets/Plugins/ZXing/zxing.unity.dll</HintPath>
+ <HintPath>/Users/Quentin/Desktop/Awabot/Buddy/smartPhoneApp/MobileApp/Assets/Plugins/ZXing/zxing.unity.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
