@@ -123,15 +123,15 @@ public class NativeWrapper : MonoBehaviour
 		#endif
 	}
 
-	public static void SubscribeToStatusWrapper (string buddyId)
+	public static void SubscribeToStatusWrapper (string buddyIds)
 	{
 		#if (UNITY_IOS)
 
-		SubscribeToStatus(buddyId);
+		SubscribeToStatus(buddyIds);
 
 		#elif (UNITY_ANDROID)
 
-		CallAndroidInstanceMethod(mJavaListener, "SubscribeStatus", buddyId);
+		CallAndroidInstanceMethod(mJavaListener, "SubscribeStatus", buddyIds);
 
 		#endif
 	}
