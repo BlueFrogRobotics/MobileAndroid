@@ -376,9 +376,9 @@ public class Webrtc : MonoBehaviour
 
 		bool controlsDisabled = false;
 
-		string[] cuts = mConnectionInfos.Split('|');
-		float local = float.Parse(cuts[0]);
-		float remote = float.Parse(cuts[1]);
+		//string[] cuts = mConnectionInfos.Split('|');
+		float local = 1.0F; //float.Parse(cuts[0]);
+		float remote = 1.0F; //float.Parse(cuts[1]);
 
 		if(local != -1 && remote != -1) {
 			float threshold = 0.3f;
@@ -388,13 +388,13 @@ public class Webrtc : MonoBehaviour
 		}
         
 		remoteControl.ControlsDisabled = controlsDisabled;
-		if(controlsDisabled) {
+		/*if(controlsDisabled) {
 			joystick.SetActive(false);
 			remoteMessage.SetActive(true);
 		} else {
 			joystick.SetActive(true);
 			remoteMessage.SetActive(false);
-		}
+		}*/
     }
 }
 

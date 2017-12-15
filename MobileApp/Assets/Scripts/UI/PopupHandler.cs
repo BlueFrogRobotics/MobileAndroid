@@ -283,9 +283,9 @@ public class PopupHandler : MonoBehaviour {
         {
             //Debug.Log("RTC INFOS " + webRTC.ConnectionInfo);
             string[] lInfos = webRTC.ConnectionInfo.Split('|');
-            lLocal.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[0])));
-            lRemote.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[1])));
-            lDevice.sprite = poolManager.GetSprite(SignalLevel(float.Parse(lInfos[2])));
+			lLocal.sprite = poolManager.GetSprite(SignalLevel(1.0F));//float.Parse(lInfos[0])));
+			lRemote.sprite = poolManager.GetSprite(SignalLevel(1.0F));//float.Parse(lInfos[1])));
+			lDevice.sprite = poolManager.GetSprite(SignalLevel(1.0F));//float.Parse(lInfos[2])));
 
             yield return new WaitForSeconds(1F);
         }
