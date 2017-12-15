@@ -1,6 +1,0 @@
-framework module iOSBuddy {
-  umbrella header "iOSBuddy.h"
-
-  export *
-  module * { export * }
-}
