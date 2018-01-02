@@ -39,26 +39,31 @@ public class BackToMenu : MonoBehaviour
     [SerializeField]
     private GameObject backSensor;
 
+	public static bool prevMenuActivated = false;
+
     public void GoBackToMenu()
     {
-        //Reactivate networks depending on which type of remote connection was used
-        if(selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL) {
-            oto.Disconnect();
-            oto.gameObject.SetActive(false);
-            mobileServer.gameObject.SetActive(true);
+		if (!prevMenuActivated) {
+			prevMenuActivated = true;
+			//Reactivate networks depending on which type of remote connection was used
+			if (selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL) {
+				oto.Disconnect ();
+				oto.gameObject.SetActive (false);
+				mobileServer.gameObject.SetActive (true);
 
-        } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
-            webRTC.StopWebRTC();
-            remoteControlRTC.SetActive(false);
-        }
+			} else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
+				webRTC.StopWebRTC ();
+				remoteControlRTC.SetActive (false);
+			}
 
-        leftSensor.GetComponent<ObstacleManager>().lvl = 0;
-        middleSensor.GetComponent<ObstacleManager>().lvl = 0;
-        rightSensor.GetComponent<ObstacleManager>().lvl = 0;
-        backSensor.GetComponent<ObstacleManager>().lvl = 0;
+			leftSensor.GetComponent<ObstacleManager> ().lvl = 0;
+			middleSensor.GetComponent<ObstacleManager> ().lvl = 0;
+			rightSensor.GetComponent<ObstacleManager> ().lvl = 0;
+			backSensor.GetComponent<ObstacleManager> ().lvl = 0;
 
-        indicator.CloseConnection();
+			indicator.CloseConnection ();
 
-        menuManager.PreviousMenu();
+			menuManager.PreviousMenu ();
+		}
     } 
 }

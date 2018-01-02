@@ -19,6 +19,8 @@ public class GoBack : MonoBehaviour
     private string mCurrentMenu;
     private List<string> mViewTree;
 
+	private BackToMenu mBackToMenu;
+
     // Use this for initialization
     void Start()
     {

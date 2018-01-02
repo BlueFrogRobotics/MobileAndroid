@@ -99,24 +99,26 @@ public class BuddyIPList : MonoBehaviour
     private void RemoveBuddyFromList(string iDisconnectedBuddy)
     {
         //Self-explanatory
-        string[] lTab = iDisconnectedBuddy.Split(':');
-        string lBuddyIP = lTab[lTab.Length - 1];
-        mIPList.Remove(lBuddyIP);
+		if(iDisconnectedBuddy.Length == 0) {
+	        string[] lTab = iDisconnectedBuddy.Split(':');
+	        string lBuddyIP = lTab[lTab.Length - 1];
+	        mIPList.Remove(lBuddyIP);
 
-        GameObject lList = GameObject.Find("Content_Bottom/ScrollView/Viewport");
-        bool lLocal = false;
-        foreach(Transform lChild in lList.transform)
-        {
-            if (!lLocal || lChild.gameObject.name != "LocalSeparator")
-                continue;
-            else if (lChild.gameObject.name == "LocalSeparator")
-                lLocal = true;
-            else if(lLocal && lChild.GetComponentsInChildren<Text>()[1].text.Contains(lBuddyIP)) {
-                GameObject.Destroy(lChild.gameObject);
-                break;
-            }
-        }
-        //CreateListDisplay();
+	        GameObject lList = GameObject.Find("Content_Bottom/ScrollView/Viewport");
+	        bool lLocal = false;
+	        foreach(Transform lChild in lList.transform)
+	        {
+	            if (!lLocal || lChild.gameObject.name != "LocalSeparator")
+	                continue;
+	            else if (lChild.gameObject.name == "LocalSeparator")
+	                lLocal = true;
+	            else if(lLocal && lChild.GetComponentsInChildren<Text>()[1].text.Contains(lBuddyIP)) {
+	                GameObject.Destroy(lChild.gameObject);
+	                break;
+	            }
+	        }
+	        //CreateListDisplay();
+		}
     }
 
     public void CreateListDisplay()

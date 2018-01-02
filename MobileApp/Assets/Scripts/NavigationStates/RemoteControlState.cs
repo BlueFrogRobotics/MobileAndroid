@@ -6,10 +6,12 @@ using System.Collections.Generic;
 public class RemoteControlState : ASubState {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
-    {
+	{
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
+
         if (indexState == (int)State.OPEN)
-        {
+		{
+			BackToMenu.prevMenuActivated = false;
             //GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             // CLEANNING PREVIOUS CREATED OBJECT
             LoadingUI.ClearUI();
