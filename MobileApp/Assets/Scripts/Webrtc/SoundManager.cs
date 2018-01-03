@@ -14,7 +14,17 @@ public class SoundManager : MonoBehaviour
 	/*[SerializeField]
 	private PoolManager mPoolManager = null;*/
 
+	public static bool reset = true;
 	private bool mActive = true;
+
+	public void Update()
+	{
+		if (reset) {
+			reset = false;
+			mActive = true;
+			lButtonImage.sprite = GameObject.Find ("CanvasApp").GetComponent<PoolManager> ().GetSprite ("Micro");
+		}
+	}
 
 	public void onToggleSound()
 	{

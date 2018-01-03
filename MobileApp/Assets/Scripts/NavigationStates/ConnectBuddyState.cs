@@ -26,7 +26,7 @@ public class ConnectBuddyState : ASubState {
 
 			LoadingUI.AddObject(lPoolManager.fBuddy_Status("Content_Bottom/ScrollView/Viewport", SelectBuddy.BuddyID, true));
 			LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "CHAT WITH BUDDY", "", new List<UnityAction>() { lMenuManager.LoadChatMenu }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REMOTE CONTROL", "", new List<UnityAction>() { lMenuManager.LoadRemoteControlMenu }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REMOTE CONTROL", "", new List<UnityAction>() { lMenuManager.LoadRemoteControlMenu, ResetSoundManager }));
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "BUDDY SETTINGS", "", new List<UnityAction>() { lMenuManager.GoBuddySettings }));
 			//LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REQUEST ACCESS", "", new List<UnityAction>() { ShowAccessRequest }));
 
@@ -65,6 +65,11 @@ public class ConnectBuddyState : ASubState {
 	private void onDeleteBuddyConfirmed()
 	{
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartRemoveBuddyFromUser(SelectBuddy.BuddyID);
+	}
+
+	private void ResetSoundManager()
+	{
+		SoundManager.reset = true;
 	}
 
 }
