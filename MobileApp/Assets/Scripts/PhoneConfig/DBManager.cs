@@ -94,27 +94,30 @@ public class DBManager : MonoBehaviour
     private string[] mCookie;
     private PhoneUser mCurrentUser;
     private PhoneUserList mUserList;
-    private Texture2D mProfileTexture;
 
     private PopupHandler popupHandler;
 
     private PhoneUser mUser;
+	public static string tmpImgPath = "";
+	private bool mImagePreselected = false;
+	private Texture2D mTex;
 
     private List<string> mBuddiesIDs;
 
     void Start()
-    {
-        //Register Azure public IP for MySQL and PHP requests
-        mHost = "52.174.52.152:8080";
-        mBuddyList = "";
-        mUserFilePath = Application.persistentDataPath + "/users.txt";
-        mCurrentUser = new PhoneUser();
-        ReadPhoneUsers(true);
-        popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
-        mBuddiesIDs = new List<string>();
-        mBuddiesList = new List<BuddyDB>();
-        Debug.Log("DB MANAGER STARTED");
-    }
+	{
+		//Register Azure public IP for MySQL and PHP requests
+		mHost = "52.174.52.152:8080";
+		mBuddyList = "";
+		mUserFilePath = Application.persistentDataPath + "/users.txt";
+		mCurrentUser = new PhoneUser ();
+		ReadPhoneUsers (true);
+		popupHandler = GameObject.Find ("PopUps").GetComponent<PopupHandler> ();
+		mBuddiesIDs = new List<string> ();
+		mBuddiesList = new List<BuddyDB> ();
+		mTex = new Texture2D (2, 2);
+		Debug.Log ("DB MANAGER STARTED");
+	}
 
     void Update()
     {
@@ -122,7 +125,23 @@ public class DBManager : MonoBehaviour
             popupNoConnection.SetActive(true);
         else
             popupNoConnection.SetActive(false);
-    }
+
+		if(mImagePreselected)
+		{
+			mImagePreselected = false;
+		}
+	}
+
+	public void OpenFileBrowser(bool resizeImage)
+	{
+		using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.filebrowserlib.FileBrowser"))
+		{
+			using (AndroidJavaClass jc = new AndroidJavaClass ("com.unity3d.player.UnityPlayer"))
+			{
+				cls.CallStatic ("openGallery", jc.GetStatic<AndroidJavaObject> ("currentActivity"), Application.persistentDataPath, resizeImage);
+			}
+		}
+	}
 
     public bool IsBuddiesListEmpty()
     {
@@ -242,11 +261,13 @@ public class DBManager : MonoBehaviour
                 if (resp.ok)
                 {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-                    AddUserToConfig(firstName, lastName, email);
+
+					String imgName = saveImage(email);
+					AddUserToConfig(firstName, lastName, email, imgName);
                     
                     ReadPhoneUsers(true, /*Op 1: MG*/ true);
                     menuManager.GoConnectionMenu();
-                    ResetCreateParameters();
+					ResetCreateParameters();
                 }
                 else
                 {
@@ -307,7 +328,10 @@ public class DBManager : MonoBehaviour
                 if (resp.ok)
                 {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-                    EditUserToConfig(firstName, lastName, email);
+					String imgName = saveImage(email);
+					String imgPath = Application.persistentDataPath + "/" + email + ".jpg";
+					EditUserToConfig(firstName, lastName, email, File.Exists(imgPath) ? imgPath : imgName);
+					tmpImgPath = "";
                     menuManager.PreviousMenu();
                 }
                 else
@@ -643,6 +667,8 @@ public class DBManager : MonoBehaviour
         ifCurrent = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>();
         ifCurrent.Select();
         ifCurrent.text = "";
+
+		tmpImgPath = "";
     }
 
     private void ExportToJson(PhoneUserList iUser)
@@ -654,7 +680,7 @@ public class DBManager : MonoBehaviour
         lStrWriter.Close();
     }
 
-    private void AddUserToConfig(string iFName, string iLName, string iEMail, bool iIsDefaultUser = false, string iPicture = "")
+	private void AddUserToConfig(string iFName, string iLName, string iEMail, string iPicture = "", bool iIsDefaultUser = false)
     {
         Debug.Log("Adding user to config");
         //Create new user
@@ -685,14 +711,15 @@ public class DBManager : MonoBehaviour
         mCurrentUser = lNewUser;
     }
 
-    private void EditUserToConfig(string firstname, string lastname, string email)
+	private void EditUserToConfig(string firstname, string lastname, string email, string picture = "")
     {
         for (int i = 0; i < mUserList.Users.Length; i++)
         {
             if (mUserList.Users[i].Email.CompareTo(email) == 0)
             {
                 mUserList.Users[i].FirstName = firstname;
-                mUserList.Users[i].LastName = lastname;
+				mUserList.Users[i].LastName = lastname;
+				mUserList.Users[i].Picture = picture;
             }
         }
         ExportToJson(mUserList);
@@ -716,17 +743,24 @@ public class DBManager : MonoBehaviour
         GenerateUserDisplay ();
     }
 
+	private byte[] openFile(String path)
+	{
+		if(path.Contains("/"))
+		{
+			return File.ReadAllBytes(path);
+		}
+
+		return File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(path));
+	}
+
     public Sprite GetCurrentUserImage()
     {
         //Function name is explicit enough. We load the picture file into the sprite
         if (!string.IsNullOrEmpty(mCurrentUser.Picture))
         {
-            byte[] lFileData = File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(mCurrentUser.Picture));
-            Texture2D lTex = new Texture2D(2, 2);
-            lTex.LoadImage(lFileData);
-            //Image lProfilePicture = GameObject.Find(iObjectName).GetComponentsInChildren<Image>()[2];
-            //lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
-            return Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+			byte[] lFileData = openFile(mCurrentUser.Picture);
+            mTex.LoadImage(lFileData);
+			return Sprite.Create(mTex, new Rect(0, 0, mTex.width, mTex.height), new Vector2(0.5F, 0.5F));
         }
         else
         {
@@ -736,22 +770,18 @@ public class DBManager : MonoBehaviour
     }
 
     private void LoadUserPicture(string iPictureName)
-    {
-        //Function name is explicit enough. We load the picture file into the sprite
+	{
+		Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
         if ((!string.IsNullOrEmpty(iPictureName)))
         {
-            byte[] lFileData = File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(iPictureName));
-            Texture2D lTex = new Texture2D(2, 2);
-            lTex.LoadImage(lFileData);
-            Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
-            lProfilePicture.sprite = Sprite.Create(lTex, new Rect(0, 0, lTex.width, lTex.height), new Vector2(0.5F, 0.5F));
+			byte[] lFileData = openFile(iPictureName);
+            mTex.LoadImage(lFileData);
+			lProfilePicture.sprite = Sprite.Create(mTex, new Rect(0, 0, mTex.width, mTex.height), new Vector2(0.5F, 0.5F));
         }
         else
-        {
-            //Sprite lSprite = Resources.Load<Sprite>("DefaultUser") as Sprite;
-            Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
-            lProfilePicture.sprite = poolManager.GetSprite("DefaultUser");
-        }
+		{
+			lProfilePicture.sprite = poolManager.GetSprite("DefaultUser");
+		}
     }
 
     public void DisplayNextUser()
@@ -903,4 +933,25 @@ public class DBManager : MonoBehaviour
 
         return resp;
     }
+
+	public void onImageSelected(string tmpUserImg)
+	{
+		tmpImgPath = Application.persistentDataPath + "/" + tmpUserImg + ".jpg";
+		mImagePreselected = true;
+		LoadUserPicture(tmpImgPath);
+	}
+
+	private String saveImage(string imgName)
+	{
+		if (tmpImgPath != "")
+		{
+			using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.filebrowserlib.FileBrowser"))
+			{
+				cls.CallStatic ("save", imgName);
+			}
+			return (Application.persistentDataPath + "/" + imgName + ".jpg");
+		}
+
+		return "";
+	}
 }

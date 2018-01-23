@@ -11,6 +11,7 @@ public class EditAccountState: ASubState {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
         if (indexState == (int)State.OPEN)
         {
+			DBManager.tmpImgPath = "";
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             PhoneUser lPhoneUser = GameObject.Find("DBManager").GetComponent<DBManager>().CurrentUser;
             // CLEANNING PREVIOUS CREATED OBJECT
@@ -35,7 +36,9 @@ public class EditAccountState: ASubState {
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "Confirm Changes", "", new List<UnityAction>() { SaveProfileChanges }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, null));
 
-            LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "", null));
+			GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "", new List<UnityAction>() { EditPicture });
+			lUserPicture.name = "Connect_User_Picture";
+			LoadingUI.AddObject(lUserPicture);
 
 			LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", new List<UnityAction>() { DeleteAccount }));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
@@ -80,5 +83,10 @@ public class EditAccountState: ASubState {
 	{
 		string password = GameObject.Find("PopUps").GetComponent<PopupHandler>().GetDeleteAccountPassword();
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartDeleteAccount(password);
+	}
+
+	private void EditPicture()
+	{
+		GameObject.Find("DBManager").GetComponent<DBManager>().OpenFileBrowser(true);
 	}
 }
