@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-
+using UnityEngine.Networking;
 using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -100,9 +101,9 @@ public sealed class Dictionary
 {
     private Trie<Dictionary<EntryType, string[]>> mCurrentNativeTrie;
 
-    internal Dictionary(Language iLang)
+    internal Dictionary(Language iLang, PoolManager lPoolManager)
     {
-        SetLanguage(iLang);
+        lPoolManager.StartCoroutine(SetLanguage(iLang));
     }
 
     /// <summary>
@@ -115,20 +116,20 @@ public sealed class Dictionary
     public string GetString(string iKey)
     {
         string oVal = string.Empty;
-
+        Debug.Log("truc 1: "+iKey);
         if (string.IsNullOrEmpty(iKey))
             return oVal;
-
+        Debug.Log("truc 2");
         Dictionary<EntryType, string[]> lSearchResult = null;
 
         if (mCurrentNativeTrie != null)
             lSearchResult = mCurrentNativeTrie.Find(iKey);
-
+        Debug.Log("truc 3 ");
         if (lSearchResult == null)
             return oVal;
-
+        Debug.Log("truc 4");
         oVal = lSearchResult[EntryType.BASE][0];
-
+        Debug.Log("truc 5: "+oVal);
         return oVal;
     }
 
@@ -205,18 +206,41 @@ public sealed class Dictionary
         return false;
     }
 
-    internal void SetLanguage(Language iLang)
+    internal IEnumerator SetLanguage(Language iLang)
     {
         string lFilePath = Application.streamingAssetsPath + "/" + LangToFile(iLang);
-
-        if (File.Exists(lFilePath)) {
-            LanguageThesaurus lNativeThes = UnserializeXML<LanguageThesaurus>(lFilePath);
-
+        Debug.Log("dict file path: " + lFilePath);
+        //string lFilePath = "jar:file://"+Application.dataPath + "!/assets/" + LangToFile(iLang);
+        WWW lwww = new WWW(lFilePath);
+        Debug.Log("set language: " + lFilePath);
+        yield return lwww;
+        if (lwww.isDone/*File.Exists(lFilePath)*/) {
+            
+            //LanguageThesaurus lNativeThes = UnserializeXML<LanguageThesaurus>(lFilePath);
+            LanguageThesaurus lNativeThes = UnserializeXMLFromString<LanguageThesaurus>(lwww.text);
+            Debug.Log("file exists"+ lwww.text);
             if (lNativeThes != null)
+            {
+                Debug.Log("lnative pas null");
                 mCurrentNativeTrie = BuildTrie(lNativeThes.Entries);
+            }
             lNativeThes = null;
         }
     }
+
+//    IEnumerator testLoad()
+//    {
+//        string testPath = Path.Combine(Application.streamingAssetsPath, "testText.txt");
+//        Debug.Log(testPath);
+////#if UNITY_ANDROID
+//        UnityWebRequest www = UnityWebRequest.Get(testPath);
+//        yield return www.SendWebRequest();
+//        if (www.isNetworkError || www.isHttpError)
+//            Debug.Log(www.error);
+//        else
+//            Debug.Log(www.downloadHandler.text);
+////#endif
+//    }
 
     private Trie<Dictionary<EntryType, string[]>> BuildTrie(List<DictionaryEntry> iEntries)
     {
@@ -253,11 +277,36 @@ public sealed class Dictionary
             return default(T);
         T oObject = default(T);
         try {
+            //WWW lWWW = new WWW(iPath);
+
             using (StreamReader lReader = new StreamReader(iPath, Encoding.UTF8, true)) {
                 XmlSerializer lSerializer = new XmlSerializer(typeof(T));
                 oObject = (T)lSerializer.Deserialize(lReader);
             }
         } catch (Exception lEx) {
+            UnityEngine.Debug.LogError(lEx.StackTrace);
+        }
+
+        return oObject;
+    }
+
+    private static T UnserializeXMLFromString<T>(string iText)
+    {
+        
+        T oObject = default(T);
+        try
+        {
+            //WWW lWWW = new WWW(iPath);
+
+            using (TextReader lReader = new StringReader(iText))
+            {
+                lReader.Read();
+                XmlSerializer lSerializer = new XmlSerializer(typeof(T));
+                oObject = (T)lSerializer.Deserialize(lReader);
+            }
+        }
+        catch (Exception lEx)
+        {
             UnityEngine.Debug.LogError(lEx.StackTrace);
         }
 

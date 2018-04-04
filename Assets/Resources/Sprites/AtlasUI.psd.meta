@@ -86,12 +86,12 @@ TextureImporter:
     21300158: Mask
     21300160: AtlasUI_0
     21300162: Sound_Off
-  serializedVersion: 2
+  serializedVersion: 4
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
     mipMapFadeDistanceStart: 1
@@ -103,10 +103,8 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: 29
   maxTextureSize: 2048
@@ -117,9 +115,7 @@ TextureImporter:
     wrapMode: 0
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 100
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 3
   spriteMeshType: 1
@@ -127,9 +123,39 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  alphaUsage: 1
   alphaIsTransparency: 1
-  textureType: 5
-  buildTargetSettings: []
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 100
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 100
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 3
+    compressionQuality: 100
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -145,6 +171,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Parameter
       rect:
@@ -157,6 +184,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Wifi4
       rect:
@@ -169,6 +197,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Wifi3
       rect:
@@ -181,6 +210,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Wifi2
       rect:
@@ -193,6 +223,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Wifi2_1
       rect:
@@ -205,6 +236,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Battery3
       rect:
@@ -217,6 +249,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Photo
       rect:
@@ -229,6 +262,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Message
       rect:
@@ -241,6 +275,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Camera
       rect:
@@ -253,6 +288,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Battery4
       rect:
@@ -265,6 +301,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Apps
       rect:
@@ -277,6 +314,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Battery5
       rect:
@@ -289,6 +327,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Wifi2_2
       rect:
@@ -301,6 +340,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Lock
       rect:
@@ -313,6 +353,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: SquareEmpty
       rect:
@@ -325,6 +366,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 5, y: 5, z: 5, w: 5}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Battery0
       rect:
@@ -337,6 +379,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: CircleFull
       rect:
@@ -349,6 +392,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 24, y: 24, z: 24, w: 24}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: CircleEmpty
       rect:
@@ -361,6 +405,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 18, y: 5, z: 18, w: 5}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: SquareFull
       rect:
@@ -373,6 +418,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 3, y: 2, z: 3, w: 2}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Battery2
       rect:
@@ -385,6 +431,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Battery1
       rect:
@@ -397,6 +444,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: VLeft
       rect:
@@ -409,6 +457,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: X
       rect:
@@ -421,6 +470,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: +
       rect:
@@ -433,6 +483,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 20, y: 20, z: 20, w: 20}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Trash
       rect:
@@ -445,6 +496,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: ArrowUp
       rect:
@@ -457,6 +509,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Eye
       rect:
@@ -469,6 +522,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: EyeNo
       rect:
@@ -481,6 +535,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Edit
       rect:
@@ -493,6 +548,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Save
       rect:
@@ -505,6 +561,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Spy
       rect:
@@ -517,6 +574,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Info
       rect:
@@ -529,6 +587,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Undo
       rect:
@@ -541,6 +600,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: ArrowDown
       rect:
@@ -553,6 +613,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Mute
       rect:
@@ -565,6 +626,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: SoundMax
       rect:
@@ -577,6 +639,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: PC
       rect:
@@ -589,6 +652,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Forward
       rect:
@@ -601,6 +665,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Shop
       rect:
@@ -613,6 +678,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: V
       rect:
@@ -625,6 +691,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: PC2
       rect:
@@ -637,6 +704,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Phone
       rect:
@@ -649,6 +717,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Phone2
       rect:
@@ -661,6 +730,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Light
       rect:
@@ -673,6 +743,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: LightOff
       rect:
@@ -685,6 +756,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: LightOn
       rect:
@@ -697,6 +769,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Store
       rect:
@@ -709,6 +782,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: StoreUp
       rect:
@@ -721,6 +795,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: StoreDown
       rect:
@@ -733,6 +808,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: CircularHalfEmpty
       rect:
@@ -745,6 +821,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 123, y: 124, z: 124, w: 123}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: BgToggle
       rect:
@@ -757,6 +834,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 21, y: 0, z: 21, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: SliderToggle
       rect:
@@ -769,6 +847,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 24, y: 0, z: 24, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: littleDegrader
       rect:
@@ -781,6 +860,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 23, y: 1, z: 1, w: 1}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: BigDegrader
       rect:
@@ -793,6 +873,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 32, y: 1, z: 1, w: 1}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Music
       rect:
@@ -805,6 +886,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Play
       rect:
@@ -817,6 +899,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Pause
       rect:
@@ -829,6 +912,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Stop
       rect:
@@ -841,6 +925,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Next
       rect:
@@ -853,6 +938,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: List
       rect:
@@ -865,6 +951,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Micro
       rect:
@@ -877,6 +964,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: MicroOff
       rect:
@@ -889,6 +977,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Spin
       rect:
@@ -901,6 +990,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Search
       rect:
@@ -913,6 +1003,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Back
       rect:
@@ -925,6 +1016,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Random
       rect:
@@ -937,6 +1029,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Replay
       rect:
@@ -949,6 +1042,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: ScrollUP
       rect:
@@ -961,6 +1055,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 15, y: 24, z: 15, w: 24}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: RedBT
       rect:
@@ -973,6 +1068,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: GreenBT
       rect:
@@ -985,6 +1081,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Ico_Security
       rect:
@@ -997,6 +1094,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Ico_BabyPhone
       rect:
@@ -1009,6 +1107,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Ico_FreezeDance
       rect:
@@ -1021,6 +1120,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Ico_123Soleil
       rect:
@@ -1033,6 +1133,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Ico_Jukebox
       rect:
@@ -1045,6 +1146,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Halo
       rect:
@@ -1057,6 +1159,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Background
       rect:
@@ -1069,6 +1172,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Ico_Alarm
       rect:
@@ -1081,6 +1185,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Mask
       rect:
@@ -1093,6 +1198,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: AtlasUI_0
       rect:
@@ -1105,6 +1211,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: Sound_Off
       rect:
@@ -1117,6 +1224,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 

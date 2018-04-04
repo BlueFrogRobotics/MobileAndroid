@@ -27,7 +27,7 @@ public class LoadingState : ASubState {
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Repeat Your Password", "", "Lock", null, null, null));
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle_Underline("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false, null));
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false));
-            LoadingUI.AddObject(lPoolManager.fLoading("Content_Top", "Loading..."));
+            LoadingUI.AddObject(lPoolManager.fLoading("Content_Top", "loading"));
             LoadingUI.AddObject(lPoolManager.fLogo("Content_Top"));
         }
     }

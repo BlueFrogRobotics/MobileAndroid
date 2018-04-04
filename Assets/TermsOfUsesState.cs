@@ -17,8 +17,8 @@ public class TermsOfUsesState : ASubState {
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fSimple_Text("Content_Bottom/Bottom_UI", "", false));
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_R("Content_Bottom/Bottom_UI", "Up", null));
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fTerms("Content_Bottom/ScrollView/Viewport", ""));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false));
-            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fSimple_Title("Content_Top/Top_UI", "Terms of Service"));
+            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fToggle("Content_Bottom/ScrollView/Viewport", "agreetermsofservice", false));
+            LoadingUI.AddObject(animator.GetComponent<PoolManager>().fSimple_Title("Content_Top/Top_UI", "termsofservice"));
         }
     }
 }

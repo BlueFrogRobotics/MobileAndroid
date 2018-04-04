@@ -20,24 +20,24 @@ public class ConnectAccountState : ASubState {
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationAccount", "TopUI", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
             //This makes getting stuff easier
-            GameObject lInputFieldEM = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "mymail@example.com", "", "Email", null, null, null);
+            GameObject lInputFieldEM = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "mymail", "", "Email", null, null, null);
             lInputFieldEM.name = "EMail_Input";
             LoadingUI.AddObject(lInputFieldEM);
-            GameObject lInputFieldPW = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Enter your password", "", "Lock", null, null, null);
+            GameObject lInputFieldPW = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "enterpassword", "", "Lock", null, null, null);
             lInputFieldPW.name = "Password_Input";
             lInputFieldPW.GetComponent<InputField>().inputType = InputField.InputType.Password;
             lInputFieldEM.GetComponent<InputField>().text = lDB.CurrentUser.Email;
             LoadingUI.AddObject(lInputFieldPW);
 
-			LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "Forgot your password?", new List<UnityAction>() { onForgottenPasswordClicked }));
+			LoadingUI.AddObject(lPoolManager.fButton_Text_Underline("Content_Bottom/ScrollView/Viewport", "forgotpassword", new List<UnityAction>() { onForgottenPasswordClicked }));
             //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
 
-            GameObject lNotifToggle = lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false);
+            GameObject lNotifToggle = lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "allownotifications", false);
             lNotifToggle.name = "Notification_Toggle";
             LoadingUI.AddObject(lNotifToggle);
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.GoToFirstMenu }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "LOGIN", "", new List<UnityAction>() { Connection }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "login", "", new List<UnityAction>() { Connection }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
 
             GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "", null);

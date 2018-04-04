@@ -31,11 +31,11 @@ public class SelectBuddyState : ASubState {
             //LoadingUI.AddObject(lPoolManager.fSearching("Content_Bottom/ScrollView/Viewport"));
             // OTHER UI OBJECT
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { BackToConnectionMenu }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "SELECT", "", new List<UnityAction>() { lSelect.BuddySelected }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "select", "", new List<UnityAction>() { lSelect.BuddySelected }));
             LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "+", new List<UnityAction>() { lMenuManager.GoAddBuddyMenu }));
-            LoadingUI.AddObject(lPoolManager.fTextField_Searching("Content_Top/Top_UI", "Search...", "", null, new List<UnityAction<string>>() { lIPList.SearchForBuddy }));
+            LoadingUI.AddObject(lPoolManager.fTextField_Searching("Content_Top/Top_UI", "search", "", null, new List<UnityAction<string>>() { lIPList.SearchForBuddy }));
             LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Undo", new List<UnityAction>() { lIPList.CreateListDisplay }));
             //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
             GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = true;

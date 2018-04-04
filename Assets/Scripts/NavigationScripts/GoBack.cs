@@ -105,7 +105,7 @@ public class GoBack : MonoBehaviour
 
     public void LoadChatMenu()
     {
-        LoadingBuddyMessage = "Loading chat room...";
+        LoadingBuddyMessage = "loadingchatroom";
         canvasAnimator.SetInteger("MenuBuddy",1);
         SwitchToMenu("GoLoadingBuddy");
     }
@@ -119,7 +119,7 @@ public class GoBack : MonoBehaviour
     {
 		SelectBuddy lSelect = this.GetComponentInChildren<SelectBuddy>();
 		if (lSelect.BuddyAccess()) {
-			LoadingBuddyMessage = "Waiting for call confirmation...";
+			LoadingBuddyMessage = "waitingcallconfirmation";
 			canvasAnimator.SetInteger ("MenuBuddy", 2);
 			SwitchToMenu ("GoLoadingBuddy");
 		} else {

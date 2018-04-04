@@ -22,12 +22,12 @@ public class EditBuddyState : ASubState {
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", null, null));
             //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Set as default connection", false));
 
-			GameObject lbuddyNameField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Buddy's name", SelectBuddy.BuddyName, "", null, null, null);
+			GameObject lbuddyNameField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "buddysname", SelectBuddy.BuddyName, "", null, null, null);
 			lbuddyNameField.name = "BuddyNameField";
 			LoadingUI.AddObject(lbuddyNameField);
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "Confirm Changes", "", new List<UnityAction>() { SaveBuddyChanges }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "confirmchanges", "", new List<UnityAction>() { SaveBuddyChanges }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
 
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "Default_Buddy", null));

@@ -810,8 +810,8 @@ public class DBManager : MonoBehaviour
                 textLastName.gameObject.SetActive(false);
                 inputFirstName.gameObject.SetActive(true);
                 inputLastName.gameObject.SetActive(true);
-                inputFirstName.text = "Enter your First Name";
-                inputLastName.text = "Enter your Last Name";
+                inputFirstName.text = poolManager.Dictionary.GetString("enterfirstname");//"Enter your First Name";
+                inputLastName.text = poolManager.Dictionary.GetString("enterlastname");//"Enter your Last Name";
                 GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
                 GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
                 mDisplayedIndex++;
@@ -864,8 +864,8 @@ public class DBManager : MonoBehaviour
                 textLastName.gameObject.SetActive(false);
                 inputFirstName.gameObject.SetActive(true);
                 inputLastName.gameObject.SetActive(true);
-                inputFirstName.text = "Enter your First Name";
-                inputLastName.text = "Enter your Last Name";
+                inputFirstName.text = poolManager.Dictionary.GetString("enterfirstname");//"Enter your First Name";
+                inputLastName.text = poolManager.Dictionary.GetString("enterlastname");//"Enter your Last Name";
                 GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
                 GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
                 lTrashButton.SetActive(false);

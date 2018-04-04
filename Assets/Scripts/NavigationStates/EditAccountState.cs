@@ -21,19 +21,19 @@ public class EditAccountState: ASubState {
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationEditAccount", "TopUI", "BottomUI", "ScrollView" });
             // CREATING OBJECTS
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "ID:5487-BF68-ZD97", "QRCode", null));
-			GameObject lNewPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your New Password", "", "Lock", null, null, null);
+			GameObject lNewPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "newpassword", "", "Lock", null, null, null);
 			lNewPasswordField.name = "New_PW_Input";
             lNewPasswordField.GetComponent<InputField>().inputType = InputField.InputType.Password;
 			LoadingUI.AddObject(lNewPasswordField);
-			GameObject lNewPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Re-enter Your New Password", "", "Lock", null, null, null);
+			GameObject lNewPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "reenterpassword", "", "Lock", null, null, null);
 			lNewPasswordConfField.name = "New_PWConf_Input";
             lNewPasswordConfField.GetComponent<InputField>().inputType = InputField.InputType.Password;
             LoadingUI.AddObject(lNewPasswordConfField);
             //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
+            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "allownotifications", false));
 
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "Confirm Changes", "", new List<UnityAction>() { SaveProfileChanges }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "confirmchanges", "", new List<UnityAction>() { SaveProfileChanges }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, null));
 
 			GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "", new List<UnityAction>() { EditPicture });

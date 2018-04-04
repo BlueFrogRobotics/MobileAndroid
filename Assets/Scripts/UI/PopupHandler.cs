@@ -55,15 +55,15 @@ public class PopupHandler : MonoBehaviour {
         lButton.GetComponent<Button>().onClick.AddListener(CloseWebRTCInfos);
 
         GameObject.Find("PopUp_Window/Window/Top_UI/SimpleText").GetComponent<Text>().text = "Network Status";
-        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Connection status local", true);
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "connectionstatuslocal", true);
         GameObject lLocalLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "Network0", null);
         lLocalLevel.name = "LocalLevel";
 
-        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Connection status remote", true);
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "connectionstatusremote", true);
         GameObject lRemoteLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "Network0", null);
         lRemoteLevel.name = "RemoteLevel";
 
-        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Device performance", true);
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "deviceperformance", true);
         GameObject lDeviceLevel = poolManager.fButton_R("PopUp_Window/Window/Content", "Network0", null);
         lDeviceLevel.name = "DeviceLevel";
 
@@ -98,10 +98,10 @@ public class PopupHandler : MonoBehaviour {
 		lTitle.text = "REQUEST ACCESS";
 		GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
 		lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
-		poolManager.fToggle ("PopUp_Window/Window/Content", "Access Distant Control", true);
-		poolManager.fToggle ("PopUp_Window/Window/Content", "*Admin Access", true);
-		poolManager.fSimple_Text("PopUp_Window/Window/Content", "*Allows you to directly access your Buddy's parameters", true);
-		poolManager.fButton_Square("PopUp_Window/Window/Content", "SEND REQUEST", "", null);
+		poolManager.fToggle ("PopUp_Window/Window/Content", "accessdistantcontrol", true);
+		poolManager.fToggle ("PopUp_Window/Window/Content", "adminaccess", true);
+		poolManager.fSimple_Text("PopUp_Window/Window/Content", "allowsdirectaccessparameters", true);
+		poolManager.fButton_Square("PopUp_Window/Window/Content", "sendrequest", "", null);
 
 		animator.SetTrigger("Open");
 		//Debug.Log ("Popup Window " + popupWindow.activeInHierarchy + " / " + popupWindow.activeSelf);
@@ -120,13 +120,13 @@ public class PopupHandler : MonoBehaviour {
         GameObject lButton = GameObject.Find("PopUp_Window/Window/Top_UI/Button");
         lButton.GetComponent<Button>().onClick.AddListener(ClosePopup);
 
-        poolManager.fSimple_Text("PopUp_Window/Window/Content", "Enter this account's password", true);
+        poolManager.fSimple_Text("PopUp_Window/Window/Content", "enteraccountpassword", true);
 
-		deleteAccountInputPasswordField = poolManager.fTextField_Icon("PopUp_Window/Window/Content", "Password", "", null, null, null, null);
+		deleteAccountInputPasswordField = poolManager.fTextField_Icon("PopUp_Window/Window/Content", "password", "", null, null, null, null);
 		deleteAccountInputPasswordField.name = "Popup_PasswordConfirm";
 		deleteAccountInputPasswordField.GetComponent<InputField>().inputType = InputField.InputType.Password;
 
-        poolManager.fButton_Square("PopUp_Window/Window/Content", "CONFIRM", "", new List<UnityAction>() { iCallback });
+        poolManager.fButton_Square("PopUp_Window/Window/Content", "confirm", "", new List<UnityAction>() { iCallback });
 
         animator.SetTrigger("Open");
     }
@@ -146,8 +146,8 @@ public class PopupHandler : MonoBehaviour {
 		lTitle.text = title;
 
 		poolManager.fSimple_Text("PopUp_Window/Window/Content", message, true);
-		poolManager.fButton_Square("PopUp_Window/Window/Content", "CONFIRM", "", new List<UnityAction>() { iCallback, ClosePopup });
-		poolManager.fButton_Square("PopUp_Window/Window/Content", "CANCEL", "", new List<UnityAction>() { ClosePopup });
+		poolManager.fButton_Square("PopUp_Window/Window/Content", "confirm", "", new List<UnityAction>() { iCallback, ClosePopup });
+		poolManager.fButton_Square("PopUp_Window/Window/Content", "cancel", "", new List<UnityAction>() { ClosePopup });
 
 		animator.SetTrigger("Open");
 	}

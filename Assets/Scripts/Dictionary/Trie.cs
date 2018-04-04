@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class TrieNode<T> where T : new()
 {
-    public Hashtable Sons { get; }
+    public Hashtable Sons { get; private set; }
 
     public T Content { get; set; }
 

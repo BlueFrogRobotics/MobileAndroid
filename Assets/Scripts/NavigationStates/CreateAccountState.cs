@@ -22,22 +22,22 @@ public class CreateAccountState : ASubState {
 			lHandler.SetEditInfos("", "");
             // CREATE OBJECTS
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
-            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "CREATE YOUR ACCOUNT", "", new List<UnityAction>() { CreateAccount }));
+            LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "createaccount", "", new List<UnityAction>() { CreateAccount }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false, null));
 
-            GameObject lEmailField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Email Address", "", "Email", null, null, null);
+            GameObject lEmailField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "youremailaddress", "", "Email", null, null, null);
             lEmailField.name = "Create_Email_Input";
             LoadingUI.AddObject(lEmailField);
-            GameObject lPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Your Password", "", "Lock", null, null, null);
+            GameObject lPasswordField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "yourpassword", "", "Lock", null, null, null);
             lPasswordField.name = "Create_PW_Input";
             lPasswordField.GetComponent<InputField>().inputType = InputField.InputType.Password;
             LoadingUI.AddObject(lPasswordField);
-            GameObject lPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "Repeat Your Password", "", "Lock", null, null, null);
+            GameObject lPasswordConfField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "repeatpassword", "", "Lock", null, null, null);
             lPasswordConfField.name = "Create_PWConf_Input";
             lPasswordConfField.GetComponent<InputField>().inputType = InputField.InputType.Password;
             LoadingUI.AddObject(lPasswordConfField);
 
-            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Stay Connected", false));
+            LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "stayconnected", false));
             //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Allow Notifications", false));
             //LoadingUI.AddObject(lPoolManager.fToggle_Underline("Content_Bottom/ScrollView/Viewport", "Agree to the Terms of Service", false, null));
 			GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "DefaultUser", new List<UnityAction>() { AddPicture });

@@ -18,6 +18,7 @@ namespace AndroidMobileApp.Editor
             sWindow.maxSize = new Vector2(1100, 900);
             sWindow.maxSize = new Vector2(1100, 650);
             sWindow.LoadDictionary(Application.streamingAssetsPath);
+            //sWindow.LoadDictionary(Application.dataPath+"/Resources/Languages");
         }
     }
 }

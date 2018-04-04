@@ -64,12 +64,15 @@ public class PoolManager : MonoBehaviour {
     private Dictionary<string, Sprite> mAtlasUI;
     private Dictionary<string, Sprite> mAtlasIcon;
 
+    public Dictionary Dictionary { private set; get; }
+
     // Retrive All used Atlas sprites
     void Start () {
+        Dictionary = new Dictionary(Language.FR, this);
         mAtlasUI = new Dictionary<string, Sprite>();
         mAtlasMobile = new Dictionary<string, Sprite>();
         mAtlasIcon = new Dictionary<string, Sprite>();
-
+        
         Sprite[] lSpritesMobile = Resources.LoadAll<Sprite>("Sprites/AtlasMobile");
         Sprite[] lSpritesUI = Resources.LoadAll<Sprite>("Sprites/AtlasUI");
         Sprite[] lSpritesIcon = Resources.LoadAll<Sprite>("Sprites/Atlas_Icons");
@@ -83,6 +86,11 @@ public class PoolManager : MonoBehaviour {
         foreach (Sprite lSprite in lSpritesIcon)
             mAtlasIcon.Add(lSprite.name, lSprite);
     }
+
+    //public void StartPoolCoroutine(IEnumerator lEnumerator)
+    //{
+    //    StartCoroutine(lEnumerator);
+    //}
 
     // Buble
     public GameObject fBubble(string iType, string iText, string iDate )
@@ -193,21 +201,21 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Buddy_Separator
-    public GameObject fBuddy_Separator(string iParent, string iText)
+    public GameObject fBuddy_Separator(string iParent, string iKey)
     {
         GameObject lFinalObject = Instantiate(Buddy_Separator);
         GameObject lBuddy_Separator = lFinalObject;
-        lBuddy_Separator.GetComponentInChildren<Text>().text = iText;
+        lBuddy_Separator.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
         lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
         return lFinalObject;
     }
 
     // Button Square
-    public GameObject fButton_Square(string iParent, string iText, string iIconName, List<UnityAction> iCallbacks)
+    public GameObject fButton_Square(string iParent, string iKey, string iIconName, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_Square);
         Button lButton = lFinalObject.GetComponentInChildren<Button>();
-        lButton.GetComponentInChildren<Text>().text = iText;
+        lButton.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
 
         if (!string.IsNullOrEmpty(iIconName))
         {
@@ -234,11 +242,11 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Button Big 
-    public GameObject fButton_Big(string iParent, string iText, string iIconName, List<UnityAction> iCallbacks)
+    public GameObject fButton_Big(string iParent, string iKey, string iIconName, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_Big);
         Button lButton = lFinalObject.GetComponent<Button>();
-        lButton.GetComponentInChildren<Text>().text = iText;
+        lButton.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
 
         if (!string.IsNullOrEmpty(iIconName))
         {
@@ -341,10 +349,10 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Button_Text_Underline
-    public GameObject fButton_Text_Underline(string iParent, string iText, List<UnityAction> iCallbacks)
+    public GameObject fButton_Text_Underline(string iParent, string iKey, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_Text_Underline);
-        lFinalObject.GetComponentInChildren<Text>().text = iText;
+        lFinalObject.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
         if (iCallbacks != null)
         {
             foreach (UnityAction lCallback in iCallbacks)
@@ -443,11 +451,11 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Loading
-    public GameObject fLoading(string iParent, string iText)
+    public GameObject fLoading(string iParent, string iKey)
     {
         GameObject lFinalObject = Instantiate(Loading);
         GameObject lLoading = lFinalObject;
-        lLoading.GetComponentInChildren<Text>().text = iText;
+        lLoading.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
 
         lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
         return lFinalObject;
@@ -484,11 +492,11 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Simple_Text
-	public GameObject fSimple_Text(string iParent, string iText, bool iPopup)
+	public GameObject fSimple_Text(string iParent, string iKey, bool iPopup)
     {
         GameObject lFinalObject = Instantiate(Simple_Text);
         GameObject lSimple_Text = lFinalObject;
-        lSimple_Text.GetComponentInChildren<Text>().text = iText;
+        lSimple_Text.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
 
         if (iPopup == true)
         {
@@ -500,23 +508,23 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Simple_Title 
-    public GameObject fSimple_Title(string iParent, string iText)
+    public GameObject fSimple_Title(string iParent, string iKey)
     {
         GameObject lFinalObject = Instantiate(Simple_Title);
         GameObject lSimple_Title = lFinalObject;
-        lSimple_Title.GetComponentInChildren<Text>().text = iText;
+        lSimple_Title.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
 
         lFinalObject.transform.SetParent(GameObject.Find(iParent).transform, false);
         return lFinalObject;
     }
 
     // TextField Icon
-    public GameObject fTextField_Icon(string iParent, string iPlaceHolder, string iText, string iIconName, List<UnityAction<string>> iCallbacksChange, List<UnityAction<string>> iCallbacksEnd, List<UnityAction> iCallbacksInfos)
+    public GameObject fTextField_Icon(string iParent, string iPlaceHolderKey, string iText, string iIconName, List<UnityAction<string>> iCallbacksChange, List<UnityAction<string>> iCallbacksEnd, List<UnityAction> iCallbacksInfos)
     {
         GameObject lFinalObject = Instantiate(TextField_Icon);
         InputField lTextField_Icon = lFinalObject.GetComponent<InputField>();
 
-        lTextField_Icon.GetComponentInChildren<Text>().text = iPlaceHolder;
+        lTextField_Icon.GetComponentInChildren<Text>().text = Dictionary.GetString(iPlaceHolderKey);
         lTextField_Icon.GetComponent<InputField>().text = iText;
 
         if (!string.IsNullOrEmpty(iIconName))
@@ -562,12 +570,12 @@ public class PoolManager : MonoBehaviour {
     }
 
     // TextField Searching
-    public GameObject fTextField_Searching(string iParent, string iPlaceHolder, string iText, List<UnityAction<string>> iCallbacksChange, List<UnityAction<string>> iCallbacksEnd)
+    public GameObject fTextField_Searching(string iParent, string iPlaceHolderKey, string iText, List<UnityAction<string>> iCallbacksChange, List<UnityAction<string>> iCallbacksEnd)
     {
         GameObject lFinalObject = Instantiate(TextField_Searching);
         InputField lTextFiel_Searching = lFinalObject.GetComponentInChildren<InputField>();
 
-        lTextFiel_Searching.GetComponentsInChildren<Text>()[0].text = iPlaceHolder;
+        lTextFiel_Searching.GetComponentsInChildren<Text>()[0].text = Dictionary.GetString(iPlaceHolderKey);
         lTextFiel_Searching.GetComponent<InputField>().text = iText;
 
         // CREATE CALL BACK FOR EVERY CHANGE IN THIS TEXTFIELD
@@ -621,10 +629,10 @@ public class PoolManager : MonoBehaviour {
     }
 
     // Toggle
-    public GameObject fToggle(string iParent, string iText, bool iPopup)
+    public GameObject fToggle(string iParent, string iKey, bool iPopup)
     {
         GameObject lFinalObject = Instantiate(Toggle);
-        lFinalObject.GetComponentInChildren<Text>().text = iText;
+        lFinalObject.GetComponentInChildren<Text>().text = Dictionary.GetString(iKey);
         if (iPopup == true)
         {
             lFinalObject.GetComponentInChildren<Text>().color = new Color32(85, 85, 85, 255);

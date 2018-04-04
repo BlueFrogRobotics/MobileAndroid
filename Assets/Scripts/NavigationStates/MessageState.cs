@@ -21,7 +21,7 @@ public class MessageState : ASubState {
             // CREATING OBJECTS
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { chatManager.SaveMessageHistory, lMenuManager.PreviousMenu }));
 
-            GameObject lInputField = lPoolManager.fTextField_Icon("Content_Bottom/Bottom_UI", "ASK SOMETHING...", "", "Message", null, new List<UnityAction<string>>() { chatManager.NewChatMessage }, null);
+            GameObject lInputField = lPoolManager.fTextField_Icon("Content_Bottom/Bottom_UI", "asksomething", "", "Message", null, new List<UnityAction<string>>() { chatManager.NewChatMessage }, null);
             lInputField.GetComponent<InputField>().characterLimit = 0;
             LoadingUI.AddObject(lInputField);
 

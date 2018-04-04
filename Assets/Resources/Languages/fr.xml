@@ -471,25 +471,5 @@
                 <string />
             </RandomValues>
         </DictionaryEntry>
-        <DictionaryEntry>
-            <Key>enterfirstname</Key>
-            <BaseValue>Entrez votre prénom</BaseValue>
-            <ClosePhoneticValues>
-                <string />
-            </ClosePhoneticValues>
-            <RandomValues>
-                <string />
-            </RandomValues>
-        </DictionaryEntry>
-        <DictionaryEntry>
-            <Key>enterlastname</Key>
-            <BaseValue>Entrez votre nom</BaseValue>
-            <ClosePhoneticValues>
-                <string />
-            </ClosePhoneticValues>
-            <RandomValues>
-                <string />
-            </RandomValues>
-        </DictionaryEntry>
     </Entries>
 </LanguageThesaurus>

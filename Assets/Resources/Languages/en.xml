@@ -3,7 +3,7 @@
     <Entries>
         <DictionaryEntry>
             <Key>hello</Key>
-            <BaseValue>Bonjour</BaseValue>
+            <BaseValue>Good morning</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -13,7 +13,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>buddycontact</Key>
-            <BaseValue>VOS CONTACT(S) BUDDY</BaseValue>
+            <BaseValue>YOUR BUDDY CONTACT(S)</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -23,7 +23,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>connectedonwifi</Key>
-            <BaseValue>CONNECTES SUR VOTRE WIFI</BaseValue>
+            <BaseValue>CONNECTED ON YOUR WIFI</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -33,7 +33,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>select</Key>
-            <BaseValue>SELECTIONNER</BaseValue>
+            <BaseValue>SELECT</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -43,7 +43,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>confirmchanges</Key>
-            <BaseValue>CONFIRMER LES CHANGEMENTS</BaseValue>
+            <BaseValue>CONFIRM CHANGES</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -53,7 +53,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>addcontact</Key>
-            <BaseValue>AJOUTER CE CONTACT</BaseValue>
+            <BaseValue>ADD THIS CONTACT</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -63,7 +63,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>scancontactid</Key>
-            <BaseValue>Scannez votre ID de contact</BaseValue>
+            <BaseValue>Scan your contact ID</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -73,7 +73,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>login</Key>
-            <BaseValue>CONNEXION</BaseValue>
+            <BaseValue>LOGIN</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -83,7 +83,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>chatwithbuddy</Key>
-            <BaseValue>CHATTER AVEC BUDDY</BaseValue>
+            <BaseValue>CHAT WITH BUDDY</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -93,7 +93,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>remotecontrol</Key>
-            <BaseValue>CONTROLE A DISTANCE</BaseValue>
+            <BaseValue>REMOTE CONTROL</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -103,7 +103,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>sendrequest</Key>
-            <BaseValue>ENVOYER UNE REQUETE</BaseValue>
+            <BaseValue>SEND REQUEST</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -113,7 +113,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>confirm</Key>
-            <BaseValue>CONFIRMER</BaseValue>
+            <BaseValue>CONFIRM</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -123,7 +123,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>createaccount</Key>
-            <BaseValue>CREER VOTRE COMPTE</BaseValue>
+            <BaseValue>CREATE YOUR ACCOUNT</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -133,7 +133,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>cancel</Key>
-            <BaseValue>ANNULER</BaseValue>
+            <BaseValue>CANCEL</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -143,7 +143,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>connectaccount</Key>
-            <BaseValue>CONNEXION A VOTRE COMPTE</BaseValue>
+            <BaseValue>CONNECT YOUR ACCOUNT</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -153,7 +153,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>firstconnection</Key>
-            <BaseValue>PREMIERE CONNEXION</BaseValue>
+            <BaseValue>FIRST CONNECTION</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -163,7 +163,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>termsofservice</Key>
-            <BaseValue>CONDITIONS D'UTILISATION</BaseValue>
+            <BaseValue>TERMS OF SERVICE</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -173,7 +173,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>forgotpassword</Key>
-            <BaseValue>Mot de passe oublié?</BaseValue>
+            <BaseValue>Forgot your password?</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -183,7 +183,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>loading</Key>
-            <BaseValue>Chargement...</BaseValue>
+            <BaseValue>Loading...</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -193,7 +193,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>loadingchatroom</Key>
-            <BaseValue>Chargement de la salle de chat...</BaseValue>
+            <BaseValue>Loading chat room...</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -203,7 +203,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>waitingcallconfirmation</Key>
-            <BaseValue>En attente de la confirmation d'appel...</BaseValue>
+            <BaseValue>Waiting for call confirmation...</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -213,7 +213,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>or</Key>
-            <BaseValue>OU</BaseValue>
+            <BaseValue>OR</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -223,7 +223,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>connectionstatuslocal</Key>
-            <BaseValue>Statut de connexion locale</BaseValue>
+            <BaseValue>Connection status local</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -233,7 +233,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>connexionstatusremote</Key>
-            <BaseValue>Statut de connexion externe</BaseValue>
+            <BaseValue>Connexion status remote</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -243,7 +243,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>deviceperformance</Key>
-            <BaseValue>Performance de l'appareil</BaseValue>
+            <BaseValue>Device performance</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -253,7 +253,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>allowsdirectaccessparameters</Key>
-            <BaseValue>*Vous autorise à accéder directement aux paramètres de Buddy</BaseValue>
+            <BaseValue>*Allows you to directly access your Buddy's parameters</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -263,7 +263,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>enteraccountpassword</Key>
-            <BaseValue>Entrez le mot de passe de ce compte</BaseValue>
+            <BaseValue>Enter this account's password</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -273,7 +273,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>fullaccess</Key>
-            <BaseValue>ACCES COMPLET</BaseValue>
+            <BaseValue>FULL ACCESS</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -283,7 +283,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>buddysettings</Key>
-            <BaseValue>PARAMETRES DE BUDDY</BaseValue>
+            <BaseValue>BUDDY SETTINGS</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -293,7 +293,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>indev</Key>
-            <BaseValue>EN DEV</BaseValue>
+            <BaseValue>IN DEV</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -303,7 +303,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>newpassword</Key>
-            <BaseValue>Votre nouveau mot de passe</BaseValue>
+            <BaseValue>Your New Password</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -313,7 +313,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>reenterpassword</Key>
-            <BaseValue>Re-entrer votre nouveau mot de passe</BaseValue>
+            <BaseValue>Re-enter Your New Password</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -323,7 +323,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>buddyname</Key>
-            <BaseValue>Nom du Buddy</BaseValue>
+            <BaseValue>Buddy's name</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -333,7 +333,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>asksomething</Key>
-            <BaseValue>DEMANDER QUELQUE CHOSE...</BaseValue>
+            <BaseValue>ASK SOMETHING...</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -343,7 +343,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>mymail</Key>
-            <BaseValue>monmail@exemple.com</BaseValue>
+            <BaseValue>mymail@example.com</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -353,7 +353,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>enterbuddyid</Key>
-            <BaseValue>ENTREZ L'ID DE BUDDY</BaseValue>
+            <BaseValue>ENTER BUDDY'S ID</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -363,7 +363,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>password</Key>
-            <BaseValue>Mot de passe</BaseValue>
+            <BaseValue>Password</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -373,7 +373,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>enterpassword</Key>
-            <BaseValue>Entrez votre mot de passe</BaseValue>
+            <BaseValue>Enter your password</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -383,7 +383,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>youremailadress</Key>
-            <BaseValue>Votre Adresse Mail</BaseValue>
+            <BaseValue>Your Email Adress</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -393,7 +393,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>yourpassword</Key>
-            <BaseValue>Votre Mot de passe</BaseValue>
+            <BaseValue>Your Password</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -403,7 +403,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>repeatpassword</Key>
-            <BaseValue>Répétez votre Mot de passe</BaseValue>
+            <BaseValue>Repeat Your Password</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -413,7 +413,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>search</Key>
-            <BaseValue>Recherche...</BaseValue>
+            <BaseValue>Search...</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -423,7 +423,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>accessdistantcontrol</Key>
-            <BaseValue>Accès au contrôle à distance</BaseValue>
+            <BaseValue>Access Distant Control</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -433,7 +433,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>agreetermsofservice</Key>
-            <BaseValue>Accepter les Conditions d'Utilisation</BaseValue>
+            <BaseValue>Agree to the Terms of Service</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -443,7 +443,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>adminaccess</Key>
-            <BaseValue>*Acces Admin</BaseValue>
+            <BaseValue>*Admin Access</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -453,7 +453,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>allownotifications</Key>
-            <BaseValue>Autoriser les Notifications</BaseValue>
+            <BaseValue>Allow Notifications</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>
@@ -463,27 +463,7 @@
         </DictionaryEntry>
         <DictionaryEntry>
             <Key>stayconnected</Key>
-            <BaseValue>Rester Connecté</BaseValue>
-            <ClosePhoneticValues>
-                <string />
-            </ClosePhoneticValues>
-            <RandomValues>
-                <string />
-            </RandomValues>
-        </DictionaryEntry>
-        <DictionaryEntry>
-            <Key>enterfirstname</Key>
-            <BaseValue>Entrez votre prénom</BaseValue>
-            <ClosePhoneticValues>
-                <string />
-            </ClosePhoneticValues>
-            <RandomValues>
-                <string />
-            </RandomValues>
-        </DictionaryEntry>
-        <DictionaryEntry>
-            <Key>enterlastname</Key>
-            <BaseValue>Entrez votre nom</BaseValue>
+            <BaseValue>Stay Connected</BaseValue>
             <ClosePhoneticValues>
                 <string />
             </ClosePhoneticValues>

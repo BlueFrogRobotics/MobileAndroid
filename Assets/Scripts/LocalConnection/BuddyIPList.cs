@@ -162,7 +162,7 @@ public class BuddyIPList : MonoBehaviour
     {
         //Retrieve the list from Database source and add it to the displayed list
         Debug.Log("Adding DB Buddy");
-        GameObject lDistantSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "YOUR BUDDY CONTACT(S)");
+        GameObject lDistantSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "buddycontact");
         lDistantSeparator.name = "DistantSeparator";
         LoadingUI.AddObject(lDistantSeparator);
 
@@ -183,7 +183,7 @@ public class BuddyIPList : MonoBehaviour
     
     private void AddLocalBuddy()
     {
-        GameObject lLocalSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "CONNECTED ON YOUR WIFI");
+        GameObject lLocalSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "connectedonwifi");
         lLocalSeparator.name = "LocalSeparator";
         LoadingUI.AddObject(lLocalSeparator);
         mIPList.Clear();
