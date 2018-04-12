@@ -126,6 +126,8 @@ public class RemoteControl : MonoBehaviour {
 		string[] words = iButtonName.Split(' ');
 		byte[] lCmd = null;
         switch (words[0]) {
+            //case "App":
+                //lCmd = new StartAppCmd()
             case "Sound":
                 if (words[2].Contains("Say"))
                     lCmd = new SayTTSCmd(words[3].Replace("_", " ")).Serialize();
