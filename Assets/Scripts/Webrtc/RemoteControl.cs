@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 using Buddy.Command;
+using System;
 
 public class RemoteControl : MonoBehaviour {
 
@@ -119,7 +120,30 @@ public class RemoteControl : MonoBehaviour {
         mTime = Time.time;
     }
 
-    private void ComputeNoAxis()
+	public void ButtonPushed(string iButtonName)
+	{
+
+		string[] words = iButtonName.Split(' ');
+		byte[] lCmd = null;
+		switch (words[0]) {
+			case "SoundHappy":
+				lCmd = new SayTTSCmd("I'm happy").Serialize();
+				break;
+
+			case "Mood":
+				lCmd = new SetMoodCmd((Buddy.MoodType) Enum.Parse(typeof(Buddy.MoodType), words[1])).Serialize();
+				break;
+
+			default:
+				break;
+
+		}
+		webRTC.SendWithDataChannel(GetString(lCmd));
+	}
+
+
+
+	private void ComputeNoAxis()
     {
         //Add an increment to No axis position corresponding to the cursor's
         mAngleNo -= mXPosition * 5f;
