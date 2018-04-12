@@ -126,14 +126,18 @@ public class RemoteControl : MonoBehaviour {
 		string[] words = iButtonName.Split(' ');
 		byte[] lCmd = null;
         switch (words[0]) {
-            //case "App":
-                //lCmd = new StartAppCmd()
+            case "App":
+                Debug.Log("I'M HERE " + words[1]);
+
+                lCmd = new StartAppCmd(words[1]).Serialize();
+                Debug.Log(words[1]);
+                break;
             case "Sound":
-                if (words[2].Contains("Say"))
-                    lCmd = new SayTTSCmd(words[3].Replace("_", " ")).Serialize();
+                if (words[1].Contains("Say"))
+                    lCmd = new SayTTSCmd(words[2].Replace("_", " ")).Serialize();
                 else
-                    lCmd = new SayTTSCmd("I'm " + words[2]).Serialize();
-				break;
+                    lCmd = new SayTTSCmd("I'm " + words[1]).Serialize();
+                break;
 
 			case "Mood":
 				lCmd = new SetMoodCmd((Buddy.MoodType) Enum.Parse(typeof(Buddy.MoodType), words[1])).Serialize();
