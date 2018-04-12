@@ -127,11 +127,9 @@ public class RemoteControl : MonoBehaviour {
 		byte[] lCmd = null;
         switch (words[0]) {
             case "App":
-                Debug.Log("I'M HERE " + words[1]);
-
                 lCmd = new StartAppCmd(words[1]).Serialize();
-                Debug.Log(words[1]);
                 break;
+
             case "Sound":
                 if (words[1].Contains("Say"))
                     lCmd = new SayTTSCmd(words[2].Replace("_", " ")).Serialize();
