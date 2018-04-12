@@ -7,6 +7,9 @@ using System.Collections.Generic;
 
 public class ConnectBuddyState : ASubState {
 
+    [SerializeField]
+    private GameObject WizardOfOzUI;
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
@@ -27,6 +30,7 @@ public class ConnectBuddyState : ASubState {
 			LoadingUI.AddObject(lPoolManager.fBuddy_Status("Content_Bottom/ScrollView/Viewport", SelectBuddy.BuddyID, true));
 			LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "chatwithbuddy", "", new List<UnityAction>() { lMenuManager.LoadChatMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "remotecontrol", "", new List<UnityAction>() { lMenuManager.LoadRemoteControlMenu, ResetSoundManager }));
+            WizardOfOzUI.SetActive(false);
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "wizardofoz", "", new List<UnityAction>() { lMenuManager.LoadWizardOfOz, ResetSoundManager }));
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "BUDDY SETTINGS", "", new List<UnityAction>() { lMenuManager.GoBuddySettings }));
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REQUEST ACCESS", "", new List<UnityAction>() { ShowAccessRequest }));

@@ -11,7 +11,7 @@ public class GoBack : MonoBehaviour
     public static string LoadingBuddyMessage;
 
     [SerializeField]
-    private GameObject[] ButtonsWOZ;
+    private GameObject WizardOfOzUI;
 
     [SerializeField]
     private Animator canvasAnimator;
@@ -140,8 +140,7 @@ public class GoBack : MonoBehaviour
         {
             LoadingBuddyMessage = "waitingcallconfirmation";
             canvasAnimator.SetInteger("MenuBuddy", 2);
-            foreach (GameObject item in ButtonsWOZ)
-                item.SetActive(true);
+            WizardOfOzUI.SetActive(true);
             SwitchToMenu("GoLoadingBuddy");
         }
         else
