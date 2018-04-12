@@ -491,5 +491,15 @@
                 <string />
             </RandomValues>
         </DictionaryEntry>
+        <DictionaryEntry>
+            <Key>wizardofoz</Key>
+            <BaseValue>WIZARD OF OZ</BaseValue>
+            <ClosePhoneticValues>
+                <string />
+            </ClosePhoneticValues>
+            <RandomValues>
+                <string />
+            </RandomValues>
+        </DictionaryEntry>
     </Entries>
 </LanguageThesaurus>

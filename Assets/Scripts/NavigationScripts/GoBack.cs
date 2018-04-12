@@ -11,6 +11,9 @@ public class GoBack : MonoBehaviour
     public static string LoadingBuddyMessage;
 
     [SerializeField]
+    private GameObject[] ButtonsWOZ;
+
+    [SerializeField]
     private Animator canvasAnimator;
 
     [SerializeField]
@@ -117,14 +120,34 @@ public class GoBack : MonoBehaviour
 
     public void LoadRemoteControlMenu()
     {
-		SelectBuddy lSelect = this.GetComponentInChildren<SelectBuddy>();
-		if (lSelect.BuddyAccess()) {
-			LoadingBuddyMessage = "waitingcallconfirmation";
-			canvasAnimator.SetInteger ("MenuBuddy", 2);
-			SwitchToMenu ("GoLoadingBuddy");
-		} else {
-			GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Buddy est déjà en ligne", "NoResponse");
-		}
+        SelectBuddy lSelect = this.GetComponentInChildren<SelectBuddy>();
+        if (lSelect.BuddyAccess())
+        {
+            LoadingBuddyMessage = "waitingcallconfirmation";
+            canvasAnimator.SetInteger("MenuBuddy", 2);
+            SwitchToMenu("GoLoadingBuddy");
+        }
+        else
+        {
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Buddy est déjà en ligne", "NoResponse");
+        }
+    }
+
+    public void LoadWizardOfOz()
+    {
+        SelectBuddy lSelect = this.GetComponentInChildren<SelectBuddy>();
+        if (lSelect.BuddyAccess())
+        {
+            LoadingBuddyMessage = "waitingcallconfirmation";
+            canvasAnimator.SetInteger("MenuBuddy", 2);
+            foreach (GameObject item in ButtonsWOZ)
+                item.SetActive(true);
+            SwitchToMenu("GoLoadingBuddy");
+        }
+        else
+        {
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Buddy est déjà en ligne", "NoResponse");
+        }
     }
 
     public void GoRemoteControlMenu()
