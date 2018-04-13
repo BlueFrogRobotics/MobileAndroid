@@ -68,7 +68,17 @@ public class PoolManager : MonoBehaviour {
 
     // Retrive All used Atlas sprites
     void Start () {
-        Dictionary = new Dictionary(Language.FR, this);
+        if (Application.systemLanguage == SystemLanguage.French)
+        {
+            Dictionary = new Dictionary(Language.FR, this);
+        }
+        else if(Application.systemLanguage == SystemLanguage.English)
+        {
+            Dictionary = new Dictionary(Language.EN, this);
+        }
+        else
+            Dictionary = new Dictionary(Language.EN, this);
+
         mAtlasUI = new Dictionary<string, Sprite>();
         mAtlasMobile = new Dictionary<string, Sprite>();
         mAtlasIcon = new Dictionary<string, Sprite>();
