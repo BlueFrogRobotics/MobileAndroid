@@ -26,7 +26,7 @@ public class LaunchTelepresence : MonoBehaviour
     //[SerializeField]
     //private GameObject telepresenceGUI;
     
-    public void ConnectToBuddy()
+    public void ConnectToBuddy(int iMode)
     {
         //Check what if selected Buddy is controllable via Local or WebRTC method
         Debug.Log("Remote type is " + selectBuddy.Remote);
@@ -40,7 +40,7 @@ public class LaunchTelepresence : MonoBehaviour
             Debug.Log("Starting distant control with remote " + webRTC.RemoteID);
             //webRTC.InitImages();
             remoteControlRTC.SetActive(true);
-            rtcListener.PublishConnectionRequest(webRTC.ID,webRTC.RemoteID);
+            rtcListener.PublishConnectionRequest(webRTC.ID,webRTC.RemoteID, iMode);
             //webRTC.Call();
             //Debug.Log("Starting distant control");
         }

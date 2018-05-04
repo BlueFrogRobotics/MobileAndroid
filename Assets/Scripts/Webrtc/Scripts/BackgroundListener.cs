@@ -84,9 +84,9 @@ public class BackgroundListener : MonoBehaviour
         mJavaListener.Call("SendChatMessage", iMessage);
     }
 
-    public void PublishConnectionRequest(string iWebrtcID, string iRemoteID)
+    public void PublishConnectionRequest(string iWebrtcID, string iRemoteID, int iMode)
     {
-        mJavaListener.Call("Publish", "ConnectRequest", iWebrtcID + "/" + iRemoteID);
+        mJavaListener.Call("Publish", "ConnectRequest", iWebrtcID + "/" + iRemoteID + "/" + iMode);
     }
 
     public void PublishNotification()

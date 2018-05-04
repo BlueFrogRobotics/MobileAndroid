@@ -125,6 +125,7 @@ public class GoBack : MonoBehaviour
         {
             LoadingBuddyMessage = "waitingcallconfirmation";
             canvasAnimator.SetInteger("MenuBuddy", 2);
+            canvasAnimator.SetInteger("RemoteMode", 0);
             SwitchToMenu("GoLoadingBuddy");
         }
         else
@@ -140,6 +141,7 @@ public class GoBack : MonoBehaviour
         {
             LoadingBuddyMessage = "waitingcallconfirmation";
             canvasAnimator.SetInteger("MenuBuddy", 2);
+            canvasAnimator.SetInteger("RemoteMode", 1);
             WizardOfOzUI.SetActive(true);
             SwitchToMenu("GoLoadingBuddy");
         }

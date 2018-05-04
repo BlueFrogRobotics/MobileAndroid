@@ -27,7 +27,7 @@ public class LoadingBuddyState : ASubState {
                     break;
                 case 2 : //Distant control selected
                     GameObject.Find ("UnityWebrtc").GetComponent<Webrtc>().InitWebRTC();
-                    GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy();
+                    GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy(animator.GetInteger("RemoteMode"));
                     break;
             }
 

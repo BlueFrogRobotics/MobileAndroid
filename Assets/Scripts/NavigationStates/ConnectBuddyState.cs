@@ -12,7 +12,7 @@ public class ConnectBuddyState : ASubState {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
-        WizardOfOzUI.SetActive(false);
+        //WizardOfOzUI.SetActive(false);
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
         if (indexState == (int)State.OPEN)
         {

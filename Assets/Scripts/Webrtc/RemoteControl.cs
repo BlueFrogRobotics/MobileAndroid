@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 using Buddy.Command;
 using System;
@@ -31,6 +32,9 @@ public class RemoteControl : MonoBehaviour {
 
     [SerializeField]
     private GameObject backSensor;
+
+    [SerializeField]
+    private InputField inputText;
 
     //public Slider mSlider;
 
@@ -148,7 +152,12 @@ public class RemoteControl : MonoBehaviour {
 		webRTC.SendWithDataChannel(GetString(lCmd));
 	}
 
-
+    public void SayInputText()
+    {
+        byte[] lCmd = null;
+        lCmd = new SayTTSCmd(inputText.text).Serialize();
+        webRTC.SendWithDataChannel(GetString(lCmd));
+    }
 
 	private void ComputeNoAxis()
     {
