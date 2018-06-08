@@ -22,22 +22,23 @@ public class GoBack : MonoBehaviour
     private string mCurrentMenu;
     private List<string> mViewTree;
 
-	private BackToMenu mBackToMenu;
+    private BackToMenu mBackToMenu;
 
     // Use this for initialization
     void Start()
     {
-        mViewTree = new List<string> ();
+        mViewTree = new List<string>();
         mCurrentMenu = "GoConnectAccount";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
             if (mCurrentMenu == "GoConnectAccount")
                 Application.Quit();
-            else if (mCurrentMenu == "GoRemoteControl")
+            else if (mCurrentMenu == "GoRemoteControl" || mCurrentMenu == "GoWizardOfOz")
             {
                 Webrtc lRTC = GameObject.Find("UnityWebrtc").GetComponent<Webrtc>();
                 if (lRTC.Connected)
@@ -54,7 +55,7 @@ public class GoBack : MonoBehaviour
     //Go to previously saved menu
     public void PreviousMenu()
     {
-		mCurrentMenu = mViewTree[mViewTree.Count - 1];
+        mCurrentMenu = mViewTree[mViewTree.Count - 1];
         mViewTree.Remove(mCurrentMenu);
 
         canvasAnimator.SetTrigger(mCurrentMenu);
@@ -109,7 +110,7 @@ public class GoBack : MonoBehaviour
     public void LoadChatMenu()
     {
         LoadingBuddyMessage = "loadingchatroom";
-        canvasAnimator.SetInteger("MenuBuddy",1);
+        canvasAnimator.SetInteger("MenuBuddy", 1);
         SwitchToMenu("GoLoadingBuddy");
     }
 
@@ -140,9 +141,8 @@ public class GoBack : MonoBehaviour
         if (lSelect.BuddyAccess())
         {
             LoadingBuddyMessage = "waitingcallconfirmation";
-            canvasAnimator.SetInteger("MenuBuddy", 2);
+            canvasAnimator.SetInteger("MenuBuddy", 3);
             canvasAnimator.SetInteger("RemoteMode", 1);
-            WizardOfOzUI.SetActive(true);
             SwitchToMenu("GoLoadingBuddy");
         }
         else
@@ -154,6 +154,11 @@ public class GoBack : MonoBehaviour
     public void GoRemoteControlMenu()
     {
         SwitchToMenu("GoRemoteControl");
+    }
+
+    public void GoWizardOfOzMenu()
+    {
+        SwitchToMenu("GoWizardOfOZ");
     }
 
     private void SwitchToMenu(string iMenu)
@@ -169,57 +174,58 @@ public class GoBack : MonoBehaviour
         canvasAnimator.SetTrigger("EndScene");
     }
 
-    public void WaitForCallConfirmation(SelectBuddy.RemoteType iType)
+    public void WaitForCallConfirmation(SelectBuddy.RemoteType iType, bool lWizardOfOz)
     {
         if (iType == SelectBuddy.RemoteType.LOCAL)
-        {
-            StartCoroutine(WaitForLocalConfirmation());
-        }
+            StartCoroutine(WaitForLocalConfirmation(lWizardOfOz));
         else if (iType == SelectBuddy.RemoteType.WEBRTC)
-        {
-            StartCoroutine(WaitForRTCConfirmation());
-        }
+            StartCoroutine(WaitForRTCConfirmation(lWizardOfOz));
     }
 
-    private IEnumerator WaitForLocalConfirmation()
+    private IEnumerator WaitForLocalConfirmation(bool lWizardOfOz)
     {
         CallAcceptOTOReceiver lConfirmation = GameObject.Find("CallAcceptReceiver").GetComponent<CallAcceptOTOReceiver>();
 
-        while (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.WAITING) {
+        while (lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.WAITING)
+        {
             yield return new WaitForSeconds(0.5F);
         }
 
-		processConnectionState(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED);
+        processConnectionState(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED, lWizardOfOz);
     }
 
-    private IEnumerator WaitForRTCConfirmation()
+    private IEnumerator WaitForRTCConfirmation(bool lWizardOfOz)
     {
         Webrtc lRTC = GameObject.Find("UnityWebrtc").GetComponent<Webrtc>();
         float lTimeWaited = 0;
 
-        while(!lRTC.Connected && lTimeWaited < 30F)
+        while (!lRTC.Connected && lTimeWaited < 30F)
         {
             lTimeWaited += 0.5F;
             yield return new WaitForSeconds(0.5F);
         }
 
-		processConnectionState(lRTC.Connected,lRTC);
+        processConnectionState(lRTC.Connected, lWizardOfOz, lRTC);
     }
 
-	private void processConnectionState(bool connected, Webrtc lRTC = null)
-	{
-		if(connected)
-		{
-            GoRemoteControlMenu();
-		}
-		else
-		{
-			if (lRTC != null) {
-				lRTC.StopWebRTC ();
-			}
-			
+    private void processConnectionState(bool connected, bool lWizardOfOz, Webrtc lRTC = null)
+    {
+        if (connected)
+        {
+            if (lWizardOfOz)
+                GoWizardOfOzMenu();
+            else
+                GoRemoteControlMenu();
+        }
+        else
+        {
+            if (lRTC != null)
+            {
+                lRTC.StopWebRTC();
+            }
+
             PreviousMenu();
             GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Impossible d'établir la connexion avec le robot", "NoResponse");
         }
-	}
+    }
 }

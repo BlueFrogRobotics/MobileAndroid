@@ -29,6 +29,10 @@ public class LoadingBuddyState : ASubState {
                     GameObject.Find ("UnityWebrtc").GetComponent<Webrtc>().InitWebRTC();
                     GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy(animator.GetInteger("RemoteMode"));
                     break;
+                case 3 :
+                    GameObject.Find("UnityWebrtc").GetComponent<Webrtc>().InitWebRTC();
+                    GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy(animator.GetInteger("RemoteMode"));
+                    break;
             }
 
         }
@@ -43,7 +47,11 @@ public class LoadingBuddyState : ASubState {
                     break;
                 case 2: //Distant control selected
                     SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
-                    lMenuManager.WaitForCallConfirmation(lSelect.Remote);
+                    lMenuManager.WaitForCallConfirmation(lSelect.Remote, false);
+                    break;
+                case 3:
+                    SelectBuddy lSelectWOZ = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
+                    lMenuManager.WaitForCallConfirmation(lSelectWOZ.Remote, true); 
                     break;
             }
         }

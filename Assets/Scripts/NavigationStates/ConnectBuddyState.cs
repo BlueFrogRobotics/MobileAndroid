@@ -7,12 +7,8 @@ using System.Collections.Generic;
 
 public class ConnectBuddyState : ASubState {
 
-    [SerializeField]
-    private GameObject WizardOfOzUI;
-
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
-        //WizardOfOzUI.SetActive(false);
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
         if (indexState == (int)State.OPEN)
         {

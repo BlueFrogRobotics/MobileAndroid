@@ -58,6 +58,12 @@ public class WizardPopupManager : MonoBehaviour {
         inputField.gameObject.SetActive(false);
     }
 
+    public void OpenPopupBML()
+    {
+        OpenPopup(4);
+        inputField.gameObject.SetActive(false);
+    }
+
     private void OpenPopup(int iIndex)
     {
         for(int i=0; i<popups.Length; i++)

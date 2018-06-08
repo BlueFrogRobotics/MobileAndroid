@@ -5,7 +5,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class HandleGeneric : MonoBehaviour {
+public class HandleGeneric : MonoBehaviour
+{
 
     [SerializeField]
     private GameObject B_ScrollView;
@@ -20,6 +21,8 @@ public class HandleGeneric : MonoBehaviour {
     private GameObject T_TopUI;
     [SerializeField]
     private GameObject T_RemoteUI;
+    [SerializeField]
+    private GameObject T_WizardOfOzUI;
     [SerializeField]
     private GameObject T_MessageTopUI;
     [SerializeField]
@@ -41,6 +44,7 @@ public class HandleGeneric : MonoBehaviour {
 
     public void DisableGeneric(ArrayList iObjectsToKeep)
     {
+
         //SET ALL GENERIC ELEMENTS TO FALSE (LIKE SCROLLVIEW)
         B_ScrollView.SetActive(false);
         B_ControlUI.SetActive(false);
@@ -49,9 +53,10 @@ public class HandleGeneric : MonoBehaviour {
         T_NavigationAccount.SetActive(false);
         T_TopUI.SetActive(false);
         T_RemoteUI.SetActive(false);
+        T_WizardOfOzUI.SetActive(false);
         T_MessageTopUI.SetActive(false);
 
-        if(iObjectsToKeep != null)
+        if (iObjectsToKeep != null)
         {
             foreach (string lName in iObjectsToKeep)
             {
@@ -72,9 +77,9 @@ public class HandleGeneric : MonoBehaviour {
                     case "NavigationAccount":
                         EnableNavigationAccount();
                         break;
-					case "NavigationCreateAccount":
-						EnableNavigationCreateAccount();
-						break;
+                    case "NavigationCreateAccount":
+                        EnableNavigationCreateAccount();
+                        break;
                     case "NavigationEditAccount":
                         EnableNavigationEditAccount();
                         break;
@@ -93,6 +98,9 @@ public class HandleGeneric : MonoBehaviour {
                     case "RemoteUI":
                         T_RemoteUI.SetActive(true);
                         break;
+                    case "WizardOfOzUI":
+                        T_WizardOfOzUI.SetActive(true);
+                        break;
                     case "MessageTopUI":
                         T_MessageTopUI.SetActive(true);
                         break;
@@ -103,8 +111,8 @@ public class HandleGeneric : MonoBehaviour {
 
     public void SetEditInfos(string iName, string iLastName)
     {
-		T_FieldFirstName.GetComponent<InputField>().text = iName;
-		T_FieldLastName.GetComponent<InputField>().text = iLastName;
+        T_FieldFirstName.GetComponent<InputField>().text = iName;
+        T_FieldLastName.GetComponent<InputField>().text = iLastName;
     }
 
     public void SetDisplayInfos(string iName, string iLastName)
@@ -125,22 +133,22 @@ public class HandleGeneric : MonoBehaviour {
         T_FieldLastName.SetActive(false);
     }
 
-	private void EnableNavigationCreateAccount()
-	{
-		T_NavigationAccount.SetActive(true);
-		T_FieldFirstName.SetActive(true);
-		T_FieldLastName.SetActive(true);
-		T_TextFirstName.SetActive(false);
-		T_TextLastName.SetActive(false);
-		T_ArrowLeft.SetActive(false);
-		T_ArrowRight.SetActive(false);
-		T_Dots.SetActive(false);
+    private void EnableNavigationCreateAccount()
+    {
+        T_NavigationAccount.SetActive(true);
+        T_FieldFirstName.SetActive(true);
+        T_FieldLastName.SetActive(true);
+        T_TextFirstName.SetActive(false);
+        T_TextLastName.SetActive(false);
+        T_ArrowLeft.SetActive(false);
+        T_ArrowRight.SetActive(false);
+        T_Dots.SetActive(false);
 
-		T_FieldFirstName.GetComponent<InputField>().text = "";
-		T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
-		T_FieldLastName.GetComponent<InputField>().text = "";
-		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
-	}
+        T_FieldFirstName.GetComponent<InputField>().text = "";
+        T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
+        T_FieldLastName.GetComponent<InputField>().text = "";
+        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
+    }
 
     private void EnableNavigationEditAccount()
     {
@@ -155,9 +163,9 @@ public class HandleGeneric : MonoBehaviour {
 
         DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
         T_FieldFirstName.GetComponent<InputField>().text = lDB.CurrentUser.FirstName;
-		T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
+        T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
         T_FieldLastName.GetComponent<InputField>().text = lDB.CurrentUser.LastName;
-		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
+        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
     }
 
     private void EnableNavigationEditBuddy()
@@ -171,7 +179,7 @@ public class HandleGeneric : MonoBehaviour {
         T_ArrowRight.SetActive(false);
         T_Dots.SetActive(false);
 
-		T_TextLastName.GetComponent<Text>().text = SelectBuddy.BuddyID;
+        T_TextLastName.GetComponent<Text>().text = SelectBuddy.BuddyID;
     }
 
     private void EnableNavigationAddBuddy()
@@ -186,7 +194,7 @@ public class HandleGeneric : MonoBehaviour {
         T_Dots.SetActive(false);
 
         T_FieldLastName.GetComponent<InputField>().text = "";
-		T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
+        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
     }
 
     private void EnableNavigationDisplay()

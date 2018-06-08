@@ -3,12 +3,14 @@ using UnityEngine.UI;
 
 using Buddy.Command;
 using System;
+using UnityEngine.EventSystems;
 
-public class RemoteControl : MonoBehaviour {
+public class RemoteControl : MonoBehaviour
+{
 
     [SerializeField]
     private Transform joystick;
-    
+
     [SerializeField]
     private Webrtc webRTC;
 
@@ -62,10 +64,12 @@ public class RemoteControl : MonoBehaviour {
     private float mLeftSpeed = 0f;
     private float mRightSpeed = 0f;
 
-	private bool mControlsDisabled = false;
-	private bool mAlreadyDisabled = false;
+    private bool mControlsDisabled = false;
+    private bool mAlreadyDisabled = false;
 
-	public bool ControlsDisabled { get { return mControlsDisabled; } set { mControlsDisabled = value; } }
+    private TouchScreenKeyboard keyboard;
+
+    public bool ControlsDisabled { get { return mControlsDisabled; } set { mControlsDisabled = value; } }
 
     void OnEnable()
     {
@@ -77,89 +81,110 @@ public class RemoteControl : MonoBehaviour {
 
     void Update()
     {
+        if (keyboard != null && keyboard.done)
+        {
+            byte[] lCmd = null;
+            lCmd = new SayTTSCmd(keyboard.text).Serialize();
+            webRTC.SendWithDataChannel(GetString(lCmd));
+            keyboard = null;
+        }
         //The goal here is to get the position of the cursor in the relative plane of the joystick
         if (!isActiveAndEnabled || Time.time - mTime < 0.2F) return;
-        
+
         mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
         mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
 
-		if(mControlsDisabled) 
-		{
-			if(!mAlreadyDisabled)
-			{
-				Debug.Log ("BAD CONNECTION, stopping Buddy...");
-				webRTC.SendWithDataChannel(GetString(new SetWheelsSpeedCmd(0, 0, 200).Serialize()));
-				mAlreadyDisabled = true;
-			}
-		}
-		else
-		{
-			mAlreadyDisabled = false;
+        if (mControlsDisabled)
+        {
+            if (!mAlreadyDisabled)
+            {
+                Debug.Log("BAD CONNECTION, stopping Buddy...");
+                webRTC.SendWithDataChannel(GetString(new SetWheelsSpeedCmd(0, 0, 200).Serialize()));
+                mAlreadyDisabled = true;
+            }
+        }
+        else
+        {
+            mAlreadyDisabled = false;
 
-			if (mXPosition != 0 && mYPosition != 0) {
+            if (mXPosition != 0 && mYPosition != 0)
+            {
                 //The cursor of the joystick is being moved
                 //We are controlling the body movement
-                if (toggleController.IsBodyActive) {
-					//Compute the desired body movement and send the serialized command to remote
-					ComputeMobileBase ();
+                if (toggleController.IsBodyActive)
+                {
+                    //Compute the desired body movement and send the serialized command to remote
+                    ComputeMobileBase();
                     byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 200).Serialize();
 
-					webRTC.SendWithDataChannel(GetString (lMobileCmd));
+                    webRTC.SendWithDataChannel(GetString(lMobileCmd));
                 }
-	            //We are controlling the head movement
-	            else {
-					//Compute the desired head movement and send the serialized command to remote
-					ComputeNoAxis ();
-					ComputeYesAxis ();
+                //We are controlling the head movement
+                else
+                {
+                    //Compute the desired head movement and send the serialized command to remote
+                    ComputeNoAxis();
+                    ComputeYesAxis();
 
-					byte[] lNoCmd = new SetPosNoCmd(mAngleNo, mNoSpeed).Serialize();
-					byte[] lYesCmd = new SetPosYesCmd(mAngleYes, mYesSpeed).Serialize();
+                    byte[] lNoCmd = new SetPosNoCmd(mAngleNo, mNoSpeed).Serialize();
+                    byte[] lYesCmd = new SetPosYesCmd(mAngleYes, mYesSpeed).Serialize();
 
-					webRTC.SendWithDataChannel(GetString (lNoCmd));
-					webRTC.SendWithDataChannel(GetString (lYesCmd));
-				}
-			}
-		}
+                    webRTC.SendWithDataChannel(GetString(lNoCmd));
+                    webRTC.SendWithDataChannel(GetString(lYesCmd));
+                }
+            }
+        }
 
         mTime = Time.time;
     }
 
-	public void ButtonPushed(string iButtonName)
-	{
-
-		string[] words = iButtonName.Split(' ');
-		byte[] lCmd = null;
-        switch (words[0]) {
+    public void ButtonPushed(string iButtonName)
+    {
+        string[] words = iButtonName.Split(' ');
+        byte[] lCmd = null;
+        switch (words[0])
+        {
             case "App":
                 lCmd = new StartAppCmd(words[1]).Serialize();
                 break;
 
             case "Sound":
-                if (words[1].Contains("Say"))
-                    lCmd = new SayTTSCmd(words[2].Replace("_", " ")).Serialize();
-                else
-                    lCmd = new SayTTSCmd("I'm " + words[1]).Serialize();
+                var text = EventSystem.current.currentSelectedGameObject.transform.Find("Text");
+                if (text != null)
+                    lCmd = new SayTTSCmd(text.GetComponent<Text>().text).Serialize();
+
                 break;
 
-			case "Mood":
-				lCmd = new SetMoodCmd((Buddy.MoodType) Enum.Parse(typeof(Buddy.MoodType), words[1])).Serialize();
-				break;
+            case "Mood":
+                Debug.Log(words[1].ToUpper());
+                lCmd = new SetMoodCmd((Buddy.MoodType)Enum.Parse(typeof(Buddy.MoodType), words[1].ToUpper())).Serialize();
+                break;
 
-			default:
-				break;
+            case "BML":
+                lCmd = new LaunchRandomBMLCmd((Buddy.MoodType)Enum.Parse(typeof(Buddy.MoodType), words[1].ToUpper())).Serialize();
+                break;
 
-		}
-		webRTC.SendWithDataChannel(GetString(lCmd));
-	}
+            default:
+                break;
 
-    public void SayInputText()
-    {
-        byte[] lCmd = null;
-        lCmd = new SayTTSCmd(inputText.text).Serialize();
+        }
         webRTC.SendWithDataChannel(GetString(lCmd));
     }
 
-	private void ComputeNoAxis()
+    public void SayInputText(string text)
+    {
+
+        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+
+        Debug.Log(keyboard.text);
+
+        //Debug.Log(text);
+        //byte[] lCmd = null;
+        //lCmd = new SayTTSCmd(/*inputText.text*/text).Serialize();
+        //webRTC.SendWithDataChannel(GetString(lCmd));
+    }
+
+    private void ComputeNoAxis()
     {
         //Add an increment to No axis position corresponding to the cursor's
         mAngleNo -= mXPosition * 5f;
