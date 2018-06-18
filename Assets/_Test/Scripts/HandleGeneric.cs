@@ -26,7 +26,7 @@ public class HandleGeneric : MonoBehaviour
     [SerializeField]
     private GameObject T_RemoteUI;
     [SerializeField]
-    private GameObject T_WizardOfOzUI;
+    private GameObject[] T_WizardOfOzUI;
     [SerializeField]
     private GameObject T_MessageTopUI;
     [SerializeField]
@@ -60,7 +60,8 @@ public class HandleGeneric : MonoBehaviour
         T_NavigationAccount.SetActive(false);
         T_TopUI.SetActive(false);
         T_RemoteUI.SetActive(false);
-        T_WizardOfOzUI.SetActive(false);
+        foreach (GameObject item in T_WizardOfOzUI)
+            item.SetActive(false);
         T_MessageTopUI.SetActive(false);
 
         if (iObjectsToKeep != null)
@@ -106,7 +107,8 @@ public class HandleGeneric : MonoBehaviour
                         T_RemoteUI.SetActive(true);
                         break;
                     case "WizardOfOzUI":
-                        T_WizardOfOzUI.SetActive(true);
+                        foreach(GameObject item in T_WizardOfOzUI)
+                            item.SetActive(true);
                         break;
                     case "MessageTopUI":
                         T_MessageTopUI.SetActive(true);

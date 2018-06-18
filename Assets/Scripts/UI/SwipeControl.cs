@@ -4,6 +4,20 @@ using System.Collections;
 
 public class SwipeControl : MonoBehaviour
 {
+    [SerializeField]
+    private Button UpArrow;
+
+    [SerializeField]
+    private Button DownArrow;
+
+    [SerializeField]
+    private Button LeftArrow;
+
+    [SerializeField]
+    private Button RightArrow;
+
+
+
     //First/Last finger position
     private Vector3 mFirstPosition;
     private Vector3 mLastPosition;
@@ -22,9 +36,14 @@ public class SwipeControl : MonoBehaviour
         OffState = Animator.StringToHash("Base.OFF");
     }
 
+    public void Test()
+    {
+        Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
     void Update()
     {
-        
+
 
         if (mAnimator.GetCurrentAnimatorStateInfo(0).nameHash != OffState)
         {
@@ -54,18 +73,29 @@ public class SwipeControl : MonoBehaviour
                         {
                             //If the horizontal movement is greater than the vertical movement…
                             if (mLastPosition.x > mFirstPosition.x)
-                                mAnimator.SetTrigger("Previous");
+                            {
+                                if (LeftArrow.interactable)
+                                    mAnimator.SetTrigger("Previous");
+                            }
                             else
-                                mAnimator.SetTrigger("Next");
+                            {
+                                if (RightArrow.interactable)
+                                    mAnimator.SetTrigger("Next");
+                            }
                         }
                         else
                         {
                             //the vertical movement is greater than the horizontal movement
                             if (mLastPosition.y > mFirstPosition.y)
-                                //Up move
-                                Debug.Log("Up");
+                            {
+                                if (UpArrow.interactable)
+                                    mAnimator.SetTrigger("NextPage");
+                            }
                             else
-                                Debug.Log("Down");
+                            {
+                                if (DownArrow.interactable)
+                                    mAnimator.SetTrigger("PreviousPage");
+                            }
                         }
                     }
 
