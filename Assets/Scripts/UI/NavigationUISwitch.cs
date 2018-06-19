@@ -16,13 +16,15 @@ public class NavigationUISwitch : MonoBehaviour
 
     private bool mUIOn;
 
-    // Use this for initialization
+
     void Start()
     {
         mUIOn = true;
     }
 
-    //Enable or disable the UI depending on previous state
+    /// <summary>
+    /// Enables or disables the UI depending on previous state.
+    /// </summary>
     public void SwitchUI()
     {
         Debug.Log("Switching UI");

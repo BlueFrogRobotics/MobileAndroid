@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Manages the connection indicator UI
+/// Manages the connection indicator UI.
 /// </summary>
 public class ConnectionIndicator : MonoBehaviour
 {

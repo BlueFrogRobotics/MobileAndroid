@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// Manages the displayed list of Buddies the user can connect to
+/// Manages the displayed list of Buddies the user can connect to.
 /// </summary>
 public class BuddyIPList : MonoBehaviour
 {
@@ -63,6 +63,10 @@ public class BuddyIPList : MonoBehaviour
         mIPList.Clear();
     }
 
+    /// <summary>
+    /// Check every 10s the status of all Buddies. 
+    /// </summary>
+    /// <returns>An enumerator.</returns>
 	private IEnumerator CheckBuddiesStatus()
 	{
         while (true)
@@ -81,6 +85,10 @@ public class BuddyIPList : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// Check if the Buddy from which we received a message is already displayed on the list or not.
+    /// </summary>
+    /// <param name="iNewBuddyIP">The IP address of the Buddy that sent a message.</param>
     private void UpdateBuddyList(string iNewBuddyIP)
     {
         //Check if new Buddy is not already contained in the connected list
@@ -96,6 +104,10 @@ public class BuddyIPList : MonoBehaviour
         mBuddyNb++;
     }
 
+    /// <summary>
+    /// Remove a disconnected Buddy from the display list.
+    /// </summary>
+    /// <param name="iDisconnectedBuddy">The IP address of the Buddy that is now disconnected.</param>
     private void RemoveBuddyFromList(string iDisconnectedBuddy)
     {
         //Self-explanatory
@@ -121,6 +133,9 @@ public class BuddyIPList : MonoBehaviour
 		}
     }
 
+    /// <summary>
+    /// Display the list of all Buddies: local and Internet ones.
+    /// </summary>
     public void CreateListDisplay()
     {
         //Remove all present displayed robots
@@ -128,7 +143,6 @@ public class BuddyIPList : MonoBehaviour
             GameObject.Destroy(lChild.gameObject);
 
         //Add Buddies from all different sources. 
-        //NOTE : WebRTC Buddies and Database ones will be merged
         AddBuddyFromDB();
         AddLocalBuddy();
         //Add the searching logo to the list for better visuals
@@ -137,64 +151,63 @@ public class BuddyIPList : MonoBehaviour
         LoadingUI.AddObject(lSearching);
     }
 
+    /// <summary>
+    /// Create the displayed list if there is nothing.
+    /// </summary>
     private void UpdateListDisplay()
     {
         GameObject lViewport = GameObject.Find("Content_Bottom/ScrollView/Viewport");
 
         if(lViewport.transform.childCount == 0) {
             CreateListDisplay();
-        } else {
-            bool lDistantPart = true;
-            foreach (Transform lChild in parentTransform) {
-                if (lChild.gameObject.name == "DistantSeparator")
-                    continue;
-                else if (lChild.gameObject.name == "LocalSeparator") {
-                    lDistantPart = false;
-                    continue;
-                } else {
-
-                }
-            }
         }
     }
 
+    /// <summary>
+    /// Display Buddies that are linked to the user account on the MYSQL Database.
+    /// </summary>
     private void AddBuddyFromDB()
     {
         //Retrieve the list from Database source and add it to the displayed list
         Debug.Log("Adding DB Buddy");
+        //Display a separation line for Online Buddies.
         GameObject lDistantSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "buddycontact");
         lDistantSeparator.name = "DistantSeparator";
         LoadingUI.AddObject(lDistantSeparator);
 
+        //For demo purpose.
         if (buddyDB.CurrentUser.LastName.Contains("DEMO")) {
 			GameObject lBuddyDemo = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy DEMO", "DEMO", "", false, true, "online", null);
             LoadingUI.AddObject(lBuddyDemo);
             return;
         }
 
+        //Display all Buddies linked to the active account.
 		foreach (BuddyDB lBuddy in buddyDB.BuddiesList) {
-            //Debug.Log("************");
-            //Debug.Log("Buddy Name = " + lBuddy.name);
-            //Debug.Log("Buddy State = " + lBuddy.status);
             GameObject lBuddyDB = mPoolManager.fBuddy_Contact ("Content_Bottom/ScrollView/Viewport", lBuddy.name, lBuddy.ID, "", false, true, lBuddy.status, null);
 			LoadingUI.AddObject(lBuddyDB);
 		}
     }
     
+    /// <summary>
+    /// Display Buddies that are connected locally to the phone server.
+    /// </summary>
     private void AddLocalBuddy()
     {
+        //Display a separation line for local Buddies.
         GameObject lLocalSeparator = mPoolManager.fBuddy_Separator("Content_Bottom/ScrollView/Viewport", "connectedonwifi");
         lLocalSeparator.name = "LocalSeparator";
         LoadingUI.AddObject(lLocalSeparator);
         mIPList.Clear();
         mIPList = mobileServer.GetBuddyConnectedList();
 
+        //For demo purpose.
 		if(buddyDB.CurrentUser.LastName.Contains("DEMO")) {
 			GameObject lBuddyDemo = mPoolManager.fBuddy_Contact("Content_Bottom/ScrollView/Viewport", "Buddy DEMO Local", "DEMO", "", true, true, "online", null);
 			LoadingUI.AddObject(lBuddyDemo);
 		}
 
-        //Instiate the prefab for each found Buddy in the displayed list
+        //Display all Buddies that are locally connected.
         int lCount = 0;
         foreach (string lIP in mIPList)
         {
@@ -204,9 +217,13 @@ public class BuddyIPList : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Display Buddies whose name corresponds to the input.
+    /// </summary>
+    /// <param name="iSearch">The searching pattern to match.</param>
     public void SearchForBuddy(string iSearch)
     {
-        //We display here only the Buddy that contain the keyword 'iSearch'
+        //We display here only the Buddy whose name contains the keyword 'iSearch'
         //If the string is null, we show all the Buddy
         Debug.Log("Searching for " + iSearch);
         if(string.IsNullOrEmpty(iSearch)) {

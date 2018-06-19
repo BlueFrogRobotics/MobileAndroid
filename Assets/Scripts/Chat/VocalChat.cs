@@ -22,7 +22,7 @@ internal enum RequestType
 public delegate void QuestionAnalysed(string iType);
 
 /// <summary>
-/// Copy of VocalChat from SDK's FeatVocal
+/// Copy of VocalChat from Buddy's companion.
 /// </summary>
 public class VocalChat : MonoBehaviour
 {

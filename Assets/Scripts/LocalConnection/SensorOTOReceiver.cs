@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Receiver to get the sensors information
+/// Receiver to get the sensors information.
 /// </summary>
 public class SensorOTOReceiver : OTONetReceiver
 {

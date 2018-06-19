@@ -3,7 +3,7 @@
 using Buddy.Command;
 
 /// <summary>
-/// Controls the movement of the robot on a local connection
+/// Controls the movement of the robot on a local connection using a joystick.
 /// </summary>
 public class BuddyJoystickOTOSender : OTONetSender
 {
@@ -58,11 +58,7 @@ public class BuddyJoystickOTOSender : OTONetSender
 
         if (Screen.orientation == ScreenOrientation.LandscapeLeft
             || Screen.orientation == ScreenOrientation.LandscapeRight) {
-            //mXPositionHead = joystickHeadLandscape.localPosition.x / X_DELTA_JOYSTICK_HEAD_LANDSCAPE;
-            //mYPositionHead = joystickHeadLandscape.localPosition.y / Y_DELTA_JOYSTICK_HEAD_LANDSCAPE;
-
-            //mXPositionBody = joystickBodyLandscape.localPosition.x / X_DELTA_JOYSTICK_BODY_LANDSCAPE;
-            //mYPositionBody = joystickBodyLandscape.localPosition.y / Y_DELTA_JOYSTICK_BODY_LANDSCAPE;
+            //Landscape mode is not handled yet, so do nothing;
         }
         else {
             mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
@@ -100,6 +96,7 @@ public class BuddyJoystickOTOSender : OTONetSender
         //Add an increment to No axis position corresponding to the cursor's
         mAngleNo -= mXPosition * 5f;
 
+        //Block the no axis to -45° or 45°.
         if (Mathf.Abs(mAngleNo) > 45)
             mAngleNo = Mathf.Sign(mAngleNo) * 45;
         
@@ -112,6 +109,7 @@ public class BuddyJoystickOTOSender : OTONetSender
         //Add an increment to Yes axis position corresponding to the cursor's
         mAngleYes -= mYPosition * 5f;
 
+        //Block the yes axis to -30° minimum and 60° maximum.
         if (mAngleYes < -30)
             mAngleYes = -30;
 
@@ -129,6 +127,7 @@ public class BuddyJoystickOTOSender : OTONetSender
         float lRadius = Mathf.Sqrt(mXPosition * mXPosition + mYPosition * mYPosition);
         float lAngle = (Mathf.Atan2(mYPosition, mXPosition));
         Debug.Log("Body position radius : " + lRadius + " / body position angle : " + lAngle);
+        //A little oval representation of the speed, as we don't want the robot to turn too quickly.
         mLeftSpeed = mSpeedBody * (Mathf.Sin(lAngle) + Mathf.Cos(lAngle)/3) * lRadius;
         mRightSpeed = mSpeedBody * (Mathf.Sin(lAngle) - Mathf.Cos(lAngle)/3) * lRadius;
     }

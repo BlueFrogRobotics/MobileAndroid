@@ -8,11 +8,11 @@ public class TermsOfUsesState : ASubState {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
         if (indexState == (int)State.OPEN)
         {
-            // CLEANNING PREVIOUS CREATED OBJECT
+            // Cleaning previously created objects
             LoadingUI.ClearUI();
-            // DESACTIVATE, ACTIVATE GENERICS
+            // Activate predefined generic elements.
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "TopUI", "BottomUI", "ScrollView" });
-            // CREATING OBJECTS
+            // Creating UI Objects
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_L("Content_Bottom/Bottom_UI", "VLeft", null));
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fSimple_Text("Content_Bottom/Bottom_UI", "", false));
             LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_R("Content_Bottom/Bottom_UI", "Up", null));

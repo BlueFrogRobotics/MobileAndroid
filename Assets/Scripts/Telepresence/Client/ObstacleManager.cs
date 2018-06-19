@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 /// <summary>
-/// Display of the obstacles distance
+/// Display of the obstacles distance.
 /// </summary>
 public class ObstacleManager : MonoBehaviour {
 
@@ -27,7 +27,7 @@ public class ObstacleManager : MonoBehaviour {
     private Color mAlphaBlink;
     private bool mUp = true;
 
-	// Use this for initialization
+
 	void Start () {
         lvl = 0;
         mAlphaDown  = new Color(255, 255, 255, 0);
@@ -43,6 +43,10 @@ public class ObstacleManager : MonoBehaviour {
         ActiveSprite();
     }
 
+    /// <summary>
+    /// Select the sprites to display.
+    /// </summary>
+    /// <param name="lvl">The sprite level. A higher level means a closer obstacle.</param>
     private void selectSprite(Image lvl)
     {
         //Display sprite corresponding to the distance measured by sensors
@@ -56,6 +60,9 @@ public class ObstacleManager : MonoBehaviour {
             lvl.color = SpriteBlink();
     }
 
+    /// <summary>
+    /// Display the sprites according to the distance of the obstacle.
+    /// </summary>
     public void ActiveSprite()
     {
         if (lvl == 0)
@@ -70,7 +77,10 @@ public class ObstacleManager : MonoBehaviour {
             selectSprite(lvl4);        
     }
 
-    //Blink animation with fading and increase of alpha value
+    /// <summary>
+    /// Blink animation with fading and increase of alpha value.
+    /// </summary>
+    /// <returns>A Color value depending on the blink cycle.</returns>
     public Color SpriteBlink()
     {
         if (mUp) {

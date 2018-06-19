@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Saves which Buddy has been selected from the list as well as the connection type
+/// Saves which Buddy has been selected from the list as well as the connection type.
 /// </summary>
 public class SelectBuddy : MonoBehaviour
 {
@@ -34,6 +34,10 @@ public class SelectBuddy : MonoBehaviour
 	private RemoteType mRemote;
 	private bool mBuddyOnline = false;
 
+    /// <summary>
+    /// Confirm the selection of a Buddy and connect to it.
+    /// This is called in the selection screen when the "Select" button is pressed.
+    /// </summary>
     public void BuddySelected()
     {
         bool lFound = false;
@@ -74,6 +78,7 @@ public class SelectBuddy : MonoBehaviour
             }            
         }
 
+        //Go to the "connected to Buddy" menu if Buddy was found, else display an error message.
 		if (lFound) {
 			if (mBuddyOnline) {
 				GameObject.Find ("Content_Bottom/ScrollView/Viewport").GetComponent<BuddyIPList> ().enabled = false;

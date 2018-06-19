@@ -66,13 +66,15 @@ public class PoolManager : MonoBehaviour {
 
     public Dictionary Dictionary { private set; get; }
 
-    // Retrive All used Atlas sprites
+    // Retrieve All used Atlas sprites
     void Start () {
+        //Create the dictionary, default being in French.
         Dictionary = new Dictionary(Language.FR, this);
         mAtlasUI = new Dictionary<string, Sprite>();
         mAtlasMobile = new Dictionary<string, Sprite>();
         mAtlasIcon = new Dictionary<string, Sprite>();
         
+        //Load sprite and store them in Dictionaries for further easy access.
         Sprite[] lSpritesMobile = Resources.LoadAll<Sprite>("Sprites/AtlasMobile");
         Sprite[] lSpritesUI = Resources.LoadAll<Sprite>("Sprites/AtlasUI");
         Sprite[] lSpritesIcon = Resources.LoadAll<Sprite>("Sprites/Atlas_Icons");
@@ -87,15 +89,15 @@ public class PoolManager : MonoBehaviour {
             mAtlasIcon.Add(lSprite.name, lSprite);
     }
 
-    //public void StartPoolCoroutine(IEnumerator lEnumerator)
-    //{
-    //    StartCoroutine(lEnumerator);
-    //}
-
-    // Buble
-    public GameObject fBubble(string iType, string iText, string iDate )
-    {
-        
+    /// <summary>
+    /// Create a Bubble (designed for the chat).
+    /// </summary>
+    /// <param name="iType">"Blue" or "White". Blue is for someone else's message, white being the user's message.</param>
+    /// <param name="iText">The text to display in the message.</param>
+    /// <param name="iDate">The timestamp of the message.</param>
+    /// <returns>The "Bubble" game object with the proper configuration.</returns>
+    public GameObject fBubble(string iType, string iText, string iDate)
+    {        
         GameObject lBubble_Blue = Bubble_Blue;
         GameObject lBubble_White = Bubble_White;
         GameObject lMessage_UI = GameObject.Find("Content_Bottom/Message_UI");
@@ -110,8 +112,7 @@ public class PoolManager : MonoBehaviour {
             return lFinalObject;
         }
         else
-        {
- 
+        { 
             GameObject lFinalObject = Instantiate(Bubble_White);
             Text lBubble_White_Text = lFinalObject.GetComponentsInChildren<Text>()[0];
             Text lBubble_White_Date = lFinalObject.GetComponentsInChildren<Text>()[1];
@@ -122,6 +123,13 @@ public class PoolManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Creates an indicator to display Buddy's status.
+    /// </summary>
+    /// <param name="iParent">The parent game object in which to display the indicator.</param>
+    /// <param name="iId">Buddy's ID.</param>
+    /// <param name="displayText">Some special text to display next to the status icon.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
 	public GameObject fBuddy_Status(string iParent, string iId, bool displayText)
 	{
 		GameObject lFinalObject = Instantiate(Buddy_Status);
@@ -133,7 +141,18 @@ public class PoolManager : MonoBehaviour {
 		return lFinalObject;
 	}
 
-    // Buddy Contact
+    /// <summary>
+    /// Create a game object to display Buddies in the selection menu.
+    /// </summary>
+    /// <param name="iParent">The Scrollview to display the buddy in.</param>
+    /// <param name="iName">Buddy's name to be displayed.</param>
+    /// <param name="iID">Buddy's ID to be displayed.</param>
+    /// <param name="iUserPic">A special icon to display.</param>
+    /// <param name="iLocal">Is the Buddy on a local network or not ?</param>
+    /// <param name="iListed">Is the detected Buddy already linked to the active account ?</param>
+    /// <param name="iStatus">Current status of Buddy: online, busy, offline.</param>
+    /// <param name="iCallbacks">Actions to be launched if the Buddy is to be edited or added if not listed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
 	public GameObject fBuddy_Contact(string iParent, string iName, string iID, string iUserPic, bool iLocal, bool iListed, string iStatus, List<UnityAction> iCallbacks)
     {
 		
@@ -210,7 +229,14 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button Square
+    /// <summary>
+    /// A square button to press.
+    /// </summary>
+    /// <param name="iParent">The game object's parent.</param>
+    /// <param name="iKey">The dictionary key to display text inside the button.</param>
+    /// <param name="iIconName">Icon name for UI display.</param>
+    /// <param name="iCallbacks">Actions to be launched when button is pressed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_Square(string iParent, string iKey, string iIconName, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_Square);
@@ -241,7 +267,14 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button Big 
+    /// <summary>
+    /// A big square button to press.
+    /// </summary>
+    /// <param name="iParent">The game object's parent.</param>
+    /// <param name="iKey">The dictionary key to display text inside the button.</param>
+    /// <param name="iIconName">Icon name for UI display.</param>
+    /// <param name="iCallbacks">Actions to be launched when button is pressed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_Big(string iParent, string iKey, string iIconName, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_Big);
@@ -272,7 +305,13 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button_L
+    /// <summary>
+    /// A button with a left anchor.
+    /// </summary>
+    /// <param name="iParent">The parent in which to display the button.</param>
+    /// <param name="iIconName">Icon name for UI display.</param>
+    /// <param name="iCallbacks">Actions to be launched when button is pressed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_L(string iParent, string iIconName, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_L);
@@ -302,7 +341,12 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button_QrCode 
+    /// <summary>
+    /// Button with QRCode icon
+    /// </summary>
+    /// <param name="iParent">The parent in which to display the button.</param>
+    /// <param name="iCallbacks">Actions to be launched when button is pressed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_QrCode(string iParent, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_QrCode);
@@ -318,7 +362,13 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button_R
+    /// <summary>
+    /// A button with a left anchor.
+    /// </summary>
+    /// <param name="iParent">The parent in which to display the button.</param>
+    /// <param name="iIconName">Icon name for UI display.</param>
+    /// <param name="iCallbacks">Actions to be launched when button is pressed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_R(string iParent, string iIconName, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_R);
@@ -348,7 +398,13 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button_Text_Underline
+    /// <summary>
+    /// Create an underlined text.
+    /// </summary>
+    /// <param name="iParent">The parent to display the text in.</param>
+    /// <param name="iKey">The dictionary key for the text to display.</param>
+    /// <param name="iCallbacks">The callbacks to be called when text is clicked.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_Text_Underline(string iParent, string iKey, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Button_Text_Underline);
@@ -365,7 +421,13 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button_User_Big
+    /// <summary>
+    /// Create a big clickable user icon button.
+    /// </summary>
+    /// <param name="iParent">The parent to display the user icon in.</param>
+    /// <param name="iPicture">The name of the picture to load. Will either be loaded in the sprites atlas, load from the resources or display the currently active user's profile picture.</param>
+    /// <param name="iCallbacks">Actions to be called when clicking on the picture.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_User_Big(string iParent, string iPicture, List<UnityAction> iCallbacks)
     {
         DBManager lDBManager = GameObject.Find("DBManager").GetComponent<DBManager>();
@@ -405,7 +467,13 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Button_User
+    /// <summary>
+    /// Create a clickable user icon button.
+    /// </summary>
+    /// <param name="iParent">The parent to display the user icon in.</param>
+    /// <param name="iPicture">The name of the picture to load. Will either be loaded in the sprites atlas, load from the resources or display the currently active user's profile picture.</param>
+    /// <param name="iCallbacks">Actions to be called when clicking on the picture.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fButton_User(string iParent, string iPicture, bool iActive, List<UnityAction> iCallbacks)
     {
         DBManager lDBManager = GameObject.Find("DBManager").GetComponent<DBManager>();
@@ -418,7 +486,7 @@ public class PoolManager : MonoBehaviour {
 		}
         
 		if (!string.IsNullOrEmpty(iPicture)) {
-            // Checker la photo utilisateur 
+            // Look for the user profile picture.
             Sprite lSprite;
             if (mAtlasMobile.ContainsKey(iPicture))
                 lSprite = mAtlasMobile[iPicture];
@@ -450,7 +518,12 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Loading
+    /// <summary>
+    /// Create a "loading" icon with text under.
+    /// </summary>
+    /// <param name="iParent">The parent to display the loading icon in.</param>
+    /// <param name="iKey">The dictionary key for the text to be displayed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fLoading(string iParent, string iKey)
     {
         GameObject lFinalObject = Instantiate(Loading);
@@ -461,7 +534,12 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Loading Issues
+    /// <summary>
+    /// Create an icon to display loading issues with an explanatory text.
+    /// </summary>
+    /// <param name="iParent">The parent to display the icon in.</param>
+    /// <param name="iText">The dictionary key for the text to be displayed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fLoading_Issues(string iParent, string iText)
     {
         GameObject lFinalObject = Instantiate(Loading_Issues);
@@ -472,7 +550,11 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Logo
+    /// <summary>
+    /// Display Blue Frog's logo.
+    /// </summary>
+    /// <param name="iParent">The parent to display the logo in.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fLogo(string iParent)
     {
         GameObject lFinalObject = Instantiate(Logo);
@@ -482,7 +564,11 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Searching
+    /// <summary>
+    /// Create a "searching" icon.
+    /// </summary>
+    /// <param name="iParent">The parent to display the icon in.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fSearching(string iParent)
     {
         GameObject lFinalObject = Instantiate(Searching_Contact);
@@ -491,7 +577,13 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Simple_Text
+    /// <summary>
+    /// Create a simple text.
+    /// </summary>
+    /// <param name="iParent">The parent to display the text in.</param>
+    /// <param name="iKey">The dictionary key for the text to display.</param>
+    /// <param name="iPopup">Is the text in a popup ? If true, the color is changed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
 	public GameObject fSimple_Text(string iParent, string iKey, bool iPopup)
     {
         GameObject lFinalObject = Instantiate(Simple_Text);
@@ -507,7 +599,12 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Simple_Title 
+    /// <summary>
+    /// Create a "title" text.
+    /// </summary>
+    /// <param name="iParent">The parent to display the text in.</param>
+    /// <param name="iKey">The dictionary key for the text to display.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fSimple_Title(string iParent, string iKey)
     {
         GameObject lFinalObject = Instantiate(Simple_Title);
@@ -518,7 +615,17 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // TextField Icon
+    /// <summary>
+    /// Create a text field with an icon.
+    /// </summary>
+    /// <param name="iParent">The parent to display the textfield in.</param>
+    /// <param name="iPlaceHolderKey">The dictionary key for the placeholder.</param>
+    /// <param name="iText">The dictionary key for the text to display.</param>
+    /// <param name="iIconName">The name of the icon to be displayed next to the text field.</param>
+    /// <param name="iCallbacksChange">Callbacks when the text inside changes.</param>
+    /// <param name="iCallbacksEnd">Callbacks when text edition is finished.</param>
+    /// <param name="iCallbacksInfos">Callbacks when the text field is being clicked on.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fTextField_Icon(string iParent, string iPlaceHolderKey, string iText, string iIconName, List<UnityAction<string>> iCallbacksChange, List<UnityAction<string>> iCallbacksEnd, List<UnityAction> iCallbacksInfos)
     {
         GameObject lFinalObject = Instantiate(TextField_Icon);
@@ -569,7 +676,15 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // TextField Searching
+    /// <summary>
+    /// Create a text field with a "search" icon.
+    /// </summary>
+    /// <param name="iParent">The parent to display the textfield in.</param>
+    /// <param name="iPlaceHolderKey">The dictionary key for the placeholder.</param>
+    /// <param name="iText">The text to be displayed inside the text field.</param>
+    /// <param name="iCallbacksChange">Callbacks when the text is changing.</param>
+    /// <param name="iCallbacksEnd">Callbacks when the text edition is finished.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fTextField_Searching(string iParent, string iPlaceHolderKey, string iText, List<UnityAction<string>> iCallbacksChange, List<UnityAction<string>> iCallbacksEnd)
     {
         GameObject lFinalObject = Instantiate(TextField_Searching);
@@ -596,7 +711,12 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Terms
+    /// <summary>
+    /// Create a "terms of use" text.
+    /// </summary>
+    /// <param name="iParent">The parent to display the text in.</param>
+    /// <param name="iText">The text to be displayed.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fTerms(string iParent, string iText)
     {
         GameObject lFinalObject = Instantiate(Text_TermsOfUses);
@@ -605,7 +725,14 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Toggle Underline
+    /// <summary>
+    /// Create a toggle button with underlined text.
+    /// </summary>
+    /// <param name="iParent">The parent to display the toggle button in.</param>
+    /// <param name="iText">The text to be displayed.</param>
+    /// <param name="iPopup">Is the text displayed in a popup ? If so, color will change accordingly.</param>
+    /// <param name="iCallbacks">Callbacks when the text is clicked.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fToggle_Underline(string iParent, string iText, bool iPopup, List<UnityAction> iCallbacks)
     {
         GameObject lFinalObject = Instantiate(Toggle_Underline);
@@ -628,7 +755,13 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
-    // Toggle
+    /// <summary>
+    /// Create a toggle button.
+    /// </summary>
+    /// <param name="iParent">The parent to display the toggle button in.</param>
+    /// <param name="iKey">The dictionary key for the displayed text.</param>
+    /// <param name="iPopup">Is the toggle button in a popup ? if so, color will change accordingly.</param>
+    /// <returns>The generated game object with the proper configuration.</returns>
     public GameObject fToggle(string iParent, string iKey, bool iPopup)
     {
         GameObject lFinalObject = Instantiate(Toggle);
@@ -642,6 +775,11 @@ public class PoolManager : MonoBehaviour {
         return lFinalObject;
     }
 
+    /// <summary>
+    /// Get the sprite in an atlas.
+    /// </summary>
+    /// <param name="iSpriteName">The name of the sprite to find.</param>
+    /// <returns>The sprite in either the mobile, the UI or Icon atlas.</returns>
     public Sprite GetSprite(string iSpriteName)
     {
         Sprite lSprite = new Sprite();

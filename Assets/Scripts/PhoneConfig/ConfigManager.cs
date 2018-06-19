@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 
 /// <summary>
-/// Buddy configuration manager that interfaces with the Blob storage server
+/// Buddy configuration manager that interfaces with the Blob storage server. Should be changed to use Firebase.
 /// </summary>
 public class ConfigManager : MonoBehaviour
 {

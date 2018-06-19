@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Manages th way the remote control request is done
+/// Manages the way the remote control request is done.
 /// </summary>
 public class LaunchTelepresence : MonoBehaviour
 {
@@ -22,10 +22,11 @@ public class LaunchTelepresence : MonoBehaviour
 
     [SerializeField]
     private OTONetwork oTONetwork;
-
-    //[SerializeField]
-    //private GameObject telepresenceGUI;
     
+    /// <summary>
+    /// Called when a remote connection is requested by the user.
+    /// </summary>
+    /// <param name="iMode">The remote type for a WebRTC type: either classic or Wizard-of-Oz.</param>
     public void ConnectToBuddy(int iMode)
     {
         //Check what if selected Buddy is controllable via Local or WebRTC method
@@ -38,18 +39,17 @@ public class LaunchTelepresence : MonoBehaviour
             Debug.Log("Starting local control");
         } else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC) {
             Debug.Log("Starting distant control with remote " + webRTC.RemoteID);
-            //webRTC.InitImages();
             remoteControlRTC.SetActive(true);
             rtcListener.PublishConnectionRequest(webRTC.ID,webRTC.RemoteID, iMode);
-            //webRTC.Call();
-            //Debug.Log("Starting distant control");
         }
     }
 
+    /// <summary>
+    /// Start local remote-control.
+    /// </summary>
     private void StartTelepresence()
     {
         mobileServer.gameObject.SetActive(false);
         oTONetwork.gameObject.SetActive(true);
-        //telepresenceGUI.SetActive(true);
     }
 }

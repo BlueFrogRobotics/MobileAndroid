@@ -4,6 +4,9 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// State where user can link a Buddy to his account, so to say, "add" it to a user's account.
+/// </summary>
 public class AddBuddyState : ASubState {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
@@ -13,13 +16,13 @@ public class AddBuddyState : ASubState {
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             PopupHandler lPopup = GameObject.Find("PopUps").GetComponent<PopupHandler>();
-            // CLEANNING PREVIOUS CREATED OBJECT
+            // Cleaning previously created objects
             LoadingUI.ClearUI();
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
-            // DESACTIVATE, ACTIVATE GENERICS
+            // Activate predefined generic elements.
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "TopUI", "NavigationAddBuddy", "BottomUI", "ScrollView" });
-            // CREATING OBJECTS
-            // BOTTOM UI
+            // Creating UI Objects
+            // Bottom UI objects
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
 			LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "addcontact", "", new List<UnityAction>() { OnAddBuddyClicked }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "toto", true, null));
@@ -32,7 +35,7 @@ public class AddBuddyState : ASubState {
             lBuddyID.name = "Buddy_ID";
             LoadingUI.AddObject(lBuddyID);
             //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Connect By Default", false));
-            // TOP UI
+            // Top UI objects
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "Default_Buddy", null));
         }
     }

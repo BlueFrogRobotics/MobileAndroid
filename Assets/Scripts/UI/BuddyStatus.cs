@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 /// <summary>
-/// Manages the Buddy status UI
+/// Manages the Buddy status UI.
 /// </summary>
 public class BuddyStatus : MonoBehaviour
 {
@@ -27,11 +27,17 @@ public class BuddyStatus : MonoBehaviour
 
 	void Start()
 	{
+        // Display all Buddies as "offline" at the start.
 		greenImage.SetActive (false);
 		orangeImage.SetActive (false);
 		redImage.SetActive (true);
 	}
 
+    /// <summary>
+    /// Set the data for the current Buddy and start a Coroutine to update its status.
+    /// </summary>
+    /// <param name="id">Buddy's unique ID</param>
+    /// <param name="displayText">The display text.</param>
 	public void SetData(string id, bool displayText)
 	{
 		mId = id;
@@ -45,6 +51,12 @@ public class BuddyStatus : MonoBehaviour
 		StartCoroutine(UpdateBuddyStatus());
 	}
 
+    /// <summary>
+    /// Is the Buddy accessible for a remote control ?
+    /// </summary>
+    /// <param name="id">Buddy's unique ID.</param>
+    /// <param name="startRC">Is WebRTC initialized ?</param>
+    /// <returns>True if buddy is accessible for a WebRTC session.</returns>
 	public bool BuddyAccess(string id, bool startRC)
 	{
 		if (!dbManager.IsBuddiesListEmpty ()) {
@@ -63,11 +75,16 @@ public class BuddyStatus : MonoBehaviour
 		return false;
 	}
 
+    /// <summary>
+    /// Coroutine to update Buddy's status.
+    /// </summary>
+    /// <returns>An enumerator.</returns>
 	private IEnumerator UpdateBuddyStatus()
 	{
 		Image[] childs = this.transform.GetComponents<Image> ();
 		while (true) {
 			if (!dbManager.IsBuddiesListEmpty ()) {
+                // Check for each Buddy if it's online, busy or offline.
 				foreach (BuddyDB lBuddy in dbManager.BuddiesList) {
 					if (lBuddy.ID == mId) {
 						if (lBuddy.status.Equals ("online")) {
@@ -102,6 +119,9 @@ public class BuddyStatus : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// Close connection and set the Buddy as "offline".
+    /// </summary>
 	public void CloseConnection()
 	{
 		greenImage.SetActive(false);

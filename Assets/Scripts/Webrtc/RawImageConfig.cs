@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Raw image configuration to handle the native textures for WebRTC.
+/// </summary>
 public class RawImageConfig : MonoBehaviour
 {
-
     public RawImage mRawImage = null;
     bool toggle = false;
 
+    /// <summary>
+    /// Set the anchors of the raw image.
+    /// </summary>
     public void setRealSize()
     {
         if (!toggle)

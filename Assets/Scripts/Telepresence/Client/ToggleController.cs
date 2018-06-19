@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Manages the UI to switch between Body and Head control
+/// Manages the UI to switch between Body and Head control.
 /// </summary>
 public class ToggleController : MonoBehaviour {
     
@@ -27,7 +27,9 @@ public class ToggleController : MonoBehaviour {
     private Color mWhiteColor = new Color(1F, 1F, 1F);
     private Color mBlackColor = new Color(0.2F, 0.2F, 0.2F);
 
-    //Disable and enable the proper UI elements
+    /// <summary>
+    /// Disable and enable the proper UI elements to switch from body to head movement.
+    /// </summary>
     private void MoveToHead()
     {
         Debug.Log("Switch to Head");
@@ -39,7 +41,9 @@ public class ToggleController : MonoBehaviour {
         toggleAnim.SetTrigger("Head");
     }
 
-    //Disable and enable the proper UI elements
+    /// <summary>
+    /// Disable and enable the proper UI elements to switch from head to body movement.
+    /// </summary>
     private void MoveToBody()
     {
         Debug.Log("Switch to Body");
@@ -51,7 +55,9 @@ public class ToggleController : MonoBehaviour {
         toggleAnim.SetTrigger("Body");
     }
 
-    //Triggers the switch between the Body and Head control
+    /// <summary>
+    /// Triggers the switch between the Body and Head control.
+    /// </summary>
     public void ToggleActivate()
     {
         Debug.Log("Toggled");

@@ -7,6 +7,9 @@ using ZXing.QrCode;
 
 using Buddy;
 
+/// <summary>
+/// Manager to read or create QR codes.
+/// </summary>
 public class QRCodeManager : MonoBehaviour
 {
     [SerializeField]
@@ -52,13 +55,10 @@ public class QRCodeManager : MonoBehaviour
             if (lResults != null && lResults.Length != 0) {
                 string lNameQrCode = lResults[0].Text;
                 resultText.text = lNameQrCode;
-                //SwitchQRCodeReader();
-                //popupQRCode.SetActive(false);
                 GameObject lViewport = GameObject.Find("Content_Bottom/ScrollView/Viewport");
                 lViewport.GetComponentsInChildren<InputField>()[0].text = lNameQrCode;
                 GameObject.Find("PopUps").GetComponent<PopupHandler>().CloseReadQrCode();
             }
-            //cameraImage.texture = mCamera;
             //Rotate the frame for display
             Debug.Log("Camera rotation " + mCamera.videoRotationAngle);
             Utils.WebCamTextureToMat(mCamera, mTempMat);
@@ -74,6 +74,9 @@ public class QRCodeManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Open or close the camera depending on the state of the camera.
+    /// </summary>
     public void SwitchQRCodeReader()
     {
         Debug.Log("Switching state");
@@ -86,6 +89,10 @@ public class QRCodeManager : MonoBehaviour
         mCameraStarted = !mCameraStarted;        
     }
 
+    /// <summary>
+    /// Create a QR code with a specific content. The QR code is directly displayed in the target image in the "add Buddy" state.
+    /// </summary>
+    /// <param name="iData">The content of the QR code.</param>
     public void CreateQrCode(string iData)
     {
         //We create the QRCode writer and encode the data

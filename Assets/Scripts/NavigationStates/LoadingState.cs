@@ -8,12 +8,12 @@ public class LoadingState : ASubState {
         base.OnStateEnter(animator, animatorStateInfo, layerIndex);
         if (indexState == (int)State.OPEN)
         {
-            // CLEANNING PREVIOUS CREATED OBJECT
+            // Cleaning previously created objects
             LoadingUI.ClearUI();
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
-            // DESACTIVATE, ACTIVATE GENERICS
+            // Activate predefined generic elements.
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(null);
-            // CREATING OBJECTS
+            // Creating UI Objects
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Square("Content_Bottom/ScrollView/Viewport", "Test", "Apps", null));
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_Big("Content_Bottom/ScrollView/Viewport", "CREATE AN ACCOUNT", "AddUser", null));
             //LoadingUI.AddObject(animator.GetComponent<PoolManager>().fButton_L("Content_Bottom/Bottom_UI", "VLeft", null));

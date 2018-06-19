@@ -65,7 +65,6 @@ public class AppMobileServer : MonoBehaviour
     private void StartBroadcast()
     {
         //Self-explanatory
-		//discovery.
         discovery.Initialize();
         discovery.StartAsServer();
     }
@@ -89,6 +88,10 @@ public class AppMobileServer : MonoBehaviour
         NetworkServer.RegisterHandler(CHAT_MSG, OnChatMessage);
     }
 
+    /// <summary>
+    /// Called when a new Buddy connects to the local listening server.
+    /// </summary>
+    /// <param name="iNetMsg">The network message received from a Buddy.</param>
     private void OnConnected(NetworkMessage iNetMsg)
     {
         //When a new Buddy connects to server, register its address to the list
@@ -108,6 +111,10 @@ public class AppMobileServer : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when a Buddy discconnects from the local server.
+    /// </summary>
+    /// <param name="iNetMsg">The disconnection message received from a Buddy.</param>
     private void OnDisconnected(NetworkMessage iNetMsg)
     {
         //Remove disconnected Buddy from the list
@@ -132,7 +139,10 @@ public class AppMobileServer : MonoBehaviour
         Debug.Log("Received message: " + lChatMsg.value);
     }
 
-    //Returns the list of connected Buddies
+    /// <summary>
+    /// Get the list of locally connected Buddies.
+    /// </summary>
+    /// <returns>The list of locally connected Buddies.</returns>
     public List<string> GetBuddyConnectedList()
     {
         List<string> lBuddyList = new List<string>();
@@ -177,8 +187,8 @@ public class AppMobileServer : MonoBehaviour
         lMsg.mContent = "Hey !";
         lMsg.mBuddyIP = mClientBuddyIP;
         lMsg.mHostIP = Network.player.ipAddress;
-
-        //DO NOT CUT BROADCAST BEFORE SENDING THE MESSAGE TO BUDDY !!!!
+        
+        //Do not cut the broadcast before sending the message to Buddy.
         //Or message won't be sent, and everything crashes ...
         Debug.Log("Network server Id " + NetworkServer.serverHostId);
         NetworkServer.SendToClient(lBuddyID, BEGIN_MESSAGE, lMsg);

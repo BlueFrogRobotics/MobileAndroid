@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Buddy information edition state.
+/// </summary>
 public class EditBuddyState : ASubState {
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
     {
@@ -11,17 +14,14 @@ public class EditBuddyState : ASubState {
         if (indexState == (int)State.OPEN)
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
-            // CLEANNING PREVIOUS CREATED OBJECT
+            // Cleaning previously created objects
             LoadingUI.ClearUI();
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
-            // DESACTIVATE, ACTIVATE GENERICS
+            // Activate predefined generic elements.
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationEditBuddy", "TopUI", "BottomUI", "ScrollView" });
-            // CREATING OBJECTS
-            //LoadingUI.AddObject(lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "12-34-56-78", "", "QRCode", null, null, null));
-            //LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/ScrollView/Viewport", "OR", false));
-            //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "Scan your contact ID", null, null));
-            //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Set as default connection", false));
 
+            // Creating UI Objects
+            // Bottom UI content.
 			GameObject lbuddyNameField = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "buddysname", SelectBuddy.BuddyName, "", null, null, null);
 			lbuddyNameField.name = "BuddyNameField";
 			LoadingUI.AddObject(lbuddyNameField);
@@ -30,6 +30,7 @@ public class EditBuddyState : ASubState {
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "confirmchanges", "", new List<UnityAction>() { SaveBuddyChanges }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", true, new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
 
+            // Top UI content.
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "Default_Buddy", null));
 
             //LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", null));
@@ -38,21 +39,22 @@ public class EditBuddyState : ASubState {
         }
     }
 
+    /// <summary>
+    /// Save the changes that were made to the Buddy.
+    /// </summary>
     private void SaveBuddyChanges()
     {
 		string specialID = SelectBuddy.BuddyID;
 		string name = GameObject.Find("BuddyNameField").GetComponent<InputField>().text;
 
-		if(name == "")
-		{
-            //GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Le nom ne peut pas être vide");
+		if(name == "") {
             GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Le nom ne peut pas être vide", "Warning");
 
             return;
 		}
 
+        // Send the changes to the database.
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartEditBuddy(specialID, name);
-        //GameObject.Find("MenuManager").GetComponent<GoBack>().PreviousMenu();
     }
 }
 

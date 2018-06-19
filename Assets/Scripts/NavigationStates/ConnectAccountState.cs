@@ -4,6 +4,9 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// State where a user connects to his account.
+/// </summary>
 public class ConnectAccountState : ASubState {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
@@ -13,13 +16,13 @@ public class ConnectAccountState : ASubState {
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
             DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
-            // CLEANNING PREVIOUS CREATED OBJECT
+            // Cleaning previously created objects
             LoadingUI.ClearUI();
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
-            // DESACTIVATE, ACTIVATE GENERICS
+            // Activate predefined generic elements.
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "NavigationAccount", "TopUI", "BottomUI", "ScrollView" });
-            // CREATING OBJECTS
-            //This makes getting stuff easier
+            // Creating UI Objects
+            // Bottom UI objects
             GameObject lInputFieldEM = lPoolManager.fTextField_Icon("Content_Bottom/ScrollView/Viewport", "mymail", "", "Email", null, null, null);
             lInputFieldEM.name = "EMail_Input";
             LoadingUI.AddObject(lInputFieldEM);
@@ -40,15 +43,14 @@ public class ConnectAccountState : ASubState {
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "login", "", new List<UnityAction>() { Connection }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false , null));
 
+            // Top UI objects
             GameObject lUserPicture = lPoolManager.fButton_User_Big("Content_Top", "", null);
             lUserPicture.name = "Connect_User_Picture";
             LoadingUI.AddObject(lUserPicture);
 
 			LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "Trash", new List<UnityAction>() { RemoveLocalAccount }));
             LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Top/Top_UI", "", false));
-            //LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Edit", null));// new List<UnityAction>() { lMenuManager.GoEditAccountMenu }));
-            //NEED TO ADD NAVIGATION ACOUNT SCRIPT TO HANDLE "NavigationAccount" UI ELEMENTS !!!
-            //lDB.ReadPhoneUsers();
+
             lDB.GenerateUserDisplay();
         }
     }
@@ -56,63 +58,61 @@ public class ConnectAccountState : ASubState {
     //Gets info from the input fields and connects to remote DB.
     private void Connection()
 	{
-        string firstName;
-        string lastName;
+        string lFirstName;
+        string lLastName;
 
         if (GameObject.Find("TextFirstName") != null) {
-            firstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
-            lastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+            lFirstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
+            lLastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
         } else {
-            firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
-            lastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+            lFirstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+            lLastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
         }
 
-		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
-		string password = GameObject.Find("Password_Input").GetComponent<InputField>().text;
+		string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		string lPassword = GameObject.Find("Password_Input").GetComponent<InputField>().text;
         bool lNotif = GameObject.Find("Notification_Toggle").GetComponent<Toggle>().isOn;
-		GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection(firstName, lastName, email, password, lNotif);
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartRequestConnection(lFirstName, lLastName, lEmail, lPassword, lNotif);
     }
 
 	private void RemoveLocalAccount()
 	{
-		string firstName;
-		string lastName;
+		string lFirstName;
+		string lLastName;
 
 		if (GameObject.Find("TextFirstName") != null) {
-			firstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
-			lastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
+			lFirstName = GameObject.Find("TextFirstName").GetComponent<Text>().text;
+			lLastName = GameObject.Find("Text_LastName").GetComponent<Text>().text;
 		} else {
-			firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
-			lastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
+			lFirstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
+			lLastName = GameObject.Find("Field_LastName").GetComponent<InputField>().text;
 		}
 
-		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
-		GameObject.Find ("DBManager").GetComponent<DBManager> ().RemoveUserToConfig (firstName, lastName, email);
+		string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		GameObject.Find ("DBManager").GetComponent<DBManager> ().RemoveUserToConfig (lFirstName, lLastName, lEmail);
 	}
 
 	private void onForgottenPasswordClicked()
 	{
-		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
-		if(email.Length == 0)
-		{
-            //GameObject.Find("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez renseigner le champ email.");
+        // Make sure user entered his e-mail address to send him a mail to reset his password.
+		string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		if(lEmail.Length == 0) {
             GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Veuillez renseigner le champ email", "Warning");
-        }
-		else
-		{
-            //GameObject.Find("PopUps").GetComponent<PopupHandler>().PopupConfirmCancel("Mot de passe oublié", "Réinitialiser le mot de passe du compte " + email + " ?", onForgottenPasswordConfirmed);
-            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenYesNoIcon("Voulez-vous vraiment réinitialiser le mot de passe du compte suivant ?\n" + email, onForgottenPasswordConfirmed, "Locked");
+        } else {
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenYesNoIcon("Voulez-vous vraiment réinitialiser le mot de passe du compte suivant ?\n" + lEmail, onForgottenPasswordConfirmed, "Locked");
         }
 	}
 
 	private void onForgottenPasswordConfirmed()
 	{
-		string email = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
-		GameObject.Find("DBManager").GetComponent<DBManager>().StartForgottenPassword(email);
+        // Get the e-mail and send to it a link to reset the password.
+		string lEmail = GameObject.Find("EMail_Input").GetComponent<InputField>().text;
+		GameObject.Find("DBManager").GetComponent<DBManager>().StartForgottenPassword(lEmail);
 	}
 
 	public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 	{
+        // Destroy everything inside the "account navigation".
 		if (indexState == (int)State.CLOSE) {
 			GameObject Dots = GameObject.Find ("CanvasApp/Content_Top/Navigation_Account/Dots");
 			Debug.Log ("ConnectAccount OnStateExit : " + Dots);

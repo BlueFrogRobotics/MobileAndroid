@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// State to create a user account.
+/// </summary>
 public class CreateAccountState : ASubState {
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo animatorStateInfo, int layerIndex)
@@ -12,15 +15,17 @@ public class CreateAccountState : ASubState {
         if (indexState == (int)State.OPEN)
         {
             GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
-            // CLEANING PREVIOUSLY CREATED OBJECT
+            // Cleaning previously created objects.
             LoadingUI.ClearUI();
             PoolManager lPoolManager = animator.GetComponent<PoolManager>();
-            // DISABLE, ENABLE GENERICS
-			HandleGeneric lHandler = GameObject.Find("ScriptUI").GetComponent<HandleGeneric>();
+            // Activate predefined generic elements.
+            HandleGeneric lHandler = GameObject.Find("ScriptUI").GetComponent<HandleGeneric>();
 			lHandler.DisableGeneric(new ArrayList() { "NavigationCreateAccount", "TopUI", "BottomUI", "ScrollView" });
 			lHandler.SetDisplayInfos("Enter Your First Name", "Enter Your Last Name");
 			lHandler.SetEditInfos("", "");
-            // CREATE OBJECTS
+
+            // Creating UI Objects
+            // Bottom UI objects
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Bottom/Bottom_UI", "VLeft", new List<UnityAction>() { lMenuManager.PreviousMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/Bottom_UI", "createaccount", "", new List<UnityAction>() { CreateAccount }));
             //LoadingUI.AddObject(lPoolManager.fButton_User("Content_Bottom/Bottom_UI", "", false, null));
@@ -47,6 +52,9 @@ public class CreateAccountState : ASubState {
         }
     }
 
+    /// <summary>
+    /// Create account callback.
+    /// </summary>
     private void CreateAccount()
     {
 		string firstName = GameObject.Find("Field_FirstName").GetComponent<InputField>().text;
@@ -55,24 +63,24 @@ public class CreateAccountState : ASubState {
 		string password = GameObject.Find("Create_PW_Input").GetComponent<InputField>().text;
 		string passwordConf = GameObject.Find("Create_PWConf_Input").GetComponent<InputField>().text;
 
-		if(firstName == "" || lastName == "" || email == "" || password == "" || passwordConf == "")
-		{
-			//GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Veuillez remplir tous les champs");
+        // Stop if some information is lacking.
+		if(firstName == "" || lastName == "" || email == "" || password == "" || passwordConf == "") {
             GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Veuillez remplir tous les champs", "Warning");
-
             return;
 		}
 
-		if(password != passwordConf)
-		{
-			//GameObject.Find ("PopUps").GetComponent<PopupHandler>().DisplayError("Erreur", "Les mots de passe ne sont pas identiques");
+		if(password != passwordConf) {
             GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Les mots de passe ne sont pas identiques", "Warning");
             return;
 		}
 
+        // Send the information to an online PHP script to create the new user in the database.
 		GameObject.Find("DBManager").GetComponent<DBManager>().StartCreateAccount(firstName, lastName, email, password, passwordConf);
 	}
 
+    /// <summary>
+    /// Browse for a new user picture to be displayed.
+    /// </summary>
 	private void AddPicture()
 	{
 		GameObject.Find("DBManager").GetComponent<DBManager>().OpenFileBrowser(true);

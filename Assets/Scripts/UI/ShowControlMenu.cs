@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Manages the Option Menu in the Remote Control window
+/// Manages the Option Menu in the Remote Control window.
 /// </summary>
 public class ShowControlMenu : MonoBehaviour {
 
@@ -18,7 +18,9 @@ public class ShowControlMenu : MonoBehaviour {
         mShowingListedMenu = false;
     }
 
-    //Disable or enable UI depending on previous state
+    /// <summary>
+    /// Show the list menu for the remote control.
+    /// </summary>
 	public void ShowListedMenu()
     {
         mShowingListedMenu = !mShowingListedMenu;

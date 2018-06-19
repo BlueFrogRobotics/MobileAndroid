@@ -2,7 +2,7 @@
 using OpenCVUnity;
 
 /// <summary>
-/// Sender for Video streaming between remote and phone
+/// Sender for Video streaming between remote and phone.
 /// </summary>
 public class VideoOTOSender : OTONetSender
 {

@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Handles the Buddy Contact prefab for color display depending on a Buddy being selected or not
+/// Handles the Buddy Contact prefab for color display depending on a Buddy being selected or not.
+/// This script is attached to each "Buddy contact" game object.
 /// </summary>
 public class BuddyContactHandler : MonoBehaviour
 {
@@ -19,8 +20,12 @@ public class BuddyContactHandler : MonoBehaviour
         mUnselectedColor = Color.white;
     }
 
+    /// <summary>
+    /// Called when a buddy contact is being pressed.
+    /// </summary>
     public void ToggleChanged()
     {
+        // We change the color of Buddy's name to indicate which Buddy has been selected.
         IsOn = !IsOn;
         if (IsOn)
             mBuddyName.color = mSelectedColor;
@@ -33,6 +38,7 @@ public class BuddyContactHandler : MonoBehaviour
 
         Transform lScrollTransf = lParentTransform.parent;
 
+        // Untoggle the other Buddies.
         foreach(Transform lSibling in lScrollTransf) {
             if(lSiblingIndex == lCount 
                 || lSibling.gameObject.name == "LocalSeparator" 

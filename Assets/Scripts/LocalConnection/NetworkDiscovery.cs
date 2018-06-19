@@ -4,13 +4,14 @@ using UnityEngine.Networking;
 public delegate void IPconfig(string iIP);
 
 /// <summary>
-/// Detects local robots via a broadcast server that emits a signal every second
+/// Detects local robots via a broadcast server that emits a signal every second.
+/// Own implementation of a broadcast server.
 /// </summary>
 public class NetworkDiscovery : MonoBehaviour
 {
     public int hostId { get { return mHostId; } set { mHostId = value; } }
 
-    // config data
+    // Configuration.
     [SerializeField]
     private int broadcastPort = 47777;
 
@@ -52,6 +53,10 @@ public class NetworkDiscovery : MonoBehaviour
         return new string(lChars);
     }
 
+    /// <summary>
+    /// Initialize the broadcast server.
+    /// </summary>
+    /// <returns>True if the server was succesfully launched. False, otherwise.</returns>
     public bool Initialize()
     {
         if (broadcastData.Length >= MAX_BROADCAST_SIZE) {
@@ -71,7 +76,10 @@ public class NetworkDiscovery : MonoBehaviour
         return true;
     }
 
-    // listen for broadcasts
+    /// <summary>
+    /// Start the network discovery as a client, thus listening for broadcasts.
+    /// </summary>
+    /// <returns>True if the server was succesfully launched. False, otherwise.</returns>
     public bool StartAsClient()
     {
         if (mHostId != -1 || mIsRunning) {
@@ -97,7 +105,11 @@ public class NetworkDiscovery : MonoBehaviour
         Debug.Log("StartAsClient Discovery listening");
         return true;
     }
-
+    /// <summary>
+    /// Start the network discovery as a client, thus listening for broadcasts.
+    /// </summary>
+    /// <param name="iGenericHost">Host ID.</param>
+    /// <returns>True if the server was succesfully launched. False, otherwise.</returns>
     public bool StartAsClient(int iGenericHost)
     {
         mHostId = iGenericHost;
@@ -116,7 +128,10 @@ public class NetworkDiscovery : MonoBehaviour
         return true;
     }
 
-    // perform actual broadcasts
+    /// <summary>
+    /// Start a network discovery server that sends broadcast.
+    /// </summary>
+    /// <returns>True if the server was succesfully launched. False, otherwise.</returns>
     public bool StartAsServer()
     {
         if (mHostId != -1 || mIsRunning) {
@@ -150,6 +165,11 @@ public class NetworkDiscovery : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Start a network discovery server that sends broadcast.
+    /// </summary>
+    /// <param name="iGenericHost">Host ID.</param>
+    /// <returns>True if the server was succesfully launched. False, otherwise.</returns>
     public bool StartAsServer(int iGenericHost)
     {
         Debug.Log("start server broadcast");
@@ -174,6 +194,9 @@ public class NetworkDiscovery : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Stop the broadcast listening in client mode or broadcasting in server mode.
+    /// </summary>
     public void StopBroadcast()
     {
         if (mHostId == -1) {
@@ -197,6 +220,9 @@ public class NetworkDiscovery : MonoBehaviour
         Debug.Log("Stopped Discovery broadcasting");
     }
 
+    /// <summary>
+    /// Update is only useful in Client mode, but since we are on server mode on the phone, it's useless to read the content.
+    /// </summary>
     void Update()
     {
         if (mHostId == -1)

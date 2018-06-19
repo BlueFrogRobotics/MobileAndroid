@@ -5,6 +5,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Manages all the UI elements from the Top_UI, Middle_UI and Bottom_UI.
+/// Enables and disables game objects according to the target active state.
+/// </summary>
 public class HandleGeneric : MonoBehaviour
 {
 
@@ -42,9 +46,12 @@ public class HandleGeneric : MonoBehaviour
     [SerializeField]
     private GameObject T_Dots;
 
+    /// <summary>
+    /// Disable all elements except certain objects specified by the input.
+    /// </summary>
+    /// <param name="iObjectsToKeep">List of object to keep active.</param>
     public void DisableGeneric(ArrayList iObjectsToKeep)
     {
-
         //SET ALL GENERIC ELEMENTS TO FALSE (LIKE SCROLLVIEW)
         B_ScrollView.SetActive(false);
         B_ControlUI.SetActive(false);
@@ -121,6 +128,9 @@ public class HandleGeneric : MonoBehaviour
         T_TextLastName.GetComponent<Text>().text = iLastName;
     }
 
+    /// <summary>
+    /// Enable everything for proper display of all accounts on the connection menu.
+    /// </summary>
     private void EnableNavigationAccount()
     {
         T_NavigationAccount.SetActive(true);
@@ -133,6 +143,9 @@ public class HandleGeneric : MonoBehaviour
         T_FieldLastName.SetActive(false);
     }
 
+    /// <summary>
+    /// Enable everything for proper display of all accounts on the account creation menu.
+    /// </summary>
     private void EnableNavigationCreateAccount()
     {
         T_NavigationAccount.SetActive(true);
@@ -150,6 +163,9 @@ public class HandleGeneric : MonoBehaviour
         T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
     }
 
+    /// <summary>
+    /// Enable everything for proper display of account edition menu.
+    /// </summary>
     private void EnableNavigationEditAccount()
     {
         T_NavigationAccount.SetActive(true);
@@ -168,6 +184,9 @@ public class HandleGeneric : MonoBehaviour
         T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
     }
 
+    /// <summary>
+    /// Enable everything for proper display of Buddy edition menu.
+    /// </summary>
     private void EnableNavigationEditBuddy()
     {
         T_NavigationAccount.SetActive(true);
@@ -182,6 +201,9 @@ public class HandleGeneric : MonoBehaviour
         T_TextLastName.GetComponent<Text>().text = SelectBuddy.BuddyID;
     }
 
+    /// <summary>
+    /// Enable everything for proper display of "adding a Buddy" menu.
+    /// </summary>
     private void EnableNavigationAddBuddy()
     {
         T_NavigationAccount.SetActive(true);

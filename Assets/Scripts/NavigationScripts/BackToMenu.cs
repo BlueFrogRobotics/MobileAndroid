@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Go back from the Remote Control menu to Connected menu. Manage all networks related to it
+/// Go back from the Remote Control menu to Connected menu. Manage all networks related to it.
 /// </summary>
 public class BackToMenu : MonoBehaviour
 {
@@ -41,6 +41,9 @@ public class BackToMenu : MonoBehaviour
 
 	public static bool prevMenuActivated = false;
 
+    /// <summary>
+    /// Disables the adequate elements to go from the remote control menu to the "connected to Buddy" menu.
+    /// </summary>
     public void GoBackToMenu()
     {
 		if (!prevMenuActivated) {

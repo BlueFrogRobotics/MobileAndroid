@@ -16,6 +16,7 @@ public class LinkManager : MonoBehaviour {
 	private Animator navigationAnimator;
   
 	void Awake() {
+        // Assign the animators to each state.
 		ASubState[] lStates = navigationAnimator.GetBehaviours<ASubState>();
 
 		foreach (ASubState lState in lStates) {
@@ -25,6 +26,7 @@ public class LinkManager : MonoBehaviour {
 		}
 	}
 
+    // Don't see the point of this method as it's never used anywhere ...
 	private void AssignGOToState<T>(GameObject iTop, GameObject iBottom) where T : ASubState {
 		T[] lStates = navigationAnimator.GetBehaviours<T>();
 		foreach (T lState in lStates) {

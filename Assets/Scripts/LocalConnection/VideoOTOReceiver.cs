@@ -5,7 +5,7 @@ using OpenCVUnity;
 using Buddy;
 
 /// <summary>
-/// Receiver for the video streaming between the remote and phone
+/// Receiver for the video streaming between the remote and phone.
 /// </summary>
 public class VideoOTOReceiver : OTONetReceiver
 {

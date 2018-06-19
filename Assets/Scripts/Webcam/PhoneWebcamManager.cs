@@ -5,7 +5,7 @@ using OpenCVUnity;
 using Buddy;
 
 /// <summary>
-/// Takes care of getting the camera frame and set it to the correct format
+/// Takes care of getting the device's camera frame and set it to the correct format for a local remote control.
 /// </summary>
 public class PhoneWebcamManager : MonoBehaviour
 {
@@ -35,6 +35,7 @@ public class PhoneWebcamManager : MonoBehaviour
 	{
 		Debug.Log ("[PhoneWebcamManager] OnEnable");
 
+        // If the WebRTC is not active, we can have access to the camera.
 		if(!mWebRTC.activeSelf)
 		{
 			Debug.Log ("[PhoneWebcamManager] not webrtc");
@@ -42,17 +43,15 @@ public class PhoneWebcamManager : MonoBehaviour
 			mTime = Time.time;
 			WebCamDevice[] lDevices = WebCamTexture.devices;
 
-			//Get front facing camera
-			for (int i = 0; i < lDevices.Length; i++)
-			{
-				if (lDevices[i].isFrontFacing)
-				{
+			// Get the front facing camera.
+			for (int i = 0; i < lDevices.Length; i++) {
+				if (lDevices[i].isFrontFacing) {
 					mWebcamTexture = new WebCamTexture(lDevices[i].name, mRequestedWidth, mRequestedHeight, mFPS);
 					break;
 				}
 			}
 
-			//Initialize compression matrix
+			// Initialize the JPEG compression matrix.
 			mTempMat = new Mat(mRequestedHeight, mRequestedWidth, CvType.CV_8UC3);
 			mCompression = new MatOfInt(Highgui.CV_IMWRITE_JPEG_QUALITY, mCompressQuality);
 		}
@@ -60,6 +59,7 @@ public class PhoneWebcamManager : MonoBehaviour
 
     void OnDisable()
     {
+        // Stop the camera when disabling this element.
 		Debug.Log ("[PhoneWebcamManager] OnDisable");
 
 		if (!mWebRTC.activeSelf)
@@ -71,6 +71,7 @@ public class PhoneWebcamManager : MonoBehaviour
 
     void Update()
     {
+        // Display the camera's frame on the remote control screen.
 		if (!mWebRTC.activeSelf)
         {
             if (!mWebcamTexture.didUpdateThisFrame || Time.time - mTime < 1 / mFPS)
@@ -81,6 +82,10 @@ public class PhoneWebcamManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get the data of the camera's image.
+    /// </summary>
+    /// <returns>The content of the camera's image as a byte array.</returns>
     public byte[] GetBuffer()
     {
         //Get camera frame, rotate and convert it to a byte array
@@ -99,18 +104,25 @@ public class PhoneWebcamManager : MonoBehaviour
         return lBuffer.toArray();
     }
 
+    /// <summary>
+    /// Did the camera do an update at this frame ?
+    /// </summary>
+    /// <returns>True if an update was done, false otherwise.</returns>
     public bool DidUpdateThisFrame()
     {
         return mWebcamTexture.didUpdateThisFrame;
     }
 
-    //Switch the activity of camera
+    /// <summary>
+    /// Open the device's camera and enable the different game objects.
+    /// </summary>
     public void ActivatePhoneWebcam()
     {
 		if (!mWebRTC.activeSelf)
         {
             if (!mPhoneWebcamStream.IsActive())
             {
+                // Enable the display of the camera's image on the device.
                 mPhoneWebcamStream.gameObject.SetActive(true);
                 mPhoneWebcamStream.texture = mWebcamTexture;
                 Debug.Log("Webcam height " + mRequestedHeight + ", width " + mRequestedWidth);

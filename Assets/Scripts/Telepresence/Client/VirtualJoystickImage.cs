@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// UI Manager of the virtual joystick.
+/// </summary>
 public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandler,IPointerDownHandler {
 
     [SerializeField]
@@ -26,6 +29,7 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
 
     private void Start()
     {
+        // Initialize the members.
         mIsDragging = false;
         mDown = false;
         mIsJoined = false;
@@ -38,12 +42,17 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
 
     void Update()
     {
+        // Slowly increase the alpha of the halo when the joystick is being dragged.
         if (mIsDragging && mHaloColor.a < 255) {
             mHaloColor.a += fadeSpeed;
             SetHaloAlpha(mHaloColor);
         }
     }
 
+    /// <summary>
+    /// Set the halo image's alpha value.
+    /// </summary>
+    /// <param name="iAlpha"></param>
     private void SetHaloAlpha(Color iAlpha)
     {
         Image[] lImages = haloImage.GetComponentsInChildren<Image>();
@@ -53,7 +62,10 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
         }
     }
 
-    //Called when the joystick cursor is being dragged
+    /// <summary>
+    /// Called when the joystick cursor is being dragged.
+    /// </summary>
+    /// <param name="iPed">The position of the user cursor.</param>
     public virtual void OnDrag(PointerEventData iPed)
     {
         mIsDragging = true;
@@ -75,6 +87,10 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
         }
     }
 
+    /// <summary>
+    /// Called whenever a user points down on the screen.
+    /// </summary>
+    /// <param name="iPed">The position of the user cursor.</param>
     public virtual void OnPointerDown(PointerEventData iPed)
     {
         //Temporal offset to activate the white Halo or switch to the other joystick
@@ -82,11 +98,16 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
         mDown = true;
     }
 
+    /// <summary>
+    /// Called whenever a user doesn't point on the screen anymore.
+    /// </summary>
+    /// <param name="iPed">The position of the user cursor.</param>
     public virtual void OnPointerUp(PointerEventData iPed)
     {
-        //Return Handler to origin
+        //Return Handler to origin and set the halo to alpha 0.
         mIsDragging = false;
         mJoystickHandle.color = mAlphaDown;
+        mHaloColor = mAlphaDown;
         SetHaloAlpha(mAlphaDown);
         mJoystickHandle.rectTransform.anchoredPosition = new Vector3(0, 0, 0);
 
@@ -94,7 +115,6 @@ public class VirtualJoystickImage : MonoBehaviour, IDragHandler,IPointerUpHandle
             mDown = false;
     }
 
-    //This function allows to switch between Landscape and Portrait display.
     void OnDisable()
     {
         mIsDragging = false;

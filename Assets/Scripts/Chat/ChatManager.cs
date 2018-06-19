@@ -48,12 +48,6 @@ public class ChatManager : MonoBehaviour
     [SerializeField]
     private InputField chatInput;
 
-    //[SerializeField]
-    //private TextToSpeech mTTS;
-
-    //[SerializeField]
-    //private RegularFace mFace;
-
     private string mCurrentFilePath;
     private string mCurrentBuddy;
     private List<ChatMessage> mMessages;
@@ -66,7 +60,10 @@ public class ChatManager : MonoBehaviour
         mMessages = new List<ChatMessage>();
     }
 
-    //Called when user has entered a new message
+    /// <summary>
+    /// A new message was entered by the user.
+    /// </summary>
+    /// <param name="iMsg">The message.</param>
     public void NewChatMessage(string iMsg)
     {
         if (string.IsNullOrEmpty(iMsg))
@@ -75,14 +72,15 @@ public class ChatManager : MonoBehaviour
         ChatMessage lMessage = new ChatMessage() { Content = iMsg, Color = "White", Date = DateTime.Now.ToString("g") };
         mMessages.Add(lMessage);
 
+        //Display the user message.
         poolManager.fBubble(lMessage.Color, lMessage.Content, lMessage.Date);
 
         //Scroll the chat list to the bottom where the new message has appeared
         scrollParent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0F;
 
         GameObject.Find("Bottom_UI").GetComponentInChildren<InputField>().text = "";
-
-        //mTTS.Say(lMsg);
+        
+        //Send the message to the target Buddy on the correct route.
         if (selectBuddy.Remote == SelectBuddy.RemoteType.LOCAL)
             mobileServer.SendChatMessage(iMsg);
         else if (selectBuddy.Remote == SelectBuddy.RemoteType.WEBRTC)
@@ -91,8 +89,13 @@ public class ChatManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// A new message arrived from a remote Buddy.
+    /// </summary>
+    /// <param name="iMsg">Buddy's message.</param>
     public void NewBuddyMessage(string iMsg)
     {
+        //Create the message, add it to the history and display it.
         ChatMessage lMessage = new ChatMessage() { Content = iMsg, Color = "Blue", Date = DateTime.Now.ToString("g") };
         mMessages.Add(lMessage);
 
@@ -102,11 +105,13 @@ public class ChatManager : MonoBehaviour
         scrollParent.GetComponent<ScrollRect>().verticalNormalizedPosition = 0F;
     }
 
+    /// <summary>
+    /// Load the message history from a user with a specific Buddy. Called when entering the chat room.
+    /// </summary>
     public void LoadMessageHistory()
     {
         //Pas opti, on risque de recharger tous les messages de tous les Buddy pour un user, si on change pas de user entre temps.
 
-        //mBuddyMessages = new BuddyMessages();
         mCurrentBuddy = SelectBuddy.BuddyName;
         //Load all the messages to all Buddy from a specific user
         mHistory = new UserMessages()
@@ -115,6 +120,7 @@ public class ChatManager : MonoBehaviour
         };
 
         DBManager lDB= GameObject.Find("DBManager").GetComponent<DBManager>();
+        //Load the history of a user's conversation.
         mCurrentFilePath = Application.persistentDataPath + "/" + lDB.CurrentUser.Email + "Msg.txt";
 
         if (File.Exists(mCurrentFilePath)) {
@@ -150,6 +156,9 @@ public class ChatManager : MonoBehaviour
         }        
     }
 
+    /// <summary>
+    /// Save the message history for the current user. This is called when going out of the chat room.
+    /// </summary>
     public void SaveMessageHistory()
     {
         //We have the chat history, so we have to go through the whole list to get the current Buddy
