@@ -26,6 +26,8 @@ public class HandleGeneric : MonoBehaviour
     [SerializeField]
     private GameObject T_RemoteUI;
     [SerializeField]
+    private GameObject T_HeadBodyToggle;
+    [SerializeField]
     private GameObject[] T_WizardOfOzUI;
     [SerializeField]
     private GameObject T_MessageTopUI;
@@ -60,6 +62,7 @@ public class HandleGeneric : MonoBehaviour
         T_NavigationAccount.SetActive(false);
         T_TopUI.SetActive(false);
         T_RemoteUI.SetActive(false);
+        T_HeadBodyToggle.SetActive(false);
         foreach (GameObject item in T_WizardOfOzUI)
             item.SetActive(false);
         T_MessageTopUI.SetActive(false);
@@ -105,6 +108,7 @@ public class HandleGeneric : MonoBehaviour
                         break;
                     case "RemoteUI":
                         T_RemoteUI.SetActive(true);
+                        T_HeadBodyToggle.SetActive(true);
                         break;
                     case "WizardOfOzUI":
                         foreach(GameObject item in T_WizardOfOzUI)
