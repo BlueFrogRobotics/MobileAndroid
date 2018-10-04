@@ -392,6 +392,8 @@ public class DBManager : MonoBehaviour
     /// <param name="name">Buddy's name.</param>
     private IEnumerator AddBuddySess(string iBuddyID, string name)
     {
+        iBuddyID = iBuddyID.ToUpper();
+
         Debug.Log("AddBuddySess " + iBuddyID + " " + name);
 
         WWWForm lForm = new WWWForm();
@@ -432,6 +434,8 @@ public class DBManager : MonoBehaviour
     /// <param name="iName">The new name of Buddy.</param>
     private IEnumerator EditBuddy(string iSpecialID, string iName)
     {
+        iSpecialID = iSpecialID.ToUpper();
+
         WWWForm lForm = new WWWForm();
         lForm.AddField("specialID", iSpecialID);
         lForm.AddField("name", iName);
@@ -475,6 +479,8 @@ public class DBManager : MonoBehaviour
     /// <param name="specialID">The unique ID of the Buddy to "delete".</param>
     private IEnumerator RemoveBuddyFromUser(string specialID)
     {
+        specialID = specialID.ToUpper();
+
         WWWForm lForm = new WWWForm();
         lForm.AddField("specialID", specialID);
         lForm.AddField("hiddenkey", "key");
@@ -579,7 +585,7 @@ public class DBManager : MonoBehaviour
 
                     for (int i = 0; i < lBuddyList.Length - 1; i++) {
                         string[] lBuddyIDs = lBuddyList[i].Split('|');
-                        mBuddiesList.Add(new BuddyDB { ID = lBuddyIDs[1], name = lBuddyIDs[0] });
+                        mBuddiesList.Add(new BuddyDB { ID = lBuddyIDs[1].ToUpper(), name = lBuddyIDs[0] });
                     }
                 }
 
@@ -611,7 +617,7 @@ public class DBManager : MonoBehaviour
         if (File.Exists(mUserFilePath)) {
             //Debug.Log("User file found : " + mUserFilePath);            
         } else {
-            File.Copy(ResourceManager.StreamingAssetFilePath("users.txt"), mUserFilePath);
+            File.Copy(DBManager.GetStreamingAssetFullPath("users.txt"), mUserFilePath);
 
             if (iFirstRead)
                 canvasAppAnimator.SetTrigger("GoFirstConnexion");
@@ -847,7 +853,7 @@ public class DBManager : MonoBehaviour
 			return File.ReadAllBytes(path);
 		}
 
-		return File.ReadAllBytes(ResourceManager.StreamingAssetFilePath(path));
+		return File.ReadAllBytes(DBManager.GetStreamingAssetFullPath(path));
 	}
 
     /// <summary>
@@ -1073,4 +1079,17 @@ public class DBManager : MonoBehaviour
 
 		return "";
 	}
+
+    public static string GetStreamingAssetFullPath(string iFilename)
+    {
+        if (Application.platform == RuntimePlatform.Android) {
+            using (AndroidJavaClass lUnityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (AndroidJavaObject lCurrentActivity = lUnityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity"))
+            using (AndroidJavaClass lOpenCVUnityClass = new AndroidJavaClass("bluefrogrobotics.opencvunity.PluginClass")) {
+                return lOpenCVUnityClass.CallStatic<string>("copyFile", lCurrentActivity, iFilename, "opencvunity");
+            }
+        } else {
+            return Application.streamingAssetsPath + "/" + iFilename;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+
 using System.Collections;
 using System.Collections.Generic;
 
@@ -22,5 +23,4 @@ public class RemoteControlState : ASubState {
             GameObject.Find("ScriptUI").GetComponent<HandleGeneric>().DisableGeneric(new ArrayList() { "BottomUI", "RemoteUI", "ControlUI" });
         }
     }
-
 }

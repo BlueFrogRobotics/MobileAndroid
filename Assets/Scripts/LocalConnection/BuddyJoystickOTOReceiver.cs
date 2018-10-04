@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
-using Buddy;
-using Buddy.Command;
+using BlueQuark.Remote;
 
 /// <summary>
 /// Useless class here since we won't receive anything
@@ -14,7 +13,6 @@ public class BuddyJoystickOTOReceiver : OTONetReceiver
     private float mAngleNo = 0f;
     private float mSpeedHead = 0f;
     private float mSpeedBody = 0f;
-    private Motors mMotionMotors;
 
     void OnEnable()
     {
@@ -24,7 +22,7 @@ public class BuddyJoystickOTOReceiver : OTONetReceiver
 
     public override void ReceiveData(byte[] data, int ndata)
     {
-        ACommand.Deserialize(data).Execute();
+        ARemoteCommand.Deserialize(data).Execute();
     }
 
     private void ControlNoAxis(byte iXHead)
@@ -35,7 +33,7 @@ public class BuddyJoystickOTOReceiver : OTONetReceiver
             mAngleNo = Mathf.Sign(mAngleNo) * 76;
 
         mNoSpeed = (iXHead * iXHead) * mSpeedHead * 3f;
-        mMotionMotors.NoHinge.SetPosition(mAngleNo, mNoSpeed);
+        //mMotionMotors.NoHinge.SetPosition(mAngleNo, mNoSpeed);
     }
 
     private void ControlYesAxis(byte iYHead)
@@ -49,7 +47,7 @@ public class BuddyJoystickOTOReceiver : OTONetReceiver
             mAngleNo = 60;
 
         mYesSpeed = (iYHead * iYHead) * mSpeedHead * 3f;
-        mMotionMotors.YesHinge.SetPosition(mAngleYes, mYesSpeed);
+        //mMotionMotors.YesHinge.SetPosition(mAngleYes, mYesSpeed);
     }
 
     private void ControlMobileBase(byte iXBody, byte iYBody)
@@ -58,6 +56,6 @@ public class BuddyJoystickOTOReceiver : OTONetReceiver
         float lAngle = -(Mathf.Atan2(iYBody, iXBody) + Mathf.PI);
         float lSpeedLeft = 400 * (Mathf.Cos(lAngle) - Mathf.Sin(lAngle)) * lRadius;
         float lSpeedRight = 400 * (Mathf.Cos(lAngle) + Mathf.Sin(lAngle)) * lRadius;
-        mMotionMotors.Wheels.SetWheelsSpeed(lSpeedLeft, lSpeedRight, 100);
+        //mMotionMotors.Wheels.SetWheelsSpeed(lSpeedLeft, lSpeedRight, 100);
     }
 }

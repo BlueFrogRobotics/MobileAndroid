@@ -26,14 +26,14 @@ public delegate void QuestionAnalysed(string iType);
 /// </summary>
 public class VocalChat : MonoBehaviour
 {
-    [SerializeField]
-    private TextToSpeech mTTS;
+    //[SerializeField]
+    //private TextToSpeech mTTS;
 
-    [SerializeField]
-    private SpeechToText mSTT;
+    //[SerializeField]
+    //private SpeechToText mSTT;
 
-    [SerializeField]
-    private Face mFace;
+    //[SerializeField]
+    //private Face mFace;
 
     [SerializeField]
     private ChatManager mChat;
@@ -81,10 +81,10 @@ public class VocalChat : MonoBehaviour
     {
         mErrorCount = 0;
 
-        StreamReader lstreamReader = new StreamReader(ResourceManager.StreamingAssetFilePath("questions.xml"));
+        StreamReader lstreamReader = new StreamReader(DBManager.GetStreamingAssetFullPath("questions.xml"));
         mQuestionsFile = lstreamReader.ReadToEnd();
         lstreamReader.Close();
-        lstreamReader = new StreamReader(ResourceManager.StreamingAssetFilePath("synonymes.xml"));
+        lstreamReader = new StreamReader(DBManager.GetStreamingAssetFullPath("synonymes.xml"));
         mSynonymesFile = lstreamReader.ReadToEnd();
         lstreamReader.Close();
 
@@ -97,7 +97,7 @@ public class VocalChat : MonoBehaviour
         InitSpeech();
 
         // starting STT with callback
-        mSTT.OnBestRecognition.Add(OnSpeechRecognition);
+        //mSTT.OnBestRecognition.Add(OnSpeechRecognition);
     }
 
     private void InitSpeech()
@@ -167,11 +167,9 @@ public class VocalChat : MonoBehaviour
 
     private void FillListSyn(string iXmlCode, List<string> iSynList)
     {
-        using (XmlReader lReader = XmlReader.Create(new StringReader(mSynonymesFile)))
-        {
+        using (XmlReader lReader = XmlReader.Create(new StringReader(mSynonymesFile))) {
 
-            if (lReader.ReadToFollowing(iXmlCode))
-            {
+            if (lReader.ReadToFollowing(iXmlCode)) {
                 string lContent = lReader.ReadElementContentAsString();
                 string[] lSynonymes = lContent.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -184,13 +182,13 @@ public class VocalChat : MonoBehaviour
     public void StartDialogueWithPhrase()
     {
         TTSProcessAndSay("Que puis-je faire pour vous?");
-        mFace.SetExpression(MoodType.LISTENING);
-        mSTT.Request();
+        //mFace.SetExpression(MoodType.LISTENING);
+        //mSTT.Request();
     }
 
     public void StartReco()
     {
-        mSTT.Request();
+        //mSTT.Request();
     }
 
     private void TTSProcessAndSay(string iSpeech, bool iStack = false)
@@ -200,17 +198,16 @@ public class VocalChat : MonoBehaviour
         string lCorrectedSpeech = iSpeech.Replace("vous", "vou");
         string[] lSentences = lCorrectedSpeech.Split(new string[] { "[silence]" }, StringSplitOptions.None);
 
-        foreach (string lSentence in lSentences)
-        {
-            mTTS.Say(lSentence, iStack);
-            mTTS.Silence(500, true);
+        foreach (string lSentence in lSentences) {
+            //mTTS.Say(lSentence, iStack);
+            //mTTS.Silence(500, true);
         }
     }
 
     private void OnSpeechRecognition(string iVoiceInput)
     {
         //Debug.Log("OnSpeechReco");
-        mFace.SetExpression(MoodType.NEUTRAL);
+        //mFace.SetExpression(MoodType.NEUTRAL);
         //mLED.SetBodyLight(LEDColor.BLUE_NEUTRAL);          
         mErrorCount = 0;
         string lLowVoiceInput = iVoiceInput.ToLower();
@@ -224,7 +221,7 @@ public class VocalChat : MonoBehaviour
     {
         //Debug.Log("OnPartialReco");
         //Debug.Log("[chatbot Partial Reco] : " + iVoiceInput);
-        mFace.SetExpression(MoodType.NEUTRAL);
+        //mFace.SetExpression(MoodType.NEUTRAL);
         //mLED.SetBodyLight(LEDColor.BLUE_NEUTRAL);
         mErrorCount = 0;
         string lLowVoiceInput = iVoiceInput.ToLower();
@@ -234,38 +231,32 @@ public class VocalChat : MonoBehaviour
             BuildGeneralAnswer(lLowVoiceInput);
     }
 
-    private void ErrorSTT(STTError iError)
-    {
-        //mFace.SetExpression(MoodType.SAD);
-        //Debug.Log("[chatbot error] : " + iError);
-        ++mErrorCount;
-        //Debug.Log("[chatbot error] : count " + mErrorCount);
+    //private void ErrorSTT(STTError iError)
+    //{
+    //    //mFace.SetExpression(MoodType.SAD);
+    //    //Debug.Log("[chatbot error] : " + iError);
+    //    ++mErrorCount;
+    //    //Debug.Log("[chatbot error] : count " + mErrorCount);
 
-        // If too much error (or no answer), ask for answer. If still no answer, get back to IDLE
-        if (mErrorCount == 4)
-        {
-            TTSProcessAndSay("Je ne vous entends plus ! [silence] Etes-vous toujours là?");
-        }
-        else if (mErrorCount > 6)
-        {
-            TTSProcessAndSay("Désolé je ne vous entends plu");
-        }
-        else
-        {
-            string lSentence = "";
+    //    // If too much error (or no answer), ask for answer. If still no answer, get back to IDLE
+    //    if (mErrorCount == 4) {
+    //        TTSProcessAndSay("Je ne vous entends plus ! [silence] Etes-vous toujours là?");
+    //    } else if (mErrorCount > 6) {
+    //        TTSProcessAndSay("Désolé je ne vous entends plu");
+    //    } else {
+    //        string lSentence = "";
 
-            switch (iError)
-            {
-                case STTError.ERROR_AUDIO: lSentence = "Il y a un problème avec le micro !"; break;
-                case STTError.ERROR_NETWORK: lSentence = "Il y a un problème de connexion !"; break;
-                case STTError.ERROR_RECOGNIZER_BUSY: lSentence = "La reconaissance vocale est déjà occupée !"; break;
-                case STTError.ERROR_SPEECH_TIMEOUT: lSentence = "Je n'ai rien entendu. Pouvez vous répéter ?"; break;
-                default: lSentence = RandomString(mDidntUnderstandSpeech); break;
-            }
+    //        switch (iError) {
+    //            case STTError.ERROR_AUDIO: lSentence = "Il y a un problème avec le micro !"; break;
+    //            case STTError.ERROR_NETWORK: lSentence = "Il y a un problème de connexion !"; break;
+    //            case STTError.ERROR_RECOGNIZER_BUSY: lSentence = "La reconaissance vocale est déjà occupée !"; break;
+    //            case STTError.ERROR_SPEECH_TIMEOUT: lSentence = "Je n'ai rien entendu. Pouvez vous répéter ?"; break;
+    //            default: lSentence = RandomString(mDidntUnderstandSpeech); break;
+    //        }
 
-            TTSProcessAndSay(lSentence);
-        }
-    }
+    //        TTSProcessAndSay(lSentence);
+    //    }
+    //}
 
     private bool SpecialRequest(string iSpeech)
     {
@@ -273,37 +264,31 @@ public class VocalChat : MonoBehaviour
 
         if (ContainsOneOf(iSpeech, mQuitSpeech))
             lType = "Quit";
-        else if (ContainsOneOf(iSpeech, mMeteoSpeech))
-        {
+        else if (ContainsOneOf(iSpeech, mMeteoSpeech)) {
             lType = "Weather";
             //We search for the location of the weather request
             int lKeywordIndex = WordIndexOfOneOf(iSpeech, mMeteoSpeech);
             string[] lWords = iSpeech.Split(' ');
             string lWeatherPlace = "";
 
-            if (lKeywordIndex != -1 && lKeywordIndex != lWords.Length)
-            {
+            if (lKeywordIndex != -1 && lKeywordIndex != lWords.Length) {
                 for (int j = lKeywordIndex + 2; j < lWords.Length; j++)
                     lWeatherPlace += lWords[j] + " ";
             }
             StartCoroutine(BuildWeatherAnswer(lWeatherPlace));
-        }
-        else if (ContainsOneOf(iSpeech, mDefinitionSpeech))
-        {
+        } else if (ContainsOneOf(iSpeech, mDefinitionSpeech)) {
             lType = "Definition";
             //We search for the location of the weather request
             int lKeywordIndex = WordIndexOfOneOf(iSpeech, mDefinitionSpeech);
             string[] lWords = iSpeech.Split(' ');
             string lDefinitionWord = "";
 
-            if (lKeywordIndex != -1 && lKeywordIndex != lWords.Length)
-            {
+            if (lKeywordIndex != -1 && lKeywordIndex != lWords.Length) {
                 for (int j = lKeywordIndex + 1; j < lWords.Length; j++)
                     lDefinitionWord += lWords[j] + " ";
             }
             StartCoroutine(BuildDefinitionAnswer(lDefinitionWord));
-        }
-        else if (ContainsOneOf(iSpeech, mQuizzSpeech))
+        } else if (ContainsOneOf(iSpeech, mQuizzSpeech))
             lType = "Quizz";
         else if (iSpeech.Contains("calcul"))
             lType = "Calcul";
@@ -315,35 +300,31 @@ public class VocalChat : MonoBehaviour
             lType = "Photo";
         else if (ContainsOneOf(iSpeech, mStorySpeech))
             lType = "Story";
-        else if (ContainsOneOf(iSpeech, mGameSpeech))
-        {
+        else if (ContainsOneOf(iSpeech, mGameSpeech)) {
             if (iSpeech.Contains("mémoire"))
                 lType = "Memory";
             else if (iSpeech.Contains("couleur"))
                 lType = "Colors";
             else
                 lType = "Games";
-        }
-        else if (ContainsOneOf(iSpeech, mThanksSpeech))
+        } else if (ContainsOneOf(iSpeech, mThanksSpeech))
             TTSProcessAndSay(RandomString(mURWelcomeSpeech));
         else if (ContainsOneOf(iSpeech, mDateSpeech))
             TTSProcessAndSay("Nous sommes le  " + DateTime.Now.Day +
                 " " + DateTime.Now.Month +
                 " " + DateTime.Now.Year, true);
-        else if (ContainsOneOf(iSpeech, mHourSpeech))
-        {
+        else if (ContainsOneOf(iSpeech, mHourSpeech)) {
             TTSProcessAndSay("Au troisième bip il sera exactement " +
                 DateTime.Now.Hour + " heure " +
                 DateTime.Now.Minute + " minutes et " +
                 DateTime.Now.Second + " secondes ", true);
-            mTTS.Silence(1000, true);
-            TTSProcessAndSay("bip", true);
-            mTTS.Silence(1000, true);
-            TTSProcessAndSay("bip", true);
-            mTTS.Silence(1000, true);
+            //mTTS.Silence(1000, true);
+            //TTSProcessAndSay("bip", true);
+            //mTTS.Silence(1000, true);
+            //TTSProcessAndSay("bip", true);
+            //mTTS.Silence(1000, true);
             TTSProcessAndSay("et bip", true);
-        }
-        else if (iSpeech.Contains("propose"))
+        } else if (iSpeech.Contains("propose"))
             lType = Suggest();
         else if (ContainsOneOf(iSpeech, mWanderSpeech))
             lType = "Wander";
@@ -361,44 +342,34 @@ public class VocalChat : MonoBehaviour
         //Debug.Log("BuildGeneralAnswer - ponctu " + lFormatedData);
         string lAnswer = "";
 
-        if (ContainsOneOf(lFormatedData, mAcceptSpeech))
-        {
+        if (ContainsOneOf(lFormatedData, mAcceptSpeech)) {
             //TTSProcessAndSay(RandomString(mAcceptSpeech) + " J'écoute votre " + RandomString(mQuestionSpeech) + " ?", true);
-        }
-        else
-        {
+        } else {
             string[] lWords = lFormatedData.Split(' ');
 
-            using (XmlReader lReader = XmlReader.Create(new StringReader(mQuestionsFile)))
-            {
-                while (lReader.ReadToFollowing("QA"))
-                {
+            using (XmlReader lReader = XmlReader.Create(new StringReader(mQuestionsFile))) {
+                while (lReader.ReadToFollowing("QA")) {
                     lReader.ReadToFollowing("question");
                     //Remove ponctuation
                     string lContentQ = Regex.Replace(lReader.ReadElementContentAsString().ToLower(), @"[^\w\s]", " ");
                     //Debug.Log("Question series : " + lContentQ);
 
-                    if (lContentQ.Contains(lFormatedData))
-                    {
+                    if (lContentQ.Contains(lFormatedData)) {
                         Debug.Log("Found Content Question : " + lContentQ);
                         bool lFoundInput = true;
-                        if (lFoundInput)
-                        {
+                        if (lFoundInput) {
                             lReader.ReadToFollowing("answer");
                             string lContentA = lReader.ReadElementContentAsString();
                             string[] lAnswers = lContentA.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
                             if (lAnswers.Length == 1)
                                 lAnswer = lAnswers[0];
-                            else
-                            {
+                            else {
                                 System.Random lRnd = new System.Random();
                                 lAnswer = lAnswers[lRnd.Next(0, lAnswers.Length)];
                             }
                             //Debug.Log("Found Content Answer : " + lAnswer);
-                        }
-                        else
-                        {
+                        } else {
                             lAnswer = RandomString(mSorrySpeech) + " " +
                                 RandomString(mICouldntSpeech) + " " +
                                 RandomString(mGetSpeech) + " " +
@@ -420,13 +391,11 @@ public class VocalChat : MonoBehaviour
         string lXmlData = "";
         string lKeyword = "48.853,2.35";
 
-        if (!string.IsNullOrEmpty(iData))
-        {
+        if (!string.IsNullOrEmpty(iData)) {
             WWW lWww = new WWW("http://maps.googleapis.com/maps/api/geocode/xml?address=" + iData);
 
             float lElapsedTime = 0.0f;
-            while (!lWww.isDone)
-            {
+            while (!lWww.isDone) {
                 lElapsedTime += Time.deltaTime;
 
                 if (lElapsedTime >= 5f)
@@ -435,13 +404,10 @@ public class VocalChat : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
             }
 
-            if (lWww.isDone && string.IsNullOrEmpty(lWww.error))
-            {
+            if (lWww.isDone && string.IsNullOrEmpty(lWww.error)) {
                 string lXml = lWww.text;
-                using (XmlReader lReader = XmlReader.Create(new StringReader(lXml)))
-                {
-                    if (lReader.ReadToFollowing("location"))
-                    {
+                using (XmlReader lReader = XmlReader.Create(new StringReader(lXml))) {
+                    if (lReader.ReadToFollowing("location")) {
                         lReader.ReadToFollowing("lat");
                         lReader.Read();
                         lKeyword = lReader.ReadContentAsString();
@@ -452,20 +418,16 @@ public class VocalChat : MonoBehaviour
                     lReader.Close();
                 }
             }
-        }
-        else if (Input.location.isEnabledByUser)
-        {
+        } else if (Input.location.isEnabledByUser) {
             Input.location.Start();
 
             int lmaxWait = 7;
-            while (Input.location.status == LocationServiceStatus.Initializing && lmaxWait > 0)
-            {
+            while (Input.location.status == LocationServiceStatus.Initializing && lmaxWait > 0) {
                 yield return new WaitForSeconds(1f);
                 lmaxWait--;
                 Debug.Log("Waiting for geoloc");
             }
-            if (Input.location.status != LocationServiceStatus.Failed && lmaxWait > 0)
-            {
+            if (Input.location.status != LocationServiceStatus.Failed && lmaxWait > 0) {
                 lKeyword = Input.location.lastData.latitude + "," + Input.location.lastData.longitude;
             }
 
@@ -476,16 +438,13 @@ public class VocalChat : MonoBehaviour
 
         //We take the answer from the weather website and extract the temperature as a string
         string lTemperature = "";
-        WeatherInfo[] lInfos = new WeatherInfo[6];
+        //WeatherInfo[] lInfos = new WeatherInfo[6];
 
-        using (XmlReader lReader = XmlReader.Create(new StringReader(lXmlData)))
-        {
-            while (lReader.ReadToFollowing("echeance"))
-            {
+        using (XmlReader lReader = XmlReader.Create(new StringReader(lXmlData))) {
+            while (lReader.ReadToFollowing("echeance")) {
                 lReader.MoveToAttribute("timestamp");
                 string lReadTime = lReader.Value.Substring(0, lReader.Value.Length - 4);
-                if (DateTime.Now.CompareTo(Convert.ToDateTime(lReadTime)) < 0)
-                {
+                if (DateTime.Now.CompareTo(Convert.ToDateTime(lReadTime)) < 0) {
                     lReader.ReadToFollowing("level");
                     lTemperature = lReader.ReadElementContentAsString();
                     break;
@@ -493,8 +452,7 @@ public class VocalChat : MonoBehaviour
             }
 
             int lCount = 0;
-            while (lCount < 6 && lReader.ReadToFollowing("echeance"))
-            {
+            while (lCount < 6 && lReader.ReadToFollowing("echeance")) {
                 lReader.MoveToAttribute("timestamp");
                 string lReadTime = lReader.Value;
                 string[] lReadTimeSplit = lReadTime.Split(' ');
@@ -511,12 +469,11 @@ public class VocalChat : MonoBehaviour
                 int lRainLevel = 0;
                 Int32.TryParse(lReader.ReadElementContentAsString(), out lRainLevel);
 
-                lInfos[lCount] = new WeatherInfo
-                {
-                    Hour = lHour,
-                    Temperature = lTempInt,
-                    Type = lRainLevel > 3 ? WeatherType.RAIN : WeatherType.SUNNY
-                };
+                //lInfos[lCount] = new WeatherInfo {
+                //    Hour = lHour,
+                //    Temperature = lTempInt,
+                //    Type = lRainLevel > 3 ? WeatherType.RAIN : WeatherType.SUNNY
+                //};
 
                 lCount++;
             }
@@ -528,8 +485,7 @@ public class VocalChat : MonoBehaviour
         string lFinalSentence = RandomString(mICouldntSpeech) +
             " " + RandomString(mGetSpeech) +
             " " + RandomString(mTemperatureSpeech);
-        if (Int32.TryParse(lsubstrings[0], out loutValue))
-        {
+        if (Int32.TryParse(lsubstrings[0], out loutValue)) {
             loutValue = loutValue - 274;
             lFinalSentence = RandomString(mTempSpeech) + " " + loutValue.ToString() + " " + RandomString(mDegreesCSpeech);
         }
@@ -546,13 +502,11 @@ public class VocalChat : MonoBehaviour
         string lXmlData = "";
         string lKeyword = "48.853,2.35";
 
-        if (!string.IsNullOrEmpty(iData))
-        {
+        if (!string.IsNullOrEmpty(iData)) {
             WWW lWww = new WWW("http://maps.googleapis.com/maps/api/geocode/xml?address=" + iData);
 
             float lElapsedTime = 0.0f;
-            while (!lWww.isDone)
-            {
+            while (!lWww.isDone) {
                 lElapsedTime += Time.deltaTime;
 
                 if (lElapsedTime >= 5f)
@@ -561,13 +515,10 @@ public class VocalChat : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
             }
 
-            if (lWww.isDone && string.IsNullOrEmpty(lWww.error))
-            {
+            if (lWww.isDone && string.IsNullOrEmpty(lWww.error)) {
                 string lXml = lWww.text;
-                using (XmlReader lReader = XmlReader.Create(new StringReader(lXml)))
-                {
-                    if (lReader.ReadToFollowing("location"))
-                    {
+                using (XmlReader lReader = XmlReader.Create(new StringReader(lXml))) {
+                    if (lReader.ReadToFollowing("location")) {
                         lReader.ReadToFollowing("lat");
                         lReader.Read();
                         lKeyword = lReader.ReadContentAsString();
@@ -578,20 +529,16 @@ public class VocalChat : MonoBehaviour
                     lReader.Close();
                 }
             }
-        }
-        else if (Input.location.isEnabledByUser)
-        {
+        } else if (Input.location.isEnabledByUser) {
             Input.location.Start();
 
             int lmaxWait = 7;
-            while (Input.location.status == LocationServiceStatus.Initializing && lmaxWait > 0)
-            {
+            while (Input.location.status == LocationServiceStatus.Initializing && lmaxWait > 0) {
                 yield return new WaitForSeconds(1f);
                 lmaxWait--;
                 Debug.Log("Waiting for geoloc");
             }
-            if (Input.location.status != LocationServiceStatus.Failed && lmaxWait > 0)
-            {
+            if (Input.location.status != LocationServiceStatus.Failed && lmaxWait > 0) {
                 lKeyword = Input.location.lastData.latitude + "," + Input.location.lastData.longitude;
             }
 
@@ -602,16 +549,13 @@ public class VocalChat : MonoBehaviour
 
         //We take the answer from the weather website and extract the temperature as a string
         string lTemperature = "";
-        WeatherInfo[] lInfos = new WeatherInfo[6];
+        //WeatherInfo[] lInfos = new WeatherInfo[6];
 
-        using (XmlReader lReader = XmlReader.Create(new StringReader(lXmlData)))
-        {
-            while (lReader.ReadToFollowing("echeance"))
-            {
+        using (XmlReader lReader = XmlReader.Create(new StringReader(lXmlData))) {
+            while (lReader.ReadToFollowing("echeance")) {
                 lReader.MoveToAttribute("timestamp");
                 string lReadTime = lReader.Value.Substring(0, lReader.Value.Length - 4);
-                if (DateTime.Now.CompareTo(Convert.ToDateTime(lReadTime)) < 0)
-                {
+                if (DateTime.Now.CompareTo(Convert.ToDateTime(lReadTime)) < 0) {
                     lReader.ReadToFollowing("level");
                     lTemperature = lReader.ReadElementContentAsString();
                     break;
@@ -619,8 +563,7 @@ public class VocalChat : MonoBehaviour
             }
 
             int lCount = 0;
-            while (lCount < 6 && lReader.ReadToFollowing("echeance"))
-            {
+            while (lCount < 6 && lReader.ReadToFollowing("echeance")) {
                 lReader.MoveToAttribute("timestamp");
                 string lReadTime = lReader.Value;
                 string[] lReadTimeSplit = lReadTime.Split(' ');
@@ -637,12 +580,11 @@ public class VocalChat : MonoBehaviour
                 int lRainLevel = 0;
                 Int32.TryParse(lReader.ReadElementContentAsString(), out lRainLevel);
 
-                lInfos[lCount] = new WeatherInfo
-                {
-                    Hour = lHour,
-                    Temperature = lTempInt,
-                    Type = lRainLevel > 3 ? WeatherType.RAIN : WeatherType.SUNNY
-                };
+                //lInfos[lCount] = new WeatherInfo {
+                //    Hour = lHour,
+                //    Temperature = lTempInt,
+                //    Type = lRainLevel > 3 ? WeatherType.RAIN : WeatherType.SUNNY
+                //};
 
                 lCount++;
             }
@@ -654,8 +596,7 @@ public class VocalChat : MonoBehaviour
         string lFinalSentence = RandomString(mICouldntSpeech) +
             " " + RandomString(mGetSpeech) +
             " " + RandomString(mTemperatureSpeech);
-        if (Int32.TryParse(lsubstrings[0], out loutValue))
-        {
+        if (Int32.TryParse(lsubstrings[0], out loutValue)) {
             loutValue = loutValue - 274;
             lFinalSentence = RandomString(mTempSpeech) + " " + loutValue.ToString() + " " + RandomString(mDegreesCSpeech);
         }
@@ -667,14 +608,12 @@ public class VocalChat : MonoBehaviour
         WWW lWww = new WWW(mWebsiteHash[iType] + Uri.EscapeUriString(iKeyword), null, iHeader);
 
         float lElapsedTime = 0.0f;
-        while (!lWww.isDone)
-        {
+        while (!lWww.isDone) {
             lElapsedTime += Time.deltaTime;
             if (lElapsedTime >= 5f) break;
             yield return null;
         }
-        if (!lWww.isDone || !string.IsNullOrEmpty(lWww.error))
-        {
+        if (!lWww.isDone || !string.IsNullOrEmpty(lWww.error)) {
             Debug.Log("Request error: " + lWww.error);
             ioResult(null);
             yield break;
@@ -686,14 +625,11 @@ public class VocalChat : MonoBehaviour
     {
         if (UnityEngine.Random.value > 0.4)
             return SuggestGame();
-        else if (UnityEngine.Random.value > 0.2)
-        {
+        else if (UnityEngine.Random.value > 0.2) {
             //TTSProcessAndSay("J'ai envie de te prendre en photo!", true);
             return "Photo";
             //link.animator.SetTrigger("Photo");
-        }
-        else
-        {
+        } else {
             //TTSProcessAndSay("J'adore faire la star, prends moi en photo!", true);
             return "Pose";
             //link.animator.SetTrigger("Pose");
@@ -702,32 +638,23 @@ public class VocalChat : MonoBehaviour
 
     private string SuggestGame()
     {
-        if (UnityEngine.Random.value > 0.8)
-        {
+        if (UnityEngine.Random.value > 0.8) {
             //TTSProcessAndSay("J'ai envie de poser des questions! Allez, faisons un quizz!", true);
             return "Quizz";
             //link.animator.SetTrigger("Quizz");
-        }
-        else if (UnityEngine.Random.value > 0.6)
-        {
+        } else if (UnityEngine.Random.value > 0.6) {
             //TTSProcessAndSay("J'ai envie de jouer! Faisons le test de mémoire!", true);
             return "Memory";
             //link.animator.SetTrigger("Memory");
-        }
-        else if (UnityEngine.Random.value > 0.4)
-        {
+        } else if (UnityEngine.Random.value > 0.4) {
             //TTSProcessAndSay("J'ai envie de tester tes facultés cognitives, faisons des calculs!", true);
             return "Calcul";
             //link.animator.SetTrigger("Calcul");
-        }
-        else if (UnityEngine.Random.value > 0.2)
-        {
+        } else if (UnityEngine.Random.value > 0.2) {
             //TTSProcessAndSay("J'adore le jeu des couleurs, allez, faisons une partie!", true);
             return "Colors";
             //link.animator.SetTrigger("Colors");
-        }
-        else
-        {
+        } else {
             //TTSProcessAndSay("Allez, faisons un jeu ensemble !", true);
             return "Games";
             //link.animator.SetTrigger("Games");
@@ -736,21 +663,16 @@ public class VocalChat : MonoBehaviour
 
     private bool ContainsOneOf(string iSpeech, List<string> iListSpeech)
     {
-        for (int i = 0; i < iListSpeech.Count; ++i)
-        {
+        for (int i = 0; i < iListSpeech.Count; ++i) {
             string[] words = iListSpeech[i].Split(' ');
-            if (words.Length < 2)
-            {
+            if (words.Length < 2) {
                 words = iSpeech.Split(' ');
-                foreach (string word in words)
-                {
-                    if (word == iListSpeech[i].ToLower())
-                    {
+                foreach (string word in words) {
+                    if (word == iListSpeech[i].ToLower()) {
                         return true;
                     }
                 }
-            }
-            else if (iSpeech.ToLower().Contains(iListSpeech[i].ToLower()))
+            } else if (iSpeech.ToLower().Contains(iListSpeech[i].ToLower()))
                 return true;
         }
         return false;
@@ -758,13 +680,11 @@ public class VocalChat : MonoBehaviour
 
     private int WordIndexOfOneOf(string iSpeech, List<string> iListSpeech)
     {
-        for (int i = 0; i < iListSpeech.Count; ++i)
-        {
+        for (int i = 0; i < iListSpeech.Count; ++i) {
             string[] lWords = iListSpeech[i].Split(' ');
             string lKeyword = lWords[lWords.Length - 1];
             string[] lSpeechWords = iSpeech.Split(' ');
-            for (int j = 0; j < lSpeechWords.Length; j++)
-            {
+            for (int j = 0; j < lSpeechWords.Length; j++) {
                 if (lSpeechWords[j] == lKeyword)
                     return j;
             }
@@ -774,8 +694,7 @@ public class VocalChat : MonoBehaviour
 
     private string RandomString(List<string> iListStr)
     {
-        if (iListStr.Count == 0)
-        {
+        if (iListStr.Count == 0) {
             Debug.Log("the following list is empty!!! " + iListStr.ToString());
         }
         System.Random lRnd = new System.Random();

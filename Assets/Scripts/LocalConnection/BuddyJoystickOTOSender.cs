@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-using Buddy.Command;
+using BlueQuark.Remote;
 
 /// <summary>
 /// Controls the movement of the robot on a local connection using a joystick.
@@ -71,7 +71,7 @@ public class BuddyJoystickOTOSender : OTONetSender
             if(toggleController.IsBodyActive) {
                 //Compute the desired body movement and send the serialized command to remote
                 ComputeMobileBase();
-                byte[] lMobileCmd = new SetWheelsSpeedCmd(mLeftSpeed, mRightSpeed, 100).Serialize();
+                byte[] lMobileCmd = new SetWheelsVelocitiesCmd(mLeftSpeed, mRightSpeed).Serialize();
                 SendData(lMobileCmd, lMobileCmd.Length);
             }
             //We are controlling the head movement
@@ -80,8 +80,8 @@ public class BuddyJoystickOTOSender : OTONetSender
                 ComputeNoAxis();
                 ComputeYesAxis();
 
-                byte[] lNoCmd = new SetPosNoCmd(mAngleNo, mNoSpeed).Serialize();
-                byte[] lYesCmd = new SetPosYesCmd(mAngleYes, mYesSpeed).Serialize();
+                byte[] lNoCmd = new SetNoHingePositionCmd(mAngleNo, mNoSpeed).Serialize();
+                byte[] lYesCmd = new SetYesHingePositionCmd(mAngleYes, mYesSpeed).Serialize();
 
                 SendData(lNoCmd, lNoCmd.Length);
                 SendData(lYesCmd, lYesCmd.Length);

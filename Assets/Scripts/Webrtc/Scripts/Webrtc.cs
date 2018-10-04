@@ -205,7 +205,7 @@ public class Webrtc : MonoBehaviour
 
                 // Setup everything for the WebRTC communication.
                 cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName,
-                    ResourceManager.StreamingAssetFilePath("client_cert.pem"));
+                    DBManager.GetStreamingAssetFullPath("client_cert.pem"));
                 
             }
         }

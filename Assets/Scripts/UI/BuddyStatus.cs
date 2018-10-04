@@ -61,7 +61,7 @@ public class BuddyStatus : MonoBehaviour
 	{
 		if (!dbManager.IsBuddiesListEmpty ()) {
 			foreach (BuddyDB lBuddy in dbManager.BuddiesList) {
-				if (lBuddy.ID == id && !lBuddy.status.Equals ("offline")) {
+				if (lBuddy.ID.ToUpper() == id.ToUpper() && !lBuddy.status.Equals ("offline")) {
 					if (!startRC) {
 						return true;
 					}
