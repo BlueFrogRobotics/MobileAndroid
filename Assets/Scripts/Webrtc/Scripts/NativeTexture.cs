@@ -45,6 +45,12 @@ public class NativeTexture
     public void Update()
 	{
 		CallStatic(mLocal ? "updateLocalTexture" : "updateRemoteTexture");
+
+        //if (mLocal && mNativeTexture != null) {
+        //    Color32[] pixels = mNativeTexture.GetPixels32();
+        //    pixels = RotateMatrix(pixels, mNativeTexture.width, mNativeTexture.height);
+        //    mNativeTexture.SetPixels32(pixels);
+        //}
 	}
 
     /// <summary>
@@ -66,4 +72,17 @@ public class NativeTexture
 			cls.CallStatic(functionName);
 		}
 	}
+
+    //private static Color32[] RotateMatrix(Color32[] matrix, int w, int h)
+    //{
+    //    Color32[] ret = new Color32[w * h];
+
+    //    for (int i = 0; i < w; ++i) {
+    //        for (int j = 0; j < h; ++j) {
+    //            ret[i * h + j] = matrix[(h - j - 1) * w + i];
+    //        }
+    //    }
+
+    //    return ret;
+    //}
 }

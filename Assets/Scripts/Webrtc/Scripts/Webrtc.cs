@@ -26,7 +26,7 @@ public class Webrtc : MonoBehaviour
     /// URI locating the crossbar server.
     /// </summary>
     [SerializeField]
-    private string mCrossbarUri; 
+    private string mCrossbarUri;
 
     /// <summary>
     /// Crossbar realm used.
@@ -38,10 +38,10 @@ public class Webrtc : MonoBehaviour
     /// Channel to subscribe to on the messaging service.
     /// </summary>
     [SerializeField]
-	private string mLocalUser;
+    private string mLocalUser;
 
     [SerializeField]
-	private string mRemoteUser;
+    private string mRemoteUser;
 
     /// <summary>
     /// Name of the object that will be called back from the Java WebRTC plugin.
@@ -52,14 +52,14 @@ public class Webrtc : MonoBehaviour
     [SerializeField]
     private RemoteControl remoteControl;
 
-	[SerializeField]
-	private GoBack menuManager;
+    [SerializeField]
+    private GoBack menuManager;
 
-	[SerializeField]
-	private GameObject joystick;
+    [SerializeField]
+    private GameObject joystick;
 
-	[SerializeField]
-	private GameObject remoteMessage;
+    [SerializeField]
+    private GameObject remoteMessage;
 
     [Header("GUI")]
     // Raw image to display the remote video stream.
@@ -75,13 +75,13 @@ public class Webrtc : MonoBehaviour
     public NativeTexture mLocalNativeTexture = null;
     private CONNECTION mConnectionState = CONNECTION.DISCONNECTING;
 
-	private Mutex mTextureMutex = new Mutex();
-	private char[] mResolutionSeparator = new char[] {'*'};
+    private Mutex mTextureMutex = new Mutex();
+    private char[] mResolutionSeparator = new char[] { '*' };
 
     private string mConnectionInfos = "";
 
-	private const int INIT_WIDTH = 640;
-	private const int INIT_HEIGHT = 480;
+    private const int INIT_WIDTH = 640;
+    private const int INIT_HEIGHT = 480;
 
     private bool mWasActive;
 
@@ -99,18 +99,18 @@ public class Webrtc : MonoBehaviour
         mWasActive = true;
     }
 
-	//void OnDisable()
-	//{
-	//	StopWebRTC();
-	//}
+    //void OnDisable()
+    //{
+    //	StopWebRTC();
+    //}
 
     /// <summary>
     /// Initialize the local and remote textures for display on the remote control screen.
     /// </summary>
     public void InitImages()
     {
-		InitLocalTexture(INIT_WIDTH, INIT_HEIGHT);
-		InitRemoteTexture(INIT_WIDTH, INIT_HEIGHT);
+        InitLocalTexture(INIT_WIDTH, INIT_HEIGHT);
+        InitRemoteTexture(INIT_WIDTH, INIT_HEIGHT);
     }
 
     /// <summary>
@@ -119,25 +119,24 @@ public class Webrtc : MonoBehaviour
     /// <param name="width">Width of the local texture.</param>
     /// <param name="height">Height of the local texture.</param>
 	void InitLocalTexture(int width, int height)
-	{
-		Debug.Log("WebRTC.InitLocalTexture " + width + "*" + height);
+    {
+        Debug.Log("WebRTC.InitLocalTexture " + width + "*" + height);
 
         // Wait for the mutex before creating the texture.
-		mTextureMutex.WaitOne();
+        mTextureMutex.WaitOne();
 
         // If a texture from a previous call exists already, destroy it.
-		if(mLocalNativeTexture != null)
-		{
-			mLocalNativeTexture.Destroy();
-		}
+        if (mLocalNativeTexture != null) {
+            mLocalNativeTexture.Destroy();
+        }
 
         // Create the texture and assign it.
-		mLocalNativeTexture = new NativeTexture(width, height, true);
-		mLocalRawImage.texture = mLocalNativeTexture.texture;
+        mLocalNativeTexture = new NativeTexture(width, height, true);
+        mLocalRawImage.texture = mLocalNativeTexture.texture;
 
         // Release the mutex.
-		mTextureMutex.ReleaseMutex();
-	}
+        mTextureMutex.ReleaseMutex();
+    }
 
     /// <summary>
     /// Initialize the local texture.
@@ -145,42 +144,39 @@ public class Webrtc : MonoBehaviour
     /// <param name="width">Width of the local texture.</param>
     /// <param name="height">Height of the local texture.</param>
 	void InitRemoteTexture(int width, int height)
-	{
-		Debug.Log("WebRTC.InitRemoteTexture " + width + "*" + height);
+    {
+        Debug.Log("WebRTC.InitRemoteTexture " + width + "*" + height);
 
         // Wait for the mutex before creating the texture.
         mTextureMutex.WaitOne();
 
         // If a texture from a previous call exists already, destroy it.
-        if (mRemoteNativeTexture != null)
-		{
-			mRemoteNativeTexture.Destroy();
-		}
+        if (mRemoteNativeTexture != null) {
+            mRemoteNativeTexture.Destroy();
+        }
 
         // Create the texture and assign it.
         mRemoteNativeTexture = new NativeTexture(width, height, false);
-		mRemoteRawImage.texture = mRemoteNativeTexture.texture;
+        mRemoteRawImage.texture = mRemoteNativeTexture.texture;
 
         // Release the mutex.
         mTextureMutex.ReleaseMutex();
-	}
+    }
 
     void Update()
     {
         // Wait for the mutex then perform the updates of both local and remote textures.
-		mTextureMutex.WaitOne();
+        mTextureMutex.WaitOne();
 
-		if(mRemoteNativeTexture != null)
-		{
-			mRemoteNativeTexture.Update();
-		}
+        if (mRemoteNativeTexture != null) {
+            mRemoteNativeTexture.Update();
+        }
 
-		if(mLocalNativeTexture != null)
-		{
-			mLocalNativeTexture.Update();
-		}
+        if (mLocalNativeTexture != null) {
+            mLocalNativeTexture.Update();
+        }
 
-		mTextureMutex.ReleaseMutex();
+        mTextureMutex.ReleaseMutex();
     }
 
     /// <summary>
@@ -197,16 +193,14 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "setup webrtc" + "\n";
 
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
-            using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-            {
+        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc")) {
+            using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
                 AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
                 // Setup everything for the WebRTC communication.
                 cls.CallStatic("SetupWebrtc", mCrossbarUri, mRealm, jo, mLocalUser, mWebrtcReceiverObjectName,
                     DBManager.GetStreamingAssetFullPath("client_cert.pem"));
-                
+
             }
         }
     }
@@ -218,8 +212,7 @@ public class Webrtc : MonoBehaviour
     {
         if (mTextLog)
             mTextLog.text += "Starting webRTC" + "\n";
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
+        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc")) {
             cls.CallStatic("StartWebrtc");
         }
     }
@@ -229,12 +222,11 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     public void StopWebRTC()
     {
-		mRemoteNativeTexture.Destroy();
-		mLocalNativeTexture.Destroy();
+        mRemoteNativeTexture.Destroy();
+        mLocalNativeTexture.Destroy();
 
         Debug.Log("Stop WebRTC");
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
+        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc")) {
             Connected = false;
             cls.CallStatic("StopWebrtc");
         }
@@ -249,8 +241,7 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "Call : " + mRemoteUser + "\n";
         // mTextSend.text += "\nCall : " + iChannel;
-        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-        {
+        using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc")) {
             Debug.Log("Starting call");
             cls.CallStatic("Call", mRemoteUser);
         }
@@ -265,10 +256,8 @@ public class Webrtc : MonoBehaviour
         Debug.Log("Hang Up : " + mRemoteUser);
         if (mTextLog)
             mTextLog.text += "Hang Up : " + mRemoteUser + "\n";
-        if (mConnectionState == CONNECTION.CONNECTING)
-        {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-            {
+        if (mConnectionState == CONNECTION.CONNECTING) {
+            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc")) {
                 Connected = false;
                 cls.CallStatic("Hangup", mRemoteUser);
             }
@@ -288,18 +277,13 @@ public class Webrtc : MonoBehaviour
         if (mTextLog)
             mTextLog.text += "sending message : " + iMessage + " to : " + mRemoteUser + "\n";
 
-        if ((mConnectionState == CONNECTION.CONNECTING) && iThroughDataChannel)
-        {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-            {
+        if ((mConnectionState == CONNECTION.CONNECTING) && iThroughDataChannel) {
+            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc")) {
                 Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through data channel");
                 cls.CallStatic("SendMessage", iMessage, mRemoteUser);
             }
-        }
-        else if (!iThroughDataChannel)
-        {
-            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc"))
-            {
+        } else if (!iThroughDataChannel) {
+            using (AndroidJavaClass cls = new AndroidJavaClass("my.maylab.unitywebrtc.Webrtc")) {
                 Debug.Log("sending message : " + iMessage + " to : " + mRemoteUser + " through messaging channel");
                 cls.CallStatic("SendMessage", iMessage, mRemoteUser, false);
             }
@@ -312,14 +296,12 @@ public class Webrtc : MonoBehaviour
     /// <param name="iValue">1 for opened, 0 for closed.</param>
     public void setMIsWebrtcConnectionActive(string iValue)
     {
-        if (iValue.Equals("1"))
-        {
+        if (iValue.Equals("1")) {
             Debug.Log("Webrtc status : CONNECTING");
             mConnectionState = CONNECTION.CONNECTING;
             if (mTextLog)
                 mTextLog.text += "Webrtc connection is ON" + "\n";
-        }
-        else {
+        } else {
             Debug.Log("Webrtc status : DISCONNECTING");
             mConnectionState = CONNECTION.DISCONNECTING;
             Connected = false;
@@ -363,9 +345,9 @@ public class Webrtc : MonoBehaviour
         if (iMessage == "CONNECTED")
             Connected = true;
         else if (iMessage.Contains("onStateChange: CLOSED") && Connected) {
-			StopWebRTC();
+            StopWebRTC();
             menuManager.PreviousMenu();
-		}
+        }
     }
 
     /// <summary>
@@ -373,32 +355,32 @@ public class Webrtc : MonoBehaviour
     /// </summary>
     /// <param name="size">The new resolution as a string, e.g. "320*240".</param>
 	public void onLocalTextureSizeChanged(string size)
-	{
-		Debug.Log ("WebRTC.onLocalTextureSizeChanged " + size);
+    {
+        Debug.Log("WebRTC.onLocalTextureSizeChanged " + size);
 
-		string[] cuts = size.Split(mResolutionSeparator);
-		int width = Int32.Parse(cuts[0]);
-		int height = Int32.Parse(cuts[1]);
+        string[] cuts = size.Split(mResolutionSeparator);
+        int width = Int32.Parse(cuts[0]);
+        int height = Int32.Parse(cuts[1]);
 
         // Another texture with a new resolution has to be initialized.
-		InitLocalTexture(width, height);
-	}
+        InitLocalTexture(width, height);
+    }
 
     /// <summary>
     /// Called when the WebRTC changes the resolution of the remote video stream.
     /// </summary>
     /// <param name="size">The new resolution as a string, e.g. "320*240".</param>
 	public void onRemoteTextureSizeChanged(string size)
-	{
-		Debug.Log ("WebRTC.onRemoteTextureSizeChanged " + size);
+    {
+        Debug.Log("WebRTC.onRemoteTextureSizeChanged " + size);
 
-		string[] cuts = size.Split (mResolutionSeparator);
-		int width = Int32.Parse (cuts [0]);
-		int height = Int32.Parse (cuts [1]);
+        string[] cuts = size.Split(mResolutionSeparator);
+        int width = Int32.Parse(cuts[0]);
+        int height = Int32.Parse(cuts[1]);
 
         // Another texture with a new resolution has to be initialized.
         InitRemoteTexture(width, height);
-	}
+    }
 
     /// <summary>
     /// Called when WebRTC stats are received from the Java plugin.
@@ -408,31 +390,31 @@ public class Webrtc : MonoBehaviour
     /// Local connection level, remote connection level, device performance level.
     /// </param>
 	public void onWebRTCStats(string data)
-	{
+    {
         mConnectionInfos = data;
 
-		bool controlsDisabled = false;
+        bool controlsDisabled = false;
 
-		string[] cuts = mConnectionInfos.Split('|');
-		float local = float.Parse(cuts[0]);
-		float remote = float.Parse(cuts[1]);
+        string[] cuts = mConnectionInfos.Split('|');
+        float local = float.Parse(cuts[0]);
+        float remote = float.Parse(cuts[1]);
 
         // Cut the control of the robot if the local or remote connection level is too low.
-		if(local != -1 && remote != -1) {
-			float threshold = 0.3f;
-			if(local < threshold || remote < threshold) {
-				controlsDisabled = true;
-			}
-		}
-        
-		remoteControl.ControlsDisabled = controlsDisabled;
-		if(controlsDisabled) {
-			joystick.SetActive(false);
-			remoteMessage.SetActive(true);
-		} else {
-			joystick.SetActive(true);
-			remoteMessage.SetActive(false);
-		}
+        if (local != -1 && remote != -1) {
+            float threshold = 0.3f;
+            if (local < threshold || remote < threshold) {
+                controlsDisabled = true;
+            }
+        }
+
+        remoteControl.ControlsDisabled = controlsDisabled;
+        if (controlsDisabled) {
+            joystick.SetActive(false);
+            remoteMessage.SetActive(true);
+        } else {
+            joystick.SetActive(true);
+            remoteMessage.SetActive(false);
+        }
     }
 }
 
