@@ -1,25 +1,4 @@
 {
     "Users": [
-        {
-            "IsDefaultUser": true,
-            "LastName": "HASSELVANDER",
-            "FirstName": "Rodolphe",
-            "Email": "rh@bfr.com",
-            "Picture": "rh.jpg"
-        },
-        {
-            "IsDefaultUser": false,
-            "LastName": "HULCELLE",
-            "FirstName": "Marc",
-            "Email": "mh@bfr.com",
-            "Picture": "mh.jpg"
-        },
-        {
-            "IsDefaultUser": false,
-            "LastName": "Kim",
-            "FirstName": "Min-Hee",
-            "Email": "mk@naver.com",
-            "Picture": ""
-        }
     ]
 }
