@@ -185,15 +185,16 @@ public class RemoteControl : MonoBehaviour
 
     public void SayInputText()
     {
-
-        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+        if (keyboard == null)
+            keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
         mEdit = true;
     }
 
     public void EditText()
     {
         mEdit = false;
-        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+        if (keyboard == null)
+            keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
         mTextToEdit = EventSystem.current.currentSelectedGameObject.transform.Find("Text").GetComponent<Text>();
         Debug.Log(mTextToEdit.text);
     }

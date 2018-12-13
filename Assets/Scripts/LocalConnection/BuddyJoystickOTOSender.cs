@@ -100,6 +100,9 @@ public class BuddyJoystickOTOSender : OTONetSender
         if (Mathf.Abs(mAngleNo) > 45)
             mAngleNo = Mathf.Sign(mAngleNo) * 45;
         
+        Debug.Log("---- NO AXIS: " + mAngleNo.ToString() + " ----");
+        Debug.Log("---- NO AXIS CALCUL: " + (-mAngleNo * 100 / 45).ToString() + " ----");
+
         headNoAnim.SetFloat("HeadPosition_H", -mAngleNo*100/45);
         mNoSpeed = (mXPosition * mXPosition) * mSpeedHead * 3f;
     }
@@ -115,6 +118,8 @@ public class BuddyJoystickOTOSender : OTONetSender
 
         if (mAngleYes > 60)
             mAngleYes = 60;
+
+        Debug.Log("---- YES AXIS: " + mAngleYes.ToString() + " ----");
 
         headYesAnim.SetFloat("HeadPosition_V", mAngleYes);
         mYesSpeed = (mYPosition * mYPosition) * mSpeedHead * 3f;

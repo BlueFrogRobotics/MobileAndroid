@@ -21,7 +21,7 @@ public class CreateAccountState : ASubState {
             // Activate predefined generic elements.
             HandleGeneric lHandler = GameObject.Find("ScriptUI").GetComponent<HandleGeneric>();
 			lHandler.DisableGeneric(new ArrayList() { "NavigationCreateAccount", "TopUI", "BottomUI", "ScrollView" });
-			lHandler.SetDisplayInfos("Enter Your First Name", "Enter Your Last Name");
+			lHandler.SetDisplayInfos("Entrez votre Prénom", "Entrez votre Nom");
 			lHandler.SetEditInfos("", "");
 
             // Creating UI Objects

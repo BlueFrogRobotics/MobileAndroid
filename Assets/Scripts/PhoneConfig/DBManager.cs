@@ -10,8 +10,8 @@ using Buddy;
 [Serializable]
 public class HttpResponse
 {
-	public bool ok;
-	public string msg;
+    public bool ok;
+    public string msg;
 }
 
 [Serializable]
@@ -98,27 +98,28 @@ public class DBManager : MonoBehaviour
     private PopupHandler popupHandler;
 
     private PhoneUser mUser;
-	public static string tmpImgPath = "";
-	private bool mImagePreselected = false;
-	private Texture2D mTex;
+    public static string tmpImgPath = "";
+    private bool mImagePreselected = false;
+    private Texture2D mTex;
 
     private List<string> mBuddiesIDs;
 
     void Start()
-	{
-		// Register Azure public IP for MySQL and PHP requests
-		mHost = "52.174.52.152:8080";
-		mBuddyList = "";
+    {
+        // Register Azure public IP for MySQL and PHP requests
+        mHost = "52.174.52.152:8080";
+        mBuddyList = "";
         // List of all users that already used the application.
-		mUserFilePath = Application.persistentDataPath + "/users.txt";
-		mCurrentUser = new PhoneUser ();
-		ReadPhoneUsers (true);
-		popupHandler = GameObject.Find ("PopUps").GetComponent<PopupHandler> ();
-		mBuddiesIDs = new List<string> ();
-		mBuddiesList = new List<BuddyDB> ();
-		mTex = new Texture2D (2, 2);
-		Debug.Log ("DB MANAGER STARTED");
-	}
+        mUserFilePath = Application.persistentDataPath + "/users.txt";
+        Debug.LogError(mUserFilePath);
+        mCurrentUser = new PhoneUser();
+        ReadPhoneUsers(true);
+        popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
+        mBuddiesIDs = new List<string>();
+        mBuddiesList = new List<BuddyDB>();
+        mTex = new Texture2D(2, 2);
+        Debug.Log("DB MANAGER STARTED");
+    }
 
     void Update()
     {
@@ -128,24 +129,22 @@ public class DBManager : MonoBehaviour
         else
             popupNoConnection.SetActive(false);
 
-		if(mImagePreselected)
-			mImagePreselected = false;
-	}
+        if (mImagePreselected)
+            mImagePreselected = false;
+    }
 
     /// <summary>
     /// Display a file browser.
     /// </summary>
     /// <param name="resizeImage">Should the image be resized ?</param>
 	public void OpenFileBrowser(bool resizeImage)
-	{
-		using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.filebrowserlib.FileBrowser"))
-		{
-			using (AndroidJavaClass jc = new AndroidJavaClass ("com.unity3d.player.UnityPlayer"))
-			{
-				cls.CallStatic ("openGallery", jc.GetStatic<AndroidJavaObject> ("currentActivity"), Application.persistentDataPath, resizeImage);
-			}
-		}
-	}
+    {
+        using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.filebrowserlib.FileBrowser")) {
+            using (AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer")) {
+                cls.CallStatic("openGallery", jc.GetStatic<AndroidJavaObject>("currentActivity"), Application.persistentDataPath, resizeImage);
+            }
+        }
+    }
 
     /// <summary>
     /// Is the Buddy list empty ?
@@ -200,10 +199,8 @@ public class DBManager : MonoBehaviour
                     string lPicture = "";
                     bool lFound = false;
 
-                    foreach (PhoneUser lUser in mUserList.Users)
-                    {
-                        if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail)
-                        {
+                    foreach (PhoneUser lUser in mUserList.Users) {
+                        if (lUser.FirstName == iFirstName && lUser.LastName == iLastName && lUser.Email == iEmail) {
                             lPicture = lUser.Picture;
                             lFound = true;
                             mCurrentUser = lUser;
@@ -217,8 +214,7 @@ public class DBManager : MonoBehaviour
                     // Get the list Buddies linked to the account and confirm the connection.
                     RetrieveBuddyList();
                     ConfirmConnection();
-                }
-                else {
+                } else {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                 }
             }
@@ -271,20 +267,20 @@ public class DBManager : MonoBehaviour
 
         if (requestOK(lWWW)) {
             HttpResponse resp = parseResp(lWWW);
-            
+
             if (resp != null) {
                 if (resp.ok) {
                     // Confirm that the account creation was successfull.
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
 
                     // Save the user account configuration.
-					String imgName = saveImage(email);
-					AddUserToConfig(firstName, lastName, email, imgName);
-                    
+                    String imgName = saveImage(email);
+                    AddUserToConfig(firstName, lastName, email, imgName);
+
                     // Go to the connection menu.
                     ReadPhoneUsers(true, true);
                     menuManager.GoConnectionMenu();
-					ResetCreateParameters();
+                    ResetCreateParameters();
                 } else {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                 }
@@ -313,11 +309,9 @@ public class DBManager : MonoBehaviour
         WWW lWWW = new WWW("http://" + mHost + "/forgottenPassword.php", lForm);
         yield return lWWW;
 
-        if (requestOK(lWWW))
-        {
+        if (requestOK(lWWW)) {
             HttpResponse resp = parseResp(lWWW);
-            if (resp != null)
-            {
+            if (resp != null) {
                 popupHandler.OpenDisplayIcon(resp.msg, resp.ok ? "Check" : "Warning");
             }
         }
@@ -349,8 +343,7 @@ public class DBManager : MonoBehaviour
         lForm.AddField("firstname", firstName);
         lForm.AddField("lastname", lastName);
         lForm.AddField("email", email);
-        if (password != "")
-        {
+        if (password != "") {
             lForm.AddField("password", password);
         }
 
@@ -363,10 +356,10 @@ public class DBManager : MonoBehaviour
                 if (resp.ok) {
                     // Display a confirmation message and save the profile picture (if changed).
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-					String imgName = saveImage(email);
-					String imgPath = Application.persistentDataPath + "/" + email + ".jpg";
-					EditUserToConfig(firstName, lastName, email, File.Exists(imgPath) ? imgPath : imgName);
-					tmpImgPath = "";
+                    String imgName = saveImage(email);
+                    String imgPath = Application.persistentDataPath + "/" + email + ".jpg";
+                    EditUserToConfig(firstName, lastName, email, File.Exists(imgPath) ? imgPath : imgName);
+                    tmpImgPath = "";
                     menuManager.PreviousMenu();
                 } else {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
@@ -488,20 +481,15 @@ public class DBManager : MonoBehaviour
         WWW lWWW = new WWW("http://" + mHost + "/removeBuddyFromUser.php", lForm.data, addSessionCookie(lForm.headers));
         yield return lWWW;
 
-        if (requestOK(lWWW))
-        {
+        if (requestOK(lWWW)) {
             HttpResponse resp = parseResp(lWWW);
-            if (resp != null)
-            {
-                if (resp.ok)
-                {
+            if (resp != null) {
+                if (resp.ok) {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
                     menuManager.PreviousMenu();
                     RetrieveBuddyList();
                     Debug.Log("WWW Success");
-                }
-                else
-                {
+                } else {
                     popupHandler.OpenDisplayIcon(resp.msg, "Warning");
                     Debug.Log(resp.msg);
                 }
@@ -645,15 +633,14 @@ public class DBManager : MonoBehaviour
             }
         }
 
-        if (iCreateAccount) mCurrentUser = mUserList.Users [mUserList.Users.Length - 1];
+        if (iCreateAccount) mCurrentUser = mUserList.Users[mUserList.Users.Length - 1];
 
         mUserList = lUserList;
 
         //To improve when adding selecting the photo of a new user 
         //We can use iCreateAccount option instead
         GameObject lImage = GameObject.Find("Connect_User_Picture");
-        if (!iFirstRead && lImage != null)
-        {
+        if (!iFirstRead && lImage != null) {
             string lDisplayedPicture = mCurrentUser.Picture;
             LoadUserPicture(lDisplayedPicture);
             GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
@@ -669,6 +656,8 @@ public class DBManager : MonoBehaviour
     private void RemoveUserFromLocalStorage(PhoneUser user)
     {
         int lUserLength = mUserList.Users.Length;
+        if (lUserLength <= 0)
+            return;
         PhoneUser[] lTempList = new PhoneUser[lUserLength - 1];
 
         for (int i = 0, j = 0; i < lUserLength; i++, j++) {
@@ -679,9 +668,9 @@ public class DBManager : MonoBehaviour
                 lTempList[j] = mUserList.Users[i];
             }
         }
-        
+
         mUserList.Users = lTempList;
-        ExportToJson(mUserList);     
+        ExportToJson(mUserList);
 
         foreach (Transform lChild in DotTransform)
             GameObject.Destroy(lChild.gameObject);
@@ -693,28 +682,44 @@ public class DBManager : MonoBehaviour
 	public void GenerateUserDisplay()
     {
         // Display a dot for each users, and display a full white one at the index of the default account.
-        for (int i = 0; i < mUserList.Users.Length - 1; i++) {
-            GameObject lDot = GameObject.Instantiate(DotOFF);
-            lDot.transform.SetParent(DotTransform);
-            lDot.transform.localScale = Vector3.one;
+        if (mUserList.Users.Length > 0) {
+            for (int i = 0; i < mUserList.Users.Length - 1; i++) {
+                GameObject lDot = GameObject.Instantiate(DotOFF);
+                lDot.transform.SetParent(DotTransform);
+                lDot.transform.localScale = Vector3.one;
+            }
+
+            GameObject lDotOn = GameObject.Instantiate(DotON);
+            lDotOn.name = "Dot_ON";
+            lDotOn.transform.SetParent(DotTransform);
+            lDotOn.transform.localScale = Vector3.one;
+            mDisplayedIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
+            lDotOn.transform.SetSiblingIndex(mDisplayedIndex);
+            lDotOn.transform.SetAsLastSibling();
+            lDotOn.transform.SetSiblingIndex(mDisplayedIndex);
+
+            //We add a last one to add an existing account
+            GameObject lDotLast = GameObject.Instantiate(DotOFF);
+            lDotLast.transform.SetParent(DotTransform);
+            lDotLast.transform.localScale = Vector3.one;
+
+            textFirstName.text = mCurrentUser.FirstName;
+            textLastName.text = mCurrentUser.LastName;
         }
-
-        GameObject lDotOn = GameObject.Instantiate(DotON);
-        lDotOn.name = "Dot_ON";
-        lDotOn.transform.SetParent(DotTransform);
-        lDotOn.transform.localScale = Vector3.one;
-        mDisplayedIndex = Array.IndexOf(mUserList.Users, mCurrentUser);
-        lDotOn.transform.SetSiblingIndex(mDisplayedIndex);
-        lDotOn.transform.SetAsLastSibling();
-        lDotOn.transform.SetSiblingIndex(mDisplayedIndex);
-
-        //We add a last one to add an existing account
-        GameObject lDotLast = GameObject.Instantiate(DotOFF);
-        lDotLast.transform.SetParent(DotTransform);
-        lDotLast.transform.localScale = Vector3.one;
-       
-        textFirstName.text = mCurrentUser.FirstName;
-        textLastName.text = mCurrentUser.LastName;
+        else {
+            GameObject lTrashButton = GameObject.Find("Content_Top/Top_UI/Button_L(Clone)");
+            if (lTrashButton != null)
+                lTrashButton.SetActive(false);
+            mDisplayedIndex = mUserList.Users.Length;
+            textFirstName.gameObject.SetActive(false);
+            textLastName.gameObject.SetActive(false);
+            inputFirstName.gameObject.SetActive(true);
+            inputLastName.gameObject.SetActive(true);
+            inputFirstName.text = poolManager.Dictionary.GetString("enterfirstname");//"Enter your First Name";
+            inputLastName.text = poolManager.Dictionary.GetString("enterlastname");//"Enter your Last Name";
+            GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
+            GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
+        }
     }
 
     /// <summary>
@@ -742,7 +747,7 @@ public class DBManager : MonoBehaviour
         ifCurrent.Select();
         ifCurrent.text = "";
 
-		tmpImgPath = "";
+        tmpImgPath = "";
     }
 
     /// <summary>
@@ -807,8 +812,8 @@ public class DBManager : MonoBehaviour
         for (int i = 0; i < mUserList.Users.Length; i++) {
             if (mUserList.Users[i].Email.CompareTo(email) == 0) {
                 mUserList.Users[i].FirstName = firstname;
-				mUserList.Users[i].LastName = lastname;
-				mUserList.Users[i].Picture = picture;
+                mUserList.Users[i].LastName = lastname;
+                mUserList.Users[i].Picture = picture;
             }
         }
         ExportToJson(mUserList);
@@ -838,7 +843,7 @@ public class DBManager : MonoBehaviour
         //Remove the user from the list, update the list of phone users and regenerate the display on the connection screen.
         RemoveUserFromLocalStorage(mUser);
         ReadPhoneUsers();
-        GenerateUserDisplay ();
+        GenerateUserDisplay();
     }
 
     /// <summary>
@@ -847,14 +852,14 @@ public class DBManager : MonoBehaviour
     /// <param name="path">The file's path.</param>
     /// <returns>The content of the file as a byte array.</returns>
 	private byte[] openFile(String path)
-	{
+    {
         // I don't see the point of this condition ...
-		if(path.Contains("/")) {
-			return File.ReadAllBytes(path);
-		}
+        if (path.Contains("/")) {
+            return File.ReadAllBytes(path);
+        }
 
-		return File.ReadAllBytes(DBManager.GetStreamingAssetFullPath(path));
-	}
+        return File.ReadAllBytes(DBManager.GetStreamingAssetFullPath(path));
+    }
 
     /// <summary>
     /// Get the profile picture.
@@ -864,9 +869,9 @@ public class DBManager : MonoBehaviour
     {
         //Function name is explicit enough. We load the picture file into the sprite
         if (!string.IsNullOrEmpty(mCurrentUser.Picture)) {
-			byte[] lFileData = openFile(mCurrentUser.Picture);
+            byte[] lFileData = openFile(mCurrentUser.Picture);
             mTex.LoadImage(lFileData);
-			return Sprite.Create(mTex, new Rect(0, 0, mTex.width, mTex.height), new Vector2(0.5F, 0.5F));
+            return Sprite.Create(mTex, new Rect(0, 0, mTex.width, mTex.height), new Vector2(0.5F, 0.5F));
         } else {
             Sprite lSprite = Resources.Load<Sprite>("DefaultUser") as Sprite;
             return lSprite;
@@ -878,15 +883,15 @@ public class DBManager : MonoBehaviour
     /// </summary>
     /// <param name="iPictureName">The name of the picture to load.</param>
     private void LoadUserPicture(string iPictureName)
-	{
-		Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
+    {
+        Image lProfilePicture = GameObject.Find("Connect_User_Picture").GetComponentsInChildren<Image>()[2];
         if ((!string.IsNullOrEmpty(iPictureName))) {
-			byte[] lFileData = openFile(iPictureName);
+            byte[] lFileData = openFile(iPictureName);
             mTex.LoadImage(lFileData);
-			lProfilePicture.sprite = Sprite.Create(mTex, new Rect(0, 0, mTex.width, mTex.height), new Vector2(0.5F, 0.5F));
+            lProfilePicture.sprite = Sprite.Create(mTex, new Rect(0, 0, mTex.width, mTex.height), new Vector2(0.5F, 0.5F));
         } else {
-			lProfilePicture.sprite = poolManager.GetSprite("DefaultUser");
-		}
+            lProfilePicture.sprite = poolManager.GetSprite("DefaultUser");
+        }
     }
 
     /// <summary>
@@ -899,7 +904,8 @@ public class DBManager : MonoBehaviour
         string lDisplayedPicture = "";
 
         GameObject lTrashButton = GameObject.Find("Content_Top/Top_UI/Button_L(Clone)");
-
+        if (lTrashButton == null || mUserList.Users.Length <= 0)
+            return;
         // If the current user is not the last one, display the next one with the correct information (name, e-mail, profile picture)
         // and update the white dot indicator.
         if (lIndex != mUserList.Users.Length - 1) {
@@ -916,8 +922,8 @@ public class DBManager : MonoBehaviour
                 textLastName.gameObject.SetActive(false);
                 inputFirstName.gameObject.SetActive(true);
                 inputLastName.gameObject.SetActive(true);
-                inputFirstName.text = poolManager.Dictionary.GetString("enterfirstname");//"Enter your First Name";
-                inputLastName.text = poolManager.Dictionary.GetString("enterlastname");//"Enter your Last Name";
+                inputFirstName.text =  poolManager.Dictionary.GetString("enterfirstname");//"Enter your First Name";
+                inputLastName.text =  poolManager.Dictionary.GetString("enterlastname");//"Enter your Last Name";
                 GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
                 GameObject.Find("EMail_Input").GetComponent<InputField>().text = "";
                 mDisplayedIndex++;
@@ -952,9 +958,14 @@ public class DBManager : MonoBehaviour
         string lDisplayedPicture = "";
         GameObject lTrashButton = GameObject.Find("Content_Top/Top_UI/Button_L(Clone)");
 
+        if (lTrashButton == null || mUserList.Users.Length <= 0)
+            return;
+
+        Debug.LogError("lIndex: " + lIndex);
+        Debug.LogError("Users.Length: " + mUserList.Users.Length);
         // If the current user is not the first one, display the previous one with the correct information (name, e-mail, profile picture)
         // and update the white dot indicator.
-        if (lIndex != 0 && mDisplayedIndex != mUserList.Users.Length) {
+        if (lIndex > 0 && mDisplayedIndex != mUserList.Users.Length) {
             mCurrentUser = mUserList.Users[lIndex - 1];
             lDisplayedPicture = mCurrentUser.Picture;
             GameObject.Find("Password_Input").GetComponent<InputField>().text = "";
@@ -1057,11 +1068,11 @@ public class DBManager : MonoBehaviour
     /// </summary>
     /// <param name="tmpUserImg">The name of the name to be saved.</param>
 	public void onImageSelected(string tmpUserImg)
-	{
-		tmpImgPath = Application.persistentDataPath + "/" + tmpUserImg + ".jpg";
-		mImagePreselected = true;
-		LoadUserPicture(tmpImgPath);
-	}
+    {
+        tmpImgPath = Application.persistentDataPath + "/" + tmpUserImg + ".jpg";
+        mImagePreselected = true;
+        LoadUserPicture(tmpImgPath);
+    }
 
     /// <summary>
     /// Save the image with a file browser.
@@ -1069,16 +1080,16 @@ public class DBManager : MonoBehaviour
     /// <param name="imgName">The name of the image.</param>
     /// <returns>The path where the file was saved.</returns>
 	private String saveImage(string imgName)
-	{
-		if (tmpImgPath != "") {
-			using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.filebrowserlib.FileBrowser")) {
-				cls.CallStatic ("save", imgName);
-			}
-			return (Application.persistentDataPath + "/" + imgName + ".jpg");
-		}
+    {
+        if (tmpImgPath != "") {
+            using (AndroidJavaClass cls = new AndroidJavaClass("com.bfr.filebrowserlib.FileBrowser")) {
+                cls.CallStatic("save", imgName);
+            }
+            return (Application.persistentDataPath + "/" + imgName + ".jpg");
+        }
 
-		return "";
-	}
+        return "";
+    }
 
     public static string GetStreamingAssetFullPath(string iFilename)
     {
