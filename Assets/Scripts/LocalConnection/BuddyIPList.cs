@@ -144,11 +144,6 @@ public class BuddyIPList : MonoBehaviour
 
         //Add Buddies from all different sources. 
         AddBuddyFromDB();
-        AddLocalBuddy();
-        //Add the searching logo to the list for better visuals
-        GameObject lSearching = mPoolManager.fSearching("Content_Bottom/ScrollView/Viewport");
-        lSearching.name = "SearchingContact";
-        LoadingUI.AddObject(lSearching);
     }
 
     /// <summary>

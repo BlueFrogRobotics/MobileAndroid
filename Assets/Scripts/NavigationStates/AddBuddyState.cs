@@ -30,10 +30,13 @@ public class AddBuddyState : ASubState {
 			GameObject specialIdField = lPoolManager.fTextField_Icon ("Content_Bottom/ScrollView/Viewport", "enterbuddyid", "", "QRCode", null, null, null);
 			specialIdField.name = "specialIdField";
 			LoadingUI.AddObject(specialIdField);
-            LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/ScrollView/Viewport", "or", false));
-            GameObject lBuddyID = lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "scancontactid", "", new List<UnityAction>() { lPopup.OpenReadQrCode });
-            lBuddyID.name = "Buddy_ID";
-            LoadingUI.AddObject(lBuddyID);
+
+            // Scan contact id with QRCode is not available right now
+            //LoadingUI.AddObject(lPoolManager.fSimple_Text("Content_Bottom/ScrollView/Viewport", "or", false));
+            //GameObject lBuddyID = lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "scancontactid", "", new List<UnityAction>() { lPopup.OpenReadQrCode });
+            //lBuddyID.name = "Buddy_ID";
+            //LoadingUI.AddObject(lBuddyID);
+
             //LoadingUI.AddObject(lPoolManager.fToggle("Content_Bottom/ScrollView/Viewport", "Connect By Default", false));
             // Top UI objects
             LoadingUI.AddObject(lPoolManager.fButton_User_Big("Content_Top", "Default_Buddy", null));

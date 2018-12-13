@@ -164,9 +164,9 @@ public class HandleGeneric : MonoBehaviour
         T_Dots.SetActive(false);
 
         T_FieldFirstName.GetComponent<InputField>().text = "";
-        T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
+        T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insérez votre Prénom";
         T_FieldLastName.GetComponent<InputField>().text = "";
-        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
+        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insérez votre Nom";
     }
 
     /// <summary>
@@ -185,9 +185,9 @@ public class HandleGeneric : MonoBehaviour
 
         DBManager lDB = GameObject.Find("DBManager").GetComponent<DBManager>();
         T_FieldFirstName.GetComponent<InputField>().text = lDB.CurrentUser.FirstName;
-        T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your first name";
+        T_FieldFirstName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insérez votre Prénom";
         T_FieldLastName.GetComponent<InputField>().text = lDB.CurrentUser.LastName;
-        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert your last name";
+        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insérez votre Nom";
     }
 
     /// <summary>
@@ -222,7 +222,7 @@ public class HandleGeneric : MonoBehaviour
         T_Dots.SetActive(false);
 
         T_FieldLastName.GetComponent<InputField>().text = "";
-        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insert Buddy's name";
+        T_FieldLastName.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Insérez le nom de Buddy";
     }
 
     private void EnableNavigationDisplay()

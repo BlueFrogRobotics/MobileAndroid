@@ -435,9 +435,11 @@ public class PoolManager : MonoBehaviour {
         Button lButton = lFinalObject.GetComponent<Button>();
         Image lUser_Pic = lFinalObject.GetComponentsInChildren<Image>()[2];
 
-		if (lDBManager.CurrentUser.LastName.Contains ("DEMO")) {
-			iPicture = "DefaultUser";
-		}
+        if (lDBManager != null && lDBManager.CurrentUser != null && lDBManager.CurrentUser.LastName != null) {
+            if (lDBManager.CurrentUser.LastName.Contains("DEMO")) {
+                iPicture = "DefaultUser";
+            }
+        }
 
         if (!string.IsNullOrEmpty(iPicture))
         {
