@@ -57,6 +57,8 @@ public class GoBack : MonoBehaviour
     /// </summary>
     public void PreviousMenu()
     {
+        if (mViewTree.Count == 0)
+            return ;
         mCurrentMenu = mViewTree[mViewTree.Count - 1];
         mViewTree.Remove(mCurrentMenu);
 

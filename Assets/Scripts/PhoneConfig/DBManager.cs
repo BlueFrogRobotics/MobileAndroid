@@ -111,7 +111,7 @@ public class DBManager : MonoBehaviour
         mBuddyList = "";
         // List of all users that already used the application.
         mUserFilePath = Application.persistentDataPath + "/users.txt";
-        Debug.LogError(mUserFilePath);
+        //Debug.LogError(mUserFilePath);
         mCurrentUser = new PhoneUser();
         ReadPhoneUsers(true);
         popupHandler = GameObject.Find("PopUps").GetComponent<PopupHandler>();
