@@ -63,9 +63,11 @@ public class BuddyJoystickOTOSender : OTONetSender
         else {
             mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
             mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
+            Debug.LogWarning("------ JOYSTICK LOCAL:" + joystick.localPosition.ToString() + " -------");
         }
 
         if (mXPosition != 0 && mYPosition != 0) {
+            Debug.LogWarning("----------- X/Y POSITION != 0 ------------");
             //The cursor of the joystick is being moved
             //We are controlling the body movement
             if(toggleController.IsBodyActive) {
@@ -87,6 +89,9 @@ public class BuddyJoystickOTOSender : OTONetSender
                 SendData(lYesCmd, lYesCmd.Length);
             }            
         }
+        else if (mXPosition == 0 && mYPosition == 0) {
+            Debug.LogWarning("------- POSITION SET TO ZERO IN SENDER --------");
+        }
 
         mTime = Time.time;
     }
@@ -100,8 +105,8 @@ public class BuddyJoystickOTOSender : OTONetSender
         if (Mathf.Abs(mAngleNo) > 45)
             mAngleNo = Mathf.Sign(mAngleNo) * 45;
         
-        Debug.Log("---- NO AXIS: " + mAngleNo.ToString() + " ----");
-        Debug.Log("---- NO AXIS CALCUL: " + (-mAngleNo * 100 / 45).ToString() + " ----");
+        Debug.LogWarning("---- NO AXIS: " + mAngleNo.ToString() + " ----");
+        Debug.LogWarning("---- NO AXIS CALCUL: " + (-mAngleNo * 100 / 45).ToString() + " ----");
 
         headNoAnim.SetFloat("HeadPosition_H", -mAngleNo*100/45);
         mNoSpeed = (mXPosition * mXPosition) * mSpeedHead * 3f;
@@ -119,7 +124,7 @@ public class BuddyJoystickOTOSender : OTONetSender
         if (mAngleYes > 60)
             mAngleYes = 60;
 
-        Debug.Log("---- YES AXIS: " + mAngleYes.ToString() + " ----");
+        Debug.LogWarning("---- YES AXIS: " + mAngleYes.ToString() + " ----");
 
         headYesAnim.SetFloat("HeadPosition_V", mAngleYes);
         mYesSpeed = (mYPosition * mYPosition) * mSpeedHead * 3f;

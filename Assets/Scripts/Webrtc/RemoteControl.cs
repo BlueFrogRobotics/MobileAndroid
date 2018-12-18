@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 
 public class RemoteControl : MonoBehaviour
 {
+    [SerializeField]
+    private VirtualJoystickImage mPad;
 
     [SerializeField]
     private Transform joystick;
@@ -73,6 +75,8 @@ public class RemoteControl : MonoBehaviour
     private bool mAlreadyDisabled = false;
     private bool mEdit = false;
 
+    private bool mWheelStopped = false;
+
     private TouchScreenKeyboard keyboard;
 
     public bool ControlsDisabled { get { return mControlsDisabled; } set { mControlsDisabled = value; } }
@@ -108,6 +112,7 @@ public class RemoteControl : MonoBehaviour
 
         mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
         mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
+        Debug.LogWarning("------ JOYSTICK LOCAL:" + joystick.localPosition.ToString() + " -------");
 
         if (mControlsDisabled) {
             if (!mAlreadyDisabled) {
@@ -119,6 +124,8 @@ public class RemoteControl : MonoBehaviour
             mAlreadyDisabled = false;
 
             if (mXPosition != 0 && mYPosition != 0) {
+                mWheelStopped = false;
+                Debug.LogWarning("----------- X/Y POSITION != 0 ------------");
                 //The cursor of the joystick is being moved
                 //We are controlling the body movement
                 if (toggleController.IsBodyActive) { // ca pete ici
@@ -139,6 +146,14 @@ public class RemoteControl : MonoBehaviour
                     webRTC.SendWithDataChannel(GetString(lNoCmd));
                     webRTC.SendWithDataChannel(GetString(lYesCmd));
                 }
+            }
+        }
+
+        if (mPad.mIsDragging == false && mWheelStopped == false) {
+            mWheelStopped = true;
+            mAlreadyDisabled = true;
+            if (toggleController.IsBodyActive) {
+                webRTC.SendWithDataChannel(GetString(new StopWheelsCmd().Serialize()));
             }
         }
 
@@ -214,7 +229,8 @@ public class RemoteControl : MonoBehaviour
     private void ComputeYesAxis()
     {
         //Add an increment to Yes axis position corresponding to the cursor's
-        mYesAngle -= mYPosition * 5f;
+        // The constant is negative, because we want Buddy's head down when pad is put down.
+        mYesAngle -= mYPosition * -5f;
 
         if (mYesAngle < -30)
             mYesAngle = -30;
@@ -222,7 +238,8 @@ public class RemoteControl : MonoBehaviour
         if (mYesAngle > 60)
             mYesAngle = 60;
 
-        headYesAnim.SetFloat("HeadPosition_V", mYesAngle);
+        // Invert mYesAngle to move cursor with the correct direction.
+        headYesAnim.SetFloat("HeadPosition_V", -mYesAngle);
         mYesSpeed = (mYPosition * mYPosition) * mSpeedHead * 3f;
     }
 
@@ -237,8 +254,11 @@ public class RemoteControl : MonoBehaviour
         //float lLeftSpeed = mSpeedBody * (Mathf.Sin(lAngle) + Mathf.Cos(lAngle) / 3) * lRadius;
         //float lRightSpeed = mSpeedBody * (Mathf.Sin(lAngle) - Mathf.Cos(lAngle) / 3) * lRadius;
 
-        mLinearVelocity = Mathf.Sin(lAngle) * lRadius;
-        mAngularVelocity = Mathf.Cos(lAngle) * lRadius;
+        // Here constant is add to increase Velocity
+        // Robot rotation works but only in one direction
+        // TODO : find how this two variable are use to move buddy, and adjust, value / min/max
+        mLinearVelocity = Mathf.Clamp((Mathf.Sin(lAngle) * lRadius) * 1.4F, -1, 1);
+        mAngularVelocity = Mathf.Clamp((Mathf.Cos(lAngle) * lRadius) * 2F, -180, 180 );
 
         Debug.Log("Linear vel : " + mLinearVelocity + " / angular vel : " + mAngularVelocity);
     }
