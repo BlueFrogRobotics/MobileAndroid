@@ -43,6 +43,9 @@ public class RemoteControl : MonoBehaviour
     [SerializeField]
     private Animator animatorWOZTitle;
 
+    private const float LINEAR_VELOCITY_LIMIT = 0.8F;
+    private const float ANGULAR_VELOCITY_LIMIT = 130F;
+
     //public Slider mSlider;
 
     private int mClickCount = 0;
@@ -112,7 +115,6 @@ public class RemoteControl : MonoBehaviour
 
         mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
         mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
-        Debug.LogWarning("------ JOYSTICK LOCAL:" + joystick.localPosition.ToString() + " -------");
 
         if (mControlsDisabled) {
             if (!mAlreadyDisabled) {
@@ -125,7 +127,6 @@ public class RemoteControl : MonoBehaviour
 
             if (mXPosition != 0 && mYPosition != 0) {
                 mWheelStopped = false;
-                Debug.LogWarning("----------- X/Y POSITION != 0 ------------");
                 //The cursor of the joystick is being moved
                 //We are controlling the body movement
                 if (toggleController.IsBodyActive) { // ca pete ici
@@ -247,19 +248,30 @@ public class RemoteControl : MonoBehaviour
     {
         //Compute the speed of both wheels according to the cursors position;
         //The direction is thus influenced by the speed of both wheels
-        float lRadius = Mathf.Sqrt(mXPosition * mXPosition + mYPosition * mYPosition);
-        float lAngle = Mathf.Atan2(mYPosition, mXPosition);
-        Debug.Log("Body position radius : " + lRadius + " / body position angle : " + lAngle);
+        //float lRadius = Mathf.Sqrt(mXPosition * mXPosition + mYPosition * mYPosition);
+        //float lAngle = Mathf.Atan2(mYPosition, mXPosition);
 
+        // Info
+        //Debug.Log("Body position radius : " + lRadius + " / body position angle : " + lAngle);
+
+        // Old
         //float lLeftSpeed = mSpeedBody * (Mathf.Sin(lAngle) + Mathf.Cos(lAngle) / 3) * lRadius;
         //float lRightSpeed = mSpeedBody * (Mathf.Sin(lAngle) - Mathf.Cos(lAngle) / 3) * lRadius;
 
-        // Here constant is add to increase Velocity
-        // Robot rotation works but only in one direction
-        // TODO : find how this two variable are use to move buddy, and adjust, value / min/max
-        mLinearVelocity = Mathf.Clamp((Mathf.Sin(lAngle) * lRadius) * 1.4F, -1, 1);
-        mAngularVelocity = Mathf.Clamp((Mathf.Cos(lAngle) * lRadius) * 2F, -180, 180 );
+        // Here constant factor are used to increase Velocity
+        // Constant factor for linear calcul was choosed empirically. (1.4)
+        // Constant factor for angular calcul was choosed to have max value (ANGULAR_VELOCITY_LIMIT) when pad is drag to maximum in x position.
+        mLinearVelocity = Mathf.Clamp(mYPosition * 1.4F, -LINEAR_VELOCITY_LIMIT, LINEAR_VELOCITY_LIMIT);
+        mAngularVelocity = Mathf.Clamp(-mXPosition * 240F, -ANGULAR_VELOCITY_LIMIT, ANGULAR_VELOCITY_LIMIT);
 
+        // Debug
+        //Debug.LogWarning("LIN / Y : " + (Mathf.Sin(lAngle) * lRadius).ToString() + " - " + mYPosition.ToString());
+        //Debug.LogWarning("ANG / X : " + (Mathf.Cos(lAngle) * lRadius).ToString() + " - " + mXPosition.ToString());
+
+        //Debug.LogWarning("Body position radius : " + lRadius + " / body position angle : " + lAngle);
+        Debug.LogWarning("LINEAR V: " + mLinearVelocity.ToString() + " ANGULAR V: " + mAngularVelocity.ToString());
+
+        // Info
         Debug.Log("Linear vel : " + mLinearVelocity + " / angular vel : " + mAngularVelocity);
     }
 
