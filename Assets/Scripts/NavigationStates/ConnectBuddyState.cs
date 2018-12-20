@@ -80,8 +80,9 @@ public class ConnectBuddyState : ASubState {
     /// </summary>
 	private void onDeleteBuddyConfirmed()
 	{
-		GameObject.Find("DBManager").GetComponent<DBManager>().StartRemoveBuddyFromUser(SelectBuddy.BuddyID);
-	}
+        GoBack lMenuManager = GameObject.Find("MenuManager").GetComponent<GoBack>();
+        GameObject.Find("DBManager").GetComponent<DBManager>().StartRemoveBuddyFromUser(SelectBuddy.BuddyID, lMenuManager.PreviousMenu);
+    }
 
     /// <summary>
     /// Reset the sound for a remote control session.

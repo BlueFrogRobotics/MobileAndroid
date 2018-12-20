@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using Buddy;
+using UnityEngine.Events;
 
 [Serializable]
 public class HttpResponse
@@ -461,16 +462,16 @@ public class DBManager : MonoBehaviour
     /// Unlink a Buddy from a user account.
     /// </summary>
     /// <param name="specialID">The unique ID of the Buddy to "delete".</param>
-    public void StartRemoveBuddyFromUser(string specialID)
+    public void StartRemoveBuddyFromUser(string specialID, UnityAction iCallBackYes)
     {
-        StartCoroutine(RemoveBuddyFromUser(specialID));
+        StartCoroutine(RemoveBuddyFromUser(specialID, iCallBackYes));
     }
 
     /// <summary>
     /// Unlink a Buddy from a user account.
     /// </summary>
     /// <param name="specialID">The unique ID of the Buddy to "delete".</param>
-    private IEnumerator RemoveBuddyFromUser(string specialID)
+    private IEnumerator RemoveBuddyFromUser(string specialID, UnityAction iCallBackYes)
     {
         specialID = specialID.ToUpper();
 
@@ -486,7 +487,9 @@ public class DBManager : MonoBehaviour
             if (resp != null) {
                 if (resp.ok) {
                     popupHandler.OpenDisplayIcon(resp.msg, "Check");
-                    menuManager.PreviousMenu();
+                    //menuManager.PreviousMenu();
+                    if (iCallBackYes != null)
+                        iCallBackYes();
                     RetrieveBuddyList();
                     Debug.Log("WWW Success");
                 } else {
@@ -1057,6 +1060,7 @@ public class DBManager : MonoBehaviour
         try {
             resp = JsonUtility.FromJson<HttpResponse>(www.text);
         } catch (Exception e) {
+            Debug.LogWarning("FORGOT PWD: " + e.Message);
             popupHandler.OpenDisplayIcon("UN PROBLEME EST SURVENU LORS DE LA LECTURE DE LA REPONSE DU SERVEUR", "Warning");
         }
 

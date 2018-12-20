@@ -32,6 +32,7 @@ public class SelectBuddyState : ASubState {
             LoadingUI.AddObject(lPoolManager.fButton_L("Content_Top/Top_UI", "+", new List<UnityAction>() { lMenuManager.GoAddBuddyMenu }));
             LoadingUI.AddObject(lPoolManager.fTextField_Searching("Content_Top/Top_UI", "search", "", null, new List<UnityAction<string>>() { lIPList.SearchForBuddy }));
             LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Undo", new List<UnityAction>() { lIPList.CreateListDisplay }));
+            LoadingUI.AddObject(lPoolManager.fButton_R("Content_Top/Top_UI", "Trash", new List<UnityAction>() { lSelect.DeleteBuddy }));
 
             // Enable the Buddy list display with auto refresh.
             GameObject.Find("Viewport").GetComponent<BuddyIPList>().enabled = true;
