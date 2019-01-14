@@ -30,7 +30,10 @@ public class ConnectBuddyState : ASubState {
 			LoadingUI.AddObject(lPoolManager.fBuddy_Status("Content_Bottom/ScrollView/Viewport", SelectBuddy.BuddyID, true));
 			//LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "chatwithbuddy", "", new List<UnityAction>() { lMenuManager.LoadChatMenu }));
             LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "remotecontrol", "", new List<UnityAction>() { lMenuManager.LoadRemoteControlMenu, ResetSoundManager }));
+
+            // Comment / Uncoment this line to get Wizard Of Oz
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "wizardofoz", "", new List<UnityAction>() { lMenuManager.LoadWizardOfOz, ResetSoundManager }));
+
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "BUDDY SETTINGS", "", new List<UnityAction>() { lMenuManager.GoBuddySettings }));
             //LoadingUI.AddObject(lPoolManager.fButton_Square("Content_Bottom/ScrollView/Viewport", "REQUEST ACCESS", "", new List<UnityAction>() { ShowAccessRequest }));
 

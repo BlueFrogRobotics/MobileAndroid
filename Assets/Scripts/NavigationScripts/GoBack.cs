@@ -268,7 +268,7 @@ public class GoBack : MonoBehaviour
         Webrtc lRTC = GameObject.Find("UnityWebrtc").GetComponent<Webrtc>();
         float lTimeWaited = 0;
 
-        while (!lRTC.Connected && lTimeWaited < 30F)
+        while (!lRTC.Connected && lTimeWaited < 60F)
         {
             lTimeWaited += 0.5F;
             yield return new WaitForSeconds(0.5F);
