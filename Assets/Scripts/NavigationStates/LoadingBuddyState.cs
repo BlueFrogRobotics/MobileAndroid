@@ -36,6 +36,10 @@ public class LoadingBuddyState : ASubState {
                     GameObject.Find("UnityWebrtc").GetComponent<Webrtc>().InitWebRTC();
                     GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy(animator.GetInteger("RemoteMode"));
                     break;
+                case 4: //  Automatic Distant control selected ( Korian's version - temporary - If really needed, have to use authorization account )
+                    GameObject.Find("UnityWebrtc").GetComponent<Webrtc>().InitWebRTC();
+                    GameObject.Find("LaunchTelepresence").GetComponent<LaunchTelepresence>().ConnectToBuddy(animator.GetInteger("RemoteMode"));
+                    break;
             }
 
         }
@@ -50,11 +54,15 @@ public class LoadingBuddyState : ASubState {
                     break;
                 case 2: // Distant control selected, wait for the call to be accepted on Buddy.
                     SelectBuddy lSelect = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
-                    lMenuManager.WaitForCallConfirmation(lSelect.Remote, false);
+                    lMenuManager.WaitForCallConfirmation(lSelect.Remote, ConnectBuddyState.AvailableRemoteMode.REMOTE_CONTROL);
                     break;
-                case 3: // Wizard of Oz distant control selected, wait for the call the be accepted on Buddy.
+                case 3: // Wizard of Oz distant control selected, wait for the call to be accepted on Buddy.
                     SelectBuddy lSelectWOZ = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
-                    lMenuManager.WaitForCallConfirmation(lSelectWOZ.Remote, true); 
+                    lMenuManager.WaitForCallConfirmation(lSelectWOZ.Remote, ConnectBuddyState.AvailableRemoteMode.WOZ); 
+                    break;
+                case 4: // Automatic distant control selected, wait for the call to be accepted on Buddy.
+                    SelectBuddy lSelectTakeControl = GameObject.Find("SelectBuddy").GetComponent<SelectBuddy>();
+                    lMenuManager.WaitForCallConfirmation(lSelectTakeControl.Remote, ConnectBuddyState.AvailableRemoteMode.TAKE_CONTROL);
                     break;
             }
         }

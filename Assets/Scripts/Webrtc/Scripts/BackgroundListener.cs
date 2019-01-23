@@ -117,7 +117,7 @@ public class BackgroundListener : MonoBehaviour
     /// </summary>
     /// <param name="iWebrtcID">The device's ID on the WebRTC server.</param>
     /// <param name="iRemoteID">The target Buddy ID.</param>
-    /// <param name="iMode">0: Standard remote control - 1: Wizard of Oz.</param>
+    /// <param name="iMode">0: Standard remote control - 1: Wizard of Oz. - 2: Automatic remote control</param>
     public void PublishConnectionRequest(string iWebrtcID, string iRemoteID, int iMode)
     {
         mJavaListener.Call("Publish", "ConnectRequest", iWebrtcID + "/" + iRemoteID + "/" + iMode);
