@@ -196,6 +196,26 @@ public class GoBack : MonoBehaviour
     }
 
     /// <summary>
+    /// Go to the remote control menu with automatic response.
+    /// </summary>
+    public void LoadTakeControlMenu()
+    {
+        SelectBuddy lSelect = this.GetComponentInChildren<SelectBuddy>();
+        //Check if selected Buddy is accessible for a remote control session or not.
+        if (lSelect.BuddyAccess())
+        {
+            LoadingBuddyMessage = "waitingcallconfirmation";
+            canvasAnimator.SetInteger("MenuBuddy", 4);
+            canvasAnimator.SetInteger("RemoteMode", 2);
+            SwitchToMenu("GoLoadingBuddy");
+        }
+        else
+        {
+            GameObject.Find("PopUps").GetComponent<PopupHandler>().OpenDisplayIcon("Buddy est déjà en ligne", "NoResponse");
+        }
+    }
+
+    /// <summary>
     /// Go to the "classic" remote control menu.
     /// </summary>
     public void GoRemoteControlMenu()
@@ -209,6 +229,14 @@ public class GoBack : MonoBehaviour
     public void GoWizardOfOzMenu()
     {
         SwitchToMenu("GoWizardOfOZ");
+    }
+
+    /// <summary>
+    /// Go to the "Take Control" remote control menu.
+    /// </summary>
+    public void GoTakeControlMenu()
+    {
+        SwitchToMenu("GoTakeControl");
     }
 
     /// <summary>
@@ -233,12 +261,12 @@ public class GoBack : MonoBehaviour
     /// </summary>
     /// <param name="iType">The remote control session type (Local or WebRTC).</param>
     /// <param name="lWizardOfOz">Is the session a "Wizard of Oz" one ?</param>
-    public void WaitForCallConfirmation(SelectBuddy.RemoteType iType, bool lWizardOfOz)
+    public void WaitForCallConfirmation(SelectBuddy.RemoteType iType, ConnectBuddyState.AvailableRemoteMode lRemoteMode)
     {
         if (iType == SelectBuddy.RemoteType.LOCAL)
-            StartCoroutine(WaitForLocalConfirmation(lWizardOfOz));
+            StartCoroutine(WaitForLocalConfirmation(lRemoteMode));
         else if (iType == SelectBuddy.RemoteType.WEBRTC)
-            StartCoroutine(WaitForRTCConfirmation(lWizardOfOz));
+            StartCoroutine(WaitForRTCConfirmation(lRemoteMode));
     }
 
     /// <summary>
@@ -246,7 +274,7 @@ public class GoBack : MonoBehaviour
     /// </summary>
     /// <param name="lWizardOfOz">Is the session a "Wizard of Oz" one ?</param>
     /// <returns>An enumerator.</returns>
-    private IEnumerator WaitForLocalConfirmation(bool lWizardOfOz)
+    private IEnumerator WaitForLocalConfirmation(ConnectBuddyState.AvailableRemoteMode lRemoteMode)
     {
         CallAcceptOTOReceiver lConfirmation = GameObject.Find("CallAcceptReceiver").GetComponent<CallAcceptOTOReceiver>();
 
@@ -255,7 +283,7 @@ public class GoBack : MonoBehaviour
             yield return new WaitForSeconds(0.5F);
         }
 
-        processConnectionState(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED, lWizardOfOz);
+        processConnectionState(lConfirmation.Status == CallAcceptOTOReceiver.CallStatus.ACCEPTED, lRemoteMode);
     }
 
     /// <summary>
@@ -263,7 +291,7 @@ public class GoBack : MonoBehaviour
     /// </summary>
     /// <param name="lWizardOfOz">Is the session a "Wizard of Oz" one ?</param>
     /// <returns>An enumerator.</returns>
-    private IEnumerator WaitForRTCConfirmation(bool lWizardOfOz)
+    private IEnumerator WaitForRTCConfirmation(ConnectBuddyState.AvailableRemoteMode lRemoteMode)
     {
         Webrtc lRTC = GameObject.Find("UnityWebrtc").GetComponent<Webrtc>();
         float lTimeWaited = 0;
@@ -274,18 +302,26 @@ public class GoBack : MonoBehaviour
             yield return new WaitForSeconds(0.5F);
         }
 
-        processConnectionState(lRTC.Connected, lWizardOfOz, lRTC);
+        processConnectionState(lRTC.Connected, lRemoteMode, lRTC);
     }
 
-    private void processConnectionState(bool connected, bool lWizardOfOz, Webrtc lRTC = null)
+    private void processConnectionState(bool connected, ConnectBuddyState.AvailableRemoteMode lRemoteMode, Webrtc lRTC = null)
     {
         //If Buddy is connected and available for a remote control session.
         if (connected)
         {
-            if (lWizardOfOz)
-                GoWizardOfOzMenu();
-            else
-                GoRemoteControlMenu();
+            switch (lRemoteMode)
+            {
+                case ConnectBuddyState.AvailableRemoteMode.REMOTE_CONTROL:
+                    GoRemoteControlMenu();
+                    break;
+                case ConnectBuddyState.AvailableRemoteMode.WOZ:
+                    GoWizardOfOzMenu();
+                    break;
+                case ConnectBuddyState.AvailableRemoteMode.TAKE_CONTROL:
+                    GoTakeControlMenu();
+                    break;
+            }
         }
         //Else, stay at the "Connected to Buddy" menu, disable the WebRTC and display an error.
         else

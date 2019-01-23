@@ -116,20 +116,15 @@ public sealed class Dictionary
     public string GetString(string iKey)
     {
         string oVal = string.Empty;
-        Debug.Log("truc 1: "+iKey);
         if (string.IsNullOrEmpty(iKey))
             return oVal;
-        Debug.Log("truc 2");
         Dictionary<EntryType, string[]> lSearchResult = null;
 
         if (mCurrentNativeTrie != null)
             lSearchResult = mCurrentNativeTrie.Find(iKey);
-        Debug.Log("truc 3 ");
         if (lSearchResult == null)
             return oVal;
-        Debug.Log("truc 4");
         oVal = lSearchResult[EntryType.BASE][0];
-        Debug.Log("truc 5: "+oVal);
         return oVal;
     }
 

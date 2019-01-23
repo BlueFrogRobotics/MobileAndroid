@@ -501,5 +501,15 @@
                 <string />
             </RandomValues>
         </DictionaryEntry>
+        <DictionaryEntry>
+            <Key>takecontrol</Key>
+            <BaseValue>CONTROLE AUTOMATIQUE</BaseValue>
+            <ClosePhoneticValues>
+                <string />
+            </ClosePhoneticValues>
+            <RandomValues>
+                <string />
+            </RandomValues>
+        </DictionaryEntry>
     </Entries>
 </LanguageThesaurus>

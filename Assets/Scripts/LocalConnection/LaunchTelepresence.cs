@@ -26,7 +26,7 @@ public class LaunchTelepresence : MonoBehaviour
     /// <summary>
     /// Called when a remote connection is requested by the user.
     /// </summary>
-    /// <param name="iMode">The remote type for a WebRTC type: either classic or Wizard-of-Oz.</param>
+    /// <param name="iMode">The remote type for a WebRTC type: either classic, Wizard-of-Oz, or Automatic distant control.</param>
     public void ConnectToBuddy(int iMode)
     {
         //Check what if selected Buddy is controllable via Local or WebRTC method
