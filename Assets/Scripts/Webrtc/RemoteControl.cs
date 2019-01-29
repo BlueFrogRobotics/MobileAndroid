@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using BlueQuark.Remote;
 using System;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using System.Collections;
 
 public class RemoteControl : MonoBehaviour
 {
@@ -46,7 +48,7 @@ public class RemoteControl : MonoBehaviour
     private const float LINEAR_VELOCITY_LIMIT = 0.8F;
     private const float ANGULAR_VELOCITY_LIMIT = 130F;
 
-    //public Slider mSlider;
+    private enum EditState { NONE, TEXT, SAY_INPUT, APP_NAME };
 
     private int mClickCount = 0;
 
@@ -76,11 +78,13 @@ public class RemoteControl : MonoBehaviour
 
     private bool mControlsDisabled = false;
     private bool mAlreadyDisabled = false;
-    private bool mEdit = false;
+
+    private EditState mAppEdit = EditState.NONE;
+    private Button mButtonToEdit;
 
     private bool mWheelStopped = false;
 
-    private TouchScreenKeyboard keyboard;
+    private TouchScreenKeyboard keyboard = null;
 
     public bool ControlsDisabled { get { return mControlsDisabled; } set { mControlsDisabled = value; } }
 
@@ -94,18 +98,46 @@ public class RemoteControl : MonoBehaviour
 
     void Update()
     {
-        if (keyboard != null && keyboard.done) {
-            Debug.Log("EDIT = " + mEdit);
-            if (mEdit) {
-                byte[] lCmd = null;
-                lCmd = new SayCmd(keyboard.text).Serialize();
-                webRTC.SendWithDataChannel(GetString(lCmd));
-                keyboard = null;
-                mEdit = false;
-            } else {
-                if (!string.IsNullOrEmpty(keyboard.text))
-                    mTextToEdit.text = keyboard.text;
-                Debug.Log("Update " + mTextToEdit);
+        if (keyboard != null && keyboard.done)
+        {
+            Debug.LogWarning("EDIT = " + mAppEdit.ToString());
+            switch (mAppEdit)
+            {
+                case EditState.SAY_INPUT:
+                    byte[] lCmd = null;
+                    lCmd = new SayCmd(keyboard.text).Serialize();
+                    webRTC.SendWithDataChannel(GetString(lCmd));
+                    keyboard = null;
+                    break;
+
+                case EditState.APP_NAME:
+                    string[] lAppInfo = keyboard.text.Split(' ');
+                    if (keyboard.text.Contains("[AppName]") || keyboard.text.Contains("[AppID]"))
+                        Debug.LogWarning("Enter an app name and an app id.");
+                    else if (mTextToEdit && lAppInfo.Length == 2)
+                    {
+                        //if (lAppInfo[0].Length > 20)
+                            mTextToEdit.text = lAppInfo[0].Substring(0, 20);
+                        if (mButtonToEdit)
+                        {
+                            mButtonToEdit.onClick.RemoveAllListeners();
+                            mButtonToEdit.onClick.AddListener(delegate { ButtonPushed("App " + lAppInfo[1]); });
+                        }
+                    }
+                    mButtonToEdit = null;
+                    mTextToEdit = null;
+                    keyboard = null;
+                    break;
+
+                case EditState.TEXT:
+                    if (mTextToEdit && !string.IsNullOrEmpty(keyboard.text))
+                        mTextToEdit.text = keyboard.text;
+                    mTextToEdit = null;
+                    keyboard = null;
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -116,27 +148,34 @@ public class RemoteControl : MonoBehaviour
         mXPosition = joystick.localPosition.x / X_DELTA_JOYSTICK;
         mYPosition = joystick.localPosition.y / Y_DELTA_JOYSTICK;
 
-        if (mControlsDisabled) {
-            if (!mAlreadyDisabled) {
+        if (mControlsDisabled)
+        {
+            if (!mAlreadyDisabled)
+            {
                 Debug.Log("BAD CONNECTION, stopping Buddy...");
                 webRTC.SendWithDataChannel(GetString(new StopWheelsCmd().Serialize()));
                 mAlreadyDisabled = true;
             }
-        } else {
+        }
+        else
+        {
             mAlreadyDisabled = false;
 
-            if (mXPosition != 0 && mYPosition != 0) {
+            if (mXPosition != 0 && mYPosition != 0)
+            {
                 mWheelStopped = false;
                 //The cursor of the joystick is being moved
                 //We are controlling the body movement
-                if (toggleController.IsBodyActive) { // ca pete ici
+                if (toggleController.IsBodyActive)
+                { // ca pete ici
                     //Compute the desired body movement and send the serialized command to remote
                     ComputeMobileBase();
                     byte[] lMobileCmd = new SetWheelsVelocitiesCmd(mLinearVelocity, mAngularVelocity).Serialize();
                     webRTC.SendWithDataChannel(GetString(lMobileCmd));
                 }
                 //We are controlling the head movement
-                else {
+                else
+                {
                     //Compute the desired head movement and send the serialized command to remote
                     ComputeNoAxis();
                     ComputeYesAxis();
@@ -150,10 +189,12 @@ public class RemoteControl : MonoBehaviour
             }
         }
 
-        if (mPad.mIsDragging == false && mWheelStopped == false) {
+        if (mPad.mIsDragging == false && mWheelStopped == false)
+        {
             mWheelStopped = true;
             mAlreadyDisabled = true;
-            if (toggleController.IsBodyActive) {
+            if (toggleController.IsBodyActive)
+            {
                 webRTC.SendWithDataChannel(GetString(new StopWheelsCmd().Serialize()));
             }
         }
@@ -161,13 +202,45 @@ public class RemoteControl : MonoBehaviour
         mTime = Time.time;
     }
 
+    public void SayInputText()
+    {
+        if (keyboard == null)
+            keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+        mAppEdit = EditState.SAY_INPUT;
+    }
+
+    public void EditText()
+    {
+        if (keyboard == null)
+            keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+        mTextToEdit = EventSystem.current.currentSelectedGameObject.transform.Find("Text").GetComponent<Text>();
+        mAppEdit = EditState.TEXT;
+    }
+
+    public void EditApp()
+    {
+        if (keyboard == null)
+        {
+            if ((mTextToEdit = EventSystem.current.currentSelectedGameObject.transform.Find("Text").GetComponent<Text>()))
+                mTextToEdit.text = "Launch an App";
+            if ((mButtonToEdit = EventSystem.current.currentSelectedGameObject.GetComponent<Button>()))
+                mButtonToEdit.onClick.RemoveAllListeners();
+            keyboard = TouchScreenKeyboard.Open("[AppName] [AppID]", TouchScreenKeyboardType.Default);
+            mAppEdit = EditState.APP_NAME;
+        }
+    }
+
     public void ButtonPushed(string iButtonName)
     {
         string[] words = iButtonName.Split(' ');
+        Text lIdField;
+        Transform lAppId;
         byte[] lCmd = null;
-        switch (words[0]) {
+
+        switch (words[0])
+        {
             case "App":
-                Debug.Log(words[1]);
+                Debug.LogWarning("LAUNCHING: " + words[1]);
                 lCmd = new StartAppCmd(words[1]).Serialize();
 
                 animatorWOZ.SetTrigger("OFF");
@@ -179,7 +252,6 @@ public class RemoteControl : MonoBehaviour
                 Debug.Log(text.GetComponent<Text>().text);
                 if (text != null)
                     lCmd = new SayCmd(text.GetComponent<Text>().text).Serialize();
-
                 break;
 
             case "Mood":
@@ -197,22 +269,6 @@ public class RemoteControl : MonoBehaviour
 
         }
         webRTC.SendWithDataChannel(GetString(lCmd));
-    }
-
-    public void SayInputText()
-    {
-        if (keyboard == null)
-            keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
-        mEdit = true;
-    }
-
-    public void EditText()
-    {
-        mEdit = false;
-        if (keyboard == null)
-            keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
-        mTextToEdit = EventSystem.current.currentSelectedGameObject.transform.Find("Text").GetComponent<Text>();
-        Debug.Log(mTextToEdit.text);
     }
 
     private void ComputeNoAxis()
